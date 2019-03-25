@@ -6,7 +6,7 @@ import LoginScreen from "./screens/LoginScreen";
 
 import paths from "./paths";
 
-export default function Routing() {
+export default function Pages() {
   return (
     <BrowserRouter>
       <Switch>

@@ -5,8 +5,8 @@ import { withRouter } from 'react-router';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import withAuth from '../../components-hoc/withAuth';
-import { NavbarAuth } from '../../components-stable/Navbar';
+import { withAuth } from '../../components/hocs/auth';
+import { NavbarAuth } from '../../components/stables/Navbar';
 import { Container, ContainerFluid } from '../../components/Container';
 
 const styles = theme => ({});

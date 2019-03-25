@@ -9,6 +9,8 @@ import "normalize.css";
 import { history, store, persistor } from "./modules";
 import { setAuthToken } from "./modules/api/http";
 import { SplashScreen } from "./components/Loading";
+
+import Pages from "./pages";
 import "./App.css";
 
 function setAuthTokenAfterPersist() {
@@ -16,7 +18,7 @@ function setAuthTokenAfterPersist() {
   setAuthToken(token);
 }
 
-function App(props) {
+function App() {
   return (
     <Provider store={store}>
       <PersistGate
@@ -25,7 +27,7 @@ function App(props) {
         onBeforeLift={setAuthTokenAfterPersist}
       >
         <ConnectedRouter history={history}>
-          <div>hehe</div>
+          <Pages />
         </ConnectedRouter>
       </PersistGate>
     </Provider>
