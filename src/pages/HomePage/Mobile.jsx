@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
-import { withAuth } from "../../../components/hocs/auth";
-import { NavbarAuth } from "../../../components/stables/Navbar";
-import { Container, ContainerFluid } from "../../../components/Container";
+import { withAuth } from "../../components/hocs/auth";
+import { NavbarAuth } from "../../components/stables/Navbar";
+import { Container, ContainerFluid } from "../../components/Container";
 
 const styles = theme => ({
   wrapper: {

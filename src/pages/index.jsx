@@ -1,8 +1,9 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import HomeScreen from "./screens/HomeScreen";
-import LoginScreen from "./screens/LoginScreen";
+import LandingPage from './LandingPage'
+import HomePage from "./HomePage";
+import LoginPage from "./LoginPage";
 
 import paths from "./paths";
 
@@ -20,18 +21,26 @@ export default function Pages() {
 
 const ROUTES = [
   {
+    title: "ILUNI12",
+    route: {
+      exact: true,
+      path: paths.LANDING,
+      component: LandingPage
+    }
+  },
+  {
     title: "Home",
     route: {
       exact: true,
       path: paths.HOME,
-      component: HomeScreen
+      component: HomePage
     }
   },
   {
     title: "Login",
     route: {
       path: paths.LOGIN,
-      component: LoginScreen
+      component: LoginPage
     }
   }
 ];
