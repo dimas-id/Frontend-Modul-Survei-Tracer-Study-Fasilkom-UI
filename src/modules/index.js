@@ -10,15 +10,13 @@ import { createBrowserHistory } from "history";
 
 // reducer
 import sessionReducer from "./session";
-import supplyReducer from "./supply";
-import cartReducer from "./cart";
 
 // middleware
 import { loggerMiddleware } from "./logger";
 import atlasAPIv1 from "./api/atlas/v1";
 
 // config
-import { isDevelopment } from "../config/environment";
+import { isDevelopment } from "../config";
 
 const composeEnhancers =
   (isDevelopment && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;

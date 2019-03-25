@@ -1,28 +1,35 @@
-import React, { Component } from 'react'
-import logo from './assets/logo.svg'
-import './App.css'
+import React from "react";
+import get from "lodash/get";
 
-class App extends Component {
-  render () {
-    return (
-      <div className='App'>
-        <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo' />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className='App-link'
-            href='https://reactjs.org'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    )
-  }
+import { Provider } from "react-redux";
+import { ConnectedRouter } from "connected-react-router";
+import { PersistGate } from "redux-persist/integration/react";
+import "normalize.css";
+
+import { history, store, persistor } from "./modules";
+import { setAuthToken } from "./modules/api/http";
+import { SplashScreen } from "./components/Loading";
+import "./App.css";
+
+function setAuthTokenAfterPersist() {
+  const token = get(store.getState(), "session.token.access");
+  setAuthToken(token);
 }
 
-export default App
+function App(props) {
+  return (
+    <Provider store={store}>
+      <PersistGate
+        loading={<SplashScreen />}
+        persistor={persistor}
+        onBeforeLift={setAuthTokenAfterPersist}
+      >
+        <ConnectedRouter history={history}>
+          <div>hehe</div>
+        </ConnectedRouter>
+      </PersistGate>
+    </Provider>
+  );
+}
+
+export default App;

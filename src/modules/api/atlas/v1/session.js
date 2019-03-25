@@ -4,7 +4,7 @@ import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
 
 import http from "../../http";
-import { API_V1_URL } from "./config";
+import { API_V1_URL } from "../config";
 
 export default Object.freeze({
   login: (email, password) =>
