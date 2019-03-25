@@ -1,16 +1,14 @@
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 
-import { getDurationHourFromNow } from "commons/datetime";
-
 export function getUser(state) {
-  return get(state, "session.account", {});
+  return get(state, "session.user", {});
 }
 
-export function getUserToken(state) {
-  return get(state, "session.token", undefined);
+export function getUserAccessToken(state) {
+  return get(state, "session.token.access", undefined);
 }
 
 export function isLoggedIn(state) {
-  return !!getUserToken(state) && !isEmpty(getUser(state));
+  return !!getUserAccessToken(state) && !isEmpty(getUser(state));
 }
