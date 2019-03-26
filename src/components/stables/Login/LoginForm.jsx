@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Fade from "@material-ui/core/Fade";
 
-import { layouts } from "../../../styles";
+import { layouts } from "../../../styles/guidelines";
 import { enhanceForm } from "../../hocs/form";
 
 const styles = theme => ({
