@@ -4,13 +4,14 @@ import get from "lodash/get";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
 import { PersistGate } from "redux-persist/integration/react";
-import "normalize.css";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 
 import { history, store, persistor } from "./modules";
 import { setAuthToken } from "./modules/api/http";
 import { SplashScreen } from "./components/Loading";
 
 import Pages from "./pages";
+import { theme } from "./styles";
 import "./App.css";
 
 function setAuthTokenAfterPersist() {
@@ -26,9 +27,11 @@ function App() {
         persistor={persistor}
         onBeforeLift={setAuthTokenAfterPersist}
       >
-        <ConnectedRouter history={history}>
-          <Pages />
-        </ConnectedRouter>
+        <MuiThemeProvider theme={theme}>
+          <ConnectedRouter history={history}>
+            <Pages />
+          </ConnectedRouter>
+        </MuiThemeProvider>
       </PersistGate>
     </Provider>
   );

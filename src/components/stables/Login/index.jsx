@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 
 import { login as _login } from "../../../modules/session/thunks";
 import Logo from "../../../assets/logo.svg";
-import { layouts } from "../../../styles";
+import { layouts } from "../../../styles/guidelines";
 import { HOME } from "../../../pages/paths";
 import { humanizeError, isStatusOK } from "../../../libs/response";
 

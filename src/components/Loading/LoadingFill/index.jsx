@@ -1,6 +1,6 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { layouts } from '../../../styles';
+import { layouts } from '../../../styles/guidelines';
 
 export default class LoadingScreen extends React.PureComponent {
   render() {
