@@ -6,7 +6,7 @@ netlify:
   image: node:10.15.3
   script:
   - npm install -g yarn netlify-cli
-  - yarn build
+  - yarn && yarn build
   - netlify --telemetry-disable
   - netlify deploy --dir=./build --auth=$NETLIFY_TOKEN --prod
   artifacts:
