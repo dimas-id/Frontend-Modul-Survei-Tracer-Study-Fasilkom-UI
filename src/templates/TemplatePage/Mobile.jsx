@@ -17,7 +17,7 @@ class Screen extends React.PureComponent {
   };
 
   render() {
-    const { classes } = this.props;
+    // const { classes } = this.props;
     return (
       <ContainerFluid>
         <NavbarAuth title="Screen" />

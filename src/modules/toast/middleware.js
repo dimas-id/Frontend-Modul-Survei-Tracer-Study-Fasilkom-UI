@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import { toastActions } from './index';
 import { push } from 'react-router-redux';
 

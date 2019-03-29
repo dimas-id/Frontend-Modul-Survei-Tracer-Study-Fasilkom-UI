@@ -17,12 +17,12 @@ export function themeFactory({ type }) {
       type: currentType,
       primary: {
         // light: will be calculated from palette.primary.main,
-        main: "#ffffff",
+        main: "#ffffff"
         // dark: will be calculated from palette.primary.main,
         // contrastText: will be calculated to contrast with palette.primary.main
       },
       secondary: {
-        main: "#022047",
+        main: "#022047"
         // dark: will be calculated from palette.secondary.main,
       },
       error: {
@@ -31,6 +31,7 @@ export function themeFactory({ type }) {
     },
     typography: {
       // Use the system font instead of the default Roboto font.
+      useNextVariants: true,
       fontFamily: [
         "-apple-system",
         "BlinkMacSystemFont",
@@ -43,6 +44,13 @@ export function themeFactory({ type }) {
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"'
       ].join(",")
+    },
+    overrides: {
+      MuiInput: {
+        input: {
+          background: "#ffffff"
+        }
+      }
     }
   });
 }

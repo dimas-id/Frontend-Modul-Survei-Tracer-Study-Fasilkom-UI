@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
-import { withAuth } from "../../components/hocs/auth";
+import { withAuth, ROLES } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
 import { Container, ContainerFluid } from "../../components/Container";
 
@@ -29,4 +29,4 @@ HomeMobile.propTypes = {
   classes: PropTypes.shape().isRequired
 };
 
-export default withAuth(withStyles(styles)(HomeMobile));
+export default withAuth(withStyles(styles)(HomeMobile), [ROLES.SUPERUSER]);

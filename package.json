@@ -15,7 +15,9 @@
     "start": "cross-env npm-run-all start:js",
     "start:js": "react-scripts start",
     "test": "cross-env npm-run-all lint test:js",
-    "test:js": "react-scripts test"
+    "test:js": "react-scripts test",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -66,6 +68,12 @@
     "prop-types": "^15.7.2",
     "react-scripts": "2.1.8",
     "react-test-renderer": "^16.8.4",
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "@storybook/react": "^5.0.5",
+    "@storybook/addon-actions": "^5.0.5",
+    "@storybook/addon-links": "^5.0.5",
+    "@storybook/addons": "^5.0.5",
+    "@babel/core": "^7.4.0",
+    "babel-loader": "^8.0.5"
   }
 }

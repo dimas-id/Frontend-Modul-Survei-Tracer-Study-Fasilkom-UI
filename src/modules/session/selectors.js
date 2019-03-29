@@ -9,6 +9,10 @@ export function getUserAccessToken(state) {
   return get(state, "session.token.access", undefined);
 }
 
+export function getUserRefreshToken(state) {
+  return get(state, "session.token.refresh", undefined);
+}
+
 export function isLoggedIn(state) {
   return !!getUserAccessToken(state) && !isEmpty(getUser(state));
 }

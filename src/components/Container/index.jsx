@@ -13,7 +13,7 @@ const containerStyles = theme => ({
   root: {
     flex: 1,
     flexGrow: 1,
-    maxWidth: 800,
+    maxWidth: 1200,
     margin: '0 auto',
     position: 'relative',
   },
@@ -31,6 +31,7 @@ const containerFluidStyles = theme => ({
     flexGrow: 1,
     width: '100vw',
     position: 'relative',
+    boxSizing: 'border-box',
   },
 });
 

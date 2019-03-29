@@ -8,31 +8,18 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
 import { login as _login } from "../../../modules/session/thunks";
-import Logo from "../../../assets/logo.svg";
 import { layouts } from "../../../styles/guidelines";
-import { HOME } from "../../../pages/paths";
+import paths, { HOME } from "../../../pages/paths";
 import { humanizeError, isStatusOK } from "../../../libs/response";
 
-import { Container, ContainerFluid } from "../../Container";
 import LoginForm from "./LoginForm";
 
 const styles = theme => ({
-  logo: {
-    height: 120,
-    width: 120
-  },
-  form: {
+  container: {
     ...layouts.flexDirCol,
-    ...layouts.flexMiddle
+    ...layouts.flexMiddle,
+    ...layouts.w100,
   },
-  wrapper: {
-    ...layouts.windowHeight,
-    ...layouts.flexDirCol,
-    ...layouts.flexMiddle
-  },
-  btn: {
-    marginTop: theme.spacing.unit * 2
-  }
 });
 
 function getInitialValue() {
@@ -66,7 +53,7 @@ class Login extends React.Component {
       if (search.length > 0) return search[1];
     }
 
-    return "";
+    return paths.HOME;
   }
 
   redirectToNextPage = () => {
@@ -101,30 +88,17 @@ class Login extends React.Component {
     const { classes } = this.props;
     const { errorMessage } = this.state;
     return (
-      <ContainerFluid>
-        <Container>
-          <div className={classes.wrapper}>
-            <img alt="logo" src={Logo} className={classes.logo} />
-            <Typography
-              gutterBottom
-              variant="title"
-              align="center"
-              component="h1"
-            >
-              WELCOME
-            </Typography>
-            {!!errorMessage && (
-              <Typography gutterBottom align="center" color="error">
-                {errorMessage}
-              </Typography>
-            )}
-            <LoginForm
-              onSubmit={this.handleLogin}
-              initialValues={getInitialValue()}
-            />
-          </div>
-        </Container>
-      </ContainerFluid>
+      <div className={classes.container}>
+        {!!errorMessage && (
+          <Typography gutterBottom align="center" color="error">
+            {errorMessage}
+          </Typography>
+        )}
+        <LoginForm
+          onSubmit={this.handleLogin}
+          initialValues={getInitialValue()}
+        />
+      </div>
     );
   }
 }
