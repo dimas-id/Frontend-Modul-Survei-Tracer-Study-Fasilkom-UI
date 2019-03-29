@@ -69,7 +69,6 @@ function generateHeightWidth() {
   return result;
 }
 
-
 /**
  * @todo: use RGBA format
  */
@@ -143,6 +142,17 @@ export const layouts = {
   },
   posAbs: {
     position: "absolute"
+  },
+  posAbsHorizontalCenter: {
+    position: "absolute",
+    left: "50%",
+    transform: "translateX(-50%)"
+  },
+  posAbsCenter: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
   },
   posAbsBottom: {
     position: "absolute",

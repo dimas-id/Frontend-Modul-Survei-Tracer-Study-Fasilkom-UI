@@ -26,7 +26,8 @@ const styles = theme => {
     },
     appbar: {
       top: 0,
-      backgroundColor: theme.palette.background.paper
+      backgroundColor: theme.palette.background.paper,
+      boxShadow: 'None',
     },
     title: {
       flexGrow: 1,
@@ -46,24 +47,24 @@ class NavbarAuth extends React.Component {
   };
 
   state = {
-    isUserMenuOpened: null,
-    isAppMenuOpened: null
+    anchorElUserMenu: null,
+    anchorElAppMenu: null
   };
 
   handleOpenUserMenu = event => {
-    this.setState({ isUserMenuOpened: event.currentTarget });
+    this.setState({ anchorElUserMenu: event.currentTarget });
   };
 
   handleCloseUserMenu = () => {
-    this.setState({ isUserMenuOpened: null });
+    this.setState({ anchorElUserMenu: null });
   };
 
   handleOpenAppMenu = event => {
-    this.setState({ isAppMenuOpened: event.currentTarget });
+    this.setState({ anchorElAppMenu: event.currentTarget });
   };
 
   handleCloseAppMenu = () => {
-    this.setState({ isAppMenuOpened: null });
+    this.setState({ anchorElAppMenu: null });
   };
 
   handleLogout = async () => {
@@ -99,7 +100,8 @@ class NavbarAuth extends React.Component {
 
   renderAppMenu() {
     const { isLoggedIn, classes } = this.props;
-    const open = Boolean(this.state.isAppMenuOpened);
+    const { anchorElAppMenu } = this.state;
+    const open = Boolean(anchorElAppMenu);
     return isLoggedIn ? (
       <div>
         <IconButton
@@ -113,7 +115,7 @@ class NavbarAuth extends React.Component {
         {/* @todo: buat custom menu */}
         <Menu
           id="menu-appbar"
-          isUserMenuOpened={open}
+          anchorEl={anchorElAppMenu}
           className={classes.menu}
           anchorOrigin={{
             vertical: "top",
@@ -135,7 +137,8 @@ class NavbarAuth extends React.Component {
 
   renderUserMenu() {
     const { isLoggedIn, classes } = this.props;
-    const open = Boolean(this.state.isUserMenuOpened);
+    const { anchorElUserMenu } = this.state
+    const open = Boolean(anchorElUserMenu);
     return isLoggedIn ? (
       <div>
         <IconButton
@@ -148,7 +151,7 @@ class NavbarAuth extends React.Component {
         </IconButton>
         <Menu
           id="menu-userbar"
-          isUserMenuOpened={open}
+          anchorEl={anchorElUserMenu}
           className={classes.menu}
           anchorOrigin={{
             vertical: "top",

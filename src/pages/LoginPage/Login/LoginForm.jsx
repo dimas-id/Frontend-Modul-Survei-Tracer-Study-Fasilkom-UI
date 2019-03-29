@@ -7,20 +7,19 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Fade from "@material-ui/core/Fade";
 
 import { layouts } from "../../../styles/guidelines";
-import { enhanceForm } from "../../hocs/form";
+import { enhanceForm } from "../../../components/hocs/form";
 
 const styles = theme => ({
   form: {
     ...layouts.flexDirCol,
-    ...layouts.flexMiddle
+    ...layouts.flexMiddle,
+    ...layouts.w100,
   },
-  wrapper: {
-    ...layouts.windowHeight,
-    ...layouts.flexDirCol,
-    ...layouts.flexMiddle
+  textField: {
+    ...layouts.w100,
   },
   btn: {
-    marginTop: theme.spacing.unit * 2
+    ...layouts.mt64,
   }
 });
 
@@ -82,7 +81,7 @@ const LoginForm = withStyles(styles)(
             <CircularProgress size={18} />
           </Fade>
         ) : (
-          "Login"
+          "Masuk"
         )}
       </Button>
     </form>

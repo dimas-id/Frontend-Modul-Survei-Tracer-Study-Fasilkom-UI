@@ -12,7 +12,8 @@ export default Object.freeze({
       email,
       password
     }),
-  refreshToken: () => http.post(`${API_V1_URL}/tokens/refresh`),
+  refreshToken: refresh =>
+    http.post(`${API_V1_URL}/tokens/refresh`, { refresh }),
   getUserById: userId => http.get(`${API_V1_URL}/users/${userId}`),
   patchUserById: (userId, payload) => {
     const data = omitBy(
