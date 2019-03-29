@@ -17,12 +17,12 @@ export function themeFactory({ type }) {
       type: currentType,
       primary: {
         // light: will be calculated from palette.primary.main,
-        main: "#2D4EF5",
+        main: "#ffffff",
         // dark: will be calculated from palette.primary.main,
         // contrastText: will be calculated to contrast with palette.primary.main
       },
       secondary: {
-        main: "#4CE2A7",
+        main: "#022047",
         // dark: will be calculated from palette.secondary.main,
       },
       error: {

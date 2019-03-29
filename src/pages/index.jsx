@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import LandingPage from './LandingPage'
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
+import Error404Page from "./Error404Page";
+import ErrorPage from './ErrorPage'
 
 import paths from "./paths";
 
@@ -41,6 +43,27 @@ const ROUTES = [
     route: {
       path: paths.LOGIN,
       component: LoginPage
+    }
+  },
+  {
+    title: "Err...",
+    route: {
+      path: paths.ERROR,
+      component: ErrorPage
+    }
+  },
+  {
+    title: "404",
+    route: {
+      path: paths.ERROR_404,
+      component: Error404Page
+    }
+  },
+  {
+    title: "404",
+    route: {
+      path: '',
+      component: Error404Page
     }
   }
 ];
