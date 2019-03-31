@@ -33,7 +33,6 @@ const ROUTES = [
   {
     title: "Home",
     route: {
-      exact: true,
       path: paths.HOME,
       component: HomePage
     }
