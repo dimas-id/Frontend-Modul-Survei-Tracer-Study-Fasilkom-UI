@@ -175,6 +175,10 @@ export const fonts = {
   },
   normal: {
     fontWeight: "500"
+  },
+  heading1: {
+    fontWeight: "700",
+    marginBottom: 24,
   }
 };
 
