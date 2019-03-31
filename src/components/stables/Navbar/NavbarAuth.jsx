@@ -13,11 +13,12 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import AppsIcon from "@material-ui/icons/Apps"
+import AppsIcon from "@material-ui/icons/Apps";
 
 import { logout } from "../../../modules/session/thunks";
 import { isLoggedIn as _isLoggedIn } from "../../../modules/session/selectors";
 import paths from "../../../pages/paths";
+import Logo from "../../../assets/logo.svg";
 
 const styles = theme => {
   return {
@@ -27,11 +28,12 @@ const styles = theme => {
     appbar: {
       top: 0,
       backgroundColor: theme.palette.background.paper,
-      boxShadow: 'None',
+      boxShadow: "None"
     },
     title: {
       flexGrow: 1,
-      color: theme.palette.text.primary
+      color: theme.palette.text.primary,
+      marginLeft: theme.spacing.unit * 4
     },
     buttonAsText: {
       marginLeft: theme.spacing.unit * 2,
@@ -137,7 +139,7 @@ class NavbarAuth extends React.Component {
 
   renderUserMenu() {
     const { isLoggedIn, classes } = this.props;
-    const { anchorElUserMenu } = this.state
+    const { anchorElUserMenu } = this.state;
     const open = Boolean(anchorElUserMenu);
     return isLoggedIn ? (
       <div>
@@ -176,6 +178,16 @@ class NavbarAuth extends React.Component {
     return (
       <AppBar position="sticky" className={classes.appbar}>
         <Toolbar>
+          <Button
+            component={Link}
+            to="/"
+            disableRipple
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="Menu"
+          >
+            <img src={Logo} alt="ILUNI12 Logo" />
+          </Button>
           <Typography variant="h6" color="inherit" className={classes.title}>
             {title}
           </Typography>
