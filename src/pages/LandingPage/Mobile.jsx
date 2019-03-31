@@ -83,10 +83,10 @@ function LandingMobile({ classes }) {
         </div>
       </Container>
       <div style={{ position: "relative" }}>
-        <Particle
+      <Particle
           name="bgLanding"
           top={-500}
-          style={{ ...Guidelines.layouts.windowWidth }}
+          style={{ ...Guidelines.layouts.w100 }}
         />
         <Container className={classes.contentContainer}>
           <Typography component="h1" variant="h2" className={classes.title}>
