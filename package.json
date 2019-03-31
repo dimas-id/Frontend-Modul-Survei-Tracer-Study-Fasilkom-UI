@@ -13,7 +13,7 @@
     "lint:eslint": "./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern node_modules/",
     "lint:prettier": "prettier '*.{js,ts,css,less,scss,vue,json,gql,md}' --print-width 80 --single-quote --trailing-comma es5 --write",
     "start": "cross-env npm-run-all start:js",
-    "start:js": "PORT=3113 react-scripts start",
+    "start:js": "react-scripts start",
     "test": "cross-env npm-run-all lint test:js",
     "test:js": "react-scripts test",
     "storybook": "start-storybook -p 6006",
