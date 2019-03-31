@@ -43,7 +43,12 @@ const styles = theme => {
 class NavbarAuth extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    position: PropTypes.string
+  };
+
+  static defaultProps = {
+    position: "sticky"
   };
 
   state = {
@@ -172,9 +177,9 @@ class NavbarAuth extends React.Component {
   }
 
   render() {
-    const { classes, title } = this.props;
+    const { classes, title, position } = this.props;
     return (
-      <AppBar position="sticky" className={classes.appbar}>
+      <AppBar position={position} className={classes.appbar}>
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.title}>
             {title}
