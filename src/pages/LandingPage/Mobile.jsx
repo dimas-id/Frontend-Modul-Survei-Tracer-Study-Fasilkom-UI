@@ -17,14 +17,18 @@ const styles = theme => ({
   hero: {
     ...Guidelines.layouts.flexMiddle,
     ...Guidelines.layouts.flexDirRow,
-    ...Guidelines.layouts.windowHeight
+    ...Guidelines.layouts.windowHeight,
+    ...Guidelines.layouts.pl32,
+    ...Guidelines.layouts.pr32,
   },
   heroTextContainer: {
     ...Guidelines.layouts.flex1
   },
   contentContainer: {
     ...Guidelines.layouts.flexDirRow,
-    ...Guidelines.layouts.windowHeight
+    ...Guidelines.layouts.windowHeight,
+    ...Guidelines.layouts.pl32,
+    ...Guidelines.layouts.pr32,
   },
   title: {
     ...Guidelines.fonts.heading1

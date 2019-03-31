@@ -17,9 +17,12 @@ const styles = theme => ({
     ...Guidelines.layouts.windowHeight
   },
   contentContainer: {
-    ...Guidelines.layouts.pt80,
     ...Guidelines.layouts.flexDirCol,
-    alignItems: "flex-start"
+    alignItems: "flex-start",
+    ...Guidelines.layouts.mt80,
+    ...Guidelines.layouts.pt80,
+    ...Guidelines.layouts.pl32,
+    ...Guidelines.layouts.pr32,
   },
   title: {
     ...Guidelines.layouts.mb64
@@ -34,8 +37,8 @@ function LoginMobile({ classes }) {
     <div className={classes.container}>
       <NavbarAuth position="fixed" />
       <Particle name="cloud2" left={0} />
-      <Particle name="cloud1" right={0} bottom="20%" />
-      <Particle name="coupleTalk" right={268} bottom="40%" />
+      <Particle name="cloud1" right={0} bottom="15%" />
+      <Particle name="coupleTalk" right={268} bottom="35%" />
       <Container>
         <div className={classes.contentContainer}>
           <div className={classes.loginFormWrapper}>
