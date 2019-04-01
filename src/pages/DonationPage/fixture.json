@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "dateCreated": "2019-03-31T18:36:51.234942+07:00",
+        "dateUpdated": "2019-03-31T18:36:51.235037+07:00",
+        "uniqueCode": null,
+        "title": "donasi a",
+        "description": "donasi ini untuk a",
+        "startDate": "2019-03-09",
+        "endDate": "2019-12-01",
+        "categoryName": "INF",
+        "proposalUrl": "https://www.twitter.com",
+        "verificationStatus": "PRA",
+        "notes": null,
+        "creator": "a40de69d-2854-40f6-8b9e-251345a75948",
+        "personInCharges": []
+    },
+    {
+        "id": 2,
+        "dateCreated": "2019-03-31T18:36:56.169871+07:00",
+        "dateUpdated": "2019-03-31T18:36:56.169950+07:00",
+        "uniqueCode": null,
+        "title": "donasi b",
+        "description": "donasi ini untuk a",
+        "startDate": "2019-03-09",
+        "endDate": "2019-12-01",
+        "categoryName": "INF",
+        "proposalUrl": "https://www.twitter.com",
+        "verificationStatus": "PRA",
+        "notes": null,
+        "creator": "a40de69d-2854-40f6-8b9e-251345a75948",
+        "personInCharges": []
+    },
+    {
+        "id": 3,
+        "dateCreated": "2019-03-31T18:36:59.650732+07:00",
+        "dateUpdated": "2019-03-31T18:36:59.651374+07:00",
+        "uniqueCode": null,
+        "title": "donasi b",
+        "description": "donasi ini untuk a",
+        "startDate": "2019-03-09",
+        "endDate": "2019-12-01",
+        "categoryName": "INF",
+        "proposalUrl": "https://www.twitter.com",
+        "verificationStatus": "PRA",
+        "notes": null,
+        "creator": "a40de69d-2854-40f6-8b9e-251345a75948",
+        "personInCharges": []
+    }
+]

@@ -4,6 +4,9 @@ export const HOME = "/home";
 export const LANDING = "/";
 export const LOGIN = "/login";
 export const REGISTER = "/register";
+export const DONASI = "/donasi";
+export const DONATION_FORM = `${DONASI}/:idProgram`
+export const DONATION_REQUEST= `${DONASI}/ajukan-program`
 
 export default {
   HOME,
@@ -11,5 +14,8 @@ export default {
   ERROR,
   LOGIN,
   LANDING,
-  REGISTER
+  REGISTER,
+  DONASI,
+  DONATION_FORM,
+  DONATION_REQUEST,
 };

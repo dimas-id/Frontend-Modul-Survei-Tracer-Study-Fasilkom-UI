@@ -2,12 +2,14 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import LandingPage from './LandingPage'
+import DonationPage from './DonationPage'
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
 import ErrorPage from './ErrorPage'
 
 import paths from "./paths";
+
 
 export default function Pages() {
   return (
@@ -43,6 +45,13 @@ const ROUTES = [
     route: {
       path: paths.LOGIN,
       component: LoginPage
+    }
+  },
+  {
+    title: "Donasi",
+    route: {
+      path: paths.DONASI,
+      component: DonationPage
     }
   },
   {
