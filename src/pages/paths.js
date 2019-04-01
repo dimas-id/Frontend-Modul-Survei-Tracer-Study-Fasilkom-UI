@@ -4,6 +4,8 @@ export const HOME = "/home";
 export const LANDING = "/";
 export const LOGIN = "/login";
 export const REGISTER = "/register";
+export const CRM = '/CRM';
+export const CRM_CONTACT = `${CRM}/contact`;
 
 export default {
   HOME,
@@ -11,5 +13,6 @@ export default {
   ERROR,
   LOGIN,
   LANDING,
-  REGISTER
+  REGISTER,
+  CRM_CONTACT
 };
