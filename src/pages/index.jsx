@@ -1,11 +1,12 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import LandingPage from './LandingPage'
+import LandingPage from "./LandingPage";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
-import ErrorPage from './ErrorPage'
+import ErrorPage from "./ErrorPage";
+import ContactPage from "./ContactPage";
 
 import paths from "./paths";
 
@@ -46,6 +47,13 @@ const ROUTES = [
     }
   },
   {
+    title: "Contact",
+    route: {
+      path: paths.CRM_CONTACT,
+      component: ContactPage
+    }
+  },
+  {
     title: "Err...",
     route: {
       path: paths.ERROR,
@@ -62,7 +70,7 @@ const ROUTES = [
   {
     title: "404",
     route: {
-      path: '',
+      path: "",
       component: Error404Page
     }
   }
