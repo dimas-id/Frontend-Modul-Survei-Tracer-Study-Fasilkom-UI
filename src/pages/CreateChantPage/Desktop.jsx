@@ -5,14 +5,12 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 
 import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
-import { Container, ContainerFluid } from "../../components/Container";
+import { Container } from "../../components/Container";
+import ChantForm from "../../components/stables/ChantForm"
 import Particle from "../../components/Particle";
-import AttachmentIcon from "@material-ui/icons/Attachment";
 
 import { layouts, fonts } from "../../styles/guidelines";
 
@@ -28,28 +26,6 @@ const styles = theme => ({
     width: "90vw",
     ...fonts.bold,
     ...layouts.borderBox
-  },
-  form: {
-    ...layouts.flexDirCol
-  },
-  formInline: {
-    ...layouts.mt16,
-    ...layouts.flexDirRow,
-    justifiyContent: "space-between"
-  },
-  textField: {
-    ...layouts.w100,
-    width: "75vw"
-  },
-  label: {
-    ...layouts.marginAuto
-  },
-  button: {
-    ...layouts.marginAuto,
-    width: "10vw"
-  },
-  buttonPic: {
-    ...layouts.marginAuto
   },
   container:{
     ...layouts.flexMiddle
@@ -70,52 +46,7 @@ class Screen extends React.PureComponent {
             <Typography variant="h5" component="h3">
               Membuat Chant
             </Typography>
-            <form className={classes.form}>
-              <div className={classes.formInline}>
-                <label className={classes.label} for="title">
-                  Judul
-                </label>
-                <TextField
-                  autoFocus
-                  id="title"
-                  label="Judul Chant hari ini?"
-                  className={classes.textField}
-                  margin="normal"
-                  variant="outlined"
-                  required
-                />
-              </div>
-              <div className={classes.formInline}>
-                <label className={classes.label} for="description">
-                  Deskripsi
-                </label>
-                <TextField
-                  id="descritpion"
-                  label="Deskripsi Chant hari ini?"
-                  multiline
-                  rowsMax="5"
-                  className={classes.textField}
-                  margin="normal"
-                  variant="outlined"
-                  required
-                />
-              </div>
-              <div className={classes.formInline}>
-                <Button
-                  className={classes.buttonPic}
-                >
-                <AttachmentIcon />
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  type="submit"
-                >
-                  Chant!
-                </Button>
-              </div>
-            </form>
+            <ChantForm />
           </Paper>
         </Container>
         </React.Fragment>
