@@ -65,7 +65,7 @@ const ROUTES = [
       component: DonationPage
     }
   },
-  
+  {
     title: "Registration",
     route: {
       path: paths.REGISTER,
