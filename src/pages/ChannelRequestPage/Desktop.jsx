@@ -41,7 +41,7 @@ const styles = theme => ({
     alignItems: "center"
   },
   label: {
-    fontSize: 20,
+    fontSize: 16,
     ...Guidelines.fonts.bold
   },
   textField: {
