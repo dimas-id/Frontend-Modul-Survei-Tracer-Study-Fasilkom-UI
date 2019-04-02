@@ -21,7 +21,7 @@ const styles = theme => ({
   }
 });
 
-function NavbarModal({ classes, history, title, Content, ...props }) {
+function NavbarModal({ classes, history, title, Content, onClick, ...props }) {
   return (
     <AppBar position="static" className={classes.appbar} {...props}>
       <Toolbar>
@@ -29,7 +29,7 @@ function NavbarModal({ classes, history, title, Content, ...props }) {
           className={classes.menuButton}
           color="inherit"
           aria-label="Menu"
-          onClick={history.goBack}
+          onClick={onClick || history.goBack}
         >
           <Close />
         </IconButton>
