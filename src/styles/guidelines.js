@@ -3,7 +3,7 @@
  * Styling
  *
  */
-const intervalSize = [2, 4, 8, 16, 24, 32, 40, 64, 80];
+const intervalSize = [2, 4, 8, 16, 24, 32, 40, 48, 64, 80];
 const axies = [
   { key: "l", detail: "Left" },
   { key: "r", detail: "Right" },
@@ -140,6 +140,12 @@ export const layouts = {
     justifyContent: "center",
     alignItems: "center"
   },
+  flexWrap: {
+    flexWrap: 'wrap'
+  },
+  flexNowrap: {
+    flexWrap: 'nowrap'
+  },
   posAbs: {
     position: "absolute"
   },
@@ -163,6 +169,9 @@ export const layouts = {
   },
   backgroundTransparent: {
     backgroundColor: "transparent"
+  },
+  borderBox: {
+    boxSizing: "border-box"
   }
 };
 
@@ -178,7 +187,7 @@ export const fonts = {
   },
   heading1: {
     fontWeight: "700",
-    marginBottom: 24,
+    marginBottom: 24
   }
 };
 

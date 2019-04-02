@@ -1,8 +1,7 @@
 import React from 'react';
 import { withFormik } from 'formik';
-import Yup from 'yup';
 
-export const Validation = Yup;
+export const Validation = require('yup');
 
 export function enhanceForm({ validator, validate, ...otherConfig }) {
   const enhancer = withFormik({
