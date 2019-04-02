@@ -15,6 +15,7 @@ export const CHANNEL_REQUEST_LIST = `${CHANNEL}/request/list`;
 export const CHANNEL_REQUEST_DETAIL = `${CHANNEL}/request/:channelId`;
 export const CHANNEL_REQUEST_UPDATE = `${CHANNEL}/request/:channelId/update`;
 export const CHANNEL_CHANT_CREATE = `${CHANNEL}/chant/create`;
+export const CHANNEL_CHANT_UPDATE = `${CHANNEL}/chant/update`; 
 export const CHANNEL_CHANT = `${CHANNEL}/:channelId`;
 
 export default {
@@ -35,4 +36,5 @@ export default {
   CHANNEL_REQUEST_UPDATE,
   CHANNEL_CHANT_CREATE,
   CHANNEL_CHANT,
+  CHANNEL_CHANT_UPDATE,
 };

@@ -16,6 +16,7 @@ import ChannelRequestListPage from "./ChannelRequestListPage";
 import ChannelRequestDetailPage from "./ChannelRequestDetailPage";
 import ChannelRequestUpdatePage from "./ChannelRequestUpdatePage";
 import ChannelChantPage from "./ChannelChantPage";
+import UpdateChantPage from './UpdateChantPage';
 
 import paths from "./paths";
 
@@ -59,6 +60,13 @@ const ROUTES = [
     route: {
       path: paths.CHANNEL_CHANT_CREATE,
       component: CreateChantPage
+    }
+  },
+  {
+    title: "Update Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_UPDATE,
+      component: UpdateChantPage
     }
   },
   {
