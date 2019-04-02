@@ -1,11 +1,12 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import LandingPage from './LandingPage'
+import LandingPage from './LandingPage';
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
-import ErrorPage from './ErrorPage'
+import ErrorPage from './ErrorPage';
+import ChannelRequestPage from './ChannelRequestPage';
 
 import paths from "./paths";
 
@@ -43,6 +44,13 @@ const ROUTES = [
     route: {
       path: paths.LOGIN,
       component: LoginPage
+    }
+  },
+  {
+    title: "Channel Request",
+    route: {
+      path: paths.CHANNEL_REQUEST,
+      component: ChannelRequestPage
     }
   },
   {

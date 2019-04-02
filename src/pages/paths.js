@@ -4,6 +4,7 @@ export const HOME = "/home";
 export const LANDING = "/";
 export const LOGIN = "/login";
 export const REGISTER = "/register";
+export const CHANNEL_REQUEST = "/channels/request";
 
 export default {
   HOME,
@@ -11,5 +12,6 @@ export default {
   ERROR,
   LOGIN,
   LANDING,
-  REGISTER
+  REGISTER,
+  CHANNEL_REQUEST
 };
