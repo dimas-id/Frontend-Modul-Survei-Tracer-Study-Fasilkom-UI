@@ -8,8 +8,12 @@ import Error404Page from "./Error404Page";
 import ErrorPage from "./ErrorPage";
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
+import DonationFormPage from './DonationFormPage';
+import DonationPage from './DonationPage'
+
 
 import paths from "./paths";
+
 
 export default function Pages() {
   return (
@@ -47,6 +51,21 @@ const ROUTES = [
     }
   },
   {
+    title: "Form-Donasi",
+    route: {
+      path: paths.DONATION_FORM,
+      component: DonationFormPage
+    }
+  },
+  {
+    title: "Donasi",
+    route: {
+      exact : true,
+      path: paths.DONASI,
+      component: DonationPage
+    }
+  },
+  
     title: "Registration",
     route: {
       path: paths.REGISTER,
