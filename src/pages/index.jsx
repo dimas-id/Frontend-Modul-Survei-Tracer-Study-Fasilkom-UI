@@ -6,7 +6,8 @@ import DonationPage from './DonationPage'
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
-import ErrorPage from './ErrorPage'
+import ErrorPage from './ErrorPage';
+import DonationFormPage from './DonationFormPage';
 
 import paths from "./paths";
 
@@ -48,12 +49,21 @@ const ROUTES = [
     }
   },
   {
+    title: "Form-Donasi",
+    route: {
+      path: paths.DONATION_FORM,
+      component: DonationFormPage
+    }
+  },
+  {
     title: "Donasi",
     route: {
+      exact : true,
       path: paths.DONASI,
       component: DonationPage
     }
   },
+  
   {
     title: "Err...",
     route: {
