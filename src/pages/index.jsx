@@ -1,22 +1,21 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import LandingPage from './LandingPage';
+import LandingPage from "./LandingPage";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
-import ErrorPage from './ErrorPage';
+import ErrorPage from "./ErrorPage";
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
-import DonationFormPage from './DonationFormPage';
-import DonationPage from './DonationPage'
-import ChannelRequestPage from './ChannelRequestPage';
-import ChannelRequestListPage from './ChannelRequestListPage';
-import ChannelRequestUpdatePage from './ChannelRequestUpdatePage';
-
+import DonationFormPage from "./DonationFormPage";
+import DonationPage from "./DonationPage";
+import ChannelRequestPage from "./ChannelRequestPage";
+import ChannelRequestListPage from "./ChannelRequestListPage";
+import ChannelRequestDetailPage from "./ChannelRequestDetailPage";
+import ChannelRequestUpdatePage from "./ChannelRequestUpdatePage";
 
 import paths from "./paths";
-
 
 export default function Pages() {
   return (
@@ -63,7 +62,7 @@ const ROUTES = [
   {
     title: "Donasi",
     route: {
-      exact : true,
+      exact: true,
       path: paths.DONASI,
       component: DonationPage
     }
@@ -98,6 +97,13 @@ const ROUTES = [
     }
   },
   {
+    title: "Channel Request Detail",
+    route: {
+      path: paths.CHANNEL_REQUEST_DETAIL,
+      component: ChannelRequestDetailPage
+    }
+  },
+  {
     title: "Channel Request Update",
     route: {
       path: paths.CHANNEL_REQUEST_UPDATE,
@@ -117,5 +123,5 @@ const ROUTES = [
       path: paths.ERROR_404,
       component: Error404Page
     }
-  },
+  }
 ];
