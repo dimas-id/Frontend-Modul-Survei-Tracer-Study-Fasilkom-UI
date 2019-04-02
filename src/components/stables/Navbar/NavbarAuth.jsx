@@ -62,11 +62,12 @@ const styles = theme => {
 class NavbarAuth extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     position: PropTypes.string
   };
 
   static defaultProps = {
+    title: "",
     position: "sticky"
   };
 
