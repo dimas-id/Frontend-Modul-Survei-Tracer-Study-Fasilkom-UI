@@ -1,4 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles";
+import { fade } from "@material-ui/core/styles/colorManipulator";
 
 // @todo: use colors guideline
 
@@ -17,7 +18,7 @@ export function themeFactory({ type }) {
       type: currentType,
       primary: {
         // light: will be calculated from palette.primary.main,
-        main: "#ffffff"
+        main: "#00C7E5"
         // dark: will be calculated from palette.primary.main,
         // contrastText: will be calculated to contrast with palette.primary.main
       },
@@ -44,15 +45,25 @@ export function themeFactory({ type }) {
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"'
       ].join(",")
-    },
-    overrides: {
-      MuiInput: {
-        input: {
-          background: "#ffffff"
-        }
-      }
     }
   });
 }
 
-export default themeFactory({});
+const theme = themeFactory({});
+
+theme.overrides = {
+  MuiOutlinedInput: {
+    root: {
+      overflow: "hidden",
+      borderRadius: 4,
+      backgroundColor: "#fff",
+      transition: theme.transitions.create(["border-color", "box-shadow"]),
+      "&:focused": {
+        boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
+        borderColor: theme.palette.primary.main
+      }
+    }
+  }
+};
+
+export default theme;

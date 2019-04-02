@@ -6,10 +6,16 @@ import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
 import ErrorPage from './ErrorPage';
-import ChannelRequestPage from './ChannelRequestPage';
+import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
+import DonationFormPage from './DonationFormPage';
+import DonationPage from './DonationPage'
+import ChannelRequestPage from './ChannelRequestPage';
+import ChannelRequestListPage from './ChannelRequestListPage';
+
 
 import paths from "./paths";
+
 
 export default function Pages() {
   return (
@@ -35,7 +41,6 @@ const ROUTES = [
   {
     title: "Home",
     route: {
-      exact: true,
       path: paths.HOME,
       component: HomePage
     }
@@ -48,10 +53,25 @@ const ROUTES = [
     }
   },
   {
-    title: "Channel Request",
+    title: "Form-Donasi",
     route: {
-      path: paths.CHANNEL_REQUEST,
-      component: ChannelRequestPage
+      path: paths.DONATION_FORM,
+      component: DonationFormPage
+    }
+  },
+  {
+    title: "Donasi",
+    route: {
+      exact : true,
+      path: paths.DONASI,
+      component: DonationPage
+    }
+  },
+  {
+    title: "Registration",
+    route: {
+      path: paths.REGISTER,
+      component: RegistrationRouter
     }
   },
   {
@@ -59,6 +79,20 @@ const ROUTES = [
     route: {
       path: paths.CRM_CONTACT,
       component: ContactPage
+    }
+  },
+  {
+    title: "Channel Request",
+    route: {
+      path: paths.CHANNEL_REQUEST,
+      component: ChannelRequestPage
+    }
+  },
+  {
+    title: "Channel Request List",
+    route: {
+      path: paths.CHANNEL_REQUEST_LIST,
+      component: ChannelRequestListPage
     }
   },
   {
@@ -75,11 +109,4 @@ const ROUTES = [
       component: Error404Page
     }
   },
-  {
-    title: "404",
-    route: {
-      path: "",
-      component: Error404Page
-    }
-  }
 ];
