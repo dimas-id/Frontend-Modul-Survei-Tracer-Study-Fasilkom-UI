@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 
 import paths from "../../../paths";
 import { humanizeError, isStatusOK } from "../../../../libs/response";
-
+import { getDateFormatted } from "../../../../libs/datetime";
 import { isLoggedIn } from "../../../../modules/session/selectors";
 import { register } from "../../../../modules/session/thunks";
 import RegistrationForm from "./RegistrationForm";
@@ -35,8 +35,15 @@ const styles = theme => ({
 
 function getInitialValue() {
   return {
-    email: "",
-    password: ""
+    firstName: null,
+    lastName: null,
+    birthdate: null,
+    latestCsuiClassYear: null,
+    latestCsuiProgram: null,
+    uiSsoNpm: null,
+    email: null,
+    password: null,
+    repassword: null
   };
 }
 
@@ -68,7 +75,6 @@ class Registration extends React.Component {
 
   handleRegistration = (values, actions) => {
     this.setErrorMessage("");
-    actions.setErrors(getInitialValue());
 
     const {
       firstName,
@@ -82,14 +88,23 @@ class Registration extends React.Component {
       repassword
     } = RegistrationForm.fields;
 
-    if (values[password] !== values[repassword]) {
-      actions.setError(repassword, "Konfirmasi password tidak sama");
+    const currentValues = { ...values };
+
+    if (currentValues[password] !== currentValues[repassword]) {
+      actions.setFieldError(repassword, "Konfirmasi password tidak sama");
       actions.setSubmitting(false);
       return;
     }
 
+    currentValues[birthdate] = getDateFormatted(currentValues[birthdate]);
+    if (Boolean(currentValues[latestCsuiClassYear])) {
+      currentValues[latestCsuiClassYear] = currentValues[
+        latestCsuiClassYear
+      ].format("YYYY");
+    }
+
     this.props
-      .register(values)
+      .register(currentValues)
       .catch(err => {
         const fields = [
           firstName,
@@ -102,14 +117,12 @@ class Registration extends React.Component {
           password,
           repassword
         ];
+
         const humanizedErr = humanizeError(err.response.data, fields);
-        if (
-          has(humanizedErr, RegistrationForm.field.email) &&
-          has(humanizedErr, RegistrationForm.field.password)
-        ) {
-          actions.setErrors(humanizedErr);
-        } else {
+        if (typeof humanizedError === "string") {
           this.setErrorMessage(humanizedErr);
+        } else {
+          actions.setErrors(humanizedErr);
         }
         actions.setSubmitting(false);
         return err;
