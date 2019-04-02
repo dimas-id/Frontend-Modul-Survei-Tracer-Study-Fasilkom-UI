@@ -12,6 +12,7 @@ export const CRM_CONTACT = `${CRM}/contact`;
 export const CHANNEL = "/channels";
 export const CHANNEL_REQUEST = `${CHANNEL}/request`;
 export const CHANNEL_REQUEST_LIST = `${CHANNEL}/request/list`;
+export const CHANNEL_REQUEST_UPDATE = `${CHANNEL}/request/:channelId/update`;
 
 export default {
   HOME,
@@ -27,4 +28,5 @@ export default {
   CHANNEL,
   CHANNEL_REQUEST,
   CHANNEL_REQUEST_LIST,
+  CHANNEL_REQUEST_UPDATE,
 };

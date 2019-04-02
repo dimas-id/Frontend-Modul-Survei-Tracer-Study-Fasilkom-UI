@@ -12,6 +12,7 @@ import DonationFormPage from './DonationFormPage';
 import DonationPage from './DonationPage'
 import ChannelRequestPage from './ChannelRequestPage';
 import ChannelRequestListPage from './ChannelRequestListPage';
+import ChannelRequestUpdatePage from './ChannelRequestUpdatePage';
 
 
 import paths from "./paths";
@@ -84,6 +85,7 @@ const ROUTES = [
   {
     title: "Channel Request",
     route: {
+      exact: true,
       path: paths.CHANNEL_REQUEST,
       component: ChannelRequestPage
     }
@@ -93,6 +95,13 @@ const ROUTES = [
     route: {
       path: paths.CHANNEL_REQUEST_LIST,
       component: ChannelRequestListPage
+    }
+  },
+  {
+    title: "Channel Request Update",
+    route: {
+      path: paths.CHANNEL_REQUEST_UPDATE,
+      component: ChannelRequestUpdatePage
     }
   },
   {
