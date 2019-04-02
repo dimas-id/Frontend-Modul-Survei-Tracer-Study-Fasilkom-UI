@@ -1,13 +1,16 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import LandingPage from './LandingPage'
-import DonationPage from './DonationPage'
+import LandingPage from "./LandingPage";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
-import ErrorPage from './ErrorPage';
+import ErrorPage from "./ErrorPage";
+import RegistrationRouter from "./RegistrationRouter";
+import ContactPage from "./ContactPage";
 import DonationFormPage from './DonationFormPage';
+import DonationPage from './DonationPage'
+
 
 import paths from "./paths";
 
@@ -36,7 +39,6 @@ const ROUTES = [
   {
     title: "Home",
     route: {
-      exact: true,
       path: paths.HOME,
       component: HomePage
     }
@@ -64,6 +66,19 @@ const ROUTES = [
     }
   },
   
+    title: "Registration",
+    route: {
+      path: paths.REGISTER,
+      component: RegistrationRouter
+    }
+  },
+  {
+    title: "Contact",
+    route: {
+      path: paths.CRM_CONTACT,
+      component: ContactPage
+    }
+  },
   {
     title: "Err...",
     route: {
@@ -81,7 +96,7 @@ const ROUTES = [
   {
     title: "404",
     route: {
-      path: '',
+      path: "",
       component: Error404Page
     }
   }

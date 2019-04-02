@@ -7,6 +7,8 @@ export const REGISTER = "/register";
 export const DONASI = "/donasi";
 export const DONATION_FORM = `${DONASI}/:idProgram`
 export const DONATION_REQUEST= `${DONASI}/ajukan-program`
+export const CRM = '/CRM';
+export const CRM_CONTACT = `${CRM}/contact`;
 
 export default {
   HOME,
@@ -18,4 +20,5 @@ export default {
   DONASI,
   DONATION_FORM,
   DONATION_REQUEST,
+  CRM_CONTACT
 };

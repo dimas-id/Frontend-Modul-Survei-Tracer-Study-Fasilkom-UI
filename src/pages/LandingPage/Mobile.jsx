@@ -20,9 +20,14 @@ const styles = theme => ({
     ...Guidelines.layouts.windowHeight,
     ...Guidelines.layouts.pl32,
     ...Guidelines.layouts.pr32,
+    ...Guidelines.layouts.borderBox,
+    ...Guidelines.layouts.flexWrap,
+    [theme.breakpoints.down('sm')]: {
+      ...Guidelines.layouts.pt40,
+    },
   },
   heroTextContainer: {
-    ...Guidelines.layouts.flex1
+    ...Guidelines.layouts.flex1,
   },
   contentContainer: {
     ...Guidelines.layouts.flexDirRow,
@@ -41,7 +46,7 @@ const styles = theme => ({
     ...Guidelines.layouts.flex1
   },
   buttonDaftar: {
-    width: 400,
+    width: 360,
     backgroundColor: "#000",
     color: "#fff",
     "&:hover": {
