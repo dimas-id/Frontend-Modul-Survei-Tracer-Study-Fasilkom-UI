@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -26,7 +27,7 @@ const styles = theme => ({
   },
   subtitle: {
     fontSize: 16
-  },
+  }
 });
 
 class Screen extends React.PureComponent {
@@ -42,13 +43,13 @@ class Screen extends React.PureComponent {
         <NavbarAuth />
         <NavbarBack />
         <Particle name="cloud2" left={0} top={160} />
-        <Container className={classes.container}>
-          <Paper className={classes.paper} elevation={1}>
+        <Container>
+        <Paper className={classes.paper} elevation={1}>
             <Typography className={classes.title} variant="h5" component="h3">
-              Ajukan Sebuah Channel
+              Ubah Pengajuan Channel
             </Typography>
             <Typography className={classes.subtitle} component="p">
-              Channel yang Anda ajukan akan diproses oleh Admin untuk dibuat
+              Perubahan Channel yang Anda ajukan akan diproses oleh Admin untuk dibuat
             </Typography>
             <ChannelRequestForm />
           </Paper>
