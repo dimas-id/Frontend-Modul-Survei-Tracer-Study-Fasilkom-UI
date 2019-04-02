@@ -86,7 +86,7 @@ class Screen extends React.PureComponent {
                   height: 80,
                   objectFit: "cover"
                 }}src="https://www.incimages.com/uploaded_files/image/970x450/getty_509107562_2000133320009280346_351827.jpg"
-                alt="cover image for channel"/>
+                alt="cover channel"/>
               </Grid>
               <Grid item xs={3} sm={3} className={classes.gridLabel}>
                 <Typography component="p" className={classes.label}>
