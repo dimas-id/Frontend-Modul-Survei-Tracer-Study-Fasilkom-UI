@@ -1,15 +1,17 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import LandingPage from "./LandingPage";
+import LandingPage from './LandingPage';
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
-import ErrorPage from "./ErrorPage";
+import ErrorPage from './ErrorPage';
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
 import DonationFormPage from './DonationFormPage';
 import DonationPage from './DonationPage'
+import ChannelRequestPage from './ChannelRequestPage';
+import ChannelRequestListPage from './ChannelRequestListPage';
 
 
 import paths from "./paths";
@@ -80,6 +82,20 @@ const ROUTES = [
     }
   },
   {
+    title: "Channel Request",
+    route: {
+      path: paths.CHANNEL_REQUEST,
+      component: ChannelRequestPage
+    }
+  },
+  {
+    title: "Channel Request List",
+    route: {
+      path: paths.CHANNEL_REQUEST_LIST,
+      component: ChannelRequestListPage
+    }
+  },
+  {
     title: "Err...",
     route: {
       path: paths.ERROR,
@@ -93,11 +109,4 @@ const ROUTES = [
       component: Error404Page
     }
   },
-  {
-    title: "404",
-    route: {
-      path: "",
-      component: Error404Page
-    }
-  }
 ];
