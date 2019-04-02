@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import Grid from "@material-ui/core/Grid";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AppsIcon from "@material-ui/icons/Apps";
 
@@ -19,11 +20,27 @@ import { logout } from "../../../modules/session/thunks";
 import { isLoggedIn as _isLoggedIn } from "../../../modules/session/selectors";
 import paths from "../../../pages/paths";
 import Logo from "../../../assets/logo.svg";
+import { Guidelines } from "../../../styles";
 
 const styles = theme => {
   return {
     menu: {
-      top: theme.spacing.unit * 4
+      marginTop: theme.spacing.unit * 6
+    },
+    menuItem: {
+      width: 160
+    },
+    appMenu: {
+      minHeight: 120,
+      maxWidth: "auto",
+      maxHeight: "auto",
+      overflowY: "hidden"
+    },
+    appMenuItem: {
+      width: 96,
+      height: 96,
+      ...Guidelines.layouts.flexMiddle,
+      ...Guidelines.layouts.flexDirCol
     },
     appbar: {
       top: 0,
@@ -89,7 +106,7 @@ class NavbarAuth extends React.Component {
           color="inherit"
           className={classes.buttonAsText}
           component={Link}
-          to={paths.ERROR_404}
+          to={paths.REGISTER}
         >
           Daftar
         </Button>
@@ -123,7 +140,9 @@ class NavbarAuth extends React.Component {
         <Menu
           id="menu-appbar"
           anchorEl={anchorElAppMenu}
-          className={classes.menu}
+          classes={{
+            paper: `${classes.menu} ${classes.appMenu}`
+          }}
           anchorOrigin={{
             vertical: "top",
             horizontal: "right"
@@ -135,8 +154,26 @@ class NavbarAuth extends React.Component {
           open={open}
           onClose={this.handleCloseAppMenu}
         >
-          <MenuItem>Channel</MenuItem>
-          <MenuItem>Donasi</MenuItem>
+          <Grid container spacing={24}>
+            <Grid item xs={4}>
+              <MenuItem className={classes.appMenuItem}>
+                <AccountCircleIcon fontSize="large" />
+                <Typography>Channel</Typography>
+              </MenuItem>
+            </Grid>
+            <Grid item xs={4}>
+              <MenuItem className={classes.appMenuItem}>
+                <AccountCircleIcon fontSize="large" />
+                <Typography>Donasi</Typography>
+              </MenuItem>
+            </Grid>
+            <Grid item xs={4}>
+              <MenuItem className={classes.appMenuItem}>
+                <AccountCircleIcon fontSize="large" />
+                <Typography>Akun</Typography>
+              </MenuItem>
+            </Grid>
+          </Grid>
         </Menu>
       </div>
     ) : null;
@@ -159,7 +196,9 @@ class NavbarAuth extends React.Component {
         <Menu
           id="menu-userbar"
           anchorEl={anchorElUserMenu}
-          className={classes.menu}
+          classes={{
+            paper: classes.menu
+          }}
           anchorOrigin={{
             vertical: "top",
             horizontal: "right"
@@ -171,8 +210,15 @@ class NavbarAuth extends React.Component {
           open={open}
           onClose={this.handleCloseUserMenu}
         >
-          <MenuItem onClick={this.handleCloseUserMenu}>Profil</MenuItem>
-          <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+          <MenuItem
+            className={classes.menuItem}
+            onClick={this.handleCloseUserMenu}
+          >
+            Profil
+          </MenuItem>
+          <MenuItem className={classes.menuItem} onClick={this.handleLogout}>
+            Logout
+          </MenuItem>
         </Menu>
       </div>
     ) : null;

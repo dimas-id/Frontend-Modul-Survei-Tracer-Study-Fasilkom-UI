@@ -16,6 +16,24 @@ export const loadUserById = userId => {
   };
 };
 
+export const register = payload => {
+  return async (dispatch, _, { atlasAPIv1 }) => {
+    try {
+      const response = await atlasAPIv1.session.register(payload);
+      // set token to header
+      setAuthToken(get(response, "data.access"));
+      // save token & user  to redux
+      await dispatch(
+        sessionAction.setToken(pick(response.data, ["access", "refresh"]))
+      );
+      await dispatch(sessionAction.setUser(get(response, "data.user")));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+
 export const login = (email, password) => {
   return async (dispatch, _, { atlasAPIv1 }) => {
     try {

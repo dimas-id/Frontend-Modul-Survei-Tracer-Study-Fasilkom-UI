@@ -6,6 +6,7 @@ import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
 import ErrorPage from "./ErrorPage";
+import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
 
 import paths from "./paths";
@@ -34,7 +35,6 @@ const ROUTES = [
   {
     title: "Home",
     route: {
-      exact: true,
       path: paths.HOME,
       component: HomePage
     }
@@ -44,6 +44,13 @@ const ROUTES = [
     route: {
       path: paths.LOGIN,
       component: LoginPage
+    }
+  },
+  {
+    title: "Registration",
+    route: {
+      path: paths.REGISTER,
+      component: RegistrationRouter
     }
   },
   {
