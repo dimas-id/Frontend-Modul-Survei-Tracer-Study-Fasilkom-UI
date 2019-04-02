@@ -17,6 +17,7 @@ import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 
 import { Guidelines } from "../../../styles";
 
+
 const styles = theme => ({
   card: {
     ...Guidelines.layouts.mb8,
@@ -69,7 +70,7 @@ export default withStyles(styles)(function(props) {
       </CardContent>
       <CardActions className={classes.actions} disableActionSpacing>
       <Typography variant="body2" gutterBottom>
-        <a href="">Lihat Detail... </a>
+        <a href="google.com">Lihat Detail... </a>
           </Typography>
         <div>
         <FormControlLabel
