@@ -75,7 +75,6 @@ const styles = theme => ({
 
 function Donation(props) {
   const { classes, id, title, description } = props;
-  console.log(props);
   return (
     <React.Fragment>
       <CssBaseline />
