@@ -5,7 +5,8 @@ import LandingPage from "./LandingPage";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
-import ErrorPage from "./ErrorPage";
+import ErrorPage from './ErrorPage';
+import CreateChantPage from './CreateChantPage';
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
 import DonationFormPage from "./DonationFormPage";
@@ -14,6 +15,7 @@ import ChannelRequestPage from "./ChannelRequestPage";
 import ChannelRequestListPage from "./ChannelRequestListPage";
 import ChannelRequestDetailPage from "./ChannelRequestDetailPage";
 import ChannelRequestUpdatePage from "./ChannelRequestUpdatePage";
+import ChannelChantPage from "./ChannelChantPage";
 
 import paths from "./paths";
 
@@ -50,6 +52,13 @@ const ROUTES = [
     route: {
       path: paths.LOGIN,
       component: LoginPage
+    }
+  },
+  {
+    title: "Create Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_CREATE,
+      component: CreateChantPage
     }
   },
   {
@@ -108,6 +117,13 @@ const ROUTES = [
     route: {
       path: paths.CHANNEL_REQUEST_UPDATE,
       component: ChannelRequestUpdatePage
+    }
+  },
+  {
+    title: "Channel Chant",
+    route: {
+      path: paths.CHANNEL_CHANT,
+      component: ChannelChantPage
     }
   },
   {
