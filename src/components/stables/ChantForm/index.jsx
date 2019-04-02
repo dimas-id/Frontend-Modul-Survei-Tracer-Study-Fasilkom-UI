@@ -20,7 +20,8 @@ const styles = theme => ({
     width: "75vw"
   },
   label: {
-    ...layouts.marginAuto
+    ...layouts.marginAuto,
+    ...fonts.bold
   },
   button: {
     ...layouts.marginAuto,
