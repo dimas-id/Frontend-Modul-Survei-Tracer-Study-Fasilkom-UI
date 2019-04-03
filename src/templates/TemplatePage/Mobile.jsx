@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { withAuth } from '../../components/hocs/auth';
 import { NavbarAuth } from '../../components/stables/Navbar';
-import { Container, ContainerFluid } from '../../components/Container';
+import { Container } from '../../components/Container';
 
 const styles = theme => ({});
 
@@ -19,10 +19,10 @@ class Screen extends React.PureComponent {
   render() {
     // const { classes } = this.props;
     return (
-      <ContainerFluid>
+      <React.Fragment>
         <NavbarAuth title="Screen" />
         <Container>Screen</Container>
-      </ContainerFluid>
+      </React.Fragment>
     );
   }
 }

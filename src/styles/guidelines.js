@@ -3,7 +3,7 @@
  * Styling
  *
  */
-const intervalSize = [2, 4, 8, 16, 24, 32, 40, 48, 64, 80];
+const intervalSize = [2, 4, 8, 16, 24, 32, 36, 40, 48, 64, 80];
 const axies = [
   { key: "l", detail: "Left" },
   { key: "r", detail: "Right" },
@@ -140,11 +140,21 @@ export const layouts = {
     justifyContent: "center",
     alignItems: "center"
   },
+  flexMiddleSpaceBetween: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  flexSpaceBetweenMiddle: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "space-between"
+  },
   flexWrap: {
-    flexWrap: 'wrap'
+    flexWrap: "wrap"
   },
   flexNowrap: {
-    flexWrap: 'nowrap'
+    flexWrap: "nowrap"
   },
   posAbs: {
     position: "absolute"
