@@ -21,6 +21,7 @@ import UpdateChantPage from "./UpdateChantPage";
 import PaymentPage from "./PaymentPage";
 import UserDonationListPage from "./UserDonationListPage";
 import DonationRequestPage from "./DonationRequestPage";
+import ChannelRouter from './ChannelRouter';
 
 import paths from "./paths";
 
@@ -153,8 +154,17 @@ const ROUTES = [
     }
   },
   {
+    title: "Daftar Channel",
+    route: {
+      exact: true,
+      path: paths.CHANNEL,
+      component: ChannelRouter
+    }
+  },
+  {
     title: "Channel Chant",
     route: {
+      exact: true,
       path: paths.CHANNEL_CHANT,
       component: ChannelChantPage
     }

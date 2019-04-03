@@ -26,6 +26,8 @@ export const CHANNEL_CHANT_CREATE = `${CHANNEL}/chant/create`;
 export const CHANNEL_CHANT_UPDATE = `${CHANNEL}/chant/update`;
 export const CHANNEL_CHANT = `${CHANNEL}/:channelId`;
 export const USER_DONATION_LIST = `${DONASI}/transaksi/:idUser`;
+export const USER_CHANT = `${CHANNEL}/users/:username`;
+export const TIMELINE_CHANT = `${CHANNEL}/timeline`;
 
 export default {
   HOME,
@@ -54,4 +56,6 @@ export default {
   CHANNEL_CHANT,
   CHANNEL_CHANT_UPDATE,
   USER_DONATION_LIST,
+  USER_CHANT,
+  TIMELINE_CHANT
 };
