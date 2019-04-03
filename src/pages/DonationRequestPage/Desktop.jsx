@@ -20,6 +20,9 @@ import Particle from "../../components/Particle";
 import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 import MomentUtils from "@date-io/moment";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import FileUploadInput from "../../components/stables/FileUploadInput"
+import { getUser } from "../../modules/session/selectors";
+
 
 const styles = theme => ({
   paper: {
@@ -97,7 +100,7 @@ class Screen extends React.PureComponent {
   };
 
   render() {
-    const { classes } = this.props;
+    const { user,classes } = this.props;
 
     return (
       <React.Fragment>
@@ -107,10 +110,10 @@ class Screen extends React.PureComponent {
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>
             <Typography className={classes.title} variant="h5" component="h3">
-              Ajukan Sebuah Channel
+              Ajukan Program Donasi
             </Typography>
             <Typography className={classes.subtitle} component="p">
-              Channel yang Anda ajukan akan diproses oleh Admin untuk dibuat
+              Program donasi yang Anda ajukan akan diproses oleh Admin untuk dibuat
             </Typography>
             <form className={classes.form}>
               <Grid container spacing={24}>
@@ -123,7 +126,7 @@ class Screen extends React.PureComponent {
                   <TextField
                     disabled
                     id="oulined-dissabled"
-                    defaultValue="Nama Orang"
+                    defaultValue={user.name}
                     className={classes.textField}
                     variant="outlined"
                   />
@@ -235,22 +238,9 @@ class Screen extends React.PureComponent {
                   </Typography>
                 </Grid>
                 <Grid item xs={9} sm={9}>
-                  <input
-                    accept="image/*"
-                    className={classes.input}
-                    id="outlined-button-file"
-                    multiple
-                    type="file"
-                  />
-                  <label htmlFor="outlined-button-file">
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      className={classes.button}
-                    >
-                      Upload
-                    </Button>
-                  </label>
+                  <FileUploadInput 
+                  onChange={console.log} 
+                  accept="application/pdf"/>
                 </Grid>
                 <Grid item xs={12} sm={12} className={classes.gridBtn}>
                   <Button
@@ -272,7 +262,9 @@ class Screen extends React.PureComponent {
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
+  const mapStateToProps = state => ({
+    user: getUser(state)
+  });
 
   const mapDispatchToProps = dispatch => ({});
 

@@ -2,7 +2,7 @@ import pick from "lodash/pick";
 import get from "lodash/get";
 import { sessionAction } from "./index";
 import { getUserRefreshToken } from "./selectors";
-import { setAuthToken } from "../api/http";
+import { setAuthToken } from "../../libs/http";
 
 export const loadUserById = userId => {
   return async (dispatch, _, { atlasAPIv1 }) => {

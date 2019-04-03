@@ -7,7 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 
 import { history, store, persistor } from "./modules";
-import { setAuthToken } from "./modules/api/http";
+import { setAuthToken } from "./libs/http";
 import { SplashScreen } from "./components/Loading";
 
 import Pages from "./pages";
