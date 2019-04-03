@@ -13,8 +13,9 @@ export const REGISTER_PREFERENSI = `${REGISTER}${PREFERENCE}`;
 
 export const DONASI = "/donasi";
 export const DONATION_FORM = `${DONASI}/:idProgram`;
-export const DONATION_REQUEST = `${DONASI}/ajukan-program`;
-export const CRM = "/CRM";
+export const DONATION_REQUEST= `${DONASI}/ajukan-program`;
+export const DONATION_PAYMENT_DETAIL = `${DONASI}/payment/:idPayment`;
+export const CRM = '/CRM';
 export const CRM_CONTACT = `${CRM}/contact`;
 export const CHANNEL = "/channels";
 export const CHANNEL_REQUEST = `${CHANNEL}/request`;
@@ -24,6 +25,7 @@ export const CHANNEL_REQUEST_UPDATE = `${CHANNEL}/request/:channelId/update`;
 export const CHANNEL_CHANT_CREATE = `${CHANNEL}/chant/create`;
 export const CHANNEL_CHANT_UPDATE = `${CHANNEL}/chant/update`;
 export const CHANNEL_CHANT = `${CHANNEL}/:channelId`;
+export const USER_DONATION_LIST = `${DONASI}/transaksi/:idUser`;
 
 export default {
   HOME,
@@ -41,6 +43,7 @@ export default {
   DONASI,
   DONATION_FORM,
   DONATION_REQUEST,
+  DONATION_PAYMENT_DETAIL,
   CRM_CONTACT,
   CHANNEL,
   CHANNEL_REQUEST,
@@ -50,4 +53,5 @@ export default {
   CHANNEL_CHANT_CREATE,
   CHANNEL_CHANT,
   CHANNEL_CHANT_UPDATE,
+  USER_DONATION_LIST,
 };
