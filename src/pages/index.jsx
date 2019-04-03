@@ -19,7 +19,8 @@ import ChannelRequestListPage from "./ChannelRequestListPage";
 import ChannelRequestDetailPage from "./ChannelRequestDetailPage";
 import ChannelRequestUpdatePage from "./ChannelRequestUpdatePage";
 import ChannelChantPage from "./ChannelChantPage";
-import UpdateChantPage from "./UpdateChantPage";
+import UpdateChantPage from './UpdateChantPage';
+import ChannelRouter from './ChannelRouter';
 
 import paths from "./paths";
 
@@ -152,8 +153,17 @@ const ROUTES = [
     }
   },
   {
+    title: "Daftar Channel",
+    route: {
+      exact: true,
+      path: paths.CHANNEL,
+      component: ChannelRouter
+    }
+  },
+  {
     title: "Channel Chant",
     route: {
+      exact: true,
       path: paths.CHANNEL_CHANT,
       component: ChannelChantPage
     }

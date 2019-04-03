@@ -24,10 +24,11 @@ const styles = theme => ({
 });
 
 export default withRouter(
-  withStyles(styles)(function RouterWithMenu({ paths, classes }) {
+  withStyles(styles)(function RouterWithMenu({ paths, classes, MenuHeaderComponent }) {
     return (
       <div className={classes.container}>
         <div className={classes.menuContainer}>
+          {MenuHeaderComponent && <MenuHeaderComponent />}
           <MenuList paths={paths} />
         </div>
         <div className={classes.routerContainer}>
