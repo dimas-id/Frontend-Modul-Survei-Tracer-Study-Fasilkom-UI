@@ -5,18 +5,21 @@ import LandingPage from "./LandingPage";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
-import ErrorPage from './ErrorPage';
-import CreateChantPage from './CreateChantPage';
+import ErrorPage from "./ErrorPage";
+import CreateChantPage from "./CreateChantPage";
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
 import DonationFormPage from "./DonationFormPage";
 import DonationPage from "./DonationPage";
+import DonationRequestPage from "./DonationRequestPage";
+import PaymentPage from "./PaymentPage";
+import UserDonationListPage from "./UserDonationListPage";
 import ChannelRequestPage from "./ChannelRequestPage";
 import ChannelRequestListPage from "./ChannelRequestListPage";
 import ChannelRequestDetailPage from "./ChannelRequestDetailPage";
 import ChannelRequestUpdatePage from "./ChannelRequestUpdatePage";
 import ChannelChantPage from "./ChannelChantPage";
-import UpdateChantPage from './UpdateChantPage';
+import UpdateChantPage from "./UpdateChantPage";
 
 import paths from "./paths";
 
@@ -53,6 +56,27 @@ const ROUTES = [
     route: {
       path: paths.LOGIN,
       component: LoginPage
+    }
+  },
+  {
+    title: "Donation Request List",
+    route: {
+      path: paths.DONATION_REQUEST,
+      component: DonationRequestPage
+    }
+  },
+  {
+    title: "Riwayat Donasi",
+    route: {
+      path: paths.USER_DONATION_LIST,
+      component: UserDonationListPage
+    }
+  },
+  {
+    title: "Detail Pembayaran",
+    route: {
+      path: paths.DONATION_PAYMENT_DETAIL,
+      component: PaymentPage
     }
   },
   {
