@@ -12,6 +12,9 @@ import DonationFormPage from './DonationFormPage';
 import DonationPage from './DonationPage'
 import ChannelRequestPage from './ChannelRequestPage';
 import ChannelRequestListPage from './ChannelRequestListPage';
+import PaymentPage from './PaymentPage';
+import UserDonationListPage from './UserDonationListPage';
+import DonationRequestPage from './DonationRequestPage';
 
 
 import paths from "./paths";
@@ -50,6 +53,27 @@ const ROUTES = [
     route: {
       path: paths.LOGIN,
       component: LoginPage
+    }
+  },
+  {
+    title: "Donation Request List",
+    route: {
+      path: paths.DONATION_REQUEST,
+      component: DonationRequestPage
+    }
+  },
+  {
+    title: "Riwayat Donasi",
+    route: {
+      path: paths.USER_DONATION_LIST,
+      component: UserDonationListPage
+    }
+  },
+  {
+    title: "Detail Pembayaran",
+    route: {
+      path: paths.DONATION_PAYMENT_DETAIL,
+      component: PaymentPage
     }
   },
   {

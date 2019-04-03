@@ -22,10 +22,11 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import MomentUtils from "@date-io/moment";
+import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 
 const styles = theme => ({
   container: {
@@ -54,16 +55,20 @@ const styles = theme => ({
 });
 const banks = [
   {
-    value: "",
-    label: "Transfer BCA"
+    value: "0",
+    label: "Pilih Metode Pembayaran"
   },
   {
-    value: "BNI",
+    value: "1",
     label: "Transfer BNI"
   },
   {
-    value: "MDR",
+    value: "2",
     label: "Transfer Mandiri"
+  },
+  {
+    value: "3",
+    label: "Transfer BCA"
   }
 ];
 class Screen extends React.PureComponent {
@@ -71,7 +76,7 @@ class Screen extends React.PureComponent {
     classes: PropTypes.shape().isRequired
   };
   state = {
-    bank: "BCA"
+    bank: "0"
   };
   handleChange = name => event => {
     this.setState({
@@ -170,6 +175,18 @@ class Screen extends React.PureComponent {
                       </MenuItem>
                     ))}
                   </TextField>
+
+                  <MuiPickersUtilsProvider utils={MomentUtils}>
+                    <InlineDatePicker
+                      className={classes.field}
+                      clearable
+                      variant="outlined"
+                      margin="normal"
+                      label="Estimasi Tanggal Pembayaran"
+                      format="YYYY-MM-DD"
+                      onChange={() => null}
+                    />
+                  </MuiPickersUtilsProvider>
                   <Button
                     className={classes.btn}
                     variant="contained"
