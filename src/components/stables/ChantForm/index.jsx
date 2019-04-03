@@ -1,10 +1,12 @@
 import React from "react";
+
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
-import { layouts, fonts } from "../../../styles/guidelines";
 import AttachmentIcon from "@material-ui/icons/Attachment";
+
+import { layouts, fonts } from "../../../styles/guidelines";
 
 const styles = theme => ({
   form: {
