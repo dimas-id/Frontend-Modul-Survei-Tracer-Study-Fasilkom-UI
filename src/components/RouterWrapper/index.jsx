@@ -8,9 +8,9 @@ function Router({ paths, titleSuffix, match, children }) {
   return (
     <Switch>
       {paths &&
-        paths.map(({ title, id, route }) => (
+        paths.map(({ title, route }, index) => (
           <Route
-            key={id}
+            key={`${title}-${index}`}
             path={`${match.path === "/" ? "" : match.url}${route.path}`}
             exact={!!route.exact}
             render={props => (
