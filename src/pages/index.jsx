@@ -126,7 +126,6 @@ const ROUTES = [
   {
     title: "Channel Request",
     route: {
-      exact: true,
       path: paths.CHANNEL_REQUEST,
       component: ChannelRequestPage
     }
@@ -153,19 +152,17 @@ const ROUTES = [
     }
   },
   {
-    title: "Daftar Channel",
+    title: "Channel Chant",
     route: {
-      exact: true,
-      path: paths.CHANNEL,
-      component: ChannelRouter
+      path: paths.CHANNEL_CHANT,
+      component: ChannelChantPage
     }
   },
   {
-    title: "Channel Chant",
+    title: "Daftar Channel",
     route: {
-      exact: true,
-      path: paths.CHANNEL_CHANT,
-      component: ChannelChantPage
+      path: paths.CHANNEL,
+      component: ChannelRouter
     }
   },
   {
