@@ -8,6 +8,7 @@ import Error404Page from "./Error404Page";
 import ErrorPage from "./ErrorPage";
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
+import EmailTemplateCreatePage from "./EmailTemplateCreatePage";
 import DonationFormPage from "./DonationFormPage";
 import DonationPage from "./DonationPage";
 import ChannelRequestPage from "./ChannelRequestPage";
@@ -79,6 +80,13 @@ const ROUTES = [
     route: {
       path: paths.CRM_CONTACT,
       component: ContactPage
+    }
+  },
+  {
+    title: "Email Template Create",
+    route: {
+      path: paths.CRM_EMAIL_TEMPLATE_CREATE,
+      component: EmailTemplateCreatePage
     }
   },
   {
