@@ -157,21 +157,33 @@ class NavbarAuth extends React.Component {
         >
           <Grid container spacing={24}>
             <Grid item xs={4}>
-              <MenuItem className={classes.appMenuItem}>
+              <MenuItem
+                className={classes.appMenuItem}
+                component={Link}
+                to={paths.HOME}
+              >
+                <AccountCircleIcon fontSize="large" />
+                <Typography>Akun</Typography>
+              </MenuItem>
+            </Grid>
+            <Grid item xs={4}>
+              <MenuItem
+                className={classes.appMenuItem}
+                component={Link}
+                to={paths.CHANNEL}
+              >
                 <AccountCircleIcon fontSize="large" />
                 <Typography>Channel</Typography>
               </MenuItem>
             </Grid>
             <Grid item xs={4}>
-              <MenuItem className={classes.appMenuItem}>
+              <MenuItem
+                className={classes.appMenuItem}
+                component={Link}
+                to={paths.DONASI}
+              >
                 <AccountCircleIcon fontSize="large" />
                 <Typography>Donasi</Typography>
-              </MenuItem>
-            </Grid>
-            <Grid item xs={4}>
-              <MenuItem className={classes.appMenuItem}>
-                <AccountCircleIcon fontSize="large" />
-                <Typography>Akun</Typography>
               </MenuItem>
             </Grid>
           </Grid>

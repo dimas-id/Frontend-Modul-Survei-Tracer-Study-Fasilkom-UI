@@ -21,10 +21,21 @@ import HeaderComponent from "./HeaderComponent";
 import ProfileComponent from "./ProfilePage";
 import ChannelComponent from "./ListChannelPage";
 
-
 const styles = theme => ({});
 
 const ROUTES = [
+  {
+    title: "Daftar Channel",
+    menu: {
+      Icon: GroupWorkIcon,
+      path: "/channels"
+    },
+    route: {
+      exact: true,
+      path: "/",
+      component: ChannelComponent
+    }
+  },
   {
     title: "Timeline",
     menu: {
@@ -32,7 +43,6 @@ const ROUTES = [
       path: "/channels/timeline"
     },
     route: {
-      exact: true,
       path: "/timeline",
       component: () => <div>timeline</div>
     }
@@ -44,21 +54,8 @@ const ROUTES = [
       path: "/channels/users/:username"
     },
     route: {
-      exact: true,
       path: "/users/:username",
       component: () => <ProfileComponent />
-    }
-  },
-  {
-    title: "Daftar Channel",
-    menu: {
-      Icon: GroupWorkIcon,
-      path: "/channels"
-    },
-    route: {
-      exact: true,
-      path: "/",
-      component: ChannelComponent
     }
   }
 ];

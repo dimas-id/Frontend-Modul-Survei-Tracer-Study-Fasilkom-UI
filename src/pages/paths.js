@@ -17,8 +17,8 @@ export const USER_DONATION_LIST = `${DONASI}/transaksi/:idUser`;
 export const CHANNEL_REQUEST_DETAIL = `${CHANNEL}/request/:channelId`;
 export const CHANNEL_REQUEST_UPDATE = `${CHANNEL}/request/:channelId/update`;
 export const CHANNEL_CHANT_CREATE = `${CHANNEL}/chant/create`;
-export const CHANNEL_CHANT_UPDATE = `${CHANNEL}/chant/update`; 
-export const CHANNEL_CHANT = `${CHANNEL}/:channelId`;
+export const CHANNEL_CHANT_UPDATE = `${CHANNEL}/chant/update`;
+export const CHANNEL_CHANT = `${CHANNEL}/c/:channelId`;
 export const USER_CHANT = `${CHANNEL}/users/:username`;
 export const TIMELINE_CHANT = `${CHANNEL}/timeline`;
 
