@@ -62,11 +62,12 @@ const styles = theme => {
 class NavbarAuth extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     position: PropTypes.string
   };
 
   static defaultProps = {
+    title: "",
     position: "sticky"
   };
 
@@ -156,21 +157,33 @@ class NavbarAuth extends React.Component {
         >
           <Grid container spacing={24}>
             <Grid item xs={4}>
-              <MenuItem className={classes.appMenuItem}>
+              <MenuItem
+                className={classes.appMenuItem}
+                component={Link}
+                to={paths.HOME}
+              >
+                <AccountCircleIcon fontSize="large" />
+                <Typography>Akun</Typography>
+              </MenuItem>
+            </Grid>
+            <Grid item xs={4}>
+              <MenuItem
+                className={classes.appMenuItem}
+                component={Link}
+                to={paths.CHANNEL}
+              >
                 <AccountCircleIcon fontSize="large" />
                 <Typography>Channel</Typography>
               </MenuItem>
             </Grid>
             <Grid item xs={4}>
-              <MenuItem className={classes.appMenuItem}>
+              <MenuItem
+                className={classes.appMenuItem}
+                component={Link}
+                to={paths.DONASI}
+              >
                 <AccountCircleIcon fontSize="large" />
                 <Typography>Donasi</Typography>
-              </MenuItem>
-            </Grid>
-            <Grid item xs={4}>
-              <MenuItem className={classes.appMenuItem}>
-                <AccountCircleIcon fontSize="large" />
-                <Typography>Akun</Typography>
               </MenuItem>
             </Grid>
           </Grid>

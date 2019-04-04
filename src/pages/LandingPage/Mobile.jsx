@@ -70,7 +70,7 @@ function LandingMobile({ classes }) {
               Bergabung dengan layanan ILUNI12 Channel
             </Typography>
             <Typography
-              component="subtitle1"
+              component="p"
               paragraph
               className={classes.subtitle}
             >
@@ -109,7 +109,7 @@ function LandingMobile({ classes }) {
             Channel
           </Typography>
           <Typography
-            component="subtitle1"
+            component="p"
             paragraph
             className={classes.subtitle}
           >
