@@ -41,7 +41,7 @@ function WorkPosition({ onAdd, onEdit, load, positions, userId }) {
       )}
       {isLoading && (
         <Grid className={classes.gridContainer} container spacing={24}>
-          {Array.apply(null, Array(3)).map(item => (
+          {Array.apply(null, Array(4)).map(item => (
             <Grid item xs={12}>
               <ExperienceItem key={item} loading />
             </Grid>

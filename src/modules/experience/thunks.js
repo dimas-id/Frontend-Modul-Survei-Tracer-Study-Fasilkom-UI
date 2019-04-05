@@ -46,3 +46,16 @@ export const updateWorkPositionById = (positionId, positionData) => {
     }
   };
 };
+
+export const loadEducations = userId => {
+  return async (dispatch, _, { atlasAPIv1 }) => {
+    try {
+      // assuming that user wont have > 100 work position in their lifetime
+      const resp = await atlasAPIv1.experience.getEducations(userId, 0, 100);
+      await dispatch(experienceActions.setEducations(resp.data));
+      return resp;
+    } catch (error) {
+      throw error;
+    }
+  };
+};

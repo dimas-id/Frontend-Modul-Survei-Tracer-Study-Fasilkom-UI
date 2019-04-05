@@ -15,7 +15,7 @@ const styles = theme => ({
   },
   desc: {
     fontSize: 20,
-    maxWidth: 500,
+    maxWidth: 500
   },
   btn: {
     ...Guidelines.layouts.mt36
@@ -28,6 +28,7 @@ export default withStyles(styles)(function EmptyState({
   ButtonProps,
   classes
 }) {
+  const { hidden } = ButtonProps || {};
   return (
     <div className={classes.emptyStateContainer}>
       <img src={imgSrc} alt="Empty" />
@@ -37,14 +38,16 @@ export default withStyles(styles)(function EmptyState({
         className={classes.desc}
         dangerouslySetInnerHTML={{ __html: description }}
       />
-      <Button
-        variant="outlined"
-        color="primary"
-        className={classes.btn}
-        {...ButtonProps}
-      >
-        Tambah
-      </Button>
+      {!hidden && (
+        <Button
+          variant="outlined"
+          color="primary"
+          className={classes.btn}
+          {...ButtonProps}
+        >
+          Tambah
+        </Button>
+      )}
     </div>
   );
 });
