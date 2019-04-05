@@ -11,6 +11,7 @@ import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import ChantCard from "../../components/stables/Chant";
 import ChannelCard from "../../components/stables/ChannelCard";
+import EndCard from "../../components/stables/EndCard";
 
 import fixture from "./fixture.json";
 import channelDetail from "./channel-detail.json";
@@ -29,6 +30,10 @@ const styles = theme => ({
   },
   grid: {
     ...layouts.borderBox
+  },
+  card : {
+    ...layouts.ml64,
+    ...layouts.mb8,
   }
 });
 
@@ -50,8 +55,13 @@ class Screen extends React.PureComponent {
             </Grid>
             <Grid item xs={9}>
               {fixture.map(chant => (
-                <ChantCard key={chant.id} dateCreated={chant.dateCreated} numberLikes={chant.numberLikes} title={chant.title} body={chant.body}/>
+                <div className = {classes.card}>
+                  <ChantCard key={chant.id} dateCreated={chant.dateCreated} 
+                  numberLikes={chant.numberLikes} title={chant.title} body={chant.body}
+                  channel={chant.channel} id={chant.id}/>
+                </div>  
               ))}
+              <EndCard marginLeft="64"/>
             </Grid>
           </Grid>
         </Container>
