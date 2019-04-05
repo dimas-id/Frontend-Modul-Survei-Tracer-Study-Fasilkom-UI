@@ -112,6 +112,7 @@ export default function(props) {
           <Field label="Lokasi" value="Depok, Indonesia" />
           <Field label="Website" value="www.scele.ui.ac.id" />
         </Paper>
+        
 
         <Paper className={classes.paperChild} elevation={1}>
           <Head onClick={() => null} Icon={EditIcon}>
