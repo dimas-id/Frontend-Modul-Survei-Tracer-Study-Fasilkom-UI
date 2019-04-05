@@ -236,7 +236,9 @@ function PositionForm({
 
 function createContainer() {
   const mapDispatchToProps = dispatch => ({
-    register: () => null
+    createPosition: (payload) => null,
+    createPosition: (positionId, payload) => null,
+    deletePosition: (positionId) => null
   });
 
   return connect(

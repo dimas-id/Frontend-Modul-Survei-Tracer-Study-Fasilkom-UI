@@ -5,6 +5,10 @@ export function getUser(state) {
   return get(state, "session.user", {});
 }
 
+export function getUserId(state) {
+  return getUser().id
+}
+
 export function getUserAccessToken(state) {
   return get(state, "session.token.access", undefined);
 }

@@ -9,6 +9,8 @@ import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/EditOutlined";
 
+import { LinesLoader } from "../../../Loading";
+
 import { Guidelines } from "../../../../styles";
 
 const styles = {
@@ -31,22 +33,31 @@ const styles = {
   }
 };
 
-function ExperienceItem({ classes, title, subtitle, time, onClick }) {
+function ExperienceItem({ classes, title, subtitle, time, onClick, loading }) {
   return (
     <Paper className={classes.experience} elevation={1}>
       <Grid container spacing={24}>
-        <Grid item xs={11}>
-          <Typography className={classNames(classes.text, classes.title)}>
-            {title}
-          </Typography>
-          <Typography className={classes.text}>{subtitle}</Typography>
-          <Typography className={classes.text}>{time}</Typography>
-        </Grid>
-        <Grid item xs={1} className={classes.btnContainer}>
-          <IconButton onClick={onClick}>
-            <EditIcon />
-          </IconButton>
-        </Grid>
+        {loading && (
+          <Grid item xs={12}>
+            <LinesLoader height={24} />
+          </Grid>
+        )}
+        {!loading && (
+          <React.Fragment>
+            <Grid item xs={11}>
+              <Typography className={classNames(classes.text, classes.title)}>
+                {title}
+              </Typography>
+              <Typography className={classes.text}>{subtitle}</Typography>
+              <Typography className={classes.text}>{time}</Typography>
+            </Grid>
+            <Grid item xs={1} className={classes.btnContainer}>
+              <IconButton onClick={onClick}>
+                <EditIcon />
+              </IconButton>
+            </Grid>
+          </React.Fragment>
+        )}
       </Grid>
     </Paper>
   );
