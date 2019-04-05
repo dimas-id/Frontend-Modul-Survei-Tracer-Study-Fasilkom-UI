@@ -41,7 +41,6 @@ class Screen extends React.PureComponent {
   }
 
   handleTitle({ target }) {
-    console.log(target.value);
     this.setState({
       title: target.value
     });
