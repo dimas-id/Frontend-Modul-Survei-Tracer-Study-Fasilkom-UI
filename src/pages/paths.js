@@ -21,6 +21,7 @@ export const CHANNEL_CHANT_UPDATE = `${CHANNEL}/chant/update`;
 export const CHANNEL_CHANT = `${CHANNEL}/c/:channelId`;
 export const USER_CHANT = `${CHANNEL}/users/:username`;
 export const TIMELINE_CHANT = `${CHANNEL}/timeline`;
+export const CHANNEL_CHANT_DETAIL = `${CHANNEL}/c/:channelId/chants/:chantId`;
 
 export default {
   HOME,
@@ -44,5 +45,6 @@ export default {
   CHANNEL_CHANT,
   CHANNEL_CHANT_UPDATE,
   USER_CHANT,
-  TIMELINE_CHANT
+  TIMELINE_CHANT,
+  CHANNEL_CHANT_DETAIL
 };
