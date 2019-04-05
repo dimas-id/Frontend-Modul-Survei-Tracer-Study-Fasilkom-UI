@@ -20,7 +20,11 @@ const containerStyles = theme => ({
     flexGrow: 1,
     maxWidth: 1400,
     margin: "0 auto",
-    position: "relative"
+    position: "relative",
+    padding: "0px 32px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "0px 20px"
+    }
   }
 });
 

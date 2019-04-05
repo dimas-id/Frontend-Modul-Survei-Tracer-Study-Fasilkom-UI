@@ -22,6 +22,7 @@ const useStyles = makeStyles({
 function WorkPosition({ onAdd, onEdit, load, positions, userId }) {
   const classes = useStyles();
   const isPositionsEmpty = isEmpty(positions);
+  // console.log(positions)
 
   const [isLoading, setLoading] = React.useState(true);
   React.useEffect(() => {

@@ -6,7 +6,7 @@ export function getUser(state) {
 }
 
 export function getUserId(state) {
-  return getUser().id
+  return getUser(state).id
 }
 
 export function getUserAccessToken(state) {

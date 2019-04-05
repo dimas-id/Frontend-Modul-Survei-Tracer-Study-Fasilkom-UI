@@ -10,6 +10,7 @@ import { createBrowserHistory } from "history";
 
 // reducer
 import sessionReducer from "./session";
+import experienceReducer from "./experience";
 
 // middleware
 import { loggerMiddleware } from "./logger";
@@ -24,6 +25,7 @@ const composeEnhancers =
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   session: persistReducer({ key: "session", storage }, sessionReducer),
+  experience: persistReducer({ key: "experience", storage }, experienceReducer),
   router: connectRouter(history)
 });
 

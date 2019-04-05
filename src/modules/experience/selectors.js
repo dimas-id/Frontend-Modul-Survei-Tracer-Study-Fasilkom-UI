@@ -5,9 +5,9 @@ export function getExperience(state) {
 }
 
 export function getWorkPositions(state) {
-  return get(getExperience(state), "workPositions");
+  return get(getExperience(state), "workPositions.results");
 }
 
 export function getEducations(state) {
-  return get(getExperience(state), "educations");
+  return get(getExperience(state), "educations.results");
 }
