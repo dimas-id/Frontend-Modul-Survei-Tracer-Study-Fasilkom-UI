@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import { withStyles } from '@material-ui/core/styles';
-import Card from "@material-ui/core/Card";
-import Typography from '@material-ui/core/Typography';
 
 import { withAuth } from '../../components/hocs/auth';
 import { NavbarBack, NavbarAuth } from '../../components/stables/Navbar';
