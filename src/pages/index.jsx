@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import LandingPage from "./LandingPage";
-import HomePage from "./HomePage";
+import HomeRouter from "./HomeRouter";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
 import ErrorPage from "./ErrorPage";
@@ -53,7 +53,7 @@ const ROUTES = [
     title: "Home",
     route: {
       path: paths.HOME,
-      component: HomePage
+      component: HomeRouter
     }
   },
   {
