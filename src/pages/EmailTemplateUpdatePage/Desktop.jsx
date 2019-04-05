@@ -41,7 +41,6 @@ class Screen extends React.PureComponent {
   }
 
   handleTitle({ target }) {
-    console.log(target.value);
     this.setState({
       title: target.value
     });
@@ -59,7 +58,7 @@ class Screen extends React.PureComponent {
 
     return (
       <React.Fragment>
-        <NavbarAuth title="Buat Templat Email" />
+        <NavbarAuth title="Ubah Templat Email" />
         <NavbarBack />
         <Container className={classes.container}>
           <Grid container spacing={24}>

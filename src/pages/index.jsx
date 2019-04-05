@@ -10,6 +10,7 @@ import CreateChantPage from "./CreateChantPage";
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
 import EmailTemplateCreatePage from "./EmailTemplateCreatePage";
+import EmailTemplateUpdatePage from "./EmailTemplateUpdatePage";
 import DonationFormPage from "./DonationFormPage";
 import DonationPage from "./DonationPage";
 import DonationRequestPage from "./DonationRequestPage";
@@ -127,8 +128,17 @@ const ROUTES = [
   {
     title: "Email Template Create",
     route: {
+      exact: true,
       path: paths.CRM_EMAIL_TEMPLATE_CREATE,
       component: EmailTemplateCreatePage
+    }
+  },
+  {
+    title: "Email Template Update",
+    route: {
+      exact: true,
+      path: paths.CRM_EMAIL_TEMPLATE_UPDATE,
+      component: EmailTemplateUpdatePage
     }
   },
   {
