@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
@@ -16,21 +17,19 @@ import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 
 import { Guidelines } from "../../../styles";
+import { makePathVariableUri } from "../../../libs/navigation";
+import paths from "../../../pages/paths";
 
 
 const styles = theme => ({
   card: {
-    ...Guidelines.layouts.mb8,
     ...Guidelines.layouts.pr24,
     ...Guidelines.layouts.pl24,
     ...Guidelines.layouts.pt24,
     ...Guidelines.layouts.pb24,
-    ...Guidelines.layouts.borderBox
+    width : "48vw"
   },
   chantWrapper: {
-    maxHeight: 64,
-    lineHeight: 64,
-    overflow: "hidden",
     textOverflow: "ellipsis"
   },
   actions: {
@@ -42,8 +41,16 @@ const styles = theme => ({
 
 export default withStyles(styles)(function(props) {
   const { classes } = props;
+  const  margin = props.margin;
+  const overflow = props.overflow;
+  const max = props.max;
+
+  console.log("id" + props.id);
+
+  console.log(overflow)
+  console.log(margin)
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} style={{ marginLeft: props.margin + 'px' }} >
       <CardHeader
         avatar={
           <Avatar aria-label="Recipe" className={classes.avatar}>
@@ -62,16 +69,16 @@ export default withStyles(styles)(function(props) {
         <Typography variant="title" gutterBottom>
           {props.title}
         </Typography>
-        <div className={classes.chantWrapper}>
+        <div className={classes.chantWrapper} style={{overflow: overflow, maxHeight: max, maxLine: max}}>
           <Typography variant="body2" gutterBottom>
             {props.body}
           </Typography>
         </div>
       </CardContent>
       <CardActions className={classes.actions} disableActionSpacing>
-      <Typography variant="body2" gutterBottom>
-        <a href="google.com">Lihat Detail... </a>
-          </Typography>
+        <Link to={makePathVariableUri(paths.CHANNEL_CHANT_DETAIL, {
+                      channelId: props.channel, chantId: props.id
+                    })}>Lihat Detail... </Link>
         <div>
         <FormControlLabel
           control={

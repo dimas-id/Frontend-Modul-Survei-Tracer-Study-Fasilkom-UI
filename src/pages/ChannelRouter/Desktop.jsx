@@ -14,14 +14,20 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import GroupWorkIcon from "@material-ui/icons/GroupWorkOutlined";
 
 import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth } from "../../components/stables/Navbar";
+import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import RouterWithMenu from "../../components/RouterWithMenu";
 
 import HeaderComponent from "./HeaderComponent";
 import ProfileComponent from "./ProfilePage";
 import ChannelComponent from "./ListChannelPage";
 
-const styles = theme => ({});
+import { layouts } from "../../styles/guidelines";
+
+const styles = theme => ({
+  container: {
+    ...layouts.mt32
+  }
+});
 
 const ROUTES = [
   {
@@ -76,6 +82,7 @@ class Screen extends React.PureComponent {
     return (
       <React.Fragment>
         <NavbarAuth />
+        <NavbarBack />
         <div className={classes.container}>
           <RouterWithMenu
             paths={ROUTES}

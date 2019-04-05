@@ -23,6 +23,7 @@ import ChannelRequestUpdatePage from "./ChannelRequestUpdatePage";
 import ChannelChantPage from "./ChannelChantPage";
 import UpdateChantPage from './UpdateChantPage';
 import ChannelRouter from './ChannelRouter';
+import ChannelChantDetailPage from './ChannelChantDetailPage';
 
 import paths from "./paths";
 
@@ -170,10 +171,26 @@ const ROUTES = [
     }
   },
   {
+    title: "Daftar Channel",
+    route: {
+      exact: true,
+      path: paths.CHANNEL,
+      component: ChannelRouter
+    }
+  },
+  {
     title: "Channel Chant",
     route: {
+      exact: true,
       path: paths.CHANNEL_CHANT,
       component: ChannelChantPage
+    }
+  },
+  {
+    title: "Detail Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_DETAIL,
+      component: ChannelChantDetailPage
     }
   },
   {
