@@ -5,6 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { Guidelines } from "../../../styles";
 
+
 const styles = theme => ({
   paper: {
     ...Guidelines.layouts.pt32,
@@ -19,7 +20,7 @@ const styles = theme => ({
   },
   subtitle: {
     ...Guidelines.layouts.flexMiddle,
-    fontSize: 16
+    fontSize: 20
   },
   paperChild: {
     ...Guidelines.layouts.mt24,
