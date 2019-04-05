@@ -11,16 +11,11 @@ import { Container, ContainerFluid } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import CardContent from "@material-ui/core/CardContent";
 import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
-  container: {
-    ...Guidelines.layouts.pr64,
-    ...Guidelines.layouts.flexMiddle,
-    ...Guidelines.layouts.pl64
-  },
+
   paper: {
     ...Guidelines.layouts.mt32,
     ...Guidelines.layouts.pt32,
@@ -29,8 +24,9 @@ const styles = theme => ({
     ...Guidelines.layouts.pb32,
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.flexMiddle,
-
-    ...Guidelines.layouts.w100
+  },
+  gridPaper: {
+    ...Guidelines.layouts.flexMiddle
   }
 });
 
@@ -45,17 +41,22 @@ class Screen extends React.PureComponent {
       <ContainerFluid>
         <NavbarAuth title="Screen" />
         <Container className={classes.container}>
-          <Grid container spacing={24}>
-            <Grid item xs={6} sm={6}>
+          <Grid container spacing={24} className={classes.gridPaper}>
+            <Grid item xs={6} sm={6} >
               <Paper className={classes.paper}>
-                <CardContent>
-                  <Typography gutterBottom variant="h2" component="h2">
-                    Donasi A
+                  <Paper >
+                  <Typography gutterBottom variant="h5" component="h2">
+                    dalem
+                  </Typography>
+
+
+                  </Paper>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    Donasi [belum dikonekin]
                   </Typography>
                   <Typography component="p">
-                    ini adalah donasi untuk A
+                    ini adalah donasi untuk [belum diisi]
                   </Typography>
-                </CardContent>
                 <Button
                   className={classes.btn}
                   variant="contained"

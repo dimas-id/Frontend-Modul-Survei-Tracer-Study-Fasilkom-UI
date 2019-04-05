@@ -27,26 +27,46 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
+import { getUser } from "../../modules/session/selectors";
+import bundar from "../../assets/bundar.png"
+
 
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.pr64,
     ...Guidelines.layouts.pl64
   },
+  media: {
+    height: 300
+  },
   paper: {
+    ...Guidelines.layouts.mt16,
+  },
+  paperForm: {
     ...Guidelines.layouts.mt16,
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
     ...Guidelines.layouts.pb32
   },
+  cardContent: {
+    ...Guidelines.layouts.pt32,
+    ...Guidelines.layouts.pr32,
+    ...Guidelines.layouts.pl32,
+    ...Guidelines.layouts.pb32
+
+  },
+
   form: {
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.w100
   },
   btnProposal: {
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    ...Guidelines.layouts.pr32,
+    ...Guidelines.layouts.pl32,
+    ...Guidelines.layouts.pb32
   },
   btn: {
     ...Guidelines.layouts.mt32,
@@ -76,7 +96,9 @@ class Screen extends React.PureComponent {
     classes: PropTypes.shape().isRequired
   };
   state = {
-    bank: "0"
+    bank: "0",
+    estPaymentDate: null
+
   };
   handleChange = name => event => {
     this.setState({
@@ -85,7 +107,8 @@ class Screen extends React.PureComponent {
   };
 
   render() {
-    const { classes } = this.props;
+    const { user, classes } = this.props;
+    const { estPaymentDate } = this.state;
 
     return (
       <React.Fragment>
@@ -99,10 +122,9 @@ class Screen extends React.PureComponent {
                 <CardActionArea>
                   <CardMedia
                     className={classes.media}
-                    image="/static/images/cards/contemplative-reptile.jpg"
-                    title="Contemplative Reptile"
+                    image={bundar}
                   />
-                  <CardContent>
+                  <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
                       Donasi A
                     </Typography>
@@ -119,13 +141,13 @@ class Screen extends React.PureComponent {
               </Paper>
             </Grid>
             <Grid item xs={6} sm={6}>
-              <Paper className={classes.paper}>
+              <Paper className={classes.paperForm}>
                 <form className={classes.form}>
                   <TextField
                     disabled
                     id="oulined-dissabled"
                     label="Nama"
-                    defaultValue="Nama Orang"
+                    defaultValue={user.name}
                     className={classes.textField}
                     variant="outlined"
                   />
@@ -175,16 +197,32 @@ class Screen extends React.PureComponent {
                       </MenuItem>
                     ))}
                   </TextField>
+                  <TextField
+                    required
+                    id="outlined-required"
+                    label="Nomor Rekening Pengirim"
+                    className={classes.textField}
+                    margin="normal"
+                    variant="outlined"
+                    helperText="Rekening untuk validasi"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start"></InputAdornment>
+                      )
+                    }}
+                  />
 
                   <MuiPickersUtilsProvider utils={MomentUtils}>
                     <InlineDatePicker
                       className={classes.field}
                       clearable
+                      name="estPaymentDate"
+                      value={estPaymentDate}
                       variant="outlined"
                       margin="normal"
                       label="Estimasi Tanggal Pembayaran"
                       format="YYYY-MM-DD"
-                      onChange={() => null}
+                      onChange={(date)=> this.setState({estPaymentDate : date})}
                     />
                   </MuiPickersUtilsProvider>
                   <Button
@@ -206,7 +244,9 @@ class Screen extends React.PureComponent {
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
+  const mapStateToProps = state => ({
+    user: getUser(state)
+  });
 
   const mapDispatchToProps = dispatch => ({});
 

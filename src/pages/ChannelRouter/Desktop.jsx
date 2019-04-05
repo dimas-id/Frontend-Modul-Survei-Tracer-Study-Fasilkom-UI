@@ -14,17 +14,34 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import GroupWorkIcon from "@material-ui/icons/GroupWorkOutlined";
 
 import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth } from "../../components/stables/Navbar";
+import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import RouterWithMenu from "../../components/RouterWithMenu";
 
 import HeaderComponent from "./HeaderComponent";
 import ProfileComponent from "./ProfilePage";
 import ChannelComponent from "./ListChannelPage";
 
+import { layouts } from "../../styles/guidelines";
 
-const styles = theme => ({});
+const styles = theme => ({
+  container: {
+    ...layouts.mt32
+  }
+});
 
 const ROUTES = [
+  {
+    title: "Daftar Channel",
+    menu: {
+      Icon: GroupWorkIcon,
+      path: "/channels"
+    },
+    route: {
+      exact: true,
+      path: "/",
+      component: ChannelComponent
+    }
+  },
   {
     title: "Timeline",
     menu: {
@@ -32,7 +49,6 @@ const ROUTES = [
       path: "/channels/timeline"
     },
     route: {
-      exact: true,
       path: "/timeline",
       component: () => <div>timeline</div>
     }
@@ -44,21 +60,8 @@ const ROUTES = [
       path: "/channels/users/:username"
     },
     route: {
-      exact: true,
       path: "/users/:username",
       component: () => <ProfileComponent />
-    }
-  },
-  {
-    title: "Daftar Channel",
-    menu: {
-      Icon: GroupWorkIcon,
-      path: "/channels"
-    },
-    route: {
-      exact: true,
-      path: "/",
-      component: ChannelComponent
     }
   }
 ];
@@ -75,10 +78,10 @@ class Screen extends React.PureComponent {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props);
     return (
       <React.Fragment>
         <NavbarAuth />
+        <NavbarBack />
         <div className={classes.container}>
           <RouterWithMenu
             paths={ROUTES}

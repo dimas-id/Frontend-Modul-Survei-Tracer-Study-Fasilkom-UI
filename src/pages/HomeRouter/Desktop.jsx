@@ -10,6 +10,9 @@ import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
 import RouterWithMenu from "../../components/RouterWithMenu";
 import { Guidelines } from "../../styles";
+import Particle from "../../components/Particle";
+import HomePage from "./HomePage";
+import ProfilePage from "./ProfilePage";
 
 const styles = theme => ({
   container: {
@@ -29,7 +32,7 @@ const ROUTES = [
     route: {
       exact: true,
       path: "/",
-      component: () => <div>beranda</div>
+      component: HomePage
     }
   },
   {
@@ -41,7 +44,7 @@ const ROUTES = [
     route: {
       exact: true,
       path: "/profile",
-      component: () => <div>profile</div>
+      component: ProfilePage
     }
   },
   {
@@ -62,6 +65,7 @@ function HomeMobile({ classes }) {
   return (
     <React.Fragment>
       <NavbarAuth />
+      <Particle name="cloud2" left={0} top={160} />
       <div className={classes.container}>
         <RouterWithMenu paths={ROUTES} />
       </div>
