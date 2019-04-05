@@ -10,6 +10,8 @@ import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
 import RouterWithMenu from "../../components/RouterWithMenu";
 import { Guidelines } from "../../styles";
+import HomePage from "./HomePage";
+import ProfilePage from "./ProfilePage";
 
 const styles = theme => ({
   container: {
@@ -29,7 +31,7 @@ const ROUTES = [
     route: {
       exact: true,
       path: "/",
-      component: () => <div>beranda</div>
+      component: () => HomePage
     }
   },
   {
@@ -41,7 +43,7 @@ const ROUTES = [
     route: {
       exact: true,
       path: "/profile",
-      component: () => <div>profile</div>
+      component: ProfilePage
     }
   },
   {

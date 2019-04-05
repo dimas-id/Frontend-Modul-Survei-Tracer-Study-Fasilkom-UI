@@ -22,7 +22,7 @@ const styles = theme => ({
     }
   },
   primary: {
-    fontSize: 24
+    fontSize: 20
   },
   icon: {}
 });
