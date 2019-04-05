@@ -25,12 +25,13 @@ const styles = {
     fontSize: 20
   },
   btnContainer: {
-    ...Guidelines.layouts.flexMiddle,
-    alignItems: "flex-start"
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "flex-end"
   }
 };
 
-function ExperienceItem({ classes, title, subtitle, time }) {
+function ExperienceItem({ classes, title, subtitle, time, onClick }) {
   return (
     <Paper className={classes.experience} elevation={1}>
       <Grid container spacing={24}>
@@ -42,7 +43,7 @@ function ExperienceItem({ classes, title, subtitle, time }) {
           <Typography className={classes.text}>{time}</Typography>
         </Grid>
         <Grid item xs={1} className={classes.btnContainer}>
-          <IconButton>
+          <IconButton onClick={onClick}>
             <EditIcon />
           </IconButton>
         </Grid>
