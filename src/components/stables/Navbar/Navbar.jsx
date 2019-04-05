@@ -26,7 +26,7 @@ function Navbar({ classes, history, title, Content }) {
     <AppBar position="static" className={classes.appbar}>
       <Toolbar>
         {title && (
-          <Typography variant="h6" color="inherit" className={classes.grow}>
+          <Typography variant="h6" className={classes.grow}>
             {title}
           </Typography>
         )}

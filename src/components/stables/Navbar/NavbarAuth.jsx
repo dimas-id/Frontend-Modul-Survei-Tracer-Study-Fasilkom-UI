@@ -104,7 +104,6 @@ class NavbarAuth extends React.Component {
     return isLoggedIn ? null : (
       <div>
         <Button
-          color="inherit"
           className={classes.buttonAsText}
           component={Link}
           to={paths.REGISTER}
@@ -112,7 +111,6 @@ class NavbarAuth extends React.Component {
           Daftar
         </Button>
         <Button
-          color="inherit"
           className={classes.buttonAsText}
           component={Link}
           to={paths.LOGIN}
@@ -133,7 +131,6 @@ class NavbarAuth extends React.Component {
           aria-owns={open ? "menu-appbar" : undefined}
           aria-haspopup="true"
           onClick={this.handleOpenAppMenu}
-          color="inherit"
         >
           <AppsIcon />
         </IconButton>
@@ -202,7 +199,6 @@ class NavbarAuth extends React.Component {
           aria-owns={open ? "menu-userbar" : undefined}
           aria-haspopup="true"
           onClick={this.handleOpenUserMenu}
-          color="inherit"
         >
           <AccountCircleIcon />
         </IconButton>
@@ -247,12 +243,11 @@ class NavbarAuth extends React.Component {
             to="/"
             disableRipple
             className={classes.menuButton}
-            color="inherit"
             aria-label="Menu"
           >
             <img src={Logo} alt="ILUNI12 Logo" />
           </Button>
-          <Typography variant="h6" color="inherit" className={classes.title}>
+          <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>
           {this.renderNotLoggedInMenu()}

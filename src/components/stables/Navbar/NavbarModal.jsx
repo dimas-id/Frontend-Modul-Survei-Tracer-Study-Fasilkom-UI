@@ -31,7 +31,6 @@ function NavbarModal({ classes, history, title, Content, onClick, ...props }) {
       <Toolbar>
         <IconButton
           className={classes.menuButton}
-          color="inherit"
           aria-label="Menu"
           onClick={onClick || history.goBack}
         >
