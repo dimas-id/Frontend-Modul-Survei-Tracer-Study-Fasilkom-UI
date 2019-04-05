@@ -1,6 +1,6 @@
 import React from "react";
 
-import { withStyles, makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/EditOutlined";
@@ -45,7 +45,7 @@ const styles = makeStyles({
   gridField: {
     display: "flex",
     alignItems: "center"
-  }, 
+  },
   label: {
     ...Guidelines.fonts.bold,
     fontSize: 16
@@ -112,7 +112,7 @@ export default function(props) {
           <Field label="Lokasi" value="Depok, Indonesia" />
           <Field label="Website" value="www.scele.ui.ac.id" />
         </Paper>
-        
+
 
         <Paper className={classes.paperChild} elevation={1}>
           <Head onClick={() => null} Icon={EditIcon}>

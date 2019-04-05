@@ -40,7 +40,7 @@ const styles = theme => ({
     height: 300
   },
   paper: {
-    ...Guidelines.layouts.mt16, 
+    ...Guidelines.layouts.mt16,
   },
   paperForm: {
     ...Guidelines.layouts.mt16,
@@ -98,21 +98,18 @@ class Screen extends React.PureComponent {
   state = {
     bank: "0",
     estPaymentDate: null
-    
+
   };
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value
     });
   };
-  // handleChange = event =>{
-  //   this.setState({ [event.target.name] : event.target.value});
-  // }
 
   render() {
     const { user, classes } = this.props;
     const { estPaymentDate } = this.state;
-    
+
     return (
       <React.Fragment>
         <NavbarAuth />

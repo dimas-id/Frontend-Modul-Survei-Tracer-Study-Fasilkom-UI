@@ -78,7 +78,6 @@ class Screen extends React.PureComponent {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props);
     return (
       <React.Fragment>
         <NavbarAuth />

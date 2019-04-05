@@ -17,7 +17,11 @@ const styles = theme => ({
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20
+    marginRight: 20,
+    color: "black"
+  },
+  title: {
+    color: "black"
   }
 });
 
@@ -27,14 +31,13 @@ function NavbarModal({ classes, history, title, Content, onClick, ...props }) {
       <Toolbar>
         <IconButton
           className={classes.menuButton}
-          color="inherit"
           aria-label="Menu"
           onClick={onClick || history.goBack}
         >
           <Close />
         </IconButton>
         {title && (
-          <Typography variant="h6" color="inherit" className={classes.grow}>
+          <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>
         )}

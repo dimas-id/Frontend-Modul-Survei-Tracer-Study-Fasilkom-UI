@@ -15,7 +15,7 @@ import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
-  
+
   paper: {
     ...Guidelines.layouts.mt32,
     ...Guidelines.layouts.pt32,

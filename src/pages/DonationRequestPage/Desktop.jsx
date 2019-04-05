@@ -92,7 +92,7 @@ class Screen extends React.PureComponent {
   state = {
     bank: "0"
   };
-  
+
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value
@@ -238,8 +238,8 @@ class Screen extends React.PureComponent {
                   </Typography>
                 </Grid>
                 <Grid item xs={9} sm={9}>
-                  <FileUploadInput 
-                  onChange={console.log} 
+                  <FileUploadInput
+                  onChange={console.log}
                   accept="application/pdf"/>
                 </Grid>
                 <Grid item xs={12} sm={12} className={classes.gridBtn}>

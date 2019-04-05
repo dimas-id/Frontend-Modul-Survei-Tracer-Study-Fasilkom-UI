@@ -22,7 +22,7 @@ import ChannelRequestListPage from "./ChannelRequestListPage";
 import ChannelRequestDetailPage from "./ChannelRequestDetailPage";
 import ChannelRequestUpdatePage from "./ChannelRequestUpdatePage";
 import ChannelChantPage from "./ChannelChantPage";
-import UpdateChantPage from './UpdateChantPage';
+import UpdateChantPage from "./UpdateChantPage";
 import ChannelRouter from './ChannelRouter';
 import ChannelChantDetailPage from './ChannelChantDetailPage';
 
@@ -96,6 +96,27 @@ const ROUTES = [
     route: {
       path: paths.CHANNEL_CHANT_UPDATE,
       component: UpdateChantPage
+    }
+  },
+  {
+    title: "Donation Request List",
+    route: {
+      path: paths.DONATION_REQUEST,
+      component: DonationRequestPage
+    }
+  },
+  {
+    title: "Riwayat Donasi",
+    route: {
+      path: paths.USER_DONATION_LIST,
+      component: UserDonationListPage
+    }
+  },
+  {
+    title: "Detail Pembayaran",
+    route: {
+      path: paths.DONATION_PAYMENT_DETAIL,
+      component: PaymentPage
     }
   },
   {
