@@ -1,45 +1,34 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 
-import { withAuth } from '../../components/hocs/auth';
-import { NavbarAuth } from '../../components/stables/Navbar';
-import { Container } from '../../components/Container';
+import { withAuth } from "../../../components/hocs/auth";
+import { NavbarAuth } from "../../../components/stables/Navbar";
+import { Container } from "../../../components/Container";
+import WorkPosition from "../../../components/stables/Experience/WorkPosition";
 
 const styles = theme => ({});
 
-class Screen extends React.PureComponent {
+class WorkPositionPage extends React.PureComponent {
   static propTypes = {
-    classes: PropTypes.shape().isRequired,
+    classes: PropTypes.shape().isRequired
   };
 
   render() {
-    // const { classes } = this.props;
     return (
       <React.Fragment>
-        <NavbarAuth title="Screen" />
-        <Container>Screen</Container>
+        <NavbarAuth />
+        <Container>
+          <WorkPosition />
+        </Container>
       </React.Fragment>
     );
   }
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
-
-  const mapDispatchToProps = dispatch => ({});
-
-  return withAuth(
-    withRouter(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(withStyles(styles)(Screen))
-    )
-  );
+  return withAuth(withStyles(styles)(WorkPositionPage));
 }
 
 export default createContainer();

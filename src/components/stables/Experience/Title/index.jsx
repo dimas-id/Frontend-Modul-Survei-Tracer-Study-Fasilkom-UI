@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
@@ -20,7 +19,7 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(function EmptyState({
+export default withStyles(styles)(function title({
   children,
   ButtonProps,
   classes

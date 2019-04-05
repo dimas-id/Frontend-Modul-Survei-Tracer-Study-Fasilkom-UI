@@ -1,19 +1,30 @@
 import React from "react";
+
 import Grid from "@material-ui/core/Grid";
 
 import EmptyState from "../EmptyState";
+import Title from "../Title";
 import ExperienceItem from "../ExperienceItem";
-import EmptyEducationImg from "../../../../assets/states/EmptyEducation.svg";
+import EmptyPositionImg from "../../../../assets/states/EmptyPosition.svg";
 import { getDateFormatted } from "../../../../libs/datetime";
 import fixtures from "./fixtures.json";
 
-export default function Education(props) {
+function WorkPosition({ onAdd }) {
   return (
     <React.Fragment>
-      <EmptyState
-        imgSrc={EmptyEducationImg}
+      <Title
         ButtonProps={{
-          onClick: this.handleOpenNewForm
+          onClick: onAdd,
+          hidden: false
+        }}
+      >
+        Riwayat Pendidikan
+      </Title>
+      <EmptyState
+        imgSrc={EmptyPositionImg}
+        description="Dengan memperbarui data <b>riwayat pendidikan</b>, teman-teman Anda akan lebih mudah menemukan Anda"
+        ButtonProps={{
+          onClick: onAdd
         }}
       />
       <Grid container spacing={24}>
@@ -34,3 +45,5 @@ export default function Education(props) {
     </React.Fragment>
   );
 }
+
+export default WorkPosition;

@@ -7,7 +7,7 @@ import paths from "../paths";
 import RouterWrapper from "../../components/RouterWrapper";
 import StepProgress from "../../components/StepProgress";
 import RegistrationPage from "./RegistrationPage";
-import EducationPage from "./EducationPage";
+import WorkPositionPage from "./WorkPositionPage";
 
 const ROUTES = [
   {
@@ -19,30 +19,22 @@ const ROUTES = [
     }
   },
   {
-    title: "Pendidikan",
-    route: {
-      exact: true,
-      path: paths.EDUCATION,
-      component: EducationPage
-    }
-  },
-  {
     title: "Pekerjaan",
     route: {
-      exact: true,
       path: paths.WORK_POSITION,
-      component: () => "pekerjaan"
+      component: WorkPositionPage
     }
   },
   {
     title: "Preferensi",
     route: {
-      exact: true,
       path: paths.PREFERENCE,
       component: () => "preferensi"
     }
   }
 ];
+
+const MAX_STEP = ROUTES.length - 1;
 
 function getRoutePath(step) {
   return `${paths.REGISTER}${get(ROUTES[step], "route.path")}`;
@@ -56,8 +48,6 @@ function getInitialStep(currentPath) {
     ) - 1
   );
 }
-
-const MAX_STEP = 3;
 
 export default withRouter(function RegistrationRouter({ history, location }) {
   const [currentStep, setCurrentStep] = React.useState(
@@ -75,11 +65,11 @@ export default withRouter(function RegistrationRouter({ history, location }) {
     }
   }, [currentStep]);
 
-  function handleBack(e) {
+  function handleBack() {
     setCurrentStep(prevStep => prevStep - 1);
   }
 
-  function handleNext(e) {
+  function handleNext() {
     setCurrentStep(prevStep => prevStep + 1);
   }
 
