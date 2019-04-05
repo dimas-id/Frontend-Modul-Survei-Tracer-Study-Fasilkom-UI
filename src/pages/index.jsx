@@ -9,6 +9,8 @@ import ErrorPage from "./ErrorPage";
 import CreateChantPage from "./CreateChantPage";
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
+import EmailTemplateCreatePage from "./EmailTemplateCreatePage";
+import EmailTemplateUpdatePage from "./EmailTemplateUpdatePage";
 import DonationFormPage from "./DonationFormPage";
 import DonationPage from "./DonationPage";
 import DonationRequestPage from "./DonationRequestPage";
@@ -21,6 +23,7 @@ import ChannelRequestUpdatePage from "./ChannelRequestUpdatePage";
 import ChannelChantPage from "./ChannelChantPage";
 import UpdateChantPage from './UpdateChantPage';
 import ChannelRouter from './ChannelRouter';
+import ChannelChantDetailPage from './ChannelChantDetailPage';
 
 import paths from "./paths";
 
@@ -124,6 +127,22 @@ const ROUTES = [
     }
   },
   {
+    title: "Email Template Create",
+    route: {
+      exact: true,
+      path: paths.CRM_EMAIL_TEMPLATE_CREATE,
+      component: EmailTemplateCreatePage
+    }
+  },
+  {
+    title: "Email Template Update",
+    route: {
+      exact: true,
+      path: paths.CRM_EMAIL_TEMPLATE_UPDATE,
+      component: EmailTemplateUpdatePage
+    }
+  },
+  {
     title: "Channel Request",
     route: {
       path: paths.CHANNEL_REQUEST,
@@ -152,10 +171,26 @@ const ROUTES = [
     }
   },
   {
+    title: "Daftar Channel",
+    route: {
+      exact: true,
+      path: paths.CHANNEL,
+      component: ChannelRouter
+    }
+  },
+  {
     title: "Channel Chant",
     route: {
+      exact: true,
       path: paths.CHANNEL_CHANT,
       component: ChannelChantPage
+    }
+  },
+  {
+    title: "Detail Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_DETAIL,
+      component: ChannelChantDetailPage
     }
   },
   {

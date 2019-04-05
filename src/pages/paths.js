@@ -10,6 +10,8 @@ export const DONATION_REQUEST= `${DONASI}/ajukan-program`;
 export const DONATION_PAYMENT_DETAIL = `${DONASI}/payment/:idPayment`;
 export const CRM = '/CRM';
 export const CRM_CONTACT = `${CRM}/contact`;
+export const CRM_EMAIL_TEMPLATE_CREATE = `${CRM}/email-template/create`;
+export const CRM_EMAIL_TEMPLATE_UPDATE = `${CRM}/email-template/:idEmailTemplate`;
 export const CHANNEL = "/channels";
 export const CHANNEL_REQUEST = `${CHANNEL}/request`;
 export const CHANNEL_REQUEST_LIST = `${CHANNEL}/request/list`;
@@ -21,6 +23,7 @@ export const CHANNEL_CHANT_UPDATE = `${CHANNEL}/chant/update`;
 export const CHANNEL_CHANT = `${CHANNEL}/c/:channelId`;
 export const USER_CHANT = `${CHANNEL}/users/:username`;
 export const TIMELINE_CHANT = `${CHANNEL}/timeline`;
+export const CHANNEL_CHANT_DETAIL = `${CHANNEL}/c/:channelId/chants/:chantId`;
 
 export default {
   HOME,
@@ -34,6 +37,8 @@ export default {
   DONATION_REQUEST,
   DONATION_PAYMENT_DETAIL,
   CRM_CONTACT,
+  CRM_EMAIL_TEMPLATE_CREATE,
+  CRM_EMAIL_TEMPLATE_UPDATE,
   CHANNEL,
   CHANNEL_REQUEST,
   CHANNEL_REQUEST_LIST,
@@ -44,5 +49,6 @@ export default {
   CHANNEL_CHANT,
   CHANNEL_CHANT_UPDATE,
   USER_CHANT,
-  TIMELINE_CHANT
+  TIMELINE_CHANT,
+  CHANNEL_CHANT_DETAIL
 };

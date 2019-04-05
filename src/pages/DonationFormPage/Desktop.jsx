@@ -40,12 +40,7 @@ const styles = theme => ({
     height: 300
   },
   paper: {
-    ...Guidelines.layouts.mt16,
-    // ...Guidelines.layouts.pt32,
-    // ...Guidelines.layouts.pr32,
-    // ...Guidelines.layouts.pl32,
-    // ...Guidelines.layouts.pb32
-    
+    ...Guidelines.layouts.mt16, 
   },
   paperForm: {
     ...Guidelines.layouts.mt16,
