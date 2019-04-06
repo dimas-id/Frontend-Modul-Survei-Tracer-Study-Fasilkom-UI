@@ -34,18 +34,16 @@ const ROUTES = [
   }
 ];
 
-const MAX_STEP = ROUTES.length - 1;
+const MAX_STEP = ROUTES.length ;
 
 function getRoutePath(step) {
-  return `${paths.REGISTER}${get(ROUTES[step], "route.path")}`;
+  const subpath = get(ROUTES[step-1], "route.path") || "";
+  return `${paths.REGISTER}${subpath}`;
 }
 
 function getInitialStep(currentPath) {
-  return (
-    ROUTES.findIndex(
-      el =>
-        el.route.path !== paths.LANDING && currentPath.includes(el.route.path)
-    ) - 1
+  return ROUTES.findIndex(
+    el => el.route.path !== paths.LANDING && currentPath.includes(el.route.path)
   );
 }
 
@@ -76,13 +74,16 @@ export default withRouter(function RegistrationRouter({ history, location }) {
   return (
     <React.Fragment>
       <RouterWrapper paths={ROUTES} />
-      <StepProgress
-        steps={MAX_STEP}
-        activeStep={currentStep}
-        onBack={handleBack}
-        onNext={handleNext}
-        position="bottom"
-      />
+      {currentStep > 0 && (
+        <StepProgress
+          start={1}
+          steps={MAX_STEP}
+          activeStep={currentStep}
+          onBack={handleBack}
+          onNext={handleNext}
+          position="bottom"
+        />
+      )}
     </React.Fragment>
   );
 });

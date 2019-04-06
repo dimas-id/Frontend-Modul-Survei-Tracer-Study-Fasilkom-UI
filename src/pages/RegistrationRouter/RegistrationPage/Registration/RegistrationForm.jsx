@@ -142,7 +142,7 @@ const RegistrationForm = withStyles(styles)(
           <Grid item xs={12} style={{ paddingBottom: 0 }}>
             <Typography color="error">* Wajib diisi</Typography>
           </Grid>
-          <Grid item xs={6} style={{ paddingTop: 0 }}>
+          <Grid item xs={12} md={6} style={{ paddingTop: 0 }}>
             <TextField
               autoFocus
               id="FirstName"
@@ -157,7 +157,7 @@ const RegistrationForm = withStyles(styles)(
               onChange={t => setFieldValue(FIELDS.firstName, t.target.value)}
             />
           </Grid>
-          <Grid item xs={6} style={{ paddingTop: 0 }}>
+          <Grid item xs={12} md={6} style={{ paddingTop: 0 }}>
             <TextField
               id="LastName"
               label="Nama Belakang"
@@ -172,7 +172,7 @@ const RegistrationForm = withStyles(styles)(
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <TextField
               id="Email"
               label="Email"
@@ -190,7 +190,7 @@ const RegistrationForm = withStyles(styles)(
               }}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <InlineDatePicker
                 className={classes.field}
@@ -207,7 +207,7 @@ const RegistrationForm = withStyles(styles)(
             </MuiPickersUtilsProvider>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <TextField
               id="Password"
               label="Password"
@@ -225,7 +225,7 @@ const RegistrationForm = withStyles(styles)(
               onChange={t => setFieldValue(FIELDS.password, t.target.value)}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <TextField
               id="Repassword"
               label="Konfirmasi Password"
@@ -243,7 +243,7 @@ const RegistrationForm = withStyles(styles)(
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <InlineDatePicker
                 label="Angkatan"
@@ -265,7 +265,7 @@ const RegistrationForm = withStyles(styles)(
               />
             </MuiPickersUtilsProvider>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <TextField
               id="NPM"
               label="NPM"
@@ -283,7 +283,7 @@ const RegistrationForm = withStyles(styles)(
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <SelectPrograms
               classes={classes}
               value={values[FIELDS.latestCsuiProgram]}
@@ -297,7 +297,7 @@ const RegistrationForm = withStyles(styles)(
               helperText={errors[FIELDS.latestCsuiProgram]}
             />
           </Grid>
-          <Grid item xs={6} />
+          <Grid item xs={12} md={6} />
           <Grid item xs={12}>
             <Button
               className={classes.btn}
