@@ -12,8 +12,6 @@ import {
 } from "../../modules/session/selectors";
 import paths from "../../pages/paths";
 
-import { SplashScreen } from "../Loading";
-
 export const ROLES = Object.freeze(
   keymirror({
     PUBLIC: null,
@@ -22,7 +20,7 @@ export const ROLES = Object.freeze(
   })
 );
 
-class Authenticated extends React.Component {
+class Authenticated extends React.PureComponent {
   static propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     render: PropTypes.func.isRequired,
@@ -36,17 +34,13 @@ class Authenticated extends React.Component {
     }).isRequired
   };
 
-  state = {
-    isLoading: true
-  };
-
   componentDidMount() {
     const { isLoggedIn } = this.props;
     if (!isLoggedIn) {
       this.redirectToLogin();
     } else {
       this.checkUserRole();
-      this.stopLoading();
+      // @todo: check verified
     }
   }
 
@@ -74,14 +68,6 @@ class Authenticated extends React.Component {
     }
   }
 
-  stopLoading = () => {
-    this.loadingTimeout = setTimeout(() => {
-      this.setState({ isLoading: false }, () => {
-        clearTimeout(this.loadingTimeout);
-      });
-    }, 750);
-  };
-
   redirectTo404 = () => {
     const { history } = this.props;
     history.push(paths.ERROR_404);
@@ -94,10 +80,6 @@ class Authenticated extends React.Component {
 
   render() {
     const { render } = this.props;
-    const { isLoading } = this.state;
-    if (isLoading) {
-      return <SplashScreen />;
-    }
     return <Fade>{render()}</Fade>;
   }
 }

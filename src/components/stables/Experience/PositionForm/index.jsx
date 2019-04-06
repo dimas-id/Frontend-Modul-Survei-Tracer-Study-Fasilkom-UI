@@ -16,6 +16,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 
+import { getDateFormatted } from "../../../../libs/datetime";
+import { createPositions } from "../../../../modules/experience/thunks";
 import { Validation } from "../../../hocs/form";
 
 const FIELDS = keymirror({
@@ -48,21 +50,28 @@ const VALIDATOR = Validation.object().shape({
 
 function PositionForm({
   update,
+  afterSubmit,
   positionId,
-  createPosition,
-  updatePosition,
-  deletePosition,
+  createPos,
+  updatePos,
+  deletePos,
   initialValues
 }) {
   function submit(values, { setSubmitting }) {
-    const submitAction = update ? updatePosition : createPosition;
-    const payload = omit(values, [FIELDS.isCurrent]);
+    const payload = { ...omit(values, [FIELDS.isCurrent]) };
+    payload[FIELDS.dateStarted] = getDateFormatted(values[FIELDS.dateStarted]);
+    if (!values[FIELDS.isCurrent]) {
+      payload[FIELDS.dateEnded] = getDateFormatted(values[FIELDS.dateEnded]);
+    }
+
+    const submitAction = update ? updatePos : createPos;
     const params = update ? [positionId, payload] : [payload];
     submitAction(...params)
-      .catch(error => {
-        console.log(error)
-      })
-      .finally(() => setSubmitting(false));
+      .then(afterSubmit)
+      .catch(e => e)
+      .finally(() => {
+        setSubmitting(false);
+      });
   }
 
   function validate(values) {
@@ -215,7 +224,7 @@ function PositionForm({
           </DialogContent>
           <DialogActions>
             {update && (
-              <Button color="secondary" onClick={deletePosition}>
+              <Button color="secondary" onClick={() => null}>
                 Hapus
               </Button>
             )}
@@ -236,13 +245,13 @@ function PositionForm({
 
 function createContainer() {
   const mapDispatchToProps = dispatch => ({
-    createPosition: (payload) => null,
-    createPosition: (positionId, payload) => null,
-    deletePosition: (positionId) => null
+    createPos: payload => dispatch(createPositions(payload)),
+    updatePos: (positionId, payload) => null,
+    deletePos: positionId => null
   });
 
   return connect(
-    undefined,
+    null,
     mapDispatchToProps
   )(PositionForm);
 }
