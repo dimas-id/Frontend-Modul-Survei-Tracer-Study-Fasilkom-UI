@@ -5,10 +5,12 @@ import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 
 import { NavbarAuth } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import Particle from "../../components/Particle";
+import LinkedInButton from "../../components/stables/LinkedInButton";
 
 import { Guidelines } from "../../styles";
 import paths from "../paths";
@@ -22,18 +24,18 @@ const styles = theme => ({
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.borderBox,
     ...Guidelines.layouts.flexWrap,
-    [theme.breakpoints.down('sm')]: {
-      ...Guidelines.layouts.pt40,
-    },
+    [theme.breakpoints.down("sm")]: {
+      ...Guidelines.layouts.pt40
+    }
   },
   heroTextContainer: {
-    ...Guidelines.layouts.flex1,
+    ...Guidelines.layouts.flex1
   },
   contentContainer: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.windowHeight,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pr32,
+    ...Guidelines.layouts.pr32
   },
   title: {
     ...Guidelines.fonts.heading1
@@ -43,10 +45,22 @@ const styles = theme => ({
   },
   heroButtonContainer: {
     ...Guidelines.layouts.flexMiddle,
-    ...Guidelines.layouts.flex1
+    ...Guidelines.layouts.flex1,
+    ...Guidelines.layouts.flexDirCol
+  },
+  link: {
+    color: "00C7E5",
+    ...Guidelines.fonts.bold,
+    ...Guidelines.layouts.mr24,
+    ...Guidelines.layouts.ml24,
+  },
+  btn: {
+    width: 360
+  },
+  btnGrid: {
+    margin: "auto"
   },
   buttonDaftar: {
-    width: 360,
     backgroundColor: "#000",
     color: "#fff",
     "&:hover": {
@@ -69,30 +83,43 @@ function LandingMobile({ classes }) {
             <Typography component="h1" variant="h3" className={classes.title}>
               Bergabung dengan layanan ILUNI12 Channel
             </Typography>
-            <Typography
-              component="p"
-              paragraph
-              className={classes.subtitle}
-            >
+            <Typography component="p" paragraph className={classes.subtitle}>
               ILUNI12 Channel akan mewadahi para alumni untuk menyalurkan salah
               satu bentuk kepedulian sosial serta mewadahi para alumni untuk
               saling berinteraksi
             </Typography>
           </div>
           <div className={classes.heroButtonContainer}>
-            <Button
-              component={Link}
-              to={paths.REGISTER}
-              className={classes.buttonDaftar}
-              size="large"
-            >
-              Daftar
-            </Button>
+            <Grid container spacing={24} className={classes.btnGrid}>
+              <Grid item xs={12}>
+                <Button
+                  component={Link}
+                  to={paths.REGISTER}
+                  className={`${classes.buttonDaftar} ${classes.btn}`}
+                  size="large"
+                >
+                  Daftar
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <LinkedInButton size="large" className={classes.btn}>
+                  Daftar dengan LinkedIn
+                </LinkedInButton>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography component="p">
+                  Sudah memiliki akun ILUNI12 Channel?
+                  <Link to={paths.LOGIN} className={classes.link}>
+                    Masuk
+                  </Link>
+                </Typography>
+              </Grid>
+            </Grid>
           </div>
         </div>
       </Container>
       <div style={{ position: "relative" }}>
-      <Particle
+        <Particle
           name="bgLanding"
           top={-500}
           style={{ ...Guidelines.layouts.w100 }}
@@ -108,11 +135,7 @@ function LandingMobile({ classes }) {
           <Typography component="h1" variant="h2" className={classes.title}>
             Channel
           </Typography>
-          <Typography
-            component="p"
-            paragraph
-            className={classes.subtitle}
-          >
+          <Typography component="p" paragraph className={classes.subtitle}>
             Sarana bertukar informasi antar pengguna yang disajikan dengan
             berbagai kategori
           </Typography>

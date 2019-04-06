@@ -1,9 +1,14 @@
 export const ERROR_404 = "/404";
 export const ERROR = "/err";
-export const HOME = "/home";
+export const HOME = "/users";
+export const PROFILE = "/profil";
+export const VERIFY = "/verify";
+export const USER_PROFILE = `${HOME}${PROFILE}`;
+export const USER_VERIFY = `${HOME}${VERIFY}`;
 export const LANDING = "/";
 export const LOGIN = "/login";
 export const REGISTER = "/register";
+export const REGISTER_EXTERNAL = "/register-external-auths";
 export const EDUCATION = "/pendidikan";
 export const WORK_POSITION = "/pekerjaan";
 export const PREFERENCE = "/preferensi";
@@ -13,9 +18,9 @@ export const REGISTER_PREFERENSI = `${REGISTER}${PREFERENCE}`;
 
 export const DONASI = "/donasi";
 export const DONATION_FORM = `${DONASI}/:idProgram`;
-export const DONATION_REQUEST= `${DONASI}/ajukan-program`;
+export const DONATION_REQUEST = `${DONASI}/ajukan-program`;
 export const DONATION_PAYMENT_DETAIL = `${DONASI}/payment/:idPayment`;
-export const CRM = '/CRM';
+export const CRM = "/CRM";
 export const CRM_CONTACT = `${CRM}/contact`;
 export const CRM_EMAIL_TEMPLATE_LIST = `${CRM}/email-template/list`;
 export const CRM_EMAIL_TEMPLATE_CREATE = `${CRM}/email-template/create`;
@@ -35,6 +40,9 @@ export const CHANNEL_CHANT_DETAIL = `${CHANNEL}/c/:channelId/chants/:chantId`;
 
 export default {
   HOME,
+  PROFILE,
+  USER_PROFILE,
+  USER_VERIFY,
   ERROR_404,
   ERROR,
   LOGIN,
@@ -65,5 +73,6 @@ export default {
   CHANNEL_CHANT_UPDATE,
   USER_CHANT,
   TIMELINE_CHANT,
-  CHANNEL_CHANT_DETAIL
+  CHANNEL_CHANT_DETAIL,
+  REGISTER_EXTERNAL
 };

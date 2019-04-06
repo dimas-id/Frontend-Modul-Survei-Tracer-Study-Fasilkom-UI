@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import keymirror from "keymirror";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -19,9 +20,8 @@ import MomentUtils from "@date-io/moment";
 
 import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 
-import { Guidelines } from "../../../../styles";
-import { enhanceForm, Validation } from "../../../../components/hocs/form";
-import LinkedInButton from "../../../../components/stables/LinkedInButton";
+import { Guidelines } from "../../../styles";
+import { enhanceForm, Validation } from "../../../components/hocs/form";
 
 const styles = theme => ({
   form: {
@@ -41,7 +41,7 @@ const styles = theme => ({
   },
   btn: {
     ...Guidelines.layouts.mt64,
-    ...Guidelines.layouts.mb24
+    height: 48
   },
   select: {
     ...Guidelines.layouts.mt16,
@@ -61,40 +61,38 @@ const PROGRAMS = [
 ];
 
 const FIELDS = keymirror({
-  firstName: null,
-  lastName: null,
   birthdate: null,
   latestCsuiClassYear: null,
   latestCsuiProgram: null,
-  uiSsoNpm: null,
-  email: null,
-  password: null,
-  repassword: null
+  uiSsoNpm: null
 });
 
 const VALIDATOR = {
-  [FIELDS.firstName]: Validation.string().required("Wajib diisi"),
-  [FIELDS.lastName]: Validation.string().required("Wajib diisi"),
   [FIELDS.birthdate]: Validation.date().required("Wajib diisi"),
   [FIELDS.latestCsuiClassYear]: Validation.date().required("Wajib diisi"),
   [FIELDS.latestCsuiProgram]: Validation.string().required("Wajib diisi"),
-  [FIELDS.uiSsoNpm]: Validation.number().notRequired(),
-  [FIELDS.email]: Validation.string()
-    .email("Email tidak valid")
-    .required("Wajib diisi"),
-  [FIELDS.repassword]: Validation.string().required("Wajib diisi"),
-  [FIELDS.password]: Validation.string()
-    .required("Wajib diisi")
-    .matches("^(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$")
+  [FIELDS.uiSsoNpm]: Validation.number().notRequired()
 };
 
 function SelectPrograms(props) {
+  const inputLabelRef = React.useRef(null);
+
+  const [state, setState] = React.useState({
+    labelWidth: 0
+  });
+  React.useEffect(() => {
+    setState({
+      ...state,
+      labelWidth: ReactDOM.findDOMNode(inputLabelRef.current).offsetWidth
+    });
+  }, []);
+
   return (
     <FormControl
       variant="outlined"
       className={`${props.classes.field} ${props.classes.select}`}
     >
-      <InputLabel htmlFor="LatestCsuiProgram">
+      <InputLabel ref={inputLabelRef} htmlFor="LatestCsuiProgram">
         Gelar dan Program Studi Terakhir
       </InputLabel>
       <Select
@@ -104,7 +102,7 @@ function SelectPrograms(props) {
         input={
           <OutlinedInput
             id="LatestCsuiProgram"
-            labelWidth={240}
+            labelWidth={state.labelWidth}
             name={FIELDS.latestCsuiProgram}
           />
         }
@@ -140,54 +138,6 @@ const RegistrationForm = withStyles(styles)(
           <Grid item xs={12} style={{ paddingBottom: 0 }}>
             <Typography color="error">* Wajib diisi</Typography>
           </Grid>
-          <Grid item xs={12} md={6} style={{ paddingTop: 0 }}>
-            <TextField
-              autoFocus
-              id="FirstName"
-              label="Nama Depan"
-              className={classes.field}
-              margin="normal"
-              variant="outlined"
-              required
-              value={values[FIELDS.firstName]}
-              error={touched[FIELDS.firstName] && !!errors[FIELDS.firstName]}
-              helperText={errors[FIELDS.firstName]}
-              onChange={t => setFieldValue(FIELDS.firstName, t.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} style={{ paddingTop: 0 }}>
-            <TextField
-              id="LastName"
-              label="Nama Belakang"
-              className={classes.field}
-              margin="normal"
-              variant="outlined"
-              required
-              value={values[FIELDS.lastName]}
-              error={touched[FIELDS.lastName] && !!errors[FIELDS.lastName]}
-              helperText={errors[FIELDS.lastName]}
-              onChange={t => setFieldValue(FIELDS.lastName, t.target.value)}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              id="Email"
-              label="Email"
-              autoComplete="email"
-              className={classes.field}
-              margin="normal"
-              variant="outlined"
-              required
-              value={values[FIELDS.email]}
-              error={touched[FIELDS.email] && !!errors[FIELDS.email]}
-              helperText={errors[FIELDS.email]}
-              onChange={t => setFieldValue(FIELDS.email, t.target.value)}
-              inputProps={{
-                type: "email"
-              }}
-            />
-          </Grid>
           <Grid item xs={12} md={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <InlineDatePicker
@@ -207,48 +157,12 @@ const RegistrationForm = withStyles(styles)(
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <TextField
-              id="Password"
-              label="Password"
-              autoComplete="current-password"
-              className={classes.field}
-              margin="normal"
-              variant="outlined"
-              required
-              value={values[FIELDS.password]}
-              inputProps={{
-                type: "password"
-              }}
-              error={touched[FIELDS.password] && !!errors[FIELDS.password]}
-              helperText={errors[FIELDS.password]}
-              onChange={t => setFieldValue(FIELDS.password, t.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              id="Repassword"
-              label="Konfirmasi Password"
-              className={classes.field}
-              margin="normal"
-              variant="outlined"
-              required
-              value={values[FIELDS.repassword]}
-              inputProps={{
-                type: "password"
-              }}
-              error={touched[FIELDS.repassword] && !!errors[FIELDS.repassword]}
-              helperText={errors[FIELDS.repassword]}
-              onChange={t => setFieldValue(FIELDS.repassword, t.target.value)}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <InlineDatePicker
                 label="Angkatan"
                 className={classes.field}
-                value={values[FIELDS.latestCsuiClassYear]}
                 required
+                value={values[FIELDS.latestCsuiClassYear]}
                 onChange={date =>
                   setFieldValue(FIELDS.latestCsuiClassYear, date)
                 }
@@ -307,19 +221,15 @@ const RegistrationForm = withStyles(styles)(
               color="primary"
               type="submit"
               fullWidth
-              size="large"
             >
               {isSubmitting ? (
                 <Fade in>
                   <CircularProgress size={18} />
                 </Fade>
               ) : (
-                "Daftar"
+                "Simpan"
               )}
             </Button>
-            <LinkedInButton fullWidth size="large">
-              Daftar dengan LinkedIn
-            </LinkedInButton>
           </Grid>
         </Grid>
       </form>

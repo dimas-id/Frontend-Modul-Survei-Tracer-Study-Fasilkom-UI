@@ -94,11 +94,10 @@ class Registration extends React.Component {
     }
 
     currentValues[birthdate] = getDateFormatted(currentValues[birthdate]);
-    if (Boolean(currentValues[latestCsuiClassYear])) {
-      currentValues[latestCsuiClassYear] = currentValues[
-        latestCsuiClassYear
-      ].format("YYYY");
-    }
+    currentValues[latestCsuiClassYear] = getDateFormatted(
+      currentValues[latestCsuiClassYear],
+      "YYYY"
+    );
 
     this.props
       .register(currentValues)
