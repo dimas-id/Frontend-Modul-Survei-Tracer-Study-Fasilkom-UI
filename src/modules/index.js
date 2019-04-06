@@ -11,6 +11,7 @@ import { createBrowserHistory } from "history";
 // reducer
 import sessionReducer from "./session";
 import experienceReducer from "./experience";
+import utilityReducer, { utilityActions } from "./utility";
 
 // middleware
 import { loggerMiddleware } from "./logger";
@@ -26,13 +27,15 @@ export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   session: persistReducer({ key: "session", storage }, sessionReducer),
   experience: persistReducer({ key: "experience", storage }, experienceReducer),
+  utility: utilityReducer,
   router: connectRouter(history)
 });
 
 const middlewares = [
   thunk.withExtraArgument({
     // add extra argument from others
-    atlasAPIv1
+    atlasAPIv1,
+    utilityActions
   }),
   routerMiddleware(history)
 ];
