@@ -15,7 +15,7 @@ function AlertDialog({ alert, open, hide }) {
   const { title, message, onPositive, onNegative } = alert || {};
 
   function withHide(func) {
-    return (e) => {
+    return e => {
       func && func(e);
       hide();
     };
@@ -28,18 +28,16 @@ function AlertDialog({ alert, open, hide }) {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{title || ""}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          {message}
+          {message || ""}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        {onNegative && (
-          <Button onClick={withHide(onNegative)} color="secondary">
-            Tidak
-          </Button>
-        )}
+        <Button onClick={withHide(onNegative)} color="secondary">
+          Tidak
+        </Button>
         <Button onClick={withHide(onPositive)} color="primary" autoFocus>
           Ok
         </Button>
