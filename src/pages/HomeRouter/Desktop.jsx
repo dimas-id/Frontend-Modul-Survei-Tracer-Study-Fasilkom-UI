@@ -13,6 +13,7 @@ import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
 import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
+import PreferencePage from "./PreferencePage";
 
 const styles = theme => ({
   container: {
@@ -56,7 +57,7 @@ const ROUTES = [
     route: {
       exact: true,
       path: "/preferensi",
-      component: () => <div>preferensi</div>
+      component: PreferencePage
     }
   }
 ];

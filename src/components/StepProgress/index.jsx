@@ -13,7 +13,14 @@ const styles = {
   }
 };
 
-function StepProgress({ steps, onNext, onBack, activeStep, position }) {
+function StepProgress({
+  start = 0,
+  steps,
+  onNext,
+  onBack,
+  activeStep,
+  position
+}) {
   const classes = makeStyles(styles);
   return (
     <MobileStepper
@@ -29,7 +36,7 @@ function StepProgress({ steps, onNext, onBack, activeStep, position }) {
         </Button>
       }
       backButton={
-        <Button size="small" onClick={onBack} disabled={activeStep === 0}>
+        <Button size="small" onClick={onBack} disabled={activeStep === start}>
           <KeyboardArrowLeft />
           Back
         </Button>
