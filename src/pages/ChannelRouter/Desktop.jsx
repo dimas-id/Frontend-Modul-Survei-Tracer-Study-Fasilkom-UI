@@ -20,6 +20,7 @@ import RouterWithMenu from "../../components/RouterWithMenu";
 import HeaderComponent from "./HeaderComponent";
 import ProfileComponent from "./ProfilePage";
 import ChannelComponent from "./ListChannelPage";
+import Timeline from "./Timeline";
 
 import { layouts } from "../../styles/guidelines";
 
@@ -50,7 +51,7 @@ const ROUTES = [
     },
     route: {
       path: "/timeline",
-      component: () => <div>timeline</div>
+      component: () => <Timeline />
     }
   },
   {

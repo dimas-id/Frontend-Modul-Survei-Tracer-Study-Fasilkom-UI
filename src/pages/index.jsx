@@ -7,6 +7,7 @@ import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
 import ErrorPage from "./ErrorPage";
 import CreateChantPage from "./CreateChantPage";
+import RegisterExternalAuthPage from "./RegisterExternalAuthPage";
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
 import EmailTemplateCreatePage from "./EmailTemplateCreatePage";
@@ -23,8 +24,9 @@ import ChannelRequestDetailPage from "./ChannelRequestDetailPage";
 import ChannelRequestUpdatePage from "./ChannelRequestUpdatePage";
 import ChannelChantPage from "./ChannelChantPage";
 import UpdateChantPage from "./UpdateChantPage";
-import ChannelRouter from './ChannelRouter';
-import ChannelChantDetailPage from './ChannelChantDetailPage';
+import ChannelRouter from "./ChannelRouter";
+import ChannelChantDetailPage from "./ChannelChantDetailPage";
+import UserVerifyPage from "./UserVerifyPage"
 
 import paths from "./paths";
 
@@ -50,6 +52,13 @@ const ROUTES = [
     }
   },
   {
+    title: "Verifikasi Pengguna",
+    route: {
+      path: paths.USER_VERIFY,
+      component: UserVerifyPage
+    }
+  },
+  {
     title: "Home",
     route: {
       path: paths.HOME,
@@ -61,6 +70,20 @@ const ROUTES = [
     route: {
       path: paths.LOGIN,
       component: LoginPage
+    }
+  },
+  {
+    title: "Registration",
+    route: {
+      path: paths.REGISTER,
+      component: RegistrationRouter
+    }
+  },
+  {
+    title: "External auth",
+    route: {
+      path: paths.REGISTER_EXTERNAL,
+      component: RegisterExternalAuthPage
     }
   },
   {
@@ -132,13 +155,6 @@ const ROUTES = [
       exact: true,
       path: paths.DONASI,
       component: DonationPage
-    }
-  },
-  {
-    title: "Registration",
-    route: {
-      path: paths.REGISTER,
-      component: RegistrationRouter
     }
   },
   {
