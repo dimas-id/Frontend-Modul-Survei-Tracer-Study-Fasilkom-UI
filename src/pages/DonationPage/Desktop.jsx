@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -9,11 +10,14 @@ import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
 
 import DonationCard from "./DonationCard";
-import Fixture from "./fixture.json";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-
+import heliosV1 from "../../modules/api/helios/v1";
+import { LinesLoader, LoadingFill } from "../../components/Loading";
+import paths from "../paths";
+import { getUser } from "../../modules/session/selectors";
+import { makePathVariableUri } from "../../libs/navigation";
 
 const styles = theme => ({
   root: {
@@ -30,13 +34,42 @@ const styles = theme => ({
   }
 });
 
-class Screen extends React.PureComponent {
+class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
   };
+  state = {
+    donationProgramList: null,
+    loading: true
+  };
+  componentDidMount() {
+    heliosV1.donation
+      .getDonationProgramList()
+      .then(result => {
+        this.setState({ donationProgramList: result.data.results });
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
+  }
 
+  renderContent() {
+    return (
+      <Grid container spacing={24}>
+        {this.state.donationProgramList.map(donation => (
+          <Grid item xs={4}>
+            <DonationCard {...donation} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
   render() {
-    const { classes } = this.props;
+    const { loading } = this.state;
+    if (loading) {
+      return LinesLoader;
+    }
+    const { classes, user } = this.props;
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -63,8 +96,32 @@ class Screen extends React.PureComponent {
               <div className={classes.heroButtons}>
                 <Grid container spacing={16} justify="center">
                   <Grid item>
-                    <Button variant="contained" color="primary">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      href={paths.DONATION_REQUEST}
+                    >
                       Ajukan Program Donasi
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component={Link}
+                      to={makePathVariableUri(paths.USER_DONATION_LIST, {
+                        username: user.username
+                      })}
+                    >
+                      Riwayat Donasi
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component={Link}
+                      to={makePathVariableUri(paths.USER_DONATION_REQUEST_LIST, {
+                        username: user.username
+                      })}
+                    >
+                      Riwayat Program Donasi
                     </Button>
                   </Grid>
                 </Grid>
@@ -72,20 +129,16 @@ class Screen extends React.PureComponent {
             </div>
           </div>
         </main>
-        <Grid container spacing={24}>
-          {Fixture.map(item => (
-            <Grid item xs={4}>
-              <DonationCard {...item} />
-            </Grid>
-          ))}
-        </Grid>
+        {loading ? <LoadingFill /> : this.renderContent()}
       </React.Fragment>
     );
   }
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
+  const mapStateToProps = state => ({
+    user: getUser(state)
+  });
 
   const mapDispatchToProps = dispatch => ({});
 

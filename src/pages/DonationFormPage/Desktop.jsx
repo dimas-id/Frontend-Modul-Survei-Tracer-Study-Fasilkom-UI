@@ -21,15 +21,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 import { getUser } from "../../modules/session/selectors";
-import bundar from "../../assets/bundar.png"
-
+import bundar from "../../assets/bundar.png";
+import heliosV1 from "../../modules/api/helios/v1";
+import { LinesLoader} from "../../components/Loading";
 
 const styles = theme => ({
   container: {
@@ -40,7 +37,7 @@ const styles = theme => ({
     height: 300
   },
   paper: {
-    ...Guidelines.layouts.mt16,
+    ...Guidelines.layouts.mt16
   },
   paperForm: {
     ...Guidelines.layouts.mt16,
@@ -54,7 +51,6 @@ const styles = theme => ({
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
     ...Guidelines.layouts.pb32
-
   },
 
   form: {
@@ -91,14 +87,15 @@ const banks = [
     label: "Transfer BCA"
   }
 ];
-class Screen extends React.PureComponent {
+class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
   };
   state = {
     bank: "0",
-    estPaymentDate: null
-
+    estPaymentDate: null,
+    donationProgram: null,
+    loading: true
   };
   handleChange = name => event => {
     this.setState({
@@ -106,9 +103,28 @@ class Screen extends React.PureComponent {
     });
   };
 
+  componentDidMount() {
+    const donationId  = this.props.match.params.idProgram;
+    heliosV1.donation
+      .getDetailDonationProgramDetail(this.props.user.id, donationId)
+      .then(result => {
+        this.setState({ donationProgram: result.data });
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
+  }
+
   render() {
     const { user, classes } = this.props;
+    const { loading } = this.state;
+    
+    if (loading) {
+      return LinesLoader;
+    }
+
     const { estPaymentDate } = this.state;
+    const { title, description } = this.state.donationProgram;
 
     return (
       <React.Fragment>
@@ -120,17 +136,12 @@ class Screen extends React.PureComponent {
             <Grid item xs={6} sm={6}>
               <Paper className={classes.paper}>
                 <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={bundar}
-                  />
+                  <CardMedia className={classes.media} image={bundar} />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Donasi A
+                      {title}
                     </Typography>
-                    <Typography component="p">
-                      ini adalah donasi untuk A
-                    </Typography>
+                    <Typography component="p">{description}</Typography>
                   </CardContent>
                 </CardActionArea>
                 <Grid item xs={12} sm={12} className={classes.btnProposal}>
@@ -151,16 +162,7 @@ class Screen extends React.PureComponent {
                     className={classes.textField}
                     variant="outlined"
                   />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-                        checkedIcon={<CheckBoxIcon fontSize="small" />}
-                        value="checkedI"
-                      />
-                    }
-                    label="Sembunyikan nama saya (Anonim)"
-                  />
+                  
                   <TextField
                     required
                     id="outlined-required"
@@ -206,9 +208,7 @@ class Screen extends React.PureComponent {
                     variant="outlined"
                     helperText="Rekening untuk validasi"
                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start"></InputAdornment>
-                      )
+                      startAdornment: <InputAdornment position="start" />
                     }}
                   />
 
@@ -222,7 +222,7 @@ class Screen extends React.PureComponent {
                       margin="normal"
                       label="Estimasi Tanggal Pembayaran"
                       format="YYYY-MM-DD"
-                      onChange={(date)=> this.setState({estPaymentDate : date})}
+                      onChange={date => this.setState({ estPaymentDate: date })}
                     />
                   </MuiPickersUtilsProvider>
                   <Button

@@ -28,7 +28,7 @@ export const CRM_EMAIL_TEMPLATE_UPDATE = `${CRM}/email-template/:idEmailTemplate
 export const CHANNEL = "/channels";
 export const CHANNEL_REQUEST = `${CHANNEL}/request`;
 export const CHANNEL_REQUEST_LIST = `${CHANNEL}/request/list`;
-export const USER_DONATION_LIST = `${DONASI}/transaksi/:idUser`;
+export const USER_DONATION_LIST = `${DONASI}/users/:username`;
 export const CHANNEL_REQUEST_DETAIL = `${CHANNEL}/request/:channelId`;
 export const CHANNEL_REQUEST_UPDATE = `${CHANNEL}/request/:channelId/update`;
 export const CHANNEL_CHANT_CREATE = `${CHANNEL}/chant/create`;
@@ -37,6 +37,7 @@ export const CHANNEL_CHANT = `${CHANNEL}/c/:channelId`;
 export const USER_CHANT = `${CHANNEL}/users/:username`;
 export const TIMELINE_CHANT = `${CHANNEL}/timeline`;
 export const CHANNEL_CHANT_DETAIL = `${CHANNEL}/c/:channelId/chants/:chantId`;
+export const USER_DONATION_REQUEST_LIST = `${DONASI}/pengajuan-donasi/users/:username`;
 
 export default {
   HOME,
@@ -56,6 +57,7 @@ export default {
   REGISTER_PREFERENSI,
   DONASI,
   DONATION_FORM,
+  USER_DONATION_REQUEST_LIST,
   DONATION_REQUEST,
   DONATION_PAYMENT_DETAIL,
   CRM_CONTACT,

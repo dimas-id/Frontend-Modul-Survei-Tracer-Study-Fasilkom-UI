@@ -15,7 +15,6 @@ import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
-
   paper: {
     ...Guidelines.layouts.mt32,
     ...Guidelines.layouts.pt32,
@@ -23,10 +22,23 @@ const styles = theme => ({
     ...Guidelines.layouts.pl64,
     ...Guidelines.layouts.pb32,
     ...Guidelines.layouts.flexDirCol,
-    ...Guidelines.layouts.flexMiddle,
+    ...Guidelines.layouts.flexMiddle
+  },
+  paperNominal: {
+    ...Guidelines.layouts.mt32,
+    ...Guidelines.layouts.mb32,
+    ...Guidelines.layouts.pt8,
+    ...Guidelines.layouts.pb32,
+    ...Guidelines.layouts.w100,
+    ...Guidelines.layouts.flexDirCol,
+    ...Guidelines.layouts.flexMiddle
   },
   gridPaper: {
     ...Guidelines.layouts.flexMiddle
+  },
+  paymentDetail: {
+    display : "flex",
+    justifyContent : "flex-start"
   }
 });
 
@@ -42,21 +54,45 @@ class Screen extends React.PureComponent {
         <NavbarAuth title="Screen" />
         <Container className={classes.container}>
           <Grid container spacing={24} className={classes.gridPaper}>
-            <Grid item xs={6} sm={6} >
+            <Grid item xs={6} sm={6}>
               <Paper className={classes.paper}>
-                  <Paper >
-                  <Typography gutterBottom variant="h5" component="h2">
-                    dalem
+                <Typography gutterBottom variant="h5" component="h2">
+                  Terima kasih telah berdonasi
+                </Typography>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Transfer tepat sesuai nominal berikut :
+                </Typography>
+                <Paper className={classes.paperNominal}> 
+                  <Typography gutterBottom variant="h5" flexcomponent="h2">
+                    Rp 100.401
                   </Typography>
+                  <Grid item xs={12} sm={12} className={classes.paymentDetail}>
+                  <Typography gutterBottom variant="h7" flexcomponent="h7">
+                    ID Transaksi : 
+                  </Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={12} className={classes.paymentDetail}>
 
+                  <Typography gutterBottom variant="h7" flexcomponent="h7">
+                    Jumlah Donasi : 
+                  </Typography>
+                  </Grid>
 
-                  </Paper>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Donasi [belum dikonekin]
+                  <Grid item xs={12} sm={12} className={classes.paymentDetail}>
+
+                  <Typography gutterBottom variant="h7" flexcomponent="h7">
+                    Kode Unik : 
                   </Typography>
-                  <Typography component="p">
-                    ini adalah donasi untuk [belum diisi]
-                  </Typography>
+                  </Grid>
+
+                  
+                </Paper>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Tansfer ke :
+                </Typography>
+                <Typography component="p">
+                  BCA
+                </Typography>
                 <Button
                   className={classes.btn}
                   variant="contained"

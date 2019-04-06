@@ -16,7 +16,10 @@ import Button from "@material-ui/core/Button";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
-import { LinesLoader} from "../../components/Loading";
+import { LinesLoader } from "../../components/Loading";
+import { getDateFormatted } from "../../libs/datetime";
+import paths from "../paths";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
   container: {
@@ -27,28 +30,36 @@ const styles = theme => ({
   }
 });
 
+const STATUS = {
+  RJA: "Ditolak Admin",
+  PRA: "Diproses Admin",
+  ACA: "Diterima Admin, Di,anjutkan ke Manajemen",
+  RJM: "Ditolak Manajemen",
+  PRM: "Diproses Manajemen",
+  ACM: "Program Donasi Diterima"
+};
+
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
   };
 
-  state = {   
+  state = {
     page: 0,
     rowsPerPage: 5,
-    userDonationList: null,
+    userDonationRequestList: null,
     loading: true
   };
   componentDidMount() {
     heliosV1.donation
-      .getUserDonationList(this.props.user.id)
+      .getUserDonationRequestList(this.props.user.id)
       .then(result => {
-        this.setState({ userDonationList: result.data.results });
+        this.setState({ userDonationRequestList: result.data.results });
       })
       .finally(() => {
         this.setState({ loading: false });
       });
   }
-
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -58,10 +69,8 @@ class Screen extends React.Component {
     this.setState({ page: 0, rowsPerPage: event.target.value });
   };
 
-  
-
   render() {
-    const {userDonationList, page, rowsPerPage, loading} = this.state;
+    const { userDonationRequestList, page, rowsPerPage, loading } = this.state;
     if (loading) {
       return LinesLoader;
     }
@@ -69,7 +78,7 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack title="Daftar Donasi Saya"/>
+        <NavbarBack title="Daftar Permohonan Program Donasi" />
         <Container className={classes.container}>
           <Grid container spacing={24}>
             <Grid item xs={12} sm={12}>
@@ -77,27 +86,33 @@ class Screen extends React.Component {
                 columns={[
                   { name: "No." },
                   { name: "Program Donasi" },
-                  { name: "Nominal" },
-                  { name: "Tanggal Donasi" },
+                  { name: "Tanggal Pengajuan" },
                   { name: "Status" },
-                  { name: "Detail Tagihan" }
+                  { name: "Detail" }
                 ]}
-                rows={userDonationList}
+                rows={userDonationRequestList}
                 page={page}
                 rowsPerPage={rowsPerPage}
                 renderRow={(row, index) => (
                   <TableRow key={row.id}>
                     <TableCell component="th" scope="row" align="center">
-                      {row.paymentDetail.paymentNumber}
+                      {index + 1}
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      {row.donationProgramName}
+                      {row.title}
                     </TableCell>
-                    <TableCell align="center">{row.amount}</TableCell>
-                    <TableCell align="center">{row.dateCreated}</TableCell>
-                    <TableCell align="center">{row.paymentDetail.isSettled ? "Lunas" : "Belum Bayar"}</TableCell>
                     <TableCell align="center">
-                      <Button href="#text-buttons" className={classes.button}>
+                      {getDateFormatted(row.dateCreated, "DD MMMM YYYY")}
+                    </TableCell>
+                    <TableCell align="center">
+                      {STATUS[row.verificationStatus]}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button
+                        component={Link}
+                        to={paths.USER_DONATION_REQUEST_DETAIL}
+                        className={classes.button}
+                      >
                         Lihat
                       </Button>
                     </TableCell>
@@ -115,7 +130,6 @@ class Screen extends React.Component {
 function createContainer() {
   const mapStateToProps = state => ({
     user: getUser(state)
-
   });
 
   const mapDispatchToProps = dispatch => ({});

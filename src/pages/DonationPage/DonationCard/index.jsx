@@ -94,6 +94,7 @@ function Donation(props) {
                       {title}
                     </Typography>
                     <Typography component="p">{description}</Typography>
+                    
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
