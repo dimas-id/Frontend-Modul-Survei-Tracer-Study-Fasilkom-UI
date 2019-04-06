@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
@@ -12,56 +11,114 @@ import { Container } from "../../components/Container";
 import ChantCard from "../../components/stables/Chant";
 import ChannelCard from "../../components/stables/ChannelCard";
 import EndCard from "../../components/stables/EndCard";
-
-import fixture from "./fixture.json";
-import channelDetail from "./channel-detail.json";
+import { LoadingFill } from "../../components/Loading";
 
 import { layouts } from "../../styles/guidelines";
+
+import heliosV1 from "../../modules/api/helios/v1";
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    ...layouts.mt32,
-  },
-  wrapDescription: {
-    maxHeight: 64,
-    overflow: "hidden",
-    ...layouts.w100
+    ...layouts.mt32
   },
   grid: {
     ...layouts.borderBox
   },
-  card : {
+  card: {
     ...layouts.ml64,
-    ...layouts.mb8,
+    ...layouts.mb8
   }
 });
 
-class Screen extends React.PureComponent {
-  static propTypes = {
-    classes: PropTypes.shape().isRequired
+class Screen extends React.Component {
+  state = {
+    channelDetail: null,
+    listChant: null,
+    isLoadingChannel: true,
+    isLoadingChant: true
   };
 
-  render() {
+  componentDidMount() {
+    heliosV1.channel
+      .getChannelDetail(this.props.match.params.channelId)
+      .then(result => {
+        this.setState({ channelDetail: result.data });
+      })
+      .finally(() => {
+        this.setState({ isLoadingChannel: false });
+      });
+
+    heliosV1.channel
+      .getListChant(this.props.match.params.channelId)
+      .then(result => {
+        console.log(result.data);
+        this.setState({ listChant: result.data.results });
+      })
+      .finally(() => {
+        this.setState({ isLoadingChant: false });
+      });
+  }
+
+  renderChannel() {
+    console.log(this.state);
+    const { channelDetail } = this.state;
+    if (!channelDetail) {
+      return null;
+    }
+    return (
+      <ChannelCard
+        title={channelDetail.title}
+        description={channelDetail.description}
+        coverImgUrl={channelDetail.coverImgUrl}
+      />
+    );
+  }
+
+  renderChant() {
+    console.log(this.state);
+    const { listChant } = this.state;
     const { classes } = this.props;
+
+    return(<React.Fragment>
+      {listChant.map(chant => (
+      <div className={classes.card}>
+        <ChantCard
+          key={chant.id}
+          dateCreated={chant.dateCreated}
+          numberLikes={chant.numberLikes}
+          title={chant.title}
+          body={chant.body}
+          channel={chant.channel}
+          id={chant.id}
+          author={chant.author}
+          overflow="hidden"
+          max="64px"
+        />
+      </div>
+      ))}
+      <EndCard marginLeft="64" />
+    </React.Fragment>);
+  }
+
+  render() {
+    const { isLoadingChannel } = this.state;
+    const { isLoadingChant } = this.state;
+
+    const { classes } = this.props;
+
     return (
       <React.Fragment>
-        <NavbarAuth  />
+        <NavbarAuth />
         <NavbarBack />
+
         <Container className={classes.root}>
           <Grid className={classes.grid} container spacing={24}>
             <Grid item xs={3}>
-              <ChannelCard title={channelDetail.title} description={channelDetail.description} coverImgUrl={channelDetail.coverImgUrl} />
+              {isLoadingChannel ? <LoadingFill /> : this.renderChannel()}
             </Grid>
             <Grid item xs={9}>
-              {fixture.map(chant => (
-                <div className = {classes.card}>
-                  <ChantCard key={chant.id} dateCreated={chant.dateCreated} 
-                  numberLikes={chant.numberLikes} title={chant.title} body={chant.body}
-                  channel={chant.channel} id={chant.id}/>
-                </div>  
-              ))}
-              <EndCard marginLeft="64"/>
+              {isLoadingChant ? <LoadingFill /> : this.renderChant()}
             </Grid>
           </Grid>
         </Container>

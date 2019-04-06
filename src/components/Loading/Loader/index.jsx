@@ -1,5 +1,5 @@
 import React from "react";
-import ContentLoader, { Facebook } from "react-content-loader";
+import ContentLoader, { Facebook, Instagram } from "react-content-loader";
 
 export function LinesLoader(props) {
   return (
@@ -12,3 +12,4 @@ export function LinesLoader(props) {
 }
 
 export const ProfileLoader = Facebook;
+export const CardLoader = Instagram;

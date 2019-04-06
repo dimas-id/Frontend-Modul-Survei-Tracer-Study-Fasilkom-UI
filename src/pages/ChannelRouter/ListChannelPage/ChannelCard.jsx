@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
@@ -11,6 +13,8 @@ import StarBorder from "@material-ui/icons/StarBorder";
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Grid from "@material-ui/core/Grid";
+
+import { withAuth } from "../../../components/hocs/auth";
 
 import { Guidelines } from "../../../styles";
 
@@ -32,21 +36,22 @@ const styles = theme => ({
   },
 });
 
-export default withStyles(styles)(function(props) {
-  const { classes } = props;
+class Screen extends React.PureComponent {
+  render() {
+    const { classes } = this.props;
   return (
     <Card className={classes.card}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={props.coverImgUrl}
+          image={this.props.coverImgUrl}
           title="Contemplative Reptile"
         />
         <CardContent>
         <Grid container item xs={12} spacing={24}>
         <Grid item xs={10}>
         <Typography gutterBottom variant="h6" component="h2" className={classes.content}>
-            {props.title}
+            {this.props.title}
           </Typography>
           </Grid>
           <Grid item xs={2}>
@@ -64,4 +69,22 @@ export default withStyles(styles)(function(props) {
       </CardActionArea>
     </Card>
   );
-});
+  }
+}
+
+function createContainer() {
+  const mapStateToProps = state => ({});
+
+  const mapDispatchToProps = dispatch => ({});
+
+  return withAuth(
+    withRouter(
+      connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )(withStyles(styles)(Screen))
+    )
+  );
+}
+
+export default createContainer();
