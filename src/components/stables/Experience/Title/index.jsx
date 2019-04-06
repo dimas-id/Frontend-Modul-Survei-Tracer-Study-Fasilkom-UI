@@ -1,7 +1,6 @@
 import React from "react";
 
 import { withStyles } from "@material-ui/core/styles";
-import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
