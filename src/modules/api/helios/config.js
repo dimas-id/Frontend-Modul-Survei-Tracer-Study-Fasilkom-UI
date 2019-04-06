@@ -1,4 +1,4 @@
-import env from "../../config";
+import env from "../../../config";
 
 export const API_V1_URL = `${env.HELIOS}/api/v1`;
 

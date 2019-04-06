@@ -61,7 +61,7 @@ const ROUTES = [
     },
     route: {
       path: "/users/:username",
-      component: () => <ProfileComponent />
+      component: () => <ProfileComponent/>
     }
   }
 ];

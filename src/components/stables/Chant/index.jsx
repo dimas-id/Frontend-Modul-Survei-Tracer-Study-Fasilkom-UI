@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
@@ -20,6 +22,10 @@ import { Guidelines } from "../../../styles";
 import { makePathVariableUri } from "../../../libs/navigation";
 import paths from "../../../pages/paths";
 
+import { withAuth } from "../../../components/hocs/auth";
+import { LoadingFill } from "../../../components/Loading";
+
+import atlasV1 from "../../../modules/api/atlas/v1";
 
 const styles = theme => ({
   card: {
@@ -39,52 +45,70 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(function(props) {
-  const { classes } = props;
-  const  margin = props.margin;
-  const overflow = props.overflow;
-  const max = props.max;
+class Screen extends React.Component{
+  state = {
+    isLoading: true,
+    userDetail: null
+  }
 
-  console.log("id" + props.id);
+  componentDidMount() {
+    atlasV1.session.getUserById(this.props.author).then(result => {
+      this.setState({ userDetail: result.data})
+    }).finally(()=>{
+      this.setState( { isLoading: false});
+    })
+  }
+  
+  renderCardHeader(){
+    const { name, } = this.state.userDetail
+    const { classes } = this.props;
+    const { profilePicUrl } = this.state.userDetail.profile;
 
-  console.log(overflow)
-  console.log(margin)
-  return (
-    <Card className={classes.card} style={{ marginLeft: props.margin + 'px' }} >
+    return (
       <CardHeader
         avatar={
-          <Avatar aria-label="Recipe" className={classes.avatar}>
-            R
-          </Avatar>
+          <Avatar alt={name} src={profilePicUrl} className={classes.avatar} />
         }
         action={
           <IconButton>
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader={props.dateCreated}
+        title={name}
+        subheader={this.props.dateCreated}
       />
+    );
+  }
+
+render() {
+  
+  const { classes, margin, overflow, max } = this.props;
+  const { isLoading } = this.state;
+
+  return (
+    <Card className={classes.card} style={{ marginLeft: margin + 'px' }} >
+      {isLoading ? <LoadingFill /> : this.renderCardHeader()}
+
       <CardContent>
         <Typography variant="title" gutterBottom>
-          {props.title}
+          {this.props.title}
         </Typography>
         <div className={classes.chantWrapper} style={{overflow: overflow, maxHeight: max, maxLine: max}}>
           <Typography variant="body2" gutterBottom>
-            {props.body}
+            {this.props.body}
           </Typography>
         </div>
       </CardContent>
       <CardActions className={classes.actions} disableActionSpacing>
         <Link to={makePathVariableUri(paths.CHANNEL_CHANT_DETAIL, {
-                      channelId: props.channel, chantId: props.id
+                      channelId: this.props.channel, chantId: this.props.id
                     })}>Lihat Detail... </Link>
         <div>
         <FormControlLabel
           control={
             <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} value="checkedH" />
           }
-          label={props.numberLikes}
+          label={this.props.numberLikes}
         />
           <IconButton aria-label="Share">
             <ShareIcon />
@@ -93,4 +117,22 @@ export default withStyles(styles)(function(props) {
         </CardActions>
     </Card>
   );
-});
+        }
+}
+
+function createContainer() {
+  const mapStateToProps = state => ({});
+
+  const mapDispatchToProps = dispatch => ({});
+
+  return withAuth(
+    withRouter(
+      connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )(withStyles(styles)(Screen))
+    )
+  );
+}
+
+export default createContainer();
