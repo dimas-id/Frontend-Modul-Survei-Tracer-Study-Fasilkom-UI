@@ -30,9 +30,9 @@ export default function utilityReducer(state, action) {
 }
 
 export const utilityActions = Object.freeze({
-  showAlert: alert => ({
+  showAlert: (title, message, onPositive, onNegative) => ({
     type: SHOW_ALERT,
-    payload: alert
+    payload: { title, message, onPositive, onNegative }
   }),
   hideAlert: () => ({
     type: HIDE_ALERT

@@ -50,3 +50,9 @@ export const store = createStore(
 );
 
 export const persistor = persistStore(store);
+
+window.alertDialog = function(title, message, onPositive, onNegative) {
+  store.dispatch(
+    utilityActions.showAlert(title, message, onPositive, onNegative)
+  );
+};

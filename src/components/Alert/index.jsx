@@ -13,6 +13,14 @@ import { getAlert, isShowAlert } from "../../modules/utility/selectors";
 
 function AlertDialog({ alert, open, hide }) {
   const { title, message, onPositive, onNegative } = alert || {};
+
+  function withHide(func) {
+    return (e) => {
+      func && func(e);
+      hide();
+    };
+  }
+
   return (
     <Dialog
       open={open}
@@ -27,11 +35,13 @@ function AlertDialog({ alert, open, hide }) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onNegative} color="primary">
-          Tidak
-        </Button>
-        <Button onClick={onPositive} color="primary" autoFocus>
-          Ya
+        {onNegative && (
+          <Button onClick={withHide(onNegative)} color="secondary">
+            Tidak
+          </Button>
+        )}
+        <Button onClick={withHide(onPositive)} color="primary" autoFocus>
+          Ok
         </Button>
       </DialogActions>
     </Dialog>
