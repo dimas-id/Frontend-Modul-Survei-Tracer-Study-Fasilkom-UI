@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom"
 
 import { withStyles } from "@material-ui/core/styles";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
@@ -17,7 +18,13 @@ import Particle from "../../components/Particle";
 import TableWithPaginate from "../../components/TableWithPaginate";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import { getDateFormatted } from "../../libs/datetime";
 
+import heliosV1 from "../../modules/api/helios/v1";
+import { getUserId } from "../../modules/session/selectors";
+import { LoadingFill } from "../../components/Loading";
+import { makePathVariableUri } from "../../libs/navigation";
+import paths from "../../pages/paths";
 
 const styles = theme => ({
   paper: {
@@ -33,52 +40,34 @@ const styles = theme => ({
   }
 });
 
+const STATUS = {
+  RJ: "Ditolak",
+  PR: "Diproses",
+  AC: "Diterima"
+};
 class Screen extends React.Component {
-  static propTypes = {
-    classes: PropTypes.shape().isRequired
-  };
-
   state = {
-    rows: [
-      {
-        id: 1,
-        title: "haha",
-        description: "Channel ini berisi manusia yang menyukai data dan science",
-        tanggal: "2019-01-01",
-        status: "LOL"
-      },
-      {
-        id: 1,
-        title: "haha",
-        description: "Channel ini berisi manusia yang menyukai data dan science",
-        tanggal: "2019-01-01",
-        status: "LOL"
-      },
-      {
-        id: 1,
-        title: "haha",
-        description: "Channel ini berisi manusia yang menyukai data dan science",
-        tanggal: "2019-01-01",
-        status: "LOL"
-      },
-      {
-        id: 1,
-        title: "haha",
-        description: "Channel ini berisi manusia yang menyukai data dan science",
-        tanggal: "2019-01-01",
-        status: "LOL"
-      },
-      {
-        id: 1,
-        title: "haha",
-        description: "Channel ini berisi manusia yang menyukai data dan science",
-        tanggal: "2019-01-01",
-        status: "LOL"
-      }
-      
-    ],
+    channelRequestList: null,
+    loading: true,
     page: 0,
     rowsPerPage: 5
+  };
+
+  componentDidMount() {
+    console.log(this.props);
+    heliosV1.channel
+      .getChannelRequestList(this.props.userId)
+      .then(result => {
+        console.log(result.data);
+        this.setState({ channelRequestList: result.data.results });
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
+  }
+
+  static propTypes = {
+    classes: PropTypes.shape().isRequired
   };
 
   handleChangePage = (event, page) => {
@@ -89,9 +78,60 @@ class Screen extends React.Component {
     this.setState({ page: 0, rowsPerPage: event.target.value });
   };
 
+  renderContent() {
+    const { classes } = this.props;
+    const { channelRequestList, page, rowsPerPage } = this.state;
+
+    return (
+      <React.Fragment>
+        <TableWithPaginate
+          columns={[
+            { name: "No." },
+            { name: "Judul Channel" },
+            { name: "Deskripsi" },
+            { name: "Tanggal Pengajuan" },
+            { name: "Status" },
+            { name: "Detail" }
+          ]}
+          rows={channelRequestList}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          renderRow={(row, index) => (
+            <TableRow key={row.id}>
+              <TableCell component="th" scope="row" align="center">
+                {index + 1}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {row.title}
+              </TableCell>
+              <TableCell align="center">{row.description}</TableCell>
+              <TableCell align="center">
+                {getDateFormatted(row.dateCreated, "DD MMMM YYYY")}
+              </TableCell>
+              <TableCell align="center">
+                {STATUS[row.verificationStatus]}
+              </TableCell>
+              <TableCell align="center">
+                <Button
+                  component={Link}
+                  to={makePathVariableUri(paths.CHANNEL_REQUEST_DETAIL, {
+                    channelId: row.id
+                  })}
+                  color="primary"
+                  className={classes.button}
+                >
+                  Lihat
+                </Button>
+              </TableCell>
+            </TableRow>
+          )}
+        />
+      </React.Fragment>
+    );
+  }
   render() {
     const { classes } = this.props;
-    const { rows, page, rowsPerPage } = this.state;
+    const { loading } = this.state;
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -104,37 +144,7 @@ class Screen extends React.Component {
             </Typography>
             <Grid container spacing={24}>
               <Grid item xs={12} sm={12}>
-                <TableWithPaginate
-                  columns={[
-                    { name: "No." },
-                    { name: "Judul Channel" },
-                    { name: "Deskripsi" },
-                    { name: "Tanggal Pengajuan" },
-                    { name: "Status" },
-                    { name: "Detail" }
-                  ]}
-                  renderRow={(row, index) => (
-                    <TableRow key={row.id}>
-                      <TableCell component="th" scope="row" align="center">
-                        {index + 1}
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        {row.title}
-                      </TableCell>
-                      <TableCell align="center">{row.description}</TableCell>
-                      <TableCell align="center">{row.tanggal}</TableCell>
-                      <TableCell align="center">{row.status}</TableCell>
-                      <TableCell align="center">
-                        <Button href="" color="primary" className={classes.button}>
-                          Lihat
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                  rows={rows}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                />
+                {loading ? <LoadingFill /> : this.renderContent()}
               </Grid>
             </Grid>
           </Paper>
@@ -145,7 +155,9 @@ class Screen extends React.Component {
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
+  const mapStateToProps = state => ({
+    userId: getUserId(state)
+  });
 
   const mapDispatchToProps = dispatch => ({});
 

@@ -15,6 +15,10 @@ import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
 
+import heliosV1 from "../../modules/api/helios/v1";
+import { getUserId } from "../../modules/session/selectors";
+import { BulletList } from "react-content-loader";
+
 const styles = theme => ({
   paper: {
     ...Guidelines.layouts.mt16,
@@ -56,13 +60,125 @@ const styles = theme => ({
   }
 });
 
-class Screen extends React.PureComponent {
+const STATUS = {
+  RJ: "Ditolak",
+  PR: "Diproses",
+  AC: "Diterima"
+};
+
+class Screen extends React.Component {
+  state = {
+    channelRequest: null,
+    loading: true
+  };
+
+  componentDidMount() {
+    const { channelId } = this.props.match.params;
+    heliosV1.channel
+      .getChannelRequestDetail(this.props.userId, channelId)
+      .then(result => {
+        console.log(result.data);
+        this.setState({ channelRequest: result.data });
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
+  }
+
   static propTypes = {
     classes: PropTypes.shape().isRequired
   };
 
+  renderContent() {
+    const { classes } = this.props;
+    const {
+      id,
+      coverImgUrl,
+      title,
+      description,
+      verificationStatus,
+      notes
+    } = this.state.channelRequest;
+    return (
+      <React.Fragment>
+        <Typography className={classes.title} variant="h5" component="h3">
+          Detail Pengajuan Channel
+        </Typography>
+        <Grid container spacing={24} className={classes.gridContainer}>
+          <Grid item xs={3} sm={3} className={classes.gridLabel}>
+            <Typography component="p" className={classes.label}>
+              Gambar
+            </Typography>
+          </Grid>
+          <Grid item xs={9} sm={9}>
+            <img
+              style={{
+                width: 80,
+                height: 80,
+                objectFit: "cover"
+              }}
+              src={coverImgUrl}
+              alt="cover channel"
+            />
+          </Grid>
+          <Grid item xs={3} sm={3} className={classes.gridLabel}>
+            <Typography component="p" className={classes.label}>
+              Judul
+            </Typography>
+          </Grid>
+          <Grid item xs={9} sm={9}>
+            <Typography component="p" className={classes.content}>
+              {title}
+            </Typography>
+          </Grid>
+          <Grid item xs={3} sm={3} className={classes.gridLabel}>
+            <Typography component="p" className={classes.label}>
+              Deskripsi
+            </Typography>
+          </Grid>
+          <Grid item xs={9} sm={9}>
+            <Typography component="p" className={classes.content}>
+              {description}
+            </Typography>
+          </Grid>
+          <Grid item xs={3} sm={3} className={classes.gridLabel}>
+            <Typography component="p" className={classes.label}>
+              Status
+            </Typography>
+          </Grid>
+          <Grid item xs={9} sm={9}>
+            <Typography component="p" className={classes.content}>
+              {STATUS[verificationStatus]}
+            </Typography>
+          </Grid>
+          <Grid item xs={3} sm={3} className={classes.gridLabel}>
+            <Typography component="p" className={classes.label}>
+              Alasan Penolakan
+            </Typography>
+          </Grid>
+          <Grid item xs={9} sm={9}>
+            <Typography component="p" className={classes.content}>
+              {notes}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={12} className={classes.gridBtn}>
+            <Button
+              className={`${classes.btn} ${classes.btnDelete}`}
+              variant="contained"
+            >
+              Hapus
+            </Button>
+            <Button className={classes.btn} variant="contained" color="primary">
+              Ubah
+            </Button>
+          </Grid>
+        </Grid>
+      </React.Fragment>
+    );
+  }
   render() {
     const { classes } = this.props;
+    const { loading } = this.state;
 
     return (
       <React.Fragment>
@@ -71,79 +187,7 @@ class Screen extends React.PureComponent {
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>
-            <Typography className={classes.title} variant="h5" component="h3">
-              Detail Pengajuan Channel
-            </Typography>
-            <Grid container spacing={24} className={classes.gridContainer}>
-              <Grid item xs={3} sm={3} className={classes.gridLabel}>
-                <Typography component="p" className={classes.label}>
-                  Gambar
-                </Typography>
-              </Grid>
-              <Grid item xs={9} sm={9}>
-                <img style={{
-                  width: 80,
-                  height: 80,
-                  objectFit: "cover"
-                }}src="https://www.incimages.com/uploaded_files/image/970x450/getty_509107562_2000133320009280346_351827.jpg"
-                alt="cover channel"/>
-              </Grid>
-              <Grid item xs={3} sm={3} className={classes.gridLabel}>
-                <Typography component="p" className={classes.label}>
-                  Judul
-                </Typography>
-              </Grid>
-              <Grid item xs={9} sm={9}>
-                <Typography component="p" className={classes.content}>
-                  bazubazuba
-                </Typography>
-              </Grid>
-              <Grid item xs={3} sm={3} className={classes.gridLabel}>
-                <Typography component="p" className={classes.label}>
-                  Deskripsi
-                </Typography>
-              </Grid>
-              <Grid item xs={9} sm={9}>
-                <Typography component="p" className={classes.content}>
-                  bazubazuba
-                </Typography>
-              </Grid>
-              <Grid item xs={3} sm={3} className={classes.gridLabel}>
-                <Typography component="p" className={classes.label}>
-                  Status
-                </Typography>
-              </Grid>
-              <Grid item xs={9} sm={9}>
-                <Typography component="p" className={classes.content}>
-                  bazubazuba
-                </Typography>
-              </Grid>
-              <Grid item xs={3} sm={3} className={classes.gridLabel}>
-                <Typography component="p" className={classes.label}>
-                  Alasan Penolakan
-                </Typography>
-              </Grid>
-              <Grid item xs={9} sm={9}>
-                <Typography component="p" className={classes.content}>
-                  bazubazuba
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={12} className={classes.gridBtn}>
-                <Button
-                  className={`${classes.btn} ${classes.btnDelete}`}
-                  variant="contained"
-                >
-                  Hapus
-                </Button>
-                <Button
-                  className={classes.btn}
-                  variant="contained"
-                  color="primary"
-                >
-                  Ubah
-                </Button>
-              </Grid>
-            </Grid>
+            {loading ? <BulletList /> : this.renderContent()}
           </Paper>
         </Container>
       </React.Fragment>
@@ -152,7 +196,9 @@ class Screen extends React.PureComponent {
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
+  const mapStateToProps = state => ({
+    userId: getUserId(state)
+  });
 
   const mapDispatchToProps = dispatch => ({});
 

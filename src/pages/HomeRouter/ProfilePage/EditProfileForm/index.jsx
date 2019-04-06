@@ -32,7 +32,6 @@ const styles = theme => ({
 });
 
 function EditProfileForm(props) {
-  console.log(user);
   const { classes, user } = props;
   return (
     <form className={classes.form}>
