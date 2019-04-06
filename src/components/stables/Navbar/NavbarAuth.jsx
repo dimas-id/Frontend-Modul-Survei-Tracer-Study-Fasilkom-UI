@@ -31,14 +31,14 @@ const styles = theme => {
       width: 160
     },
     appMenu: {
-      minHeight: 120,
+      minHeight: 90,
       maxWidth: "auto",
       maxHeight: "auto",
       overflowY: "hidden"
     },
     appMenuItem: {
-      width: 96,
-      height: 96,
+      width: 52,
+      height: 52,
       ...Guidelines.layouts.flexMiddle,
       ...Guidelines.layouts.flexDirCol
     },
