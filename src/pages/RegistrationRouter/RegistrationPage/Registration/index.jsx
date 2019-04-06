@@ -19,8 +19,6 @@ const styles = theme => ({
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.flexMiddle,
     ...Guidelines.layouts.w100,
-    ...Guidelines.layouts.pr24,
-    ...Guidelines.layouts.pl24,
     ...Guidelines.layouts.borderBox
   },
   title: {
@@ -69,7 +67,7 @@ class Registration extends React.Component {
 
   redirectToNextPage = () => {
     const { history } = this.props;
-    history.replace(paths.HOME);
+    history.replace(paths.REGISTER_WORK_POSITION);
   };
 
   handleRegistration = (values, actions) => {
