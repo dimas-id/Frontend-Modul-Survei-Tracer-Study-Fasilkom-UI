@@ -10,6 +10,8 @@ import { createBrowserHistory } from "history";
 
 // reducer
 import sessionReducer from "./session";
+import experienceReducer from "./experience";
+import utilityReducer, { utilityActions } from "./utility";
 
 // middleware
 import { loggerMiddleware } from "./logger";
@@ -24,13 +26,16 @@ const composeEnhancers =
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   session: persistReducer({ key: "session", storage }, sessionReducer),
+  experience: persistReducer({ key: "experience", storage }, experienceReducer),
+  utility: utilityReducer,
   router: connectRouter(history)
 });
 
 const middlewares = [
   thunk.withExtraArgument({
     // add extra argument from others
-    atlasAPIv1
+    atlasAPIv1,
+    utilityActions
   }),
   routerMiddleware(history)
 ];
@@ -45,3 +50,9 @@ export const store = createStore(
 );
 
 export const persistor = persistStore(store);
+
+window.alertDialog = async function(title, message, onPositive, onNegative) {
+  await store.dispatch(
+    utilityActions.showAlert(title, message, onPositive, onNegative)
+  );
+};

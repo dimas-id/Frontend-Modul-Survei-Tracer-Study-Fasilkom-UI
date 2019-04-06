@@ -1,0 +1,9 @@
+{
+    "estPaymentDate": "2019-04-04",
+    "amount": 200000,
+    "paymentDetail": {
+        "paymentNumber": "ILN1904F23342E",
+        "isSettled": true,
+        "dateSettled": "2019-04-04"
+    }
+}

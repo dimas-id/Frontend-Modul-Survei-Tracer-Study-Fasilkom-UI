@@ -6,8 +6,11 @@ import { ConnectedRouter } from "connected-react-router";
 import { PersistGate } from "redux-persist/integration/react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 
+
 import { history, store, persistor } from "./modules";
-import { setAuthToken } from "./modules/api/http";
+import { setAuthToken } from "./libs/http";
+
+import AlertDialog from "./components/Alert";
 import { SplashScreen } from "./components/Loading";
 
 import Pages from "./pages";
@@ -31,6 +34,7 @@ function App() {
           <ConnectedRouter history={history}>
             <Pages />
           </ConnectedRouter>
+          <AlertDialog />
         </MuiThemeProvider>
       </PersistGate>
     </Provider>

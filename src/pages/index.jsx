@@ -1,21 +1,32 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import LandingPage from './LandingPage';
-import HomePage from "./HomePage";
+import LandingPage from "./LandingPage";
+import HomeRouter from "./HomeRouter";
 import LoginPage from "./LoginPage";
 import Error404Page from "./Error404Page";
-import ErrorPage from './ErrorPage';
+import ErrorPage from "./ErrorPage";
+import CreateChantPage from "./CreateChantPage";
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
-import DonationFormPage from './DonationFormPage';
-import DonationPage from './DonationPage'
-import ChannelRequestPage from './ChannelRequestPage';
-import ChannelRequestListPage from './ChannelRequestListPage';
-
+import EmailTemplateCreatePage from "./EmailTemplateCreatePage";
+import EmailTemplateUpdatePage from "./EmailTemplateUpdatePage";
+import EmailTemplateListPage from "./EmailTemplateListPage";
+import DonationFormPage from "./DonationFormPage";
+import DonationPage from "./DonationPage";
+import DonationRequestPage from "./DonationRequestPage";
+import PaymentPage from "./PaymentPage";
+import UserDonationListPage from "./UserDonationListPage";
+import ChannelRequestPage from "./ChannelRequestPage";
+import ChannelRequestListPage from "./ChannelRequestListPage";
+import ChannelRequestDetailPage from "./ChannelRequestDetailPage";
+import ChannelRequestUpdatePage from "./ChannelRequestUpdatePage";
+import ChannelChantPage from "./ChannelChantPage";
+import UpdateChantPage from "./UpdateChantPage";
+import ChannelRouter from './ChannelRouter';
+import ChannelChantDetailPage from './ChannelChantDetailPage';
 
 import paths from "./paths";
-
 
 export default function Pages() {
   return (
@@ -42,7 +53,7 @@ const ROUTES = [
     title: "Home",
     route: {
       path: paths.HOME,
-      component: HomePage
+      component: HomeRouter
     }
   },
   {
@@ -50,6 +61,62 @@ const ROUTES = [
     route: {
       path: paths.LOGIN,
       component: LoginPage
+    }
+  },
+  {
+    title: "Donation Request List",
+    route: {
+      path: paths.DONATION_REQUEST,
+      component: DonationRequestPage
+    }
+  },
+  {
+    title: "Riwayat Donasi",
+    route: {
+      path: paths.USER_DONATION_LIST,
+      component: UserDonationListPage
+    }
+  },
+  {
+    title: "Detail Pembayaran",
+    route: {
+      path: paths.DONATION_PAYMENT_DETAIL,
+      component: PaymentPage
+    }
+  },
+  {
+    title: "Create Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_CREATE,
+      component: CreateChantPage
+    }
+  },
+  {
+    title: "Update Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_UPDATE,
+      component: UpdateChantPage
+    }
+  },
+  {
+    title: "Donation Request List",
+    route: {
+      path: paths.DONATION_REQUEST,
+      component: DonationRequestPage
+    }
+  },
+  {
+    title: "Riwayat Donasi",
+    route: {
+      path: paths.USER_DONATION_LIST,
+      component: UserDonationListPage
+    }
+  },
+  {
+    title: "Detail Pembayaran",
+    route: {
+      path: paths.DONATION_PAYMENT_DETAIL,
+      component: PaymentPage
     }
   },
   {
@@ -62,7 +129,7 @@ const ROUTES = [
   {
     title: "Donasi",
     route: {
-      exact : true,
+      exact: true,
       path: paths.DONASI,
       component: DonationPage
     }
@@ -82,6 +149,30 @@ const ROUTES = [
     }
   },
   {
+    title: "Email Template List",
+    route: {
+      exact: true,
+      path: paths.CRM_EMAIL_TEMPLATE_LIST,
+      component: EmailTemplateListPage
+    }
+  },
+  {
+    title: "Email Template Create",
+    route: {
+      exact: true,
+      path: paths.CRM_EMAIL_TEMPLATE_CREATE,
+      component: EmailTemplateCreatePage
+    }
+  },
+  {
+    title: "Email Template Update",
+    route: {
+      exact: true,
+      path: paths.CRM_EMAIL_TEMPLATE_UPDATE,
+      component: EmailTemplateUpdatePage
+    }
+  },
+  {
     title: "Channel Request",
     route: {
       path: paths.CHANNEL_REQUEST,
@@ -93,6 +184,50 @@ const ROUTES = [
     route: {
       path: paths.CHANNEL_REQUEST_LIST,
       component: ChannelRequestListPage
+    }
+  },
+  {
+    title: "Channel Request Detail",
+    route: {
+      path: paths.CHANNEL_REQUEST_DETAIL,
+      component: ChannelRequestDetailPage
+    }
+  },
+  {
+    title: "Channel Request Update",
+    route: {
+      path: paths.CHANNEL_REQUEST_UPDATE,
+      component: ChannelRequestUpdatePage
+    }
+  },
+  {
+    title: "Daftar Channel",
+    route: {
+      exact: true,
+      path: paths.CHANNEL,
+      component: ChannelRouter
+    }
+  },
+  {
+    title: "Channel Chant",
+    route: {
+      exact: true,
+      path: paths.CHANNEL_CHANT,
+      component: ChannelChantPage
+    }
+  },
+  {
+    title: "Detail Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_DETAIL,
+      component: ChannelChantDetailPage
+    }
+  },
+  {
+    title: "Daftar Channel",
+    route: {
+      path: paths.CHANNEL,
+      component: ChannelRouter
     }
   },
   {
@@ -108,5 +243,5 @@ const ROUTES = [
       path: paths.ERROR_404,
       component: Error404Page
     }
-  },
+  }
 ];

@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "numberSubscribers": 0,
+        "hasSubscribedByCurrentUser": false,
+        "dateCreated": "2019-04-02T19:49:07.125641+07:00",
+        "dateUpdated": "2019-04-02T19:49:07.125641+07:00",
+        "title": "channel AA",
+        "description": "haha baterai",
+        "coverImgUrl": "http://google.com",
+        "verificationStatus": "AC",
+        "isActive": true,
+        "notes": "",
+        "moderators": []
+    },
+    {
+        "id": 2,
+        "numberSubscribers": 0,
+        "hasSubscribedByCurrentUser": false,
+        "dateCreated": "2019-04-03T11:06:45.316742+07:00",
+        "dateUpdated": "2019-04-03T11:06:45.316742+07:00",
+        "title": "Channel Gedung Bundar",
+        "description": "Channel Anak Fasilkom yang hits Icons can convey all sorts of meaningful information, so it’s important that they reach the largest amount of people possible. There are two use cases you’ll want to consider:\r\n\r\nDecorative Icons are only being used for visual or branding reinforcement. If they were removed from the page, users would still understand and be able to use your page.\r\nSemantic Icons are ones that you’re using to convey meaning, rather than just pure decoration. This includes icons without text next to them used as interactive controls — buttons, form elements, toggles, etc.",
+        "coverImgUrl": "https://cdn.vox-cdn.com/thumbor/a4HlmGXx-miSgKZMI3GFOtT59cY=/0x0:2000x1436/1200x800/filters:focal(899x691:1219x1011)/cdn.vox-cdn.com/uploads/chorus_image/image/52405737/charaMainVisual.0.png",
+        "verificationStatus": "AC",
+        "isActive": true,
+        "notes": "",
+        "moderators": []
+    },
+    {
+        "id": 3,
+        "numberSubscribers": 0,
+        "hasSubscribedByCurrentUser": false,
+        "dateCreated": "2019-04-03T11:09:25.234975+07:00",
+        "dateUpdated": "2019-04-03T11:09:25.234975+07:00",
+        "title": "Channel KBOOO",
+        "description": "Korea is a region in East Asia. Since 1948, it has been divided between two distinct sovereign states: North Korea and South Korea. Korea consists of the Korean Peninsula, Jeju Island, and several minor islands near the peninsula. Korea is bordered by China to the northwest, Russia to the northeast, and neighbours Japan to the east by the Korea Strait and the Sea of Japan (East Sea).\r\n\r\nDuring the first half of the 1st millennium, Korea was divided between the three competing states of Baekje, Goguryeo, and Silla, together known as the \"Three Kingdoms of Korea\". In the second half of the 1st millennium, Baekje and Goguryeo were conquered by Silla, leading to the \"Unified Silla\" period. Meanwhile, Balhae formed in the north following the collapse of Goguryeo. Unified Silla eventually collapsed into three separate states due to civil war, ushering in the Later Three Kingdoms. Toward the end of the 1st millennium Goryeo, which was a revival of Goguryeo, defeated the two other states and unified the Korean Peninsula as one single state. Around the same time, Balhae collapsed and its last crown prince fled south to Goryeo. Goryeo (also spelled as Koryŏ), whose name developed into the modern exonym \"Korea\", was a highly cultured state that created the world's first metal movable type in 1234.[5][6][7][8][9][10] However, multiple invasions by the Mongol Empire during the 13th century greatly weakened the nation, which eventually agreed to become a vassal state after decades of fighting. Following military resistance under King Gongmin which ended Mongol political influence in Goryeo, severe political strife followed, and Goryeo eventually fell to a coup led by General Yi Seong-gye, who established Joseon in 1392.",
+        "coverImgUrl": "https://upload.wikimedia.org/wikipedia/en/e/ec/7th_century_painting_of_Koreans.png",
+        "verificationStatus": "AC",
+        "isActive": true,
+        "notes": "",
+        "moderators": []
+    },
+    {
+        "id": 4,
+        "numberSubscribers": 0,
+        "hasSubscribedByCurrentUser": false,
+        "dateCreated": "2019-04-03T12:04:16.281759+07:00",
+        "dateUpdated": "2019-04-03T12:04:16.281759+07:00",
+        "title": "Channel BEHE",
+        "description": "<% @items.each_slice(3) do |array_of_3_items|%>\r\n  <div class=\"row\">\r\n    <div class=\"three columns\">\r\n      <% array_of_3_items.each do |item|%>\r\n        <div class=\"item\">\r\n          <%= item.content %>\r\n        </div>\r\n      <% end %>\r\n    </div>\r\n  </div>\r\n<% end %>",
+        "coverImgUrl": "https://cdn.wallpaper.com/main/styles/wp_large/s3/2016/07/kartellchair.jpg",
+        "verificationStatus": "AC",
+        "isActive": true,
+        "notes": "",
+        "moderators": []
+    }
+]

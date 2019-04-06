@@ -29,14 +29,13 @@ function NavbarBack({ classes, history, title, Content }) {
       <Toolbar>
         <IconButton
           className={classes.menuButton}
-          color="inherit"
           aria-label="Menu"
           onClick={history.goBack}
         >
           <ArrowBack />
         </IconButton>
         {title && (
-          <Typography variant="h6" color="inherit" className={classes.grow}>
+          <Typography variant="h6" className={classes.grow}>
             {title}
           </Typography>
         )}

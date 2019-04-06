@@ -62,11 +62,12 @@ const styles = theme => {
 class NavbarAuth extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     position: PropTypes.string
   };
 
   static defaultProps = {
+    title: "",
     position: "sticky"
   };
 
@@ -103,7 +104,6 @@ class NavbarAuth extends React.Component {
     return isLoggedIn ? null : (
       <div>
         <Button
-          color="inherit"
           className={classes.buttonAsText}
           component={Link}
           to={paths.REGISTER}
@@ -111,7 +111,6 @@ class NavbarAuth extends React.Component {
           Daftar
         </Button>
         <Button
-          color="inherit"
           className={classes.buttonAsText}
           component={Link}
           to={paths.LOGIN}
@@ -132,7 +131,6 @@ class NavbarAuth extends React.Component {
           aria-owns={open ? "menu-appbar" : undefined}
           aria-haspopup="true"
           onClick={this.handleOpenAppMenu}
-          color="inherit"
         >
           <AppsIcon />
         </IconButton>
@@ -156,21 +154,33 @@ class NavbarAuth extends React.Component {
         >
           <Grid container spacing={24}>
             <Grid item xs={4}>
-              <MenuItem className={classes.appMenuItem}>
+              <MenuItem
+                className={classes.appMenuItem}
+                component={Link}
+                to={paths.HOME}
+              >
+                <AccountCircleIcon fontSize="large" />
+                <Typography>Akun</Typography>
+              </MenuItem>
+            </Grid>
+            <Grid item xs={4}>
+              <MenuItem
+                className={classes.appMenuItem}
+                component={Link}
+                to={paths.CHANNEL}
+              >
                 <AccountCircleIcon fontSize="large" />
                 <Typography>Channel</Typography>
               </MenuItem>
             </Grid>
             <Grid item xs={4}>
-              <MenuItem className={classes.appMenuItem}>
+              <MenuItem
+                className={classes.appMenuItem}
+                component={Link}
+                to={paths.DONASI}
+              >
                 <AccountCircleIcon fontSize="large" />
                 <Typography>Donasi</Typography>
-              </MenuItem>
-            </Grid>
-            <Grid item xs={4}>
-              <MenuItem className={classes.appMenuItem}>
-                <AccountCircleIcon fontSize="large" />
-                <Typography>Akun</Typography>
               </MenuItem>
             </Grid>
           </Grid>
@@ -189,7 +199,6 @@ class NavbarAuth extends React.Component {
           aria-owns={open ? "menu-userbar" : undefined}
           aria-haspopup="true"
           onClick={this.handleOpenUserMenu}
-          color="inherit"
         >
           <AccountCircleIcon />
         </IconButton>
@@ -234,12 +243,11 @@ class NavbarAuth extends React.Component {
             to="/"
             disableRipple
             className={classes.menuButton}
-            color="inherit"
             aria-label="Menu"
           >
             <img src={Logo} alt="ILUNI12 Logo" />
           </Button>
-          <Typography variant="h6" color="inherit" className={classes.title}>
+          <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>
           {this.renderNotLoggedInMenu()}

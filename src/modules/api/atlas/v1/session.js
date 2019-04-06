@@ -3,7 +3,7 @@ import pick from "lodash/pick";
 import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
 
-import http from "../../http";
+import http from "../../../../libs/http";
 import { API_V1_URL } from "../config";
 
 export default Object.freeze({

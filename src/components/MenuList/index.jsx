@@ -22,7 +22,7 @@ const styles = theme => ({
     }
   },
   primary: {
-    fontSize: 24
+    fontSize: 20
   },
   icon: {}
 });
@@ -31,24 +31,28 @@ function Menu({ classes, paths }) {
   return (
     <Paper className={classes.paper}>
       <MenuList>
-        {paths.map(({ menu, title }) => (
-          <MenuItem
-            className={classes.menuItem}
-            component={Link}
-            to={menu.path}
-          >
-            {menu.Icon && (
-              <ListItemIcon className={classes.icon}>
-                {<menu.Icon fontSize="large" />}
-              </ListItemIcon>
-            )}
-            <ListItemText
-              classes={{ primary: classes.primary }}
-              inset
-              primary={title}
-            />
-          </MenuItem>
-        ))}
+        {paths.map(
+          ({ menu, title }) =>
+            menu && (
+              <MenuItem
+                key={menu.path}
+                className={classes.menuItem}
+                component={Link}
+                to={menu.path}
+              >
+                {menu.Icon && (
+                  <ListItemIcon className={classes.icon}>
+                    {<menu.Icon fontSize="large" />}
+                  </ListItemIcon>
+                )}
+                <ListItemText
+                  classes={{ primary: classes.primary }}
+                  inset
+                  primary={title}
+                />
+              </MenuItem>
+            )
+        )}
       </MenuList>
     </Paper>
   );
