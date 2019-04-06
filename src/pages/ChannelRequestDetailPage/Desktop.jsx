@@ -92,7 +92,6 @@ class Screen extends React.Component {
   renderContent() {
     const { classes } = this.props;
     const {
-      id,
       coverImgUrl,
       title,
       description,
