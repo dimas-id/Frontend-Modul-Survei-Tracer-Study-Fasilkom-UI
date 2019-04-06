@@ -35,6 +35,7 @@ function Menu({ classes, paths }) {
           ({ menu, title }) =>
             menu && (
               <MenuItem
+                key={menu.path}
                 className={classes.menuItem}
                 component={Link}
                 to={menu.path}

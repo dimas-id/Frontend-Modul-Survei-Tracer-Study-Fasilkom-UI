@@ -41,9 +41,9 @@ function Education({ load, educations, userId }) {
       )}
       {isLoading && (
         <Grid className={classes.gridContainer} container spacing={24}>
-          {Array.apply(null, Array(4)).map(item => (
-            <Grid item xs={12}>
-              <ExperienceItem key={item} loading />
+          {Array.apply(null, Array(4)).map((item, index) => (
+            <Grid item xs={12} key={index}>
+              <ExperienceItem loading />
             </Grid>
           ))}
         </Grid>
@@ -51,7 +51,7 @@ function Education({ load, educations, userId }) {
       {!isEduEmpty && (
         <Grid className={classes.gridContainer} container spacing={24}>
           {educations.map(edu => (
-            <Grid item xs={12}>
+            <Grid item xs={12} key={edu.id}>
               <ExperienceItem
                 key={edu.id}
                 title={edu.schoolName}
