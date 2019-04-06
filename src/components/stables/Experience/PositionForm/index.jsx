@@ -17,15 +17,20 @@ import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 
 import { getDateFormatted } from "../../../../libs/datetime";
-import { createPositions } from "../../../../modules/experience/thunks";
+import {
+  createPositions,
+  updateWorkPositionById,
+  deleteWorkPositionById
+} from "../../../../modules/experience/thunks";
+import { getWorkPositionById } from "../../../../modules/experience/selectors";
 import { Validation } from "../../../hocs/form";
 
 const FIELDS = keymirror({
   title: null,
   companyName: null,
   industryName: null,
-  isCurrent: null,
   locationName: null,
+  isCurrent: null,
   dateStarted: null,
   dateEnded: null
 });
@@ -45,17 +50,31 @@ const VALIDATOR = Validation.object().shape({
     .max(64),
   [FIELDS.isCurrent]: Validation.bool().notRequired(),
   [FIELDS.dateStarted]: Validation.date().required(),
-  [FIELDS.dateEnded]: Validation.date().notRequired()
+  [FIELDS.dateEnded]: Validation.date()
+    .notRequired()
+    .nullable()
 });
 
+function getBlankValues() {
+  return {
+    [FIELDS.title]: "",
+    [FIELDS.companyName]: "",
+    [FIELDS.industryName]: "",
+    [FIELDS.locationName]: "",
+    [FIELDS.isCurrent]: false,
+    [FIELDS.dateStarted]: null,
+    [FIELDS.dateEnded]: null
+  };
+}
+
 function PositionForm({
+  currentPosition,
   update,
   afterSubmit,
   positionId,
   createPos,
   updatePos,
-  deletePos,
-  initialValues
+  deletePos
 }) {
   function submit(values, { setSubmitting }) {
     const payload = { ...omit(values, [FIELDS.isCurrent]) };
@@ -87,7 +106,7 @@ function PositionForm({
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={currentPosition || getBlankValues()}
       validationSchema={VALIDATOR}
       validate={validate}
       isInitialValid={update}
@@ -102,7 +121,7 @@ function PositionForm({
         handleSubmit,
         isSubmitting
       }) => (
-        <form>
+        <form id="positionForm">
           <DialogContent>
             <Grid container spacing={24}>
               <Grid item xs={12}>
@@ -224,7 +243,10 @@ function PositionForm({
           </DialogContent>
           <DialogActions>
             {update && (
-              <Button color="secondary" onClick={() => null}>
+              <Button
+                color="secondary"
+                onClick={() => deletePos(positionId).then(afterSubmit)}
+              >
                 Hapus
               </Button>
             )}
@@ -244,14 +266,19 @@ function PositionForm({
 }
 
 function createContainer() {
+  const mapStateToProps = (state, { positionId }) => ({
+    currentPosition: getWorkPositionById(state, positionId)
+  });
+
   const mapDispatchToProps = dispatch => ({
     createPos: payload => dispatch(createPositions(payload)),
-    updatePos: (positionId, payload) => null,
-    deletePos: positionId => null
+    updatePos: (positionId, payload) =>
+      dispatch(updateWorkPositionById(positionId, payload)),
+    deletePos: positionId => dispatch(deleteWorkPositionById(positionId))
   });
 
   return connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(PositionForm);
 }

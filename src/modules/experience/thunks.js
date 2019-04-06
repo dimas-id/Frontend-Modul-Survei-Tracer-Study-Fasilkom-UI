@@ -47,6 +47,22 @@ export const updateWorkPositionById = (positionId, positionData) => {
   };
 };
 
+export const deleteWorkPositionById = positionId => {
+  return async (dispatch, getState, { atlasAPIv1 }) => {
+    try {
+      const userId = getUserId(getState());
+      const resp = await atlasAPIv1.experience.deletePosition(
+        userId,
+        positionId
+      );
+      await dispatch(loadPositions(userId));
+      return resp;
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+
 export const loadEducations = userId => {
   return async (dispatch, _, { atlasAPIv1 }) => {
     try {

@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import { withAuth } from "../../../components/hocs/auth";
 import { NavbarAuth } from "../../../components/stables/Navbar";
@@ -9,7 +10,6 @@ import FormDialog from "../../../components/FormDialog";
 import Title from "../../../components/stables/Experience/Title";
 import WorkPosition from "../../../components/stables/Experience/WorkPosition";
 import PositionForm from "../../../components/stables/Experience/PositionForm";
-import clsx from "clsx";
 
 class WorkPositionPage extends React.Component {
   static propTypes = {
@@ -23,21 +23,21 @@ class WorkPositionPage extends React.Component {
   handleShowModalNew = () =>
     this.setState({
       showModal: true,
-      updateIndex: -1,
+      positionId: null,
       isNewPosition: true
     });
 
-  handleShowModalUpdate = index =>
+  handleShowModalUpdate = positionId =>
     this.setState({
+      positionId,
       showModal: true,
-      updateIndex: index,
       isNewPosition: false
     });
 
   __handleCloseModal__ = () =>
     this.setState({
       showModal: false,
-      updateIndex: null,
+      positionId: null,
       isNewPosition: false
     });
 
@@ -60,7 +60,7 @@ class WorkPositionPage extends React.Component {
   };
 
   renderDialogWithForm() {
-    const { showModal, updateIndex, isNewPosition } = this.state;
+    const { showModal, positionId, isNewPosition } = this.state;
 
     const title = isNewPosition ? "Tambah Posisi" : "Ubah Posisi";
 
@@ -72,6 +72,7 @@ class WorkPositionPage extends React.Component {
       >
         <PositionForm
           update={!isNewPosition}
+          positionId={positionId}
           afterSubmit={this.handleAfterSubmit}
         />
       </FormDialog>
@@ -103,7 +104,7 @@ class WorkPositionPage extends React.Component {
 }
 
 function createContainer() {
-  return withAuth(WorkPositionPage);
+  return withAuth(connect(state => ({}))(WorkPositionPage));
 }
 
 export default createContainer();

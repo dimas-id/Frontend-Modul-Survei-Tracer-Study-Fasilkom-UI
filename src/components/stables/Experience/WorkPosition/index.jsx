@@ -42,9 +42,9 @@ function WorkPosition({ onAdd, onEdit, load, positions, userId }) {
       )}
       {isLoading && (
         <Grid className={classes.gridContainer} container spacing={24}>
-          {Array.apply(null, Array(4)).map(item => (
-            <Grid item xs={12}>
-              <ExperienceItem key={item} loading />
+          {Array.apply(null, Array(4)).map((item, index) => (
+            <Grid item xs={12} key={index}>
+              <ExperienceItem loading />
             </Grid>
           ))}
         </Grid>
@@ -52,9 +52,9 @@ function WorkPosition({ onAdd, onEdit, load, positions, userId }) {
       {!isPositionsEmpty && (
         <Grid className={classes.gridContainer} container spacing={24}>
           {positions.map(pos => (
-            <Grid item xs={12}>
+            <Grid item xs={12} key={pos.id}>
               <ExperienceItem
-                onClick={onEdit}
+                onClick={() => onEdit(pos.id)}
                 key={pos.id}
                 title={pos.title}
                 subtitle={`${pos.companyName} - ${pos.industryName}`}

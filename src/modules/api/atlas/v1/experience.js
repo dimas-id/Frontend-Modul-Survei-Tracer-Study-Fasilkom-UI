@@ -13,6 +13,8 @@ export default Object.freeze({
     }),
   updatePosition: (userId, positionId, payload) =>
     http.put(`${API_V1_URL}/users/${userId}/positions/${positionId}`, payload),
+  deletePosition: (userId, positionId) =>
+    http.delete(`${API_V1_URL}/users/${userId}/positions/${positionId}`),
   getEducations: (userId, offset, limit) =>
     http.get(`${API_V1_URL}/users/${userId}/educations`, {
       params: {
