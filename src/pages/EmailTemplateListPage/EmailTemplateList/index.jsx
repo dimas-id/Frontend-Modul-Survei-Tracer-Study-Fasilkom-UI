@@ -1,18 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 
 import { getDateFormatted } from "../../../libs/datetime";
+import { makePathVariableUri } from "../../../libs/navigation";
+import paths from "../../../pages/paths";
 import fixture from "../fixture.json";
+import { Guidelines } from "../../../styles";
 
 const styles = theme => ({
   root: {
@@ -20,11 +23,15 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     position: "relative",
     overflow: "auto",
-    maxHeight: 400
+    height: "55vh",
   },
   paper: {
-    width: "100%",
-    height: "100%"
+    ...Guidelines.layouts.flexDirCol,
+    ...Guidelines.layouts.flexMiddle,
+    ...Guidelines.layouts.pt32,
+    ...Guidelines.layouts.pr32,
+    ...Guidelines.layouts.pl32,
+    ...Guidelines.layouts.pb32
   },
   listSection: {
     backgroundColor: "inherit"
@@ -44,16 +51,25 @@ class EmailTemplateList extends React.Component {
     this.setState(state => ({ open: !state.open }));
   };
 
+  handleClickDelete = () => {
+    window.alertDialog("Konfirmasi Penghapusan", "Apakah anda yakin menghapus templat ini?", () => {})
+  };
+
   render() {
     const { classes } = this.props;
     const data = fixture.results;
-
+    
     return (
       <React.Fragment>
         <Paper className={classes.paper}>
           <List className={classes.root}>
             {data.map(template => (
-              <ListItem button onClick={this.handleClick}>
+              <ListItem
+                button
+                onClick={this.handleClick}
+                to={makePathVariableUri(paths.CRM_EMAIL_TEMPLATE_UPDATE, { idEmailTemplate: template.id })}
+                component={Link}
+              >
                 <ListItemText
                   primary={template.title}
                   secondary={`Dibuat pada ${getDateFormatted(
@@ -61,10 +77,7 @@ class EmailTemplateList extends React.Component {
                   )}`}
                 />
                 <ListItemSecondaryAction>
-                  <IconButton aria-label="Edit">
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton aria-label="Delete">
+                  <IconButton aria-label="Delete" onClick={this.handleClickDelete}>
                     <DeleteIcon color="error" />
                   </IconButton>
                 </ListItemSecondaryAction>
