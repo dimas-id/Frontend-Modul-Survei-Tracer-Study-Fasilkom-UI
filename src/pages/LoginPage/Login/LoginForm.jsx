@@ -8,18 +8,20 @@ import Fade from "@material-ui/core/Fade";
 
 import { layouts } from "../../../styles/guidelines";
 import { enhanceForm } from "../../../components/hocs/form";
+import LinkedInButton from "../../../components/stables/LinkedInButton";
 
 const styles = theme => ({
   form: {
     ...layouts.flexDirCol,
     ...layouts.flexMiddle,
-    ...layouts.w100,
+    ...layouts.w100
   },
   textField: {
-    ...layouts.w100,
+    ...layouts.w100
   },
   btn: {
     ...layouts.mt64,
+    ...layouts.mb24
   }
 });
 
@@ -84,6 +86,7 @@ const LoginForm = withStyles(styles)(
           "Masuk"
         )}
       </Button>
+      <LinkedInButton fullWidth>Masuk dengan Linkedin</LinkedInButton>
     </form>
   )
 );

@@ -45,9 +45,9 @@ export default function sessionReducer(state, action) {
 }
 
 export const sessionAction = Object.freeze({
-  setToken: token => ({
+  setToken: (access, refresh) => ({
     type: SET_TOKEN,
-    payload: token
+    payload: { access, refresh }
   }),
 
   clearToken: () => ({
