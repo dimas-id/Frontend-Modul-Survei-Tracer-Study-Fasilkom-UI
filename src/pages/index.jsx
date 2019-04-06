@@ -175,6 +175,7 @@ const ROUTES = [
   {
     title: "Channel Request",
     route: {
+      exact: true,
       path: paths.CHANNEL_REQUEST,
       component: ChannelRequestPage
     }
