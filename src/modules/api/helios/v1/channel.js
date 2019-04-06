@@ -7,5 +7,6 @@ export default Object.freeze({
     getListChantReply: (channelId, chantId) => http.get(`${API_V1_URL}/channels/${channelId}/chants/${chantId}`),
     getListChannel: () => http.get(`${API_V1_URL}/channels`),
     getListChantUser: userId => http.get(`${API_V1_URL}/users/${userId}/chants`),
-    getChannelRequestList: userId => http.get(`${API_V1_URL}/users/${userId}/channel-requests/`)
+    getChannelRequestList: userId => http.get(`${API_V1_URL}/users/${userId}/channel-requests/`),
+    getTimeline: () => http.get(`${API_V1_URL}/timeline`)
 })
