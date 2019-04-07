@@ -4,7 +4,8 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
-import AttachmentIcon from "@material-ui/icons/Attachment";
+
+import FileUploadInput from "../../../components/stables/FileUploadInput";
 
 import { layouts, fonts } from "../../../styles/guidelines";
 
@@ -19,7 +20,7 @@ const styles = theme => ({
   },
   textField: {
     ...layouts.w100,
-    width: "75vw"
+    width: "65vw"
   },
   label: {
     ...layouts.marginAuto,
@@ -35,8 +36,9 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(function(props) {
-  const { classes } = props;
+function ChantCreateForm({
+  classes, title, body, onChantTitle, onChangeBody, onSubmit
+}) {
   return (
     <form className={classes.form}>
       <div className={classes.formInline}>
@@ -48,6 +50,8 @@ export default withStyles(styles)(function(props) {
           id="title"
           label="Judul Chant hari ini?"
           className={classes.textField}
+          onChange={onChantTitle}
+          value={title}
           margin="normal"
           variant="outlined"
           required
@@ -63,24 +67,30 @@ export default withStyles(styles)(function(props) {
           multiline
           rowsMax="5"
           className={classes.textField}
+          onChange={onChangeBody}
           margin="normal"
           variant="outlined"
+          value={body}
           required
         />
       </div>
       <div className={classes.formInline}>
-        <Button className={classes.buttonPic}>
-          <AttachmentIcon />
-        </Button>
+        <div className={classes.buttonPic}>
+        <FileUploadInput 
+                  onChange={console.log}
+                  accept="application/pdf"/>
+                  </div>
         <Button
           variant="contained"
           color="primary"
           className={classes.button}
-          type="submit"
+          onClick={onSubmit}
         >
           Chant!
         </Button>
       </div>
     </form>
-  );
-});
+  )
+}
+
+export default withStyles(styles)(ChantCreateForm);
