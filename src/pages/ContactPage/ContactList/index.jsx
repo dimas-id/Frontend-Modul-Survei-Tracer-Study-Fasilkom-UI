@@ -87,7 +87,6 @@ class ContactList extends React.Component {
       }
     }
 
-    console.log(params)
     this.setState({ loading: true }, () => {
       atlasV1.contact
         .getContactList(...params) // func(...[name, category]) => func(name, category)
