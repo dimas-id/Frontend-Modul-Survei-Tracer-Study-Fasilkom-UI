@@ -46,6 +46,7 @@ class Screen extends React.Component {
     heliosV1.donation
       .getDonationProgramList()
       .then(result => {
+        console.log(result.data)
         this.setState({ donationProgramList: result.data.results });
       })
       .finally(() => {

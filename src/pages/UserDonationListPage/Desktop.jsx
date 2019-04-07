@@ -17,6 +17,9 @@ import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
 import { LinesLoader} from "../../components/Loading";
+import { Link } from "react-router-dom";
+import paths from "../paths";
+import { makePathVariableUri } from "../../libs/navigation";
 
 const styles = theme => ({
   container: {
@@ -97,7 +100,13 @@ class Screen extends React.Component {
                     <TableCell align="center">{row.dateCreated}</TableCell>
                     <TableCell align="center">{row.paymentDetail.isSettled ? "Lunas" : "Belum Bayar"}</TableCell>
                     <TableCell align="center">
-                      <Button href="#text-buttons" className={classes.button}>
+                      <Button 
+                      component={Link}
+                      to={makePathVariableUri(paths.DONATION_PAYMENT_DETAIL , {
+                        donationId: row.id
+                      })}
+                      href="#text-buttons" 
+                      className={classes.button}>
                         Lihat
                       </Button>
                     </TableCell>

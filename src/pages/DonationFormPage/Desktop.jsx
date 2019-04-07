@@ -106,7 +106,7 @@ class Screen extends React.Component {
   componentDidMount() {
     const donationId  = this.props.match.params.idProgram;
     heliosV1.donation
-      .getDetailDonationProgramDetail(this.props.user.id, donationId)
+      .getDonationProgramDetail(donationId)
       .then(result => {
         this.setState({ donationProgram: result.data });
       })
