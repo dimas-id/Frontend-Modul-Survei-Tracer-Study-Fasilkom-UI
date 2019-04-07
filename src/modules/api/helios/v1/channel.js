@@ -10,5 +10,11 @@ export default Object.freeze({
     getChannelRequestList: userId => http.get(`${API_V1_URL}/users/${userId}/channel-requests/`),
     getChannelRequestDetail: (userId, channelId) => 
     http.get(`${API_V1_URL}/users/${userId}/channel-requests/${channelId}`),
-    getTimeline: () => http.get(`${API_V1_URL}/timeline`)
+    getTimeline: () => http.get(`${API_V1_URL}/timeline`),
+    postChant: (userId, channel, title, body) => 
+        http.post(`${API_V1_URL}/users/${userId}/chants`, {
+            title,
+            body,
+            channel
+        }),
 })
