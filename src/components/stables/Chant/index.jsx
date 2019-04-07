@@ -20,6 +20,7 @@ import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 
 import { Guidelines } from "../../../styles";
 import { makePathVariableUri } from "../../../libs/navigation";
+import { getDateFormatted } from "../../../libs/datetime";
 import paths from "../../../pages/paths";
 
 import { withAuth } from "../../../components/hocs/auth";
@@ -47,22 +48,20 @@ const styles = theme => ({
 
 class Screen extends React.Component {
   state = {
-    isLoading: false,
+    isLoading: true,
     userDetail: null
   };
 
   componentDidMount() {
     if (!this.props.deleted) {
-      this.setState({ isLoading: true }, () => {
-        atlasV1.session
-          .getUserById(this.props.author)
-          .then(result => {
-            this.setState({ userDetail: result.data });
-          })
-          .finally(() => {
-            this.setState({ isLoading: false });
-          });
-      });
+      atlasV1.session
+        .getUserById(this.props.author)
+        .then(result => {
+          this.setState({ userDetail: result.data });
+        })
+        .finally(() => {
+          this.setState({ isLoading: false });
+        });
     }
   }
 
@@ -86,7 +85,7 @@ class Screen extends React.Component {
           </IconButton>
         }
         title={name}
-        subheader={this.props.dateCreated}
+        subheader={getDateFormatted(this.props.dateCreated, "DD MMMM YYYY")}
       />
     );
   }
@@ -97,13 +96,13 @@ class Screen extends React.Component {
 
     return (
       <Card className={classes.card} style={{ marginLeft: margin + "px" }}>
-        {isLoading ? <LoadingFill /> : this.renderCardHeader()}
+        {deleted ? null : isLoading ? <LoadingFill /> : this.renderCardHeader()}
         {deleted ? (
           "Chant telah dihapus"
         ) : (
           <React.Fragment>
             <CardContent>
-              <Typography variant="title" gutterBottom>
+              <Typography variant="h6" gutterBottom>
                 {this.props.title}
               </Typography>
               <div
