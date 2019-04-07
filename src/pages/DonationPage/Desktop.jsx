@@ -122,7 +122,7 @@ class Screen extends React.Component {
                         username: user.username
                       })}
                     >
-                      Riwayat Program Donasi
+                      Riwayat Pengajuan Donasi
                     </Button>
                   </Grid>
                 </Grid>
