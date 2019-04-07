@@ -9,7 +9,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import ShareIcon from "@material-ui/icons/Share";
+import CommentIcon from "@material-ui/icons/Comment";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
@@ -64,6 +64,17 @@ class Screen extends React.Component {
         });
     }
   }
+
+  handleReply = () => {
+    this.props.history.push(
+      makePathVariableUri(paths.CHANNEL_CHANT_CREATE, {
+        channelId: this.props.channel
+      }),
+      {
+        parentId: this.props.id
+      }
+    );
+  };
 
   renderCardHeader() {
     const { classes, deleted } = this.props;
@@ -134,8 +145,15 @@ class Screen extends React.Component {
                   }
                   label={this.props.numberLikes}
                 />
-                <IconButton aria-label="Share">
-                  <ShareIcon />
+                <IconButton aria-label="Share" onClick={this.handleReply}>
+                  <CommentIcon  />
+                  <Typography
+                    variant="body2"
+                    style={{ marginLeft: "10px" }}
+                    gutterBottom
+                  >
+                    {this.props.numberChildrens}
+                  </Typography>
                 </IconButton>
               </div>
             </CardActions>

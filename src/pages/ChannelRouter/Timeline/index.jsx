@@ -72,6 +72,7 @@ class Screen extends React.Component {
             overflow="hidden"
             max="64px"
             deleted={Boolean(chant.dateDeleted)}
+            numberChildrens={chant.numberChildrens}
           />
         </div>
       ))}
