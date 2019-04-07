@@ -21,7 +21,7 @@ const styles = theme => ({
   }
 });
 
-function Navbar({ classes, history, title, Content }) {
+function Navbar({ classes, history, title, content }) {
   return (
     <AppBar position="static" className={classes.appbar}>
       <Toolbar>
@@ -30,7 +30,7 @@ function Navbar({ classes, history, title, Content }) {
             {title}
           </Typography>
         )}
-        {Content && <Content />}
+        {content}
       </Toolbar>
     </AppBar>
   );
@@ -42,12 +42,12 @@ Navbar.propTypes = {
   }).isRequired,
   classes: PropTypes.shape().isRequired,
   title: PropTypes.string,
-  Content: PropTypes.func
+  content: PropTypes.func
 };
 
 Navbar.defaultProps = {
   title: "",
-  Content: null
+  content: null
 };
 
 export default withRouter(withStyles(styles)(Navbar));
