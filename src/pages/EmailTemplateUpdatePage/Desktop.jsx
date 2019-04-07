@@ -12,6 +12,10 @@ import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import EmailTemplateForm from "../../components/stables/EmailTemplateForm";
 import EmailTemplateVariableMenu from "../../components/stables/EmailTemplateVariableMenu";
+import heliosV1 from "../../modules/api/helios/v1";
+
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 
 const styles = theme => ({
   container: {
@@ -22,16 +26,35 @@ const styles = theme => ({
   }
 });
 
-class Screen extends React.PureComponent {
+class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: "",
-      body: ""
-    };
+
+  state = {
+    emailTemplate: null,
+    title: "",
+    body: "",
+    description: "",
+    subject: "",
+    loading: true
+  };
+
+  componentDidMount() {
+    heliosV1.email
+      .getEmailTemplateById(this.props.match.params.idEmailTemplate)
+      .then(result => {
+        this.setState({
+          emailTemplate: result.data,
+          title: result.data.title,
+          body: result.data.body,
+          description: result.data.description,
+          subject: result.data.subject
+        });
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
   }
 
   handleVariable(variable) {
@@ -52,9 +75,58 @@ class Screen extends React.PureComponent {
     });
   }
 
+  handleSubject({ target }) {
+    this.setState({
+      subject: target.value
+    });
+  }
+
+  handleDescription({ target }) {
+    this.setState({
+      description: target.value
+    });
+  }
+
+  handleSubmit() {
+    heliosV1.email
+      .updateEmailTemplate(
+        this.props.match.params.idEmailTemplate,
+        this.state.title,
+        this.state.body,
+        this.state.description,
+        this.state.subject
+      )
+      .then(this.handleOpenSuccessMsg)
+      .catch(this.handleOpenErrorMsg);
+  }
+
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
+
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSuccessMsg: false });
+  };
+
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
+
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openErrorMsg: false });
+  };
+
   render() {
     const { classes } = this.props;
-    const { title, body } = this.state;
+    const { title, body, description, subject } = this.state;
 
     return (
       <React.Fragment>
@@ -66,8 +138,13 @@ class Screen extends React.PureComponent {
               <EmailTemplateForm
                 title={title}
                 body={body}
+                subject={subject}
+                description={description}
                 onChangeTitle={this.handleTitle.bind(this)}
                 onChangeBody={this.handleBody.bind(this)}
+                onChangeSubject={this.handleSubject.bind(this)}
+                onChangeDescription={this.handleDescription.bind(this)}
+                onSubmit={this.handleSubmit.bind(this)}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -77,6 +154,38 @@ class Screen extends React.PureComponent {
             </Grid>
           </Grid>
         </Container>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openSuccessMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseSuccessMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseSuccessMsg}
+            variant="success"
+            message={`Templat Email berhasil disimpan`}
+          />
+        </Snackbar>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openErrorMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseErrorMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseErrorMsg}
+            variant="error"
+            message={`Templat Email gagal disimpan`}
+          />
+        </Snackbar>
       </React.Fragment>
     );
   }
