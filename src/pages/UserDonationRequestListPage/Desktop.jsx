@@ -20,6 +20,7 @@ import { LinesLoader } from "../../components/Loading";
 import { getDateFormatted } from "../../libs/datetime";
 import paths from "../paths";
 import { Link } from "react-router-dom";
+import { makePathVariableUri } from "../../libs/navigation";
 
 const styles = theme => ({
   container: {
@@ -74,7 +75,7 @@ class Screen extends React.Component {
     if (loading) {
       return LinesLoader;
     }
-    const { classes } = this.props;
+    const { user, classes } = this.props;
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -110,8 +111,11 @@ class Screen extends React.Component {
                     <TableCell align="center">
                       <Button
                         component={Link}
-                        to={paths.USER_DONATION_REQUEST_DETAIL}
+                      to={makePathVariableUri(paths.DONATION_REQUEST_DETAIL , {
+                        requestId: row.id,  username: user.username
+                      })}
                         className={classes.button}
+
                       >
                         Lihat
                       </Button>

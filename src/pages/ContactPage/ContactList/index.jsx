@@ -67,14 +67,36 @@ class ContactList extends React.Component {
   };
 
   componentDidMount() {
-    atlasV1.contact
-      .getContactList()
-      .then(result => {
-        this.setState({ contactList: result.data.results });
-      })
-      .finally(() => {
-        this.setState({ loading: false });
-      });
+    this.handleLoad();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.query !== this.props.query) {
+      this.handleLoad();
+    }
+  }
+
+  handleLoad() {
+    const { query } = this.props;
+    const params = [];
+
+    if (query) {
+      params.push(query.name);
+      if (query.categories) {
+        params.push(query.categories);
+      }
+    }
+
+    this.setState({ loading: true }, () => {
+      atlasV1.contact
+        .getContactList(...params) // func(...[name, category]) => func(name, category)
+        .then(result => {
+          this.setState({ contactList: result.data.results });
+        })
+        .finally(() => {
+          this.setState({ loading: false });
+        });
+    });
   }
 
   modalOpen = event => {
@@ -86,17 +108,15 @@ class ContactList extends React.Component {
   };
 
   render() {
-    const { loading } = this.state;
-
+    const { loading, currentContact, contactList } = this.state;
     const { classes } = this.props;
-    const { currentContact, contactList } = this.state;
 
     return (
       <React.Fragment>
         <Paper style={{ height: "65vh", width: "100%" }}>
           {loading && (
             <React.Fragment>
-                  <LoadingFill />
+              <LoadingFill />
             </React.Fragment>
           )}
           {!loading && (

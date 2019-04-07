@@ -72,6 +72,8 @@ class Screen extends React.Component {
               body={chant.body}
               channel={chant.channel}
               author={chant.author}
+              deleted={Boolean(chant.dateDeleted)}
+              numberChildrens={chant.numberChildrens}
             />
           </div>
         ))}

@@ -102,12 +102,6 @@ function EmailTemplateForm({
 
               </Grid>
           </Grid>
-     
-
-     
-
-     
-
       
         <div className={classes.rightLayout}>
           <Button

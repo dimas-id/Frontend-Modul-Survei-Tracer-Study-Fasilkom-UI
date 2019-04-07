@@ -105,7 +105,6 @@ class Screen extends React.Component {
                       to={makePathVariableUri(paths.DONATION_PAYMENT_DETAIL , {
                         donationId: row.id
                       })}
-                      href="#text-buttons" 
                       className={classes.button}>
                         Lihat
                       </Button>

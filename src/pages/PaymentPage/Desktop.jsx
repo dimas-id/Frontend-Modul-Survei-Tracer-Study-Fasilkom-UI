@@ -48,8 +48,6 @@ const styles = theme => ({
     justifyContent: "flex-start"
   }
 });
-// getUserDonationDetail:(userId, donationId)=>
-//     http.get(`${API_V1_URL}/users/${userId}/donations/${donationId}/donate`),
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
@@ -108,7 +106,7 @@ class Screen extends React.Component {
                 </Typography>
                 <Paper className={classes.paperNominal}>
                   <Typography gutterBottom variant="h5" flexcomponent="h2">
-                    Rp {amount + uniqueCode}
+                    Rp {amount}
                   </Typography>
                   <Grid item xs={12} sm={12} className={classes.paymentDetail}>
                     <Typography gutterBottom variant="h7" flexcomponent="h7">
@@ -118,7 +116,7 @@ class Screen extends React.Component {
                   </Grid>
                   <Grid item xs={12} sm={12} className={classes.paymentDetail}>
                     <Typography gutterBottom variant="h7" flexcomponent="h7">
-                      Jumlah Donasi : {amount}
+                      Jumlah Donasi : {amount - uniqueCode}
                     </Typography>
                   </Grid>
 

@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import moment from "moment";
 
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-
+import CardIcon from "@material-ui/icons/CreditCardOutlined";
 import Grid from "@material-ui/core/Grid";
 
 import { withAuth } from "../../components/hocs/auth";
@@ -26,7 +27,14 @@ import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 import { getUser } from "../../modules/session/selectors";
 import bundar from "../../assets/bundar.png";
 import heliosV1 from "../../modules/api/helios/v1";
-import { LinesLoader} from "../../components/Loading";
+import { LinesLoader } from "../../components/Loading";
+import keyMirror from "keymirror";
+import { getDateFormatted } from "../../libs/datetime";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
+import { Link } from "react-router-dom";
+import paths from "../paths";
+import { makePathVariableUri } from "../../libs/navigation";
 
 const styles = theme => ({
   container: {
@@ -71,42 +79,46 @@ const styles = theme => ({
 });
 const banks = [
   {
-    value: "0",
+    value: -1,
     label: "Pilih Metode Pembayaran"
   },
   {
-    value: "1",
+    value: 0,
     label: "Transfer BNI"
   },
   {
-    value: "2",
+    value: 1,
     label: "Transfer Mandiri"
-  },
-  {
-    value: "3",
-    label: "Transfer BCA"
   }
 ];
+
+const FIELDS = keyMirror({
+  amount: null,
+  bankNumberDest: null,
+  bankNumberSource: null,
+  estPaymentDate: null
+});
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
   };
+
   state = {
-    bank: "0",
+    values: {
+      [FIELDS.amount]: 0,
+      [FIELDS.bankNumberDest]: -1,
+      [FIELDS.bankNumberSource]: "",
+      [FIELDS.estPaymentDate]: moment()
+    },
     estPaymentDate: null,
     donationProgram: null,
     loading: true
   };
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
-  };
 
   componentDidMount() {
-    const donationId  = this.props.match.params.idProgram;
+    const idProgram = this.props.match.params.idProgram;
     heliosV1.donation
-      .getDonationProgramDetail(donationId)
+      .getDonationProgramDetail(idProgram)
       .then(result => {
         this.setState({ donationProgram: result.data });
       })
@@ -115,17 +127,77 @@ class Screen extends React.Component {
       });
   }
 
+  handleChange = event => {
+    console.log(event.target.value);
+    this.setState({
+      values: {
+        ...this.state.values,
+        [event.target.name]: event.target.value
+      }
+    });
+  };
+
+  handleDateChange = name => value => {
+    this.setState(prevState => ({
+      values: {
+        ...prevState.values,
+        [name]: value
+      }
+    }));
+  };
+
+  handleSubmit = e => {
+    const { history } = this.props;
+    const { values } = this.state;
+    const idProgram = this.props.match.params.idProgram;
+
+    heliosV1.donation
+      .createDonation(
+        idProgram,
+        parseFloat(values[FIELDS.amount]),
+        values[FIELDS.bankNumberDest],
+        values[FIELDS.bankNumberSource],
+        getDateFormatted(values[FIELDS.estPaymentDate], "YYYY-MM-DD")
+      )
+      .then(({ data }) => {
+        history.push(makePathVariableUri(paths.DONATION_PAYMENT_DETAIL, {donationId: data.id}))
+        this.handleOpenSuccessMsg()
+      })
+      .catch(this.handleOpenErrorMsg);
+  };
+
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
+
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSuccessMsg: false });
+  };
+
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
+
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openErrorMsg: false });
+  };
+
   render() {
     const { user, classes } = this.props;
-    const { loading } = this.state;
-    
+    const { loading, values } = this.state;
     if (loading) {
       return LinesLoader;
     }
 
-    const { estPaymentDate } = this.state;
     const { title, description } = this.state.donationProgram;
-
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -133,7 +205,7 @@ class Screen extends React.Component {
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Grid container spacing={24}>
-            <Grid item xs={6} sm={6}>
+            <Grid item sm={12} md={6}>
               <Paper className={classes.paper}>
                 <CardActionArea>
                   <CardMedia className={classes.media} image={bundar} />
@@ -151,9 +223,9 @@ class Screen extends React.Component {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={6} sm={6}>
+            <Grid item sm={12} md={6}>
               <Paper className={classes.paperForm}>
-                <form className={classes.form}>
+                <div className={classes.form}>
                   <TextField
                     disabled
                     id="oulined-dissabled"
@@ -162,7 +234,7 @@ class Screen extends React.Component {
                     className={classes.textField}
                     variant="outlined"
                   />
-                  
+
                   <TextField
                     required
                     id="outlined-required"
@@ -170,6 +242,10 @@ class Screen extends React.Component {
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
+                    name={FIELDS.amount}
+                    value={values[FIELDS.amount]}
+                    onChange={this.handleChange}
+                    type="number"
                     helperText="Jumlah donasi dalam kelipatan ribuan"
                     InputProps={{
                       startAdornment: (
@@ -182,8 +258,9 @@ class Screen extends React.Component {
                     select
                     label="Metode Pembayaran"
                     className={classes.textField}
-                    value={this.state.bank}
-                    onChange={this.handleChange("bank")}
+                    name={FIELDS.bankNumberDest}
+                    value={values[FIELDS.bankNumberDest]}
+                    onChange={this.handleChange}
                     SelectProps={{
                       MenuProps: {
                         className: classes.menu
@@ -204,11 +281,19 @@ class Screen extends React.Component {
                     id="outlined-required"
                     label="Nomor Rekening Pengirim"
                     className={classes.textField}
+                    name={FIELDS.bankNumberSource}
+                    value={values[FIELDS.bankNumberSource]}
+                    onChange={this.handleChange}
+                    type="number"
                     margin="normal"
                     variant="outlined"
                     helperText="Rekening untuk validasi"
                     InputProps={{
-                      startAdornment: <InputAdornment position="start" />
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <CardIcon />
+                        </InputAdornment>
+                      )
                     }}
                   />
 
@@ -216,13 +301,13 @@ class Screen extends React.Component {
                     <InlineDatePicker
                       className={classes.field}
                       clearable
-                      name="estPaymentDate"
-                      value={estPaymentDate}
+                      name={FIELDS.estPaymentDate}
+                      value={values[FIELDS.estPaymentDate]}
+                      onChange={this.handleDateChange(FIELDS.estPaymentDate)}
                       variant="outlined"
                       margin="normal"
                       label="Estimasi Tanggal Pembayaran"
                       format="YYYY-MM-DD"
-                      onChange={date => this.setState({ estPaymentDate: date })}
                     />
                   </MuiPickersUtilsProvider>
                   <Button
@@ -230,14 +315,47 @@ class Screen extends React.Component {
                     variant="contained"
                     color="primary"
                     type="submit"
+                    onClick={this.handleSubmit}
+                    component={Link}
                   >
                     Lanjut ke Pembayaran
                   </Button>
-                </form>
+                </div>
               </Paper>
             </Grid>
           </Grid>
         </Container>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openSuccessMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseSuccessMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseSuccessMsg}
+            variant="success"
+            message={`Donasi Berhasil disimpan`}
+          />
+        </Snackbar>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openErrorMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseErrorMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseErrorMsg}
+            variant="error"
+            message={`Donasi gagal disimpan`}
+          />
+        </Snackbar>
       </React.Fragment>
     );
   }
