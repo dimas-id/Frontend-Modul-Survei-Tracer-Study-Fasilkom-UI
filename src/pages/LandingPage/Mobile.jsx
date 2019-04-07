@@ -28,26 +28,15 @@ const styles = theme => ({
       ...Guidelines.layouts.pt40
     }
   },
-  heroTextContainer: {
-    ...Guidelines.layouts.flex1
-  },
   contentContainer: {
-    ...Guidelines.layouts.flexDirRow,
-    ...Guidelines.layouts.windowHeight,
-    ...Guidelines.layouts.pt64,
-    ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pr32
+    minHeight: "100vh",
+    ...Guidelines.layouts.pt64
   },
   title: {
     ...Guidelines.fonts.heading1
   },
   subtitle: {
     fontSize: 24
-  },
-  heroButtonContainer: {
-    ...Guidelines.layouts.flexMiddle,
-    ...Guidelines.layouts.flex1,
-    ...Guidelines.layouts.flexDirCol
   },
   link: {
     color: "00C7E5",
@@ -59,6 +48,8 @@ const styles = theme => ({
     width: 360
   },
   btnGrid: {
+    ...Guidelines.layouts.flexDirCol,
+    ...Guidelines.layouts.flexMiddle,
     margin: "auto",
     width: "100%"
   },
@@ -78,10 +69,12 @@ function LandingMobile({ classes }) {
   return (
     <React.Fragment>
       <NavbarAuth position="fixed" />
-      <Particle name="cloud2" left={0} top={160} />
+      <Particle name="cloud2" left={0} top={140} />
+      <Particle name="cloud1" right={0} top={400} />
       <Container>
-        <div className={classes.hero}>
-          <div className={classes.heroTextContainer}>
+        <Grid container spacing={24} className={classes.contentContainer}>
+          <Grid item md={12} />
+          <Grid item sm={12} md={6}>
             <Typography component="h1" variant="h3" className={classes.title}>
               Bergabung dengan layanan ILUNI12 Channel
             </Typography>
@@ -90,8 +83,8 @@ function LandingMobile({ classes }) {
               satu bentuk kepedulian sosial serta mewadahi para alumni untuk
               saling berinteraksi
             </Typography>
-          </div>
-          <div className={classes.heroButtonContainer}>
+          </Grid>
+          <Grid item sm={12} md={6}>
             <Grid container spacing={24} className={classes.btnGrid}>
               <Grid item xs={12}>
                 <Button
@@ -117,8 +110,8 @@ function LandingMobile({ classes }) {
                 </Typography>
               </Grid>
             </Grid>
-          </div>
-        </div>
+          </Grid>
+        </Grid>
       </Container>
       <div style={{ position: "relative" }}>
         <Particle

@@ -14,6 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import FormHelperText from "@material-ui/core/FormControl";
 
 import MomentUtils from "@date-io/moment";
 
@@ -100,12 +101,13 @@ function SelectPrograms(props) {
       <Select
         value={props.value}
         onChange={props.onChange}
-        required
+        error={props.error}
         input={
           <OutlinedInput
             id="LatestCsuiProgram"
             labelWidth={240}
             name={FIELDS.latestCsuiProgram}
+            required
           />
         }
       >
@@ -119,6 +121,14 @@ function SelectPrograms(props) {
           </MenuItem>
         ))}
       </Select>
+      <FormHelperText
+        variant="outlined"
+        error={props.error}
+        required
+        margin="dense"
+      >
+        {props.helperText}
+      </FormHelperText>
     </FormControl>
   );
 }
@@ -135,7 +145,6 @@ const RegistrationForm = withStyles(styles)(
   }) => {
     return (
       <form className={classes.form}>
-        <Typography>{errors[FIELDS.repassword]}</Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} style={{ paddingBottom: 0 }}>
             <Typography color="error">* Wajib diisi</Typography>
@@ -287,6 +296,7 @@ const RegistrationForm = withStyles(styles)(
             <SelectPrograms
               classes={classes}
               value={values[FIELDS.latestCsuiProgram]}
+              required
               onChange={e =>
                 setFieldValue(FIELDS.latestCsuiProgram, e.target.value)
               }

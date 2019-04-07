@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
+import moment from 'moment';
 
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -30,19 +31,6 @@ const styles = theme => ({
   }
 });
 
-function getInitialValue() {
-  return {
-    firstName: null,
-    lastName: null,
-    birthdate: null,
-    latestCsuiClassYear: null,
-    latestCsuiProgram: null,
-    uiSsoNpm: null,
-    email: null,
-    password: null,
-    repassword: null
-  };
-}
 
 class Registration extends React.Component {
   static propTypes = {
@@ -64,6 +52,31 @@ class Registration extends React.Component {
 
   setErrorMessage(errorMessage) {
     this.setState({ errorMessage });
+  }
+
+  getInitialValues() {
+    const {
+      firstName,
+      lastName,
+      birthdate,
+      latestCsuiClassYear,
+      latestCsuiProgram,
+      uiSsoNpm,
+      email,
+      password,
+      repassword
+    } = RegistrationForm.fields;
+    return {
+      [firstName]: '',
+      [lastName]: '',
+      [birthdate]: moment(),
+      [latestCsuiClassYear]: moment(),
+      [latestCsuiProgram]: '',
+      [uiSsoNpm]: '',
+      [password]: '',
+      [repassword]: '',
+      [email]: '',
+    }
   }
 
   redirectToNextPage = () => {
@@ -157,8 +170,9 @@ class Registration extends React.Component {
           </Typography>
         )}
         <RegistrationForm
+          validateOnChange={false}
           onSubmit={this.handleRegistration}
-          initialValues={getInitialValue()}
+          initialValues={this.getInitialValues()}
         />
       </div>
     );

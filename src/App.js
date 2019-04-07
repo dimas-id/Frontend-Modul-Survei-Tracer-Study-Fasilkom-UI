@@ -15,7 +15,6 @@ import { SplashScreen } from "./components/Loading";
 
 import Pages from "./pages";
 import { theme } from "./styles";
-import "./App.css";
 
 function setAuthTokenAfterPersist() {
   const token = get(store.getState(), "session.token.access");

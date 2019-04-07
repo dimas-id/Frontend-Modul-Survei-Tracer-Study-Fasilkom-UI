@@ -24,6 +24,11 @@ import { Guidelines } from "../../../styles";
 
 const styles = theme => {
   return {
+    logo: {
+      [theme.breakpoints.down('sm')]: {
+        width: 96,
+      }
+    },
     menu: {
       marginTop: theme.spacing.unit * 6
     },
@@ -102,7 +107,7 @@ class NavbarAuth extends React.Component {
   renderNotLoggedInMenu() {
     const { isLoggedIn, classes } = this.props;
     return isLoggedIn ? null : (
-      <div>
+      <div style={{ display: "flex", flexWrap: "nowrap" }}>
         <Button
           className={classes.buttonAsText}
           component={Link}
@@ -245,7 +250,7 @@ class NavbarAuth extends React.Component {
             className={classes.menuButton}
             aria-label="Menu"
           >
-            <img src={Logo} alt="ILUNI12 Logo" />
+            <img src={Logo} alt="ILUNI12 Logo" className={classes.logo} />
           </Button>
           <Typography variant="h6" className={classes.title}>
             {title}
