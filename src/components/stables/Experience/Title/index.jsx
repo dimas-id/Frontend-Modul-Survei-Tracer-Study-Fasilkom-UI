@@ -31,7 +31,7 @@ export default withStyles(styles)(function Title({
       <Typography
         component="h1"
         variant="h4"
-        align="center"
+        align="left"
         className={classes.title}
         dangerouslySetInnerHTML={{ __html: children }}
       />

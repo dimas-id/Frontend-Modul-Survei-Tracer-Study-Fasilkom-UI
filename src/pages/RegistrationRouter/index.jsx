@@ -4,10 +4,12 @@ import get from "lodash/get";
 
 import paths from "../paths";
 
+import Particle from "../../components/Particle";
 import RouterWrapper from "../../components/RouterWrapper";
 import StepProgress from "../../components/StepProgress";
 import RegistrationPage from "./RegistrationPage";
 import WorkPositionPage from "./WorkPositionPage";
+import PreferencePage from "./PreferencePage";
 
 const ROUTES = [
   {
@@ -29,15 +31,15 @@ const ROUTES = [
     title: "Preferensi",
     route: {
       path: paths.PREFERENCE,
-      component: () => "preferensi"
+      component: PreferencePage
     }
   }
 ];
 
-const MAX_STEP = ROUTES.length ;
+const MAX_STEP = ROUTES.length;
 
 function getRoutePath(step) {
-  const subpath = get(ROUTES[step-1], "route.path") || "";
+  const subpath = get(ROUTES[step - 1], "route.path") || "";
   return `${paths.REGISTER}${subpath}`;
 }
 
@@ -73,6 +75,7 @@ export default withRouter(function RegistrationRouter({ history, location }) {
 
   return (
     <React.Fragment>
+      <Particle name="cloud2" top={120} left={0} />
       <RouterWrapper paths={ROUTES} />
       {currentStep > 0 && (
         <StepProgress

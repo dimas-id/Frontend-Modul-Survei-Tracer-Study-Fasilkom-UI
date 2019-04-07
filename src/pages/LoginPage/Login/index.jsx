@@ -13,13 +13,14 @@ import paths, { HOME } from "../../../pages/paths";
 import { humanizeError, isStatusOK } from "../../../libs/response";
 
 import LoginForm from "./LoginForm";
+import { isLoggedIn } from "../../../modules/session/selectors";
 
 const styles = theme => ({
   container: {
     ...layouts.flexDirCol,
     ...layouts.flexMiddle,
-    ...layouts.w100,
-  },
+    ...layouts.w100
+  }
 });
 
 function getInitialValue() {
@@ -40,6 +41,13 @@ class Login extends React.Component {
   state = {
     errorMessage: null
   };
+
+  componentDidMount() {
+    const { loggedIn, history } = this.props;
+    if (loggedIn) {
+      history.replace(paths.HOME);
+    }
+  }
 
   setErrorMessage(errorMessage) {
     this.setState({ errorMessage });
@@ -104,7 +112,9 @@ class Login extends React.Component {
 }
 
 function createContainer() {
-  const mapStateToProps = () => ({});
+  const mapStateToProps = state => ({
+    loggedIn: isLoggedIn(state)
+  });
 
   const mapDispatchToProps = dispatch => ({
     login: (email, password) => dispatch(_login(email, password))
