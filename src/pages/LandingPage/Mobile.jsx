@@ -34,6 +34,7 @@ const styles = theme => ({
   contentContainer: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.windowHeight,
+    ...Guidelines.layouts.pt64,
     ...Guidelines.layouts.pl32,
     ...Guidelines.layouts.pr32
   },
@@ -52,13 +53,14 @@ const styles = theme => ({
     color: "00C7E5",
     ...Guidelines.fonts.bold,
     ...Guidelines.layouts.mr24,
-    ...Guidelines.layouts.ml24,
+    ...Guidelines.layouts.ml24
   },
   btn: {
     width: 360
   },
   btnGrid: {
-    margin: "auto"
+    margin: "auto",
+    width: "100%"
   },
   buttonDaftar: {
     backgroundColor: "#000",
@@ -122,7 +124,7 @@ function LandingMobile({ classes }) {
         <Particle
           name="bgLanding"
           top={-500}
-          style={{ ...Guidelines.layouts.w100 }}
+          style={{ ...Guidelines.layouts.w100, zIndex: -11 }}
         />
         <Container className={classes.contentContainer}>
           <Typography component="h1" variant="h2" className={classes.title}>

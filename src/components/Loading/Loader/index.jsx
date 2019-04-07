@@ -1,5 +1,10 @@
 import React from "react";
-import ContentLoader, { Facebook, Instagram } from "react-content-loader";
+import ContentLoader, {
+  Facebook,
+  Instagram,
+  BulletList,
+  List
+} from "react-content-loader";
 
 export function LinesLoader(props) {
   return (
@@ -19,6 +24,13 @@ export function LinesLoaderEmailTemplate(props) {
     </ContentLoader>
   );
 }
-
 export const ProfileLoader = Facebook;
 export const CardLoader = Instagram;
+
+export const BulletListLoader = BulletList;
+export const ListLoader = List;
+export const List2Loader = props => (
+  <div style={{ transform: 'rotate(180deg)'}}>
+    <BulletList {...props} />
+  </div>
+);

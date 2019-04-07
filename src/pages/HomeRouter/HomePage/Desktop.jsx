@@ -109,7 +109,7 @@ class HomePage extends React.Component {
             </Button>
           </div>
           <Grid container spacing={24}>
-            <Grid item xs={6} sm={6}>
+            <Grid item xs={12} md={6}>
               <Paper className={classes.paperChild} elevation={1}>
                 <Typography
                   className={classes.titleChild}
@@ -134,7 +134,7 @@ class HomePage extends React.Component {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={6} sm={6}>
+            <Grid item xs={12} md={6}>
               <Paper className={classes.paperChild} elevation={1}>
                 <Typography
                   className={classes.titleChild}

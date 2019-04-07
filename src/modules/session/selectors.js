@@ -6,7 +6,8 @@ export function getUser(state) {
 }
 
 export function getUserId(state) {
-  return getUser(state).id
+  const user = getUser(state)
+  return user && user.id
 }
 
 export function getUserAccessToken(state) {

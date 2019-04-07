@@ -26,5 +26,10 @@ export default Object.freeze({
     http.post(`${API_V1_URL}/tokens/refresh`, { refresh }),
   getUserById: userId => http.get(`${API_V1_URL}/users/${userId}`),
   patchUserById: (userId, payload) =>
-    http.patch(`${API_V1_URL}/users/${userId}`, payload)
+    http.patch(`${API_V1_URL}/users/${userId}`, payload),
+  getPreference: userId => http.get(`${API_V1_URL}/users/${userId}/preference`),
+  patchPreference: (userId, payload) =>
+    http.patch(`${API_V1_URL}/users/${userId}/preference`, {
+      preference: payload
+    })
 });

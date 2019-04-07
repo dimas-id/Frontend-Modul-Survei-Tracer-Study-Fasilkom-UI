@@ -3,15 +3,16 @@ export const ERROR = "/err";
 export const HOME = "/users";
 export const PROFILE = "/profil";
 export const VERIFY = "/verify";
+export const PREFERENCE = "/preferensi";
 export const USER_PROFILE = `${HOME}${PROFILE}`;
 export const USER_VERIFY = `${HOME}${VERIFY}`;
+export const USER_PREFERENCE = `${HOME}${PREFERENCE}`;
 export const LANDING = "/";
 export const LOGIN = "/login";
 export const REGISTER = "/register";
 export const REGISTER_EXTERNAL = "/register-external-auths";
 export const EDUCATION = "/pendidikan";
 export const WORK_POSITION = "/pekerjaan";
-export const PREFERENCE = "/preferensi";
 export const REGISTER_EDUCATION = `${REGISTER}${EDUCATION}`;
 export const REGISTER_WORK_POSITION = `${REGISTER}${WORK_POSITION}`;
 export const REGISTER_PREFERENSI = `${REGISTER}${PREFERENCE}`;
@@ -44,6 +45,7 @@ export default {
   PROFILE,
   USER_PROFILE,
   USER_VERIFY,
+  USER_PREFERENCE,
   ERROR_404,
   ERROR,
   LOGIN,
