@@ -29,6 +29,8 @@ import ChannelChantDetailPage from "./ChannelChantDetailPage";
 import UserVerifyPage from "./UserVerifyPage"
 
 import paths from "./paths";
+import UserDonationRequestListPage from "./UserDonationRequestListPage";
+import DonationRequestDetailPage from "./DonationRequestDetailPage";
 
 export default function Pages() {
   return (
@@ -87,10 +89,24 @@ const ROUTES = [
     }
   },
   {
-    title: "Donation Request List",
+    title: "Donation Request",
     route: {
       path: paths.DONATION_REQUEST,
       component: DonationRequestPage
+    }
+  },
+  {
+    title: "Donation Request Detail",
+    route: {
+      path: paths.DONATION_REQUEST_DETAIL,
+      component: DonationRequestDetailPage
+    }
+  },
+  {
+    title: "Donation Request List",
+    route: {
+      path: paths.USER_DONATION_REQUEST_LIST,
+      component: UserDonationRequestListPage
     }
   },
   {
@@ -121,8 +137,9 @@ const ROUTES = [
       component: UpdateChantPage
     }
   },
+  
   {
-    title: "Donation Request List",
+    title: "Donation Request",
     route: {
       path: paths.DONATION_REQUEST,
       component: DonationRequestPage

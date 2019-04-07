@@ -23,7 +23,6 @@ const styles = theme => ({
 
 export default withStyles(styles)(function(props) {
   const { classes } = props;
-  console.log(props.marginLeft)
   return (
     <Card className={classes.card} style={{marginLeft: props.marginLeft + 'px'}}>
         <Typography variant="h6" gutterBottom className={classes.typography}>

@@ -52,7 +52,6 @@ class Screen extends React.Component {
     heliosV1.channel
       .getListChant(this.props.match.params.channelId)
       .then(result => {
-        console.log(result.data);
         this.setState({ listChant: result.data.results });
       })
       .finally(() => {
@@ -61,7 +60,6 @@ class Screen extends React.Component {
   }
 
   renderChannel() {
-    console.log(this.state);
     const { channelDetail } = this.state;
     if (!channelDetail) {
       return null;
@@ -76,29 +74,31 @@ class Screen extends React.Component {
   }
 
   renderChant() {
-    console.log(this.state);
     const { listChant } = this.state;
     const { classes } = this.props;
 
-    return(<React.Fragment>
-      {listChant.map(chant => (
-      <div className={classes.card}>
-        <ChantCard
-          key={chant.id}
-          dateCreated={chant.dateCreated}
-          numberLikes={chant.numberLikes}
-          title={chant.title}
-          body={chant.body}
-          channel={chant.channel}
-          id={chant.id}
-          author={chant.author}
-          overflow="hidden"
-          max="64px"
-        />
-      </div>
-      ))}
-      <EndCard marginLeft="64" />
-    </React.Fragment>);
+    return (
+      <React.Fragment>
+        {listChant.map(chant => (
+          <div className={classes.card}>
+            <ChantCard
+              deleted={Boolean(chant.dateCreated)}
+              key={chant.id}
+              dateCreated={chant.dateCreated}
+              numberLikes={chant.numberLikes}
+              title={chant.title}
+              body={chant.body}
+              channel={chant.channel}
+              id={chant.id}
+              author={chant.author}
+              overflow="hidden"
+              max="64px"
+            />
+          </div>
+        ))}
+        <EndCard marginLeft="64" />
+      </React.Fragment>
+    );
   }
 
   render() {

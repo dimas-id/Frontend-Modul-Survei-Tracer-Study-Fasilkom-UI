@@ -57,7 +57,8 @@ class Registration extends React.Component {
 
   componentDidMount() {
     if (this.props.isLoggedIn) {
-      this.redirectToNextPage();
+      const { history } = this.props;
+      history.replace(paths.HOME);
     }
   }
 

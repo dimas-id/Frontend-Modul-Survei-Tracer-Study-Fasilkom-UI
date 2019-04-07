@@ -1,5 +1,9 @@
+import email from "./email";
+import donation from "./donation";
 import channel from "./channel";
 
 export default Object.freeze({
-    channel
+  email,
+  channel,
+  donation
 });

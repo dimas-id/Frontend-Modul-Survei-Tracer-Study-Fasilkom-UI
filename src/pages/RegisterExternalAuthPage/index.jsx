@@ -1,16 +1,18 @@
 import React from "react";
 import Cookies from "js-cookie";
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
+import { Redirect, withRouter } from "react-router";
 
 import { loadUser } from "../../modules/session/thunks";
 import { sessionAction } from "../../modules/session";
 import { setAuthToken } from "../../libs/http";
 import { makeQueryUri } from "../../libs/navigation";
+import { LoadingScreen } from "../../components/Loading";
 
 import paths from "../paths";
+import { isLoggedIn } from "../../modules/session/selectors";
 
-function Desktop({ setToken, load, clearSession }) {
+function Desktop({ setToken, load, clearSession, isLoggedIn, history }) {
   const [state, setState] = React.useState({
     loading: true,
     nextPage: null
@@ -49,18 +51,27 @@ function Desktop({ setToken, load, clearSession }) {
         Cookies.remove("should_complete_registration");
       }
     };
-    checkUserCredential();
+
+    if (isLoggedIn) {
+      history.replace(paths.HOME);
+    } else {
+      checkUserCredential();
+    }
   }, []);
 
-  return state.loading ? "loading..." : <Redirect to={state.nextPage} />;
+  return state.loading ? <LoadingScreen /> : <Redirect to={state.nextPage} />;
 }
 
-export default connect(
-  null,
-  dispatch => ({
-    load: userId => dispatch(loadUser(userId)),
-    clearSession: () => dispatch(sessionAction.clearSession()),
-    setToken: (access, refresh) =>
-      dispatch(sessionAction.setToken(access, refresh))
-  })
-)(Desktop);
+export default withRouter(
+  connect(
+    state => ({
+      isLoggedIn: isLoggedIn(state)
+    }),
+    dispatch => ({
+      load: userId => dispatch(loadUser(userId)),
+      clearSession: () => dispatch(sessionAction.clearSession()),
+      setToken: (access, refresh) =>
+        dispatch(sessionAction.setToken(access, refresh))
+    })
+  )(Desktop)
+);

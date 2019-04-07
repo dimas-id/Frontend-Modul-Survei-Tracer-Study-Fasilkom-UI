@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
@@ -33,38 +32,38 @@ const styles = theme => ({
   }
 });
 
-export function NavbarEmailTemplate({ classes, inputProps }) {
+function ButtonsEmailTemplate({ classes, inputProps }) {
   return (
-    <Navbar
-      Content={() => (
-        <div>
-        <div className={classes.leftAlign}>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            className={classes.button}
-            to={paths.CRM_EMAIL_TEMPLATE_CREATE}
-            component={Link}
-          >
-            <AddIcon className={classes.leftIcon} />
-            Buat Templat
-          </Button>
-          <Button
+    <div>
+      <div className={classes.leftAlign}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          className={classes.button}
+          to={paths.CRM_EMAIL_TEMPLATE_CREATE}
+          component={Link}
+        >
+          <AddIcon className={classes.leftIcon} />
+          Buat Templat
+        </Button>
+        <Button
           variant="outlined"
           color="secondary"
           size="small"
           className={classes.button}
         >
           <EmailIcon className={classes.leftIcon} />
-           Email Blaster
+          Email Blaster
         </Button>
 
-        </div>
       </div>
-      )}
-    />
+    </div>
   );
+}
+
+export function NavbarEmailTemplate(props) {
+  return <Navbar content={<ButtonsEmailTemplate {...props} />} />;
 }
 
 NavbarEmailTemplate.propTypes = {

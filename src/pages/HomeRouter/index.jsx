@@ -3,23 +3,25 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
 import HomeOutlined from "@material-ui/icons/HomeOutlined";
-import ContactMail from "@material-ui/icons/ContactMailOutlined"
-import ToggleOff from "@material-ui/icons/ToggleOffOutlined"
+import ContactMail from "@material-ui/icons/ContactMailOutlined";
+import ToggleOff from "@material-ui/icons/ToggleOffOutlined";
 
 import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
 import RouterWithMenu from "../../components/RouterWithMenu";
+import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
+
+import paths from "../paths";
+
 import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
 import PreferencePage from "./PreferencePage";
 
 const styles = theme => ({
   container: {
-    ...Guidelines.layouts.mt32,
-    ...Guidelines.layouts.pr40,
-    ...Guidelines.layouts.pl40
+    ...Guidelines.layouts.mt32
   }
 });
 
@@ -28,11 +30,11 @@ const ROUTES = [
     title: "Beranda",
     menu: {
       Icon: HomeOutlined,
-      path: "/home"
+      path: paths.HOME
     },
     route: {
       exact: true,
-      path: "/",
+      path: paths.LANDING,
       component: HomePage
     }
   },
@@ -40,11 +42,11 @@ const ROUTES = [
     title: "Info Pribadi",
     menu: {
       Icon: ContactMail,
-      path: "/home/profile"
+      path: paths.USER_PROFILE
     },
     route: {
       exact: true,
-      path: "/profile",
+      path: paths.PROFILE,
       component: ProfilePage
     }
   },
@@ -52,11 +54,11 @@ const ROUTES = [
     title: "Preferensi",
     menu: {
       Icon: ToggleOff,
-      path: "/home/preferensi"
+      path: paths.USER_PREFERENCE
     },
     route: {
       exact: true,
-      path: "/preferensi",
+      path: paths.PREFERENCE,
       component: PreferencePage
     }
   }
@@ -67,9 +69,9 @@ function HomeMobile({ classes }) {
     <React.Fragment>
       <NavbarAuth />
       <Particle name="cloud2" left={0} top={160} />
-      <div className={classes.container}>
+      <Container className={classes.container}>
         <RouterWithMenu paths={ROUTES} />
-      </div>
+      </Container>
     </React.Fragment>
   );
 }
