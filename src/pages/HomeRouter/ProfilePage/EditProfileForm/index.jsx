@@ -32,7 +32,7 @@ const styles = theme => ({
 });
 
 function EditProfileForm(props) {
-  const { classes, user } = props;
+  const { classes } = props;
   return (
     <form className={classes.form}>
       <Grid container spacing={24}>

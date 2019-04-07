@@ -46,7 +46,7 @@ class FilterMenu extends React.Component {
       <Paper className={classes.root} elevation={1}>
       <List dense subheader={<ListSubheader>Kategori Preferensi</ListSubheader>}>
         {['Newsletter', 'Acara', 'Lowongan', 'Donasi', 'Info Lainnya'].map(value => (
-          <ListItem key={value} button>
+          <ListItem key={value}>
             <ListItemText primary={value} />
             <ListItemSecondaryAction>
               <Checkbox
