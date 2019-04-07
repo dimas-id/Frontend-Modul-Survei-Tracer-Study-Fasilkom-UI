@@ -48,8 +48,6 @@ const styles = theme => ({
     justifyContent: "flex-start"
   }
 });
-// getUserDonationDetail:(userId, donationId)=>
-//     http.get(`${API_V1_URL}/users/${userId}/donations/${donationId}/donate`),
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
