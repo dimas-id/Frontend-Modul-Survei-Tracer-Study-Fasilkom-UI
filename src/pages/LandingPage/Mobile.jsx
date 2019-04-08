@@ -30,7 +30,8 @@ const styles = theme => ({
   },
   contentContainer: {
     minHeight: "100vh",
-    ...Guidelines.layouts.pt64
+    ...Guidelines.layouts.pt64,
+    justifyContent: 'center',
   },
   title: {
     ...Guidelines.fonts.heading1
