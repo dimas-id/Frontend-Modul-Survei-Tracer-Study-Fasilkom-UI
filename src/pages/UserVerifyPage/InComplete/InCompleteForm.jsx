@@ -62,6 +62,8 @@ const PROGRAMS = [
 ];
 
 const FIELDS = keymirror({
+  firstName: null,
+  lastName: null,
   birthdate: null,
   latestCsuiClassYear: null,
   latestCsuiProgram: null,
@@ -69,12 +71,13 @@ const FIELDS = keymirror({
 });
 
 const VALIDATOR = {
+  [FIELDS.firstName]: Validation.string().required("Wajib diisi"),
+  [FIELDS.lastName]: Validation.string().required("Wajib diisi"),
   [FIELDS.birthdate]: Validation.date().required("Wajib diisi"),
   [FIELDS.latestCsuiClassYear]: Validation.date().required("Wajib diisi"),
   [FIELDS.latestCsuiProgram]: Validation.string().required("Wajib diisi"),
   [FIELDS.uiSsoNpm]: Validation.number().notRequired()
 };
-
 
 function SelectPrograms(props) {
   const inputLabelRef = React.useRef(null);
@@ -131,7 +134,6 @@ function SelectPrograms(props) {
   );
 }
 
-
 const RegistrationForm = withStyles(styles)(
   ({
     classes,
@@ -149,6 +151,37 @@ const RegistrationForm = withStyles(styles)(
           <Grid item xs={12} style={{ paddingBottom: 0 }}>
             <Typography color="error">* Wajib diisi</Typography>
           </Grid>
+
+          <Grid item xs={12} md={6} style={{ paddingTop: 0 }}>
+            <TextField
+              autoFocus
+              id="FirstName"
+              label="Nama Depan"
+              className={classes.field}
+              margin="normal"
+              variant="outlined"
+              required
+              value={values[FIELDS.firstName]}
+              error={touched[FIELDS.firstName] && !!errors[FIELDS.firstName]}
+              helperText={errors[FIELDS.firstName]}
+              onChange={t => setFieldValue(FIELDS.firstName, t.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} md={6} style={{ paddingTop: 0 }}>
+            <TextField
+              id="LastName"
+              label="Nama Belakang"
+              className={classes.field}
+              margin="normal"
+              variant="outlined"
+              required
+              value={values[FIELDS.lastName]}
+              error={touched[FIELDS.lastName] && !!errors[FIELDS.lastName]}
+              helperText={errors[FIELDS.lastName]}
+              onChange={t => setFieldValue(FIELDS.lastName, t.target.value)}
+            />
+          </Grid>
+
           <Grid item xs={12} md={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <InlineDatePicker
