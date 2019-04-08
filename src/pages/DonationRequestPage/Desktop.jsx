@@ -20,9 +20,19 @@ import Particle from "../../components/Particle";
 import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 import MomentUtils from "@date-io/moment";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import FileUploadInput from "../../components/stables/FileUploadInput"
+import FileUploadInput from "../../components/stables/FileUploadInput";
 import { getUser } from "../../modules/session/selectors";
 
+import heliosV1 from "../../modules/api/helios/v1";
+import { LinesLoader } from "../../components/Loading";
+import keyMirror from "keymirror";
+import { getDateFormatted } from "../../libs/datetime";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
+import { Link } from "react-router-dom";
+import paths from "../paths";
+import { makePathVariableUri } from "../../libs/navigation";
+import moment from "moment";
 
 const styles = theme => ({
   paper: {
@@ -64,43 +74,165 @@ const styles = theme => ({
     width: 120
   },
   input: {
-    display: 'none',
-  },
+    display: "none"
+  }
 });
-const banks = [
+
+const categories = [
   {
-    value: "0",
-    label: "Pilih Metode Pembayaran"
+    value: "XXX",
+    label: "Pilih Kategori Donasi"
   },
   {
-    value: "1",
-    label: "Transfer BNI"
+    value: "INF",
+    label: "Sarana dan Infrastruktur"
   },
   {
-    value: "2",
-    label: "Transfer Mandiri"
+    value: "MED",
+    label: "Bantuan Medis dan Kesehatan"
   },
   {
-    value: "3",
-    label: "Transfer BCA"
+    value: "BCN",
+    label: "Bencana Alam"
+  },
+  {
+    value: "HAD",
+    label: "Hadiah dan Apresiasi"
+  },
+  {
+    value: "SOS",
+    label: "Kegiatan Sosial"
+  },
+  {
+    value: "KEM",
+    label: "Kemanusiaan"
+  },
+  {
+    value: "LIN",
+    label: "Lingkungan"
+  },
+  {
+    value: "PTI",
+    label: "Panti Asuhan"
+  },
+  {
+    value: "RIB",
+    label: "Rumah Ibadah"
+  },
+  {
+    value: "RFC",
+    label: "Run for Charity"
   }
 ];
-class Screen extends React.PureComponent {
+const FIELDS = keyMirror({
+  categoryName: null,
+  title: null,
+  description:null,
+  startDate: null,
+  endDate: null,
+  goalAmount: null,
+  proposalUrl: null
+});
+class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
   };
+
   state = {
-    bank: "0"
+    values: {
+      [FIELDS.categoryName]: "XXX",
+      [FIELDS.title]: "",
+      [FIELDS.description]: "",
+      [FIELDS.startDate]: moment(),
+      [FIELDS.endDate]: moment(),
+      [FIELDS.goalAmount]: 0,
+      [FIELDS.proposalUrl]: "",
+    },
+    donationProgram: null
   };
 
-  handleChange = name => event => {
+  handleChange = event => {
     this.setState({
-      [name]: event.target.value
+      values: {
+        ...this.state.values,
+        [event.target.name]: event.target.value
+      }
     });
   };
 
+  handleDateChange = name => value => {
+    this.setState(prevState => ({
+      values: {
+        ...prevState.values,
+        [name]: value
+      }
+    }));
+  };
+  handleFileSubmit = ({data, status}) => {
+    if(status === 201){
+        this.setState({
+          values: {
+            ...this.state.values,
+          [FIELDS.proposalUrl]: data.fileUrl
+          }
+        })
+    }
+  }
+
+
+  handleSubmit = e => {
+    const { user, history } = this.props;
+    const { values } = this.state;
+    const userId = this.props.user.id;
+
+    heliosV1.donation
+      .createDonationRequest(
+        userId,
+        values[FIELDS.categoryName],
+        values[FIELDS.title],
+        values[FIELDS.description],
+        getDateFormatted(values[FIELDS.startDate], "YYYY-MM-DD"),
+        getDateFormatted(values[FIELDS.endDate], "YYYY-MM-DD"),
+        parseFloat(values[FIELDS.goalAmount]),
+        values[FIELDS.proposalUrl]
+      )
+      .then(() => {
+        history.push(makePathVariableUri(paths.USER_DONATION_REQUEST_LIST, {username: user.username}));
+        this.handleOpenSuccessMsg();
+        
+      })
+      .catch(this.handleOpenErrorMsg);
+  };
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
+
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSuccessMsg: false });
+  };
+
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
+
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openErrorMsg: false });
+  };
+
   render() {
-    const { user,classes } = this.props;
+    const { user, classes } = this.props;
+    const { loading, values } = this.state;
+    if (loading) {
+      return <LinesLoader />;
+    }
 
     return (
       <React.Fragment>
@@ -113,7 +245,8 @@ class Screen extends React.PureComponent {
               Ajukan Program Donasi
             </Typography>
             <Typography className={classes.subtitle} component="p">
-              Program donasi yang Anda ajukan akan diproses oleh Admin untuk dibuat
+              Program donasi yang Anda ajukan akan diproses oleh Admin untuk
+              dibuat
             </Typography>
             <form className={classes.form}>
               <Grid container spacing={24}>
@@ -138,21 +271,22 @@ class Screen extends React.PureComponent {
                 </Grid>
                 <Grid item xs={9} sm={9}>
                   <TextField
-                    id="outlined-select-bank"
+                    id="outlined-select-category"
                     select
                     className={classes.textField}
-                    value={this.state.bank}
-                    onChange={this.handleChange("bank")}
+                    name={FIELDS.categoryName}
+                    value={values[FIELDS.categoryName]}
+                    onChange={this.handleChange}
                     SelectProps={{
                       MenuProps: {
                         className: classes.menu
                       }
                     }}
-                    helperText="Pilih bank tujuan pembayaran"
+                    helperText="Pilih Kategori Donasi"
                     margin="normal"
                     variant="outlined"
                   >
-                    {banks.map(option => (
+                    {categories.map(option => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -166,15 +300,35 @@ class Screen extends React.PureComponent {
                 </Grid>
                 <Grid item xs={9} sm={9}>
                   <TextField
+                    required
                     id="outlined-text-input"
                     className={classes.textField}
-                    placeholder="Judul Channel yang diajukan"
-                    type="text"
-                    name="judul"
+                    placeholder="Judul donasi yang diajukan"
+                    name={FIELDS.title}
+                    value={values[FIELDS.title]}
+                    onChange = {this.handleChange}
                     autoComplete="judul"
                     margin="normal"
                     variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3} sm={3} className={classes.gridLabel}>
+                  <Typography component="p" className={classes.label}>
+                    Deskripsi *
+                  </Typography>
+                </Grid>
+                <Grid item xs={9} sm={9}>
+                  <TextField
                     required
+                    id="outlined-text-input"
+                    className={classes.textField}
+                    placeholder="Deskripsi program donasi"
+                    name={FIELDS.description}
+                    value={values[FIELDS.description]}
+                    onChange = {this.handleChange}
+                    autoComplete="judul"
+                    margin="normal"
+                    variant="outlined"
                   />
                 </Grid>
                 <Grid item xs={3} sm={3} className={classes.gridLabel}>
@@ -190,7 +344,9 @@ class Screen extends React.PureComponent {
                       variant="outlined"
                       margin="normal"
                       format="YYYY-MM-DD"
-                      onChange={() => null}
+                      name={FIELDS.startDate}
+                      value={values[FIELDS.startDate]}
+                      onChange={this.handleDateChange(FIELDS.startDate)}
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
@@ -207,7 +363,9 @@ class Screen extends React.PureComponent {
                       variant="outlined"
                       margin="normal"
                       format="YYYY-MM-DD"
-                      onChange={() => null}
+                      name={FIELDS.endDate}
+                      value={values[FIELDS.endDate]}
+                      onChange={this.handleDateChange(FIELDS.endDate)}
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
@@ -224,7 +382,10 @@ class Screen extends React.PureComponent {
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
-                    helperText="Jumlah donasi dalam kelipatan ribuan"
+                    name={FIELDS.goalAmount}
+                    value={values[FIELDS.goalAmount]}
+                    onChange={this.handleChange}
+                    type="number"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">Rp</InputAdornment>
@@ -239,8 +400,12 @@ class Screen extends React.PureComponent {
                 </Grid>
                 <Grid item xs={9} sm={9}>
                   <FileUploadInput
-                  onChange={console.log}
-                  accept="application/pdf"/>
+                    accept="application/pdf"
+                    name={FIELDS.proposalUrl}
+                    value={values[FIELDS.proposalUrl]}
+                    onChange={this.handleFileSubmit}
+
+                  />
                 </Grid>
                 <Grid item xs={12} sm={12} className={classes.gridBtn}>
                   <Button
@@ -248,6 +413,8 @@ class Screen extends React.PureComponent {
                     variant="contained"
                     color="primary"
                     type="submit"
+                    onClick={this.handleSubmit}
+                    component={Link}
                   >
                     Simpan
                   </Button>
@@ -256,6 +423,36 @@ class Screen extends React.PureComponent {
             </form>
           </Paper>
         </Container>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openSuccessMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseSuccessMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseSuccessMsg}
+            variant="success"
+            message={`Pengajuan Program Donasi Berhasil disimpan`}
+          />
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openErrorMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseErrorMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseErrorMsg}
+            variant="error"
+            message={`Pengajuan Program Donasi gagal disimpan`}
+          />
+        </Snackbar>
       </React.Fragment>
     );
   }

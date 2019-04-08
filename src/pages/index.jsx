@@ -137,35 +137,6 @@ const ROUTES = [
       component: UpdateChantPage
     }
   },
-  
-  {
-    title: "Donation Request",
-    route: {
-      path: paths.DONATION_REQUEST,
-      component: DonationRequestPage
-    }
-  },
-  {
-    title: "Riwayat Donasi",
-    route: {
-      path: paths.USER_DONATION_LIST,
-      component: UserDonationListPage
-    }
-  },
-  {
-    title: "Detail Pembayaran",
-    route: {
-      path: paths.DONATION_PAYMENT_DETAIL,
-      component: PaymentPage
-    }
-  },
-  {
-    title: "Form-Donasi",
-    route: {
-      path: paths.DONATION_FORM,
-      component: DonationFormPage
-    }
-  },
   {
     title: "Donasi",
     route: {
@@ -174,6 +145,39 @@ const ROUTES = [
       component: DonationPage
     }
   },
+  {
+    title: "Donation Request",
+    route: {
+      exact: true,
+      path: paths.DONATION_REQUEST,
+      component: DonationRequestPage
+    }
+  },
+  {
+    title: "Riwayat Donasi",
+    route: {
+      exact: true,
+      path: paths.USER_DONATION_LIST,
+      component: UserDonationListPage
+    }
+  },
+  {
+    title: "Detail Pembayaran",
+    route: {
+      exact: true,
+      path: paths.DONATION_PAYMENT_DETAIL,
+      component: PaymentPage
+    }
+  },
+  {
+    title: "Form-Donasi",
+    route: {
+      exact: true,
+      path: paths.DONATION_FORM,
+      component: DonationFormPage
+    }
+  },
+  
   {
     title: "Contact",
     route: {
