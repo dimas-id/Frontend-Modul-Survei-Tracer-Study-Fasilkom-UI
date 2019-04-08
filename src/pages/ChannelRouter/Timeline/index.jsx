@@ -73,6 +73,7 @@ class Screen extends React.Component {
             max="64px"
             deleted={Boolean(chant.dateDeleted)}
             numberChildrens={chant.numberChildrens}
+            hasLiked={chant.hasLikedByCurrentUser}
           />
         </div>
       ))}

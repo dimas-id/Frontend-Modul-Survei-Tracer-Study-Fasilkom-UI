@@ -178,7 +178,7 @@ class HomePage extends React.Component {
                 <Grid item xs={12} md={6}>
                   <CategoryPaper
                     title="Email Blaster"
-                    description="Sarana untuk mengirimkan email secara personal ke orang-orang"
+                    description="Sarana untuk mengirimkan email secara personal ke pengguna"
                     imageName="cloudEmail"
                     path={paths.CRM_EMAIL_TEMPLATE_LIST}
                   />
@@ -186,7 +186,7 @@ class HomePage extends React.Component {
                 <Grid item xs={12} md={6}>
                   <CategoryPaper
                     title="Daftar Kontrak Pengguna"
-                    description="Sarana untuk mengirimkan email secara personal ke pengguna"
+                    description="Sarana untuk melihat semua kontak pengguna"
                     imageName="cloudContact"
                     path={paths.CRM_CONTACT}
                   />

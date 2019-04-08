@@ -14,6 +14,7 @@ import LinkedInButton from "../../components/stables/LinkedInButton";
 
 import { Guidelines } from "../../styles";
 import paths from "../paths";
+import Carousel from "./Carousel";
 
 const styles = theme => ({
   hero: {
@@ -30,7 +31,8 @@ const styles = theme => ({
   },
   contentContainer: {
     minHeight: "100vh",
-    ...Guidelines.layouts.pt64
+    ...Guidelines.layouts.pt64,
+    justifyContent: 'center',
   },
   title: {
     ...Guidelines.fonts.heading1
@@ -123,6 +125,10 @@ function LandingMobile({ classes }) {
           <Typography component="h1" variant="h2" className={classes.title}>
             Donasi
           </Typography>
+          <Typography component="p" paragraph className={classes.subtitle}>
+          Sarana untuk menyalurkan kepedulian sosial Anda terhadap masa depan bangsa
+          </Typography>
+          <Carousel />
         </Container>
       </div>
       <Container className={classes.contentContainer}>

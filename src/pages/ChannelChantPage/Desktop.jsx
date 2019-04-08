@@ -70,6 +70,7 @@ class Screen extends React.Component {
         description={channelDetail.description}
         coverImgUrl={channelDetail.coverImgUrl}
         id={channelDetail.id}
+        hasSubscribed={channelDetail.hasSubscribedByCurrentUser}
       />
     );
   }
@@ -95,6 +96,7 @@ class Screen extends React.Component {
               overflow="hidden"
               max="64px"
               numberChildrens={chant.numberChildrens}
+              hasLiked={chant.hasLikedByCurrentUser}
             />
           </div>
         ))}

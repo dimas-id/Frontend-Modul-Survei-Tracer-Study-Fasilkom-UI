@@ -36,12 +36,10 @@ export default withStyles(styles)(function(props) {
     <Card className={classes.card}>
       <CardHeader
         avatar={
-          <Avatar aria-label="Recipe" className={classes.avatar}>
-            R
-          </Avatar>
+          <Avatar alt={props.name} src={props.profilePicUrl} className={classes.avatar} />
         }
         title={props.name + props.lastName}
-        subheader={props.dateCreated}
+        subheader={ props.numberOfChants ? (props.numberOfChants + " Chants" ): props.dateCreated}
       />
     </Card>
   );

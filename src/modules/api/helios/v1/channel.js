@@ -37,5 +37,14 @@ export default Object.freeze({
       body
     }),
   deleteChant: (userId, chantId) =>
-    http.delete(`${API_V1_URL}/users/${userId}/chants/${chantId}`)
+    http.delete(`${API_V1_URL}/users/${userId}/chants/${chantId}`),
+  likeChant: chantId => 
+    http.post(`${API_V1_URL}/chants/${chantId}/like`),
+  unlikeChant: chantId =>
+    http.post(`${API_V1_URL}/chants/${chantId}/unlike`),
+  getNumberOfChantsUser : () => http.get(`${API_V1_URL}/me`),
+  subscribeChannel: channelId =>
+    http.post(`${API_V1_URL}/channels/${channelId}/subscribe`),
+    unsubscribeChannel: channelId =>
+    http.post(`${API_V1_URL}/channels/${channelId}/unsubscribe`),
 });

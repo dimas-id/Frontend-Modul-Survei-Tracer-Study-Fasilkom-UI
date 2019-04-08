@@ -37,6 +37,7 @@ import { LoadingFill } from "../../../components/Loading";
 
 import { getUser } from "../../../modules/session/selectors";
 import atlasV1 from "../../../modules/api/atlas/v1";
+import heliosV1 from "../../../modules/api/helios/v1";
 
 const styles = theme => ({
   card: {
@@ -76,7 +77,9 @@ class Screen extends React.Component {
   state = {
     isLoading: true,
     userDetail: null,
-    openDialog: false
+    openDialog: false,
+    checked: false,
+    numberLikes: 0
   };
 
   componentDidMount() {
@@ -90,6 +93,12 @@ class Screen extends React.Component {
           this.setState({ isLoading: false });
         });
     }
+
+    this.setState({
+      checked: this.props.hasLiked,
+      numberLikes: this.props.numberLikes
+    })
+
   }
 
   handleClick = event => {
@@ -97,7 +106,6 @@ class Screen extends React.Component {
   };
 
   handleUpdate = () => {
-    console.log(this.props.id)
     this.props.history.push(makePathVariableUri(paths.CHANNEL_CHANT_UPDATE, {
       channelId: this.props.channel,
       chantId: this.props.id
@@ -122,6 +130,24 @@ class Screen extends React.Component {
       }
     );
   };
+
+  handleLike = () => {
+    heliosV1.channel
+      .likeChant(
+        this.props.id
+      ).then(
+        this.setState({checked: true, numberLikes: (this.state.numberLikes+1)})
+      )
+  }
+
+  handleUnlike = () => {
+    heliosV1.channel
+      .unlikeChant(
+        this.props.id
+      ).then(
+        this.setState({checked:false, numberLikes: (this.state.numberLikes-1)})
+      )
+  }
 
   renderCardHeader() {
     const { classes, deleted } = this.props;
@@ -164,7 +190,7 @@ class Screen extends React.Component {
         <DialogTitle id="alert-dialog-title" className={classes.dialogTitle}><Warning className={classes.warningIcon}/></DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description" className={classes.dialogContent}>
-            Opps! Looks like something is wrong
+            Apakah kamu yakin akan menghapus Chant ini?
             </DialogContentText>
           </DialogContent>
           <DialogActions className={classes.dialogActions}>
@@ -224,10 +250,11 @@ class Screen extends React.Component {
                     <Checkbox
                       icon={<FavoriteBorder />}
                       checkedIcon={<Favorite />}
-                      value="checkedH"
+                      checked={this.state.checked}
                     />
                   }
-                  label={this.props.numberLikes}
+                  onChange={this.state.checked ? this.handleUnlike : this.handleLike}
+                  label={this.state.numberLikes}
                 />
                 <IconButton aria-label="Share" onClick={this.handleReply}>
                   <CommentIcon />

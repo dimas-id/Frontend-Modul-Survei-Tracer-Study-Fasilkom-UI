@@ -73,6 +73,7 @@ class Screen extends React.Component {
               author={chant.author}
               deleted={Boolean(chant.dateDeleted)}
               numberChildrens={chant.numberChildrens}
+              hasLiked={chant.hasLikedByCurrentUser}
             />
           </div>
         ))}
