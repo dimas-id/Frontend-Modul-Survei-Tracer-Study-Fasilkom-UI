@@ -73,8 +73,7 @@ class Screen extends React.Component {
       .then(this.handleOpenSuccessMsg)
       .catch(this.handleOpenErrorMsg);
   }
-
-  handleOpenSuccessMsg = () => {
+  andleOpenSuccessMsg = () => {
     this.setState({ openSuccessMsg: true });
   };
 
@@ -85,7 +84,6 @@ class Screen extends React.Component {
 
     this.setState({ openSuccessMsg: false });
   };
-
   handleOpenErrorMsg = () => {
     this.setState({ openErrorMsg: true });
   };
