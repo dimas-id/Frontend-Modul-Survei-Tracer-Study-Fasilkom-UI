@@ -68,20 +68,26 @@ class EmailTemplateList extends React.Component {
 
   handleClickDelete(idEmailTemplate) {
     window.alertDialog(
-      "Konfirmasi Penghapusan",
-      "Apakah anda yakin menghapus templat ini?",
+      "Konfirmasi Penghapusan", //title
+      "Apakah anda yakin menghapus templat ini?", //ms
       () => {
         heliosV1.email
           .deleteEmailTemplate(idEmailTemplate)
           .then(this.handleOpenSuccessMsg)
-          .then(this.setState(state => ({ loading: true })))
+          .then(() => {
+            this.setState({ loading: true })
+          })
           .catch(this.handleOpenErrorMsg)
-          .finally( heliosV1.email
-            .getEmailTemplateList()
-            .then(result => this.setState({ emailTemplateList: result.data.results }))
-            .finally(() => {
-              this.setState({ loading: false });
-            }));
+          .finally(() => {
+            heliosV1.email
+              .getEmailTemplateList()
+              .then(result =>
+                this.setState({ emailTemplateList: result.data.results })
+              )
+              .finally(() => {
+                this.setState({ loading: false });
+              });
+          });
       }
     );
   }

@@ -16,8 +16,10 @@ export default Object.freeze({
   getUserDonationRequestList: userId =>
     http.get(`${API_V1_URL}/users/${userId}/donation-programs`),
 
-  getDonationProgramRequestDetail: (userId, donationId) =>
-    http.get(`${API_V1_URL}/users/${userId}/donation-programs/${donationId}`),
+  getDonationProgramRequestDetail: (userId, requestId) =>
+    http.get(`${API_V1_URL}/users/${userId}/donation-programs/${requestId}`),
+  deleteDonationRequest: (userId, requestId) =>
+    http.delete(`${API_V1_URL}/users/${userId}/donation-programs/${requestId}`),
 
   createDonation: (
     donationId,
@@ -32,6 +34,27 @@ export default Object.freeze({
       bankNumberSource,
       estPaymentDate
     }),
+  updateDonationRequest: (
+    userId,
+    requestId,
+    categoryName,
+    title,
+    description,
+    startDate,
+    endDate,
+    goalAmount,
+    proposalUrl
+  ) =>
+    http.patch(`${API_V1_URL}/users/${userId}/donation-programs/${requestId}`, {
+      categoryName,
+      title,
+      description,
+      startDate,
+      endDate,
+      goalAmount,
+      proposalUrl
+    }),
+
   createDonationRequest: (
     userId,
     categoryName,
@@ -51,5 +74,4 @@ export default Object.freeze({
       goalAmount,
       proposalUrl
     })
-
 });
