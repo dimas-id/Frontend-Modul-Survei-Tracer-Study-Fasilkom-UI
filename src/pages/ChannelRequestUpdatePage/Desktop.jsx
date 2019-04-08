@@ -15,7 +15,7 @@ import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrap
 import Particle from "../../components/Particle";
 import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
 import heliosV1 from "../../modules/api/helios/v1";
-import { getUserId } from "../../modules/session/selectors";
+import { getUserId, getUser } from "../../modules/session/selectors";
 import { BulletList } from "react-content-loader";
 import paths from "../../pages/paths";
 import { makePathVariableUri } from "../../libs/navigation";
@@ -75,25 +75,31 @@ class Screen extends React.Component {
     }
   }
 
-  handleTitle({ data }) {
+  handleTitle({ target }) {
     this.setState({
-      title: data.value
+      title: target.value
     });
   }
 
-  handleDescription({ data }) {
+  handleDescription({ target }) {
     this.setState({
-      description: data.value
+      description: target.value
     });
+    console.log(this.state.coverImgUrl);
+    console.log(this.state.title);
+    console.log(this.state.description);
   }
 
-  handleSubmit() {
+  handleSubmit = e => {
+    e.preventDefault();
+    const { channelId } = this.props.match.params;
     const { user, history } = this.props;
     const userId = this.props.user.id;
 
     heliosV1.channel
       .updateChannelRequest(
         userId,
+        channelId,
         this.state.coverImgUrl,
         this.state.title,
         this.state.description
@@ -203,7 +209,8 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    userId: getUserId(state)
+    userId: getUserId(state),
+    user: getUser(state)
   });
 
   const mapDispatchToProps = dispatch => ({});

@@ -27,29 +27,27 @@ export default Object.freeze({
     }),
   deleteChant: (userId, chantId) =>
     http.delete(`${API_V1_URL}/users/${userId}/chants/${chantId}`),
-  getChannelRequestList: userId =>
-    http.get(`${API_V1_URL}/users/${userId}/channel-requests/`),
-  getChannelRequestDetail: (userId, channelId) =>
-    http.get(`${API_V1_URL}/users/${userId}/channel-requests/${channelId}`),
   createChannelRequest: (userId, coverImgUrl, title, description) =>
     http.post(`${API_V1_URL}/users/${userId}/channel-requests/`, {
       coverImgUrl,
       title,
       description
     }),
-   updateChannelRequest: (userId, channelId, coverImgUrl, title, description) =>
-   http.patch(`${API_V1_URL}/users/${userId}/channel-requests/${channelId}`, {
-       coverImgUrl,
-       title,
-       description
-   }), 
-  likeChant: chantId => 
-    http.post(`${API_V1_URL}/chants/${chantId}/like`),
-  unlikeChant: chantId =>
-    http.post(`${API_V1_URL}/chants/${chantId}/unlike`),
-  getNumberOfChantsUser : () => http.get(`${API_V1_URL}/me`),
+  getChannelRequestList: userId =>
+    http.get(`${API_V1_URL}/users/${userId}/channel-requests/`),
+  getChannelRequestDetail: (userId, channelId) =>
+    http.get(`${API_V1_URL}/users/${userId}/channel-requests/${channelId}`),
+  updateChannelRequest: (userId, channelId, coverImgUrl, title, description) =>
+    http.patch(`${API_V1_URL}/users/${userId}/channel-requests/${channelId}`, {
+      coverImgUrl,
+      title,
+      description
+    }),
+  likeChant: chantId => http.post(`${API_V1_URL}/chants/${chantId}/like`),
+  unlikeChant: chantId => http.post(`${API_V1_URL}/chants/${chantId}/unlike`),
+  getNumberOfChantsUser: () => http.get(`${API_V1_URL}/me`),
   subscribeChannel: channelId =>
     http.post(`${API_V1_URL}/channels/${channelId}/subscribe`),
-    unsubscribeChannel: channelId =>
-    http.post(`${API_V1_URL}/channels/${channelId}/unsubscribe`),
+  unsubscribeChannel: channelId =>
+    http.post(`${API_V1_URL}/channels/${channelId}/unsubscribe`)
 });

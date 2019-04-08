@@ -10,6 +10,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import SaveIcon from "@material-ui/icons/Save";
 import Snackbar from "@material-ui/core/Snackbar";
 
+import { humanizeError } from "../../../libs/response"
 import http from "../../../libs/http";
 import env from "../../../config";
 
@@ -71,7 +72,7 @@ function FileUploadInput({ onChange, accept, classes }) {
         }
       };
 
-      const URI = `${accept}`.includes("images") ? "image" : "file";
+      const URI = `${accept}`.includes("image") ? "image" : "file";
       const UPLOAD_ENPOINT = `${env.HELIOS}/api/v1/upload/${URI}`;
       http
         .put(UPLOAD_ENPOINT, data, config)
@@ -80,8 +81,9 @@ function FileUploadInput({ onChange, accept, classes }) {
           setSuccess(true);
           return onChange && onChange(res);
         })
-        .catch(function() {
-          setShowSnackbars("Upload failed");
+        .catch(function(err) {
+          const readable = humanizeError(err.response.data, ['file'])
+          setShowSnackbars(`Upload failed: ${readable.file}`);
         })
         .finally(() => {
           setLoading(false);

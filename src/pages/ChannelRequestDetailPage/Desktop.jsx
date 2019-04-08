@@ -161,6 +161,7 @@ class Screen extends React.Component {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={12} className={classes.gridBtn}>
+          
             <Button
               className={`${classes.btn} ${classes.btnDelete}`}
               variant="contained"
