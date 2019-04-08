@@ -49,7 +49,7 @@ const styles = theme => {
     },
     appbar: {
       top: 0,
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: '#fff',
       boxShadow: "None"
     },
     title: {
