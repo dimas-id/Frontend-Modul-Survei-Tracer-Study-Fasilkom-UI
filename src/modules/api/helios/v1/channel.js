@@ -23,5 +23,11 @@ export default Object.freeze({
         http.patch(`${API_V1_URL}/users/${userId}/chants/${chantId}`, {
             title,
             body
+        }),
+    createChannelRequest: (userId, coverImgUrl, title, description) =>
+        http.post(`${API_V1_URL}/users/${userId}/channel-requests/`, {
+            coverImgUrl,
+            title,
+            description
         })
 })

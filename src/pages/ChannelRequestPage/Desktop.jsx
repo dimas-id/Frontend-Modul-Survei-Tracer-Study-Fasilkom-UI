@@ -11,6 +11,7 @@ import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
 import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
+import heliosV1 from "../../modules/api/helios/v1";
 
 const styles = theme => ({
   paper: {
@@ -26,16 +27,51 @@ const styles = theme => ({
   },
   subtitle: {
     fontSize: 16
-  },
+  }
 });
 
-class Screen extends React.PureComponent {
+class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
   };
 
+  state = {
+    coverImgUrl: "",
+    title: "",
+    description: ""
+  };
+
+  handleCoverImgUrl({ target }) {
+    this.setState({
+      coverImgUrl: target.value
+    });
+  }
+
+  handleTitle({ target }) {
+    this.setState({
+      title: target.value
+    });
+  }
+
+  handleDescription({ target }) {
+    this.setState({
+      description: target.value
+    });
+  }
+
+  handleSubmit() {
+    heliosV1.channel
+      .createChannelRequest(
+        this.props.userId,
+        this.state.coverImgUrl,
+        this.state.title,
+        this.state.description
+      )
+  }
+
   render() {
     const { classes } = this.props;
+    const { coverImgUrl, title, description } = this.state;
 
     return (
       <React.Fragment>
@@ -50,7 +86,15 @@ class Screen extends React.PureComponent {
             <Typography className={classes.subtitle} component="p">
               Channel yang Anda ajukan akan diproses oleh Admin untuk dibuat
             </Typography>
-            <ChannelRequestForm />
+            <ChannelRequestForm
+              coverImgUrl={coverImgUrl}
+              title={title}
+              description={description}
+              onChangeCoverImgUrl={this.handleCoverImgUrl.bind(this)}
+              onChangeTitle={this.handleTitle.bind(this)}
+              onChangeDescription={this.handleDescription.bind(this)}
+              onSubmit={this.handleSubmit.bind(this)}
+            />
           </Paper>
         </Container>
       </React.Fragment>
@@ -59,7 +103,9 @@ class Screen extends React.PureComponent {
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
+  const mapStateToProps = state => ({
+    userId: getUserId(state)
+  });
 
   const mapDispatchToProps = dispatch => ({});
 

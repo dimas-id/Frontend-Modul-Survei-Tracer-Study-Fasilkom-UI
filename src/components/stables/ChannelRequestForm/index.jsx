@@ -31,8 +31,17 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(function(props) {
-  const { classes } = props;
+function ChannelRequestForm({
+  classes,
+  coverImgUrl,
+  title,
+  description,
+  onChangeCoverImgUrl,
+  onChangeTitle,
+  onChangeDescription,
+  onSubmit
+}) {
+  
   return (
     <form className={classes.form}>
       <Grid container spacing={24}>
@@ -45,15 +54,15 @@ export default withStyles(styles)(function(props) {
           <TextField
             id="outlined-text-input"
             className={classes.textField}
-            placeholder="Placeholder"
+            placeholder="Pilih gambar cover Channel"
             type="text"
-            name="judul"
-            autoComplete="judul"
             margin="normal"
             variant="outlined"
+            onChange={onChangeCoverImgUrl}
+            value={coverImgUrl}
             fullWidth
             required
-          />
+            />
         </Grid>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>
@@ -62,17 +71,18 @@ export default withStyles(styles)(function(props) {
         </Grid>
         <Grid item xs={9} sm={9}>
           <TextField
-            id="outlined-text-input"
+            id="outlined-title"
             className={classes.textField}
             placeholder="Judul Channel yang diajukan"
             type="text"
-            name="judul"
-            autoComplete="judul"
+            name="title"
             margin="normal"
             variant="outlined"
+            onChange={onChangeTitle}
+            value={title}
             fullWidth
             required
-          />
+            />
         </Grid>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>
@@ -81,17 +91,18 @@ export default withStyles(styles)(function(props) {
         </Grid>
         <Grid item xs={9} sm={9}>
           <TextField
-            id="outlined-text-input"
+            id="outlined-description"
             className={classes.textField}
             placeholder="Deskripsi Channel yang diajukan"
             type="text"
-            name="deskripsi"
-            autoComplete="deskripsi"
+            name="description"
             margin="normal"
             variant="outlined"
+            onChange={onChangeDescription}
+            value={description}
             fullWidth
             required
-          />
+            />
         </Grid>
         <Grid item xs={12} sm={12} className={classes.gridBtn}>
           <Button
@@ -99,11 +110,18 @@ export default withStyles(styles)(function(props) {
             variant="contained"
             color="primary"
             type="submit"
-          >
+            onClick={onSubmit}
+            >
             Simpan
           </Button>
         </Grid>
       </Grid>
     </form>
   );
-});
+}
+
+ChannelRequestForm.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(ChannelRequestForm)

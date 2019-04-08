@@ -54,7 +54,6 @@ class Screen extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     heliosV1.channel
       .getChannelRequestList(this.props.userId)
       .then(result => {
