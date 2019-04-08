@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 
 import { withStyles } from "@material-ui/core/styles";
 
-import { withAuth } from "../../components/hocs/auth";
+import { authorize } from "../../components/hocs/auth";
 import { NavbarBack, NavbarAuth } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import ChantCard from "../../components/stables/Chant";
@@ -41,12 +41,11 @@ class Screen extends React.Component {
         this.props.match.params.chantId
       )
       .then(result => {
-        this.setState({ listChant: result.data.results })
+        this.setState({ listChant: result.data.results });
       })
       .finally(() => {
-        this.setState({ isLoading: false })
-      }
-    )
+        this.setState({ isLoading: false });
+      });
   }
 
   renderChantCard() {
@@ -100,7 +99,7 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
+  return authorize({ mustVerified: true })(
     withRouter(
       connect(
         mapStateToProps,

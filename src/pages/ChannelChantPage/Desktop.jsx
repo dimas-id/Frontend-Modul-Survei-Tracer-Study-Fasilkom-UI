@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-import { withAuth } from "../../components/hocs/auth";
+import { authorize } from "../../components/hocs/auth";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import ChantCard from "../../components/stables/Chant";
@@ -134,7 +134,7 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
+  return authorize({ mustVerified: true })(
     withRouter(
       connect(
         mapStateToProps,

@@ -6,7 +6,6 @@ import { ConnectedRouter } from "connected-react-router";
 import { PersistGate } from "redux-persist/integration/react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 
-
 import { history, store, persistor } from "./modules";
 import { setAuthToken } from "./libs/http";
 
@@ -15,6 +14,7 @@ import { SplashScreen } from "./components/Loading";
 
 import Pages from "./pages";
 import { theme } from "./styles";
+import "./config";
 
 function setAuthTokenAfterPersist() {
   const token = get(store.getState(), "session.token.access");
