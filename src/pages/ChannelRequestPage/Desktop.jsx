@@ -15,6 +15,8 @@ import Particle from "../../components/Particle";
 import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUserId } from "../../modules/session/selectors";
+import paths from "../paths";
+import { makePathVariableUri } from "../../libs/navigation";
 
 const styles = theme => ({
   paper: {
@@ -63,17 +65,27 @@ class Screen extends React.Component {
   }
 
   handleSubmit() {
+    const { user, history } = this.props;
+    const userId = this.props.user.id;
+
     heliosV1.channel
       .createChannelRequest(
-        this.props.userId,
+        userId,
         this.state.coverImgUrl,
         this.state.title,
         this.state.description
       )
-      .then(this.handleOpenSuccessMsg)
+      .then(() => {
+        history.push(
+          makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
+            username: user.username
+          })
+        );
+        this.handleOpenSuccessMsg();
+      })
       .catch(this.handleOpenErrorMsg);
   }
-  HandleOpenSuccessMsg = () => {
+  handleOpenSuccessMsg = () => {
     this.setState({ openSuccessMsg: true });
   };
 
