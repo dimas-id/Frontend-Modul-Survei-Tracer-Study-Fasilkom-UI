@@ -17,15 +17,25 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import Warning from "@material-ui/icons/Warning";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 import { Guidelines } from "../../../styles";
 import { makePathVariableUri } from "../../../libs/navigation";
 import { getDateFormatted } from "../../../libs/datetime";
 import paths from "../../../pages/paths";
 
-import { withAuth } from "../../../components/hocs/auth";
+import { authorize } from "../../../components/hocs/auth";
 import { LoadingFill } from "../../../components/Loading";
 
+import { getUser } from "../../../modules/session/selectors";
 import atlasV1 from "../../../modules/api/atlas/v1";
 
 const styles = theme => ({
@@ -43,13 +53,30 @@ const styles = theme => ({
     display: "flex",
     ...Guidelines.layouts.flexDirCol,
     alignItems: "flex-start"
+  },
+  warningIcon: {
+    color: "#F1A153"
+  },
+  dialogTitle: {
+    textAlign: "center"
+  },
+  dialogContent: {
+    color: "#F1A153",
+    textAlign: "center"
+  },
+  dialogActions: {
+    ...Guidelines.layouts.flexDirRow,
+    ...Guidelines.layouts.marginAuto,
+    ...Guidelines.layouts.mb8,
+    justifiyContent: "space-between",
   }
 });
 
 class Screen extends React.Component {
   state = {
     isLoading: true,
-    userDetail: null
+    userDetail: null,
+    openDialog: false
   };
 
   componentDidMount() {
@@ -65,6 +92,26 @@ class Screen extends React.Component {
     }
   }
 
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleUpdate = () => {
+    console.log(this.props.id)
+    this.props.history.push(makePathVariableUri(paths.CHANNEL_CHANT_UPDATE, {
+      channelId: this.props.channel,
+      chantId: this.props.id
+    }))
+  };
+
+  handleClickOpenDialog = () => {
+    this.setState({ openDialog: true });
+  };
+
+  handleCloseDialog = () => {
+    this.setState({ openDialog: false });
+  };
+
   handleReply = () => {
     this.props.history.push(
       makePathVariableUri(paths.CHANNEL_CHANT_CREATE, {
@@ -78,6 +125,7 @@ class Screen extends React.Component {
 
   renderCardHeader() {
     const { classes, deleted } = this.props;
+    const { anchorEl } = this.state;
 
     if (deleted) {
       return null;
@@ -91,9 +139,44 @@ class Screen extends React.Component {
           <Avatar alt={name} src={profilePicUrl} className={classes.avatar} />
         }
         action={
-          <IconButton>
+          <div>
+          <IconButton aria-owns={anchorEl ? 'simple-menu' : undefined}
+          aria-haspopup="true"
+          onClick={(this.props.user.id === this.props.author) ? this.handleClick : null}>
             <MoreVertIcon />
           </IconButton>
+          <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={this.handleClose}
+          >
+          <MenuItem onClick={this.handleUpdate}>Mengubah Chant</MenuItem>
+          <MenuItem onClick={this.handleClickOpenDialog}>Menghapus Chant</MenuItem>
+          </Menu>
+          <Dialog
+          open={this.state.openDialog}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          className={classes.dialog}
+        >
+        <DialogTitle id="alert-dialog-title" className={classes.dialogTitle}><Warning className={classes.warningIcon}/></DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description" className={classes.dialogContent}>
+            Opps! Looks like something is wrong
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions className={classes.dialogActions}>
+            <Button onClick={this.handleCloseDialog} style={{backgroundColor: "white", color:"black"}} variant="contained" color="primary">
+              Tidak
+            </Button>
+            <Button onClick={() => this.props.onDelete(this.props.id)} style={{backgroundColor: "#F1A153", color:"white"}} variant="contained" autoFocus>
+              Iya, saya yakin
+            </Button>
+          </DialogActions>
+        </Dialog>
+          </div>
         }
         title={name}
         subheader={getDateFormatted(this.props.dateCreated, "DD MMMM YYYY")}
@@ -104,6 +187,7 @@ class Screen extends React.Component {
   render() {
     const { classes, margin, overflow, max, deleted } = this.props;
     const { isLoading } = this.state;
+    
 
     return (
       <Card className={classes.card} style={{ marginLeft: margin + "px" }}>
@@ -146,7 +230,7 @@ class Screen extends React.Component {
                   label={this.props.numberLikes}
                 />
                 <IconButton aria-label="Share" onClick={this.handleReply}>
-                  <CommentIcon  />
+                  <CommentIcon />
                   <Typography
                     variant="body2"
                     style={{ marginLeft: "10px" }}
@@ -165,11 +249,13 @@ class Screen extends React.Component {
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
+  const mapStateToProps = state => ({
+    user: getUser(state)
+  });
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
+  return authorize({ mustVerified: true })(
     withRouter(
       connect(
         mapStateToProps,

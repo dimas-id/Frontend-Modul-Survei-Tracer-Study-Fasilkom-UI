@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import keymirror from "keymirror";
-
 import Fade from "@material-ui/core/Fade";
 
 import {
@@ -27,10 +26,12 @@ class Authenticated extends React.PureComponent {
     location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
     history: PropTypes.shape({ push: PropTypes.func }).isRequired,
     roles: PropTypes.arrayOf(PropTypes.string),
+    mustVerified: PropTypes.bool,
     user: PropTypes.shape({
       groups: PropTypes.arrayOf(PropTypes.string),
       isSuperuser: PropTypes.bool,
-      isStaff: PropTypes.bool
+      isStaff: PropTypes.bool,
+      isVerified: PropTypes.bool
     }).isRequired
   };
 
@@ -40,13 +41,14 @@ class Authenticated extends React.PureComponent {
       this.redirectToLogin();
     } else {
       this.checkUserRole();
-      // @todo: check verified
+      this.checkVerified();
     }
   }
 
-  componentWillUnmount() {
-    if (this.loadingTimeout) {
-      clearTimeout(this.loadingTimeout);
+  checkVerified() {
+    const { user, mustVerified } = this.props;
+    if (mustVerified && !user.isVerified) {
+      this.redirectTo404();
     }
   }
 
@@ -99,13 +101,36 @@ function createContainer() {
     )(Authenticated)
   );
 }
-export function withAuth(Component, roles = []) {
+
+export const authorize = options => Component => {
+  const defaults = {
+    mustVerified: false,
+    role: [ROLES.PUBLIC],
+    ...options
+  };
+
   const Wrapper = createContainer();
   return props => (
-    <Wrapper roles={roles} render={() => <Component {...props} />} />
+    <Wrapper {...defaults} render={() => <Component {...props} />} />
   );
-}
+};
+
+/**
+ * @deprecated since version 1.0 (Iterasi 1)
+ */
+export const withAuth = (Component, options) => {
+  const defaults = {
+    roles: [ROLES.PUBLIC],
+    mustVerified: true,
+    ...options
+  };
+  window.deprecationWarning(
+    "withAuth is deprecated. Use authorize instead. (src/components/hocs/auth.jsx)"
+  );
+  return authorize(defaults)(Component);
+};
 
 export default {
-  withAuth
+  withAuth,
+  authorize
 };

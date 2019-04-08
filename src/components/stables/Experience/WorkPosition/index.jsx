@@ -38,15 +38,6 @@ function WorkPosition({ onAdd, onEdit, load, positions, userId }) {
           }}
         />
       )}
-      {isLoading && (
-        <Grid className={classes.gridContainer} container spacing={24}>
-          {Array.apply(null, Array(4)).map((item, index) => (
-            <Grid item xs={12} key={index}>
-              <ExperienceItem loading />
-            </Grid>
-          ))}
-        </Grid>
-      )}
       {!isPositionsEmpty && (
         <Grid className={classes.gridContainer} container spacing={24}>
           {positions.map(pos => (
@@ -62,6 +53,15 @@ function WorkPosition({ onAdd, onEdit, load, positions, userId }) {
                     : "Masih"
                 }`}
               />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+      {isLoading && (
+        <Grid className={classes.gridContainer} container spacing={24}>
+          {Array.apply(null, Array(4)).map((item, index) => (
+            <Grid item xs={12} key={index}>
+              <ExperienceItem loading />
             </Grid>
           ))}
         </Grid>

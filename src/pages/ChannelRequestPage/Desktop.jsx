@@ -12,6 +12,7 @@ import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
 import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
 import heliosV1 from "../../modules/api/helios/v1";
+import { getUserId } from "../../modules/session/selectors";
 
 const styles = theme => ({
   paper: {

@@ -110,7 +110,7 @@ class Screen extends React.Component {
       [FIELDS.bankNumberSource]: "",
       [FIELDS.estPaymentDate]: moment()
     },
-    estPaymentDate: null,
+    // estPaymentDate: null,
     donationProgram: null,
     loading: true
   };
@@ -128,7 +128,6 @@ class Screen extends React.Component {
   }
 
   handleChange = event => {
-    console.log(event.target.value);
     this.setState({
       values: {
         ...this.state.values,

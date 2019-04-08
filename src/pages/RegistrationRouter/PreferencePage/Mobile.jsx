@@ -6,6 +6,7 @@ import { Container } from "../../../components/Container";
 import { NavbarAuth } from "../../../components/stables/Navbar";
 import Preference from "../../../components/stables/Preference";
 import { Guidelines } from "../../../styles";
+import { authorize } from "../../../components/hocs/auth";
 
 const styles = makeStyles(theme => ({
   title: {
@@ -37,4 +38,4 @@ function PreferencePage() {
   );
 }
 
-export default PreferencePage;
+export default authorize({ mustVerified: false })(PreferencePage);

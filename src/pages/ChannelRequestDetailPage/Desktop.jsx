@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
-import { withAuth } from "../../components/hocs/auth";
+import { authorize } from "../../components/hocs/auth";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
@@ -200,7 +200,7 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
+  return authorize({ mustVerified: true })(
     withRouter(
       connect(
         mapStateToProps,

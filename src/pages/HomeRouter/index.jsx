@@ -6,7 +6,7 @@ import HomeOutlined from "@material-ui/icons/HomeOutlined";
 import ContactMail from "@material-ui/icons/ContactMailOutlined";
 import ToggleOff from "@material-ui/icons/ToggleOffOutlined";
 
-import { withAuth } from "../../components/hocs/auth";
+import { authorize } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
 import RouterWithMenu from "../../components/RouterWithMenu";
 import { Container } from "../../components/Container";
@@ -80,4 +80,6 @@ HomeMobile.propTypes = {
   classes: PropTypes.shape().isRequired
 };
 
-export default withAuth(withStyles(styles)(HomeMobile));
+export default authorize({
+  mustVerified: false
+})(withStyles(styles)(HomeMobile));

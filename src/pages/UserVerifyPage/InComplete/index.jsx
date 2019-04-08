@@ -41,7 +41,7 @@ class InComlete extends React.Component {
     const { user, history, load } = this.props;
     load(user.id).then(() => {
       if (this.props.user.isVerified) {
-        history.push(paths.HOME);
+        history.replace(paths.HOME);
       } else {
         this.setState({ loading: false });
       }

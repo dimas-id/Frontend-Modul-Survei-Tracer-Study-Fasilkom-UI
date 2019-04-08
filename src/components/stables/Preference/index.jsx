@@ -83,9 +83,11 @@ function Preference({ userId }) {
   }, []);
 
   function handleChange({ target }) {
+    // set first, think later
+    setPreference({...preference, [target.name]: target.checked});
     atlasV1.session
       .patchPreference(userId, {
-        [target.name]: target.value
+        [target.name]: target.checked
       })
       .then(result => {
         setPreference(getResult(result));
@@ -105,35 +107,35 @@ function Preference({ userId }) {
           <Head
             name={FIELDS.shouldSendNewsletter}
             onChange={handleChange}
-            value={preference[FIELDS.shouldSendNewsletter]}
+            checked={preference[FIELDS.shouldSendNewsletter]}
           >
             Newsletter
           </Head>
           <Head
             name={FIELDS.shouldSendEvent}
             onChange={handleChange}
-            value={preference[FIELDS.shouldSendEvent]}
+            checked={preference[FIELDS.shouldSendEvent]}
           >
             Informasi/Undangan Acara
           </Head>
           <Head
             name={FIELDS.shouldSendVacancy}
             onChange={handleChange}
-            value={preference[FIELDS.shouldSendVacancy]}
+            checked={preference[FIELDS.shouldSendVacancy]}
           >
             Informasi Lowongan
           </Head>
           <Head
             name={FIELDS.shouldSendDonationInfo}
             onChange={handleChange}
-            value={preference[FIELDS.shouldSendDonationInfo]}
+            checked={preference[FIELDS.shouldSendDonationInfo]}
           >
             Informasi Donasi
           </Head>
           <Head
             name={FIELDS.shouldSendUpdate}
             onChange={handleChange}
-            value={preference[FIELDS.shouldSendUpdate]}
+            checked={preference[FIELDS.shouldSendUpdate]}
           >
             Informasi lainnya mengenai ILUNI12
           </Head>

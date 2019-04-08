@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
-import { withAuth } from "../../components/hocs/auth";
+import { authorize } from "../../components/hocs/auth";
 import { NavbarBack } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import InComplete from "./InComplete";
@@ -30,7 +30,7 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
+  return authorize({ mustVerified: false })(
     withRouter(
       connect(
         mapStateToProps,

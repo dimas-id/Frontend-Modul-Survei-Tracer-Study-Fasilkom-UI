@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import { Guidelines } from "../../../styles";
-import { withAuth } from "../../../components/hocs/auth";
 import { getUser } from "../../../modules/session/selectors";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -12,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { Avatar, Chip } from "@material-ui/core";
-import CategoryPaper from "./CategoryPaper"
+import CategoryPaper from "./CategoryPaper";
 import paths from "../../paths";
 
 const styles = theme => ({
@@ -89,12 +88,18 @@ class HomePage extends React.Component {
     window.alertDialog(
       "Verfikasi Akun",
       "Apakah anda ingin verifikasi akun anda sekarang?",
-      () => {this.props.history.push(paths.USER_VERIFY)}
+      () => {
+        this.props.history.push(paths.USER_VERIFY);
+      }
     );
-  }
+  };
 
   render() {
     const { classes, user } = this.props;
+    if (!user) {
+      return null;
+    }
+
     const { profile } = user;
 
     return (
@@ -131,32 +136,63 @@ class HomePage extends React.Component {
                 ""
               )}
             </div>{" "}
-            {!user.isVerified &&     <Button
-              color="primary"
-              className={classes.button}
-              onClick={this.openVerificationDialog}
-            >
-              Verifikasi Sekarang
-            </Button>}
-        
+            {!user.isVerified && (
+              <Button
+                color="primary"
+                className={classes.button}
+                onClick={this.openVerificationDialog}
+              >
+                Verifikasi Sekarang
+              </Button>
+            )}
           </div>
 
           <Grid container spacing={24}>
             <Grid item xs={12} md={6}>
-              <CategoryPaper title="Donasi" description="Sarana untuk menyalurkan salah satu bentuk kepedulian sosial Anda" imageName="cloudDonation" path={paths.DONASI}/>
+              <CategoryPaper
+                title="Donasi"
+                description="Sarana untuk menyalurkan salah satu bentuk kepedulian sosial Anda"
+                imageName="cloudDonation"
+                path={paths.DONASI}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <CategoryPaper title="Channel" description="Sarana bertukar informasi antar pengguna yang disajikan dengan berbagai kategori" imageName="cloudChannel" path={paths.CHANNEL}/>
+              <CategoryPaper
+                title="Channel"
+                description="Sarana bertukar informasi antar pengguna yang disajikan dengan berbagai kategori"
+                imageName="cloudChannel"
+                path={paths.CHANNEL}
+              />
             </Grid>
-            <Grid item xs={12} md={6}>
-              <CategoryPaper title="Dashboard" description="Sarana untuk mengetahui perkembangan ILUNI12 sekarang" imageName="cloudDashboard" pathUrl="http://localhost:8000/__admin__/" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CategoryPaper title="Email Blaster" description="Sarana untuk mengirimkan email secara personal ke orang-orang" imageName="cloudEmail" path={paths.CRM_EMAIL_TEMPLATE_LIST}/>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CategoryPaper title="Daftar Kontrak Pengguna" description="Sarana untuk mengirimkan email secara personal ke pengguna" imageName="cloudContact" path={paths.CRM_CONTACT}/>
-            </Grid>
+
+            {(user.isStaff || user.isSuperUser) && (
+              <React.Fragment>
+                <Grid item xs={12} md={6}>
+                  <CategoryPaper
+                    title="Dashboard"
+                    description="Sarana untuk mengetahui perkembangan ILUNI12 sekarang"
+                    imageName="cloudDashboard"
+                    pathUrl="http://localhost:3000/"
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CategoryPaper
+                    title="Email Blaster"
+                    description="Sarana untuk mengirimkan email secara personal ke orang-orang"
+                    imageName="cloudEmail"
+                    path={paths.CRM_EMAIL_TEMPLATE_LIST}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CategoryPaper
+                    title="Daftar Kontrak Pengguna"
+                    description="Sarana untuk mengirimkan email secara personal ke pengguna"
+                    imageName="cloudContact"
+                    path={paths.CRM_CONTACT}
+                  />
+                </Grid>
+              </React.Fragment>
+            )}
           </Grid>
         </Paper>
       </React.Fragment>
@@ -171,13 +207,11 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
-    withRouter(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(withStyles(styles)(HomePage))
-    )
+  return withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(withStyles(styles)(HomePage))
   );
 }
 

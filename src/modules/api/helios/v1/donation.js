@@ -18,13 +18,38 @@ export default Object.freeze({
 
   getDonationProgramRequestDetail: (userId, donationId) =>
     http.get(`${API_V1_URL}/users/${userId}/donation-programs/${donationId}`),
-  
-  createDonation: (donationId, amount, bankNumberDest,bankNumberSource, estPaymentDate) =>
+
+  createDonation: (
+    donationId,
+    amount,
+    bankNumberDest,
+    bankNumberSource,
+    estPaymentDate
+  ) =>
     http.post(`${API_V1_URL}/donation-programs/${donationId}/donate`, {
-      amount, 
+      amount,
       bankNumberDest,
-      bankNumberSource, 
+      bankNumberSource,
       estPaymentDate
     }),
-    // http://localhost:3113/donasi/2?amount=20000&bankNumberDest=0&bankNumberSource=1234567&estPaymentDate=2019-04-17
+  createDonationRequest: (
+    userId,
+    categoryName,
+    title,
+    description,
+    startDate,
+    endDate,
+    goalAmount,
+    proposalUrl
+  ) =>
+    http.post(`${API_V1_URL}/users/${userId}/donation-programs`, {
+      categoryName,
+      title,
+      description,
+      startDate,
+      endDate,
+      goalAmount,
+      proposalUrl
+    })
+
 });
