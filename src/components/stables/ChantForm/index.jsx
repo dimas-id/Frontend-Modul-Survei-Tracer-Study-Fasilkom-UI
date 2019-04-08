@@ -36,18 +36,23 @@ const styles = theme => ({
     color: "white"
   },
   buttonPic: {
-    ...layouts.marginAuto,
+    ...layouts.marginAuto
   }
 });
 
 function ChantCreateForm({
-  classes, title, body, onChantTitle, onChangeBody, onSubmit
+  classes,
+  title,
+  body,
+  onChantTitle,
+  onChangeBody,
+  onSubmit
 }) {
   return (
     <form className={classes.form}>
       <div className={classes.formInline}>
-      <Typography component="p" className={classes.label}>
-            Judul 
+        <Typography component="p" className={classes.label}>
+          Judul
         </Typography>
         <TextField
           autoFocus
@@ -59,15 +64,15 @@ function ChantCreateForm({
           margin="normal"
           variant="outlined"
           inputProps={{
-            maxLength: 200,
+            maxLength: 200
           }}
         />
       </div>
       <div className={classes.formInline}>
-      <Typography component="p" className={classes.label}>
-            Deskripsi *
-          </Typography>
-          <div className={classes.textField}>
+        <Typography component="p" className={classes.label}>
+          Deskripsi *
+        </Typography>
+        <div className={classes.textField}>
           <Editor
             placeholder="Deskripsi Chant hari ini?"
             onChange={target => onChangeBody(target())}
@@ -79,29 +84,15 @@ function ChantCreateForm({
               const UPLOAD_ENPOINT = `${env.HELIOS}/api/v1/upload/image`;
               return http
                 .put(UPLOAD_ENPOINT, data)
-                .then(resp => resp.data.fileUrl) // -> kurang ini
+                .then(resp => resp.data.fileUrl); // -> kurang ini
             }}
           />
-      </div>
-        {/* <TextField
-          id="descritpion"
-          label="Deskripsi Chant hari ini?"
-          multiline
-          rowsMax="5"
-          className={classes.textField}
-          onChange={onChangeBody}
-          margin="normal"
-          variant="outlined"
-          value={body}
-          required
-        /> */}
+        </div>
       </div>
       <div className={classes.formInline}>
         <div className={classes.buttonPic}>
-        <FileUploadInput 
-                  onChange={console.log}
-                  accept="application/pdf"/>
-                  </div>
+          <FileUploadInput onChange={console.log} accept="application/pdf" />
+        </div>
         <Button
           variant="contained"
           color="primary"
@@ -112,7 +103,7 @@ function ChantCreateForm({
         </Button>
       </div>
     </form>
-  )
+  );
 }
 
 export default withStyles(styles)(ChantCreateForm);
