@@ -95,7 +95,7 @@ class Screen extends React.Component {
       });
   }
 
-  canBeDeleted() {
+  canBeDeletedAndUpdated() {
     const { verificationStatus } = this.state.channelRequest;
 
     return (
@@ -105,7 +105,7 @@ class Screen extends React.Component {
 
   handleClickDelete = (userId, channelId, e) =>  {
     
-    if (!this.canBeDeleted()) {
+    if (!this.canBeDeletedandUpdated()) {
       e.preventDefault();
       return;
     };
