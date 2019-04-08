@@ -1,6 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Dialog from "@material-ui/core/Dialog";
 import NavbarModal from "../stables/Navbar/NavbarModal";
+import withMobileDialog from '@material-ui/core/withMobileDialog';
 
 function FormDialog({ title, children, open, onClose, ...dialogProps }) {
   return (
@@ -16,4 +18,8 @@ function FormDialog({ title, children, open, onClose, ...dialogProps }) {
   );
 }
 
-export default FormDialog;
+FormDialog.propTypes = {
+  fullScreen: PropTypes.bool.isRequired,
+};
+
+export default withMobileDialog()(FormDialog);

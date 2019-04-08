@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
