@@ -73,7 +73,7 @@ class Screen extends React.Component {
       .then(this.handleOpenSuccessMsg)
       .catch(this.handleOpenErrorMsg);
   }
-  andleOpenSuccessMsg = () => {
+  HandleOpenSuccessMsg = () => {
     this.setState({ openSuccessMsg: true });
   };
 
@@ -121,6 +121,7 @@ class Screen extends React.Component {
               onChangeTitle={this.handleTitle.bind(this)}
               onChangeDescription={this.handleDescription.bind(this)}
               onSubmit={this.handleSubmit.bind(this)}
+              type="create"
             />
           </Paper>
         </Container>

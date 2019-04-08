@@ -56,8 +56,6 @@ class Screen extends React.Component {
   };
 
   handleDelete = chantId => {
-    console.log(this.props.user.id);
-    console.log(this.props.id);
     heliosV1.channel
       .deleteChant(this.props.user.id, chantId)
       .then(this.loadChant);
@@ -85,6 +83,7 @@ class Screen extends React.Component {
               deleted={Boolean(chant.dateDeleted)}
               numberChildrens={chant.numberChildrens}
               onDelete={this.handleDelete}
+              hasLiked={chant.hasLikedByCurrentUser}
             />
           </div>
         ))}

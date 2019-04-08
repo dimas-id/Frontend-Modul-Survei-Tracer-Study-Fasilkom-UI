@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import { Guidelines } from "../../../styles";
-{/*import FileUploadInput from "../../stables/FileUploadInput";*/}
+import FileUploadInput from "../../stables/FileUploadInput";
 
 const styles = theme => ({
   form: {
@@ -40,7 +40,8 @@ function ChannelRequestForm({
   onChangeCoverImgUrl,
   onChangeTitle,
   onChangeDescription,
-  onSubmit
+  onSubmit,
+  type
 }) {
   return (
     <form className={classes.form}>
@@ -51,20 +52,28 @@ function ChannelRequestForm({
           </Typography>
         </Grid>
         <Grid item xs={9} sm={9}>
-          {/*<FileUploadInput onChange={onChangeCoverImgUrl} value={coverImgUrl} />*/}
-          <TextField
-            id="outlined-title"
-            className={classes.textField}
-            placeholder="URL untuk gambar cover Channel yang diajukan"
-            type="text"
-            name="title"
-            margin="normal"
-            variant="outlined"
-            onChange={onChangeCoverImgUrl}
-            value={coverImgUrl}
-            fullWidth
-            required
-          />
+          <Grid container spacing={24}>
+              {type === "update" ? (
+                <Grid item xs={2} sm={2}>
+                <img
+                  style={{
+                    width: 80,
+                    height: 80,
+                    objectFit: "cover"
+                  }}
+                  src={coverImgUrl}
+                  alt="cover channel"
+                />
+              </Grid>)
+              : null}
+
+            <Grid item xs={2} sm={2}>
+              <FileUploadInput
+                onChange={onChangeCoverImgUrl}
+                value={coverImgUrl}
+              />
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>

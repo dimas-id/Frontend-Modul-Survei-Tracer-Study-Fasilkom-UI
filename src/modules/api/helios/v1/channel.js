@@ -45,4 +45,9 @@ export default Object.freeze({
        title,
        description
    }), 
+  likeChant: chantId => 
+    http.post(`${API_V1_URL}/chants/${chantId}/like`),
+  unlikeChant: chantId =>
+  http.post(`${API_V1_URL}/chants/${chantId}/unlike`),
+  getNumberOfChantsUser : () => http.get(`${API_V1_URL}/me`)
 });

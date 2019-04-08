@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -18,6 +19,8 @@ import Particle from "../../components/Particle";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUserId } from "../../modules/session/selectors";
 import { BulletList } from "react-content-loader";
+import { makePathVariableUri } from "../../libs/navigation";
+import paths from "../../pages/paths";
 
 const styles = theme => ({
   paper: {
@@ -91,6 +94,7 @@ class Screen extends React.Component {
   renderContent() {
     const { classes } = this.props;
     const {
+      id,
       coverImgUrl,
       title,
       description,
@@ -99,9 +103,6 @@ class Screen extends React.Component {
     } = this.state.channelRequest;
     return (
       <React.Fragment>
-        <Typography className={classes.title} variant="h5" component="h3">
-          Detail Pengajuan Channel
-        </Typography>
         <Grid container spacing={24} className={classes.gridContainer}>
           <Grid item xs={3} sm={3} className={classes.gridLabel}>
             <Typography component="p" className={classes.label}>
@@ -166,7 +167,15 @@ class Screen extends React.Component {
             >
               Hapus
             </Button>
-            <Button className={classes.btn} variant="contained" color="primary">
+            <Button
+              component={Link}
+              to={makePathVariableUri(paths.CHANNEL_REQUEST_UPDATE, {
+                channelId: id
+              })}
+              className={classes.btn}
+              variant="contained"
+              color="primary"
+            >
               Ubah
             </Button>
           </Grid>
@@ -185,6 +194,9 @@ class Screen extends React.Component {
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>
+            <Typography className={classes.title} variant="h5" component="h3">
+              Detail Pengajuan Channel
+            </Typography>
             {loading ? <BulletList /> : this.renderContent()}
           </Paper>
         </Container>
