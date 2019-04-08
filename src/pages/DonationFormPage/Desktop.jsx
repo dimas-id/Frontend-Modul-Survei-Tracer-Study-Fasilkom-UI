@@ -19,7 +19,6 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import MenuItem from "@material-ui/core/MenuItem";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import MomentUtils from "@date-io/moment";
@@ -206,7 +205,6 @@ class Screen extends React.Component {
           <Grid container spacing={24}>
             <Grid item sm={12} md={6}>
               <Paper className={classes.paper}>
-                <CardActionArea>
                   <CardMedia className={classes.media} image={bundar} />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
@@ -214,7 +212,6 @@ class Screen extends React.Component {
                     </Typography>
                     <Typography component="p">{description}</Typography>
                   </CardContent>
-                </CardActionArea>
                 <Grid item xs={12} sm={12} className={classes.btnProposal}>
                   <Button variant="outlined" color="inherit">
                     Lihat Proposal
