@@ -51,20 +51,7 @@ function ChannelRequestForm({
           </Typography>
         </Grid>
         <Grid item xs={9} sm={9}>
-          <FileUploadInput name="coverImgUrl" value={coverImgUrl} onChange={onChangeCoverImgUrl}/>
-          {/*<TextField
-            id="outlined-title"
-            className={classes.textField}
-            placeholder="URL untuk gambar cover Channel yang diajukan"
-            type="text"
-            name="title"
-            margin="normal"
-            variant="outlined"
-            onChange={onChangeCoverImgUrl}
-            value={coverImgUrl}
-            fullWidth
-            required
-          />*/}
+          <FileUploadInput accept="image/*" onChange={onChangeCoverImgUrl} />
         </Grid>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>
