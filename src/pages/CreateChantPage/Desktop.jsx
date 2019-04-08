@@ -50,9 +50,9 @@ class Screen extends React.PureComponent {
     });
   }
 
-  handleBody({ target }) {
+  handleBody( target ) {
     this.setState({
-      body: target.value
+      body: target
     });
   }
 

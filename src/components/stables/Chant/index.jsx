@@ -214,6 +214,12 @@ class Screen extends React.Component {
     const { classes, margin, overflow, max, deleted } = this.props;
     const { isLoading } = this.state;
     
+    var Converter = require('react-showdown').Converter;
+var converter = new Converter();
+ 
+var markdown = this.props.body
+var reactElement = converter.convert(markdown);
+
 
     return (
       <Card className={classes.card} style={{ marginLeft: margin + "px" }}>
@@ -231,7 +237,7 @@ class Screen extends React.Component {
                 style={{ overflow: overflow, maxHeight: max, maxLine: max }}
               >
                 <Typography variant="body2" gutterBottom>
-                  {this.props.body}
+                  {reactElement}
                 </Typography>
               </div>
             </CardContent>
