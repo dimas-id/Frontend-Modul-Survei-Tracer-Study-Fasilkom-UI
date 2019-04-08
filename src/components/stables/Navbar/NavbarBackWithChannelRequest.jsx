@@ -16,7 +16,7 @@ import { Grid } from "@material-ui/core";
 
 const styles = theme => ({});
 
-class NavbarChannel extends React.Component {
+class NavbarBackWithChannelRequest extends React.Component {
   render() {
     const { classes, user } = this.props;
 
@@ -54,14 +54,14 @@ class NavbarChannel extends React.Component {
   }
 }
 
-NavbarChannel.propTypes = {
+NavbarBackWithChannelRequest.propTypes = {
   classes: PropTypes.shape().isRequired,
   inputProps: PropTypes.shape({
     placeholder: PropTypes.string
   })
 };
 
-NavbarChannel.defaultProps = {
+NavbarBackWithChannelRequest.defaultProps = {
   inputProps: {
     placeholder: "Search..."
   }
@@ -79,7 +79,7 @@ function createContainer() {
       connect(
         mapStateToProps,
         mapDispatchToProps
-      )(withStyles(styles)(NavbarBackDonation))
+      )(withStyles(styles)(NavbarBackWithChannelRequest))
     )
   );
 }

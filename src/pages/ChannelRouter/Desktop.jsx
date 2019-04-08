@@ -14,7 +14,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import GroupWorkIcon from "@material-ui/icons/GroupWorkOutlined";
 
 import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarChannel } from "../../components/stables/Navbar";
+import { NavbarAuth, NavbarBackWithChannelRequest } from "../../components/stables/Navbar";
 import RouterWithMenu from "../../components/RouterWithMenu";
 import { Container } from "../../components/Container";
 import Particle from "../../components/Particle";
@@ -102,7 +102,7 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarChannel />
+        <NavbarBackWithChannelRequest />
         <Particle name="cloud2" left={0} top={160} />
         <Particle name="cloud1" right={0} bottom={160} />
         <Container className={classes.container}>

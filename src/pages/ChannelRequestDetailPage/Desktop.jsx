@@ -118,30 +118,29 @@ class Screen extends React.Component {
       }
     );
   }
-    handleOpenSuccessMsg = () => {
-      this.setState({ openSuccessMsg: true });
-    };
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
 
-    handleCloseSuccessMsg = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
-      this.setState({ openSuccessMsg: false });
-    };
+    this.setState({ openSuccessMsg: false });
+  };
 
-    handleOpenErrorMsg = () => {
-      this.setState({ openErrorMsg: true });
-    };
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
 
-    handleCloseErrorMsg = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
-      this.setState({ openErrorMsg: false });
-    };
-  
+    this.setState({ openErrorMsg: false });
+  };
 
   static propTypes = {
     classes: PropTypes.shape().isRequired
@@ -235,7 +234,6 @@ class Screen extends React.Component {
               to={makePathVariableUri(paths.CHANNEL_REQUEST_UPDATE, {
                 channelId: id
               })}
-              disabled={this.state.verificationStatus !== "RJ"}
               className={classes.btn}
               variant="contained"
               color="primary"
@@ -256,7 +254,7 @@ class Screen extends React.Component {
           <SnackbarContentWrapper
             onClose={this.handleCloseSuccessMsg}
             variant="success"
-            message={`Program Donasi Berhasil dihapus`}
+            message={`Pengajuan Channel berhasil dihapus`}
           />
         </Snackbar>
         <Snackbar
@@ -271,7 +269,7 @@ class Screen extends React.Component {
           <SnackbarContentWrapper
             onClose={this.handleCloseErrorMsg}
             variant="error"
-            message={`Program Donasi gagal dihapus`}
+            message={`Pengajuan Channel gagal dihapus`}
           />
         </Snackbar>
       </React.Fragment>

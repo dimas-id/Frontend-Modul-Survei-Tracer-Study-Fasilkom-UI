@@ -1,4 +1,5 @@
 import React from "react";
+import Editor from "rich-markdown-editor";
 
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -8,6 +9,9 @@ import { withStyles } from "@material-ui/core/styles";
 import FileUploadInput from "../../../components/stables/FileUploadInput";
 
 import { layouts, fonts } from "../../../styles/guidelines";
+
+import http from "../../../libs/http";
+import env from "../../../config";
 
 const styles = theme => ({
   form: {
@@ -54,13 +58,32 @@ function ChantCreateForm({
           value={title}
           margin="normal"
           variant="outlined"
+          inputProps={{
+            maxLength: 200,
+          }}
         />
       </div>
       <div className={classes.formInline}>
       <Typography component="p" className={classes.label}>
             Deskripsi *
           </Typography>
-        <TextField
+          <div className={classes.textField}>
+          <Editor
+            placeholder="Deskripsi Chant hari ini?"
+            onChange={target => onChangeBody(target())}
+            defaultValue={body}
+            uploadImage={file => {
+              console.log("File upload triggered: ", file);
+              const data = new FormData();
+              data.append("file", file);
+              const UPLOAD_ENPOINT = `${env.HELIOS}/api/v1/upload/image`;
+              return http
+                .put(UPLOAD_ENPOINT, data)
+                .then(resp => resp.data.fileUrl) // -> kurang ini
+            }}
+          />
+      </div>
+        {/* <TextField
           id="descritpion"
           label="Deskripsi Chant hari ini?"
           multiline
@@ -71,7 +94,7 @@ function ChantCreateForm({
           variant="outlined"
           value={body}
           required
-        />
+        /> */}
       </div>
       <div className={classes.formInline}>
         <div className={classes.buttonPic}>
