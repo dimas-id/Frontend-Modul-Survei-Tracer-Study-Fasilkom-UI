@@ -70,6 +70,7 @@ class Screen extends React.Component {
         description={channelDetail.description}
         coverImgUrl={channelDetail.coverImgUrl}
         id={channelDetail.id}
+        hasSubscribed={channelDetail.hasSubscribedByCurrentUser}
       />
     );
   }
