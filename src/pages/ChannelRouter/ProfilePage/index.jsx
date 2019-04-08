@@ -15,7 +15,6 @@ import { Guidelines } from "../../../styles";
 import { getUser } from "../../../modules/session/selectors";
 import heliosV1 from "../../../modules/api/helios/v1";
 
-
 const styles = theme => ({
   card: {
     ...Guidelines.layouts.ml64,
@@ -38,46 +37,57 @@ class Screen extends React.Component {
   state = {
     listChantUser: null,
     isLoading: true
-  }
+  };
 
   componentDidMount() {
+    this.loadChant();
+  }
+
+  loadChant = () => {
+    this.setState({ isLoading: true})
     heliosV1.channel
-      .getListChantUser(
-        this.props.user.id
-      )
+      .getListChantUser(this.props.user.id)
       .then(result => {
-        this.setState({ listChantUser: result.data.results })
+        this.setState({ listChantUser: result.data.results });
       })
       .finally(() => {
-        this.setState({ isLoading: false })
-      }
-    )
-  }
-  
+        this.setState({ isLoading: false });
+      });
+  };
+
+  handleDelete = chantId => {
+    console.log(this.props.user.id);
+    console.log(this.props.id);
+    heliosV1.channel
+      .deleteChant(this.props.user.id, chantId)
+      .then(this.loadChant);
+  };
+
   renderChantUser() {
     const { listChantUser } = this.state;
     const { classes } = this.props;
 
-    return(
+    return (
       <React.Fragment>
         {listChantUser.map(chant => (
-        <div className={classes.card}>
-          <ChantCard
-            key={chant.id}
-            dateCreated={chant.dateCreated}
-            numberLikes={chant.numberLikes}
-            title={chant.title}
-            body={chant.body}
-            channel={chant.channel}
-            id={chant.id}
-            author={chant.author}
-            overflow="hidden"
-            max="64px"
-            deleted={Boolean(chant.dateDeleted)}
-            numberChildrens={chant.numberChildrens}
-          />
-        </div>
-      ))}
+          <div className={classes.card}>
+            <ChantCard
+              key={chant.id}
+              dateCreated={chant.dateCreated}
+              numberLikes={chant.numberLikes}
+              title={chant.title}
+              body={chant.body}
+              channel={chant.channel}
+              id={chant.id}
+              author={chant.author}
+              overflow="hidden"
+              max="64px"
+              deleted={Boolean(chant.dateDeleted)}
+              numberChildrens={chant.numberChildrens}
+              onDelete={this.handleDelete}
+            />
+          </div>
+        ))}
       </React.Fragment>
     );
   }
@@ -86,12 +96,12 @@ class Screen extends React.Component {
     const { classes } = this.props;
     const { isLoading } = this.state;
 
-  return (
-    <Container className={classes.root}>
-      {isLoading ? <LoadingFill /> : this.renderChantUser()}
-      <EndCard marginLeft="64" />
-    </Container>
-  );
+    return (
+      <Container className={classes.root}>
+        {isLoading ? <LoadingFill /> : this.renderChantUser()}
+        <EndCard marginLeft="64" />
+      </Container>
+    );
   }
 }
 
