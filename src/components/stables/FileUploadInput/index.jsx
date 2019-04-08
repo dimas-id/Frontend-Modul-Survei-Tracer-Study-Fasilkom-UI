@@ -7,10 +7,10 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import green from "@material-ui/core/colors/green";
 import Fab from "@material-ui/core/Fab";
 import CheckIcon from "@material-ui/icons/Check";
-import SaveIcon from "@material-ui/icons/Save";
+import FileIcon from "@material-ui/icons/AttachFileOutlined";
 import Snackbar from "@material-ui/core/Snackbar";
 
-import { humanizeError } from "../../../libs/response"
+import { humanizeError } from "../../../libs/response";
 import http from "../../../libs/http";
 import env from "../../../config";
 
@@ -82,7 +82,7 @@ function FileUploadInput({ onChange, accept, classes }) {
           return onChange && onChange(res);
         })
         .catch(function(err) {
-          const readable = humanizeError(err.response.data, ['file'])
+          const readable = humanizeError(err.response.data, ["file"]);
           setShowSnackbars(`Upload failed: ${readable.file}`);
         })
         .finally(() => {
@@ -125,7 +125,7 @@ function FileUploadInput({ onChange, accept, classes }) {
                 inputRef.current.click();
               }}
             >
-              {success ? <CheckIcon /> : <SaveIcon />}
+              {success ? <CheckIcon color="#fff" /> : <FileIcon color="#fff" />}
             </Fab>
           </label>
           {loading && (

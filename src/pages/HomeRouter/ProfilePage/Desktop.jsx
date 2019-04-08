@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import { makeStyles, withStyles } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
@@ -6,21 +7,24 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
+import Grid from "@material-ui/core/Grid";
 import { Guidelines } from "../../../styles";
-import { Grid, DialogContentText } from "@material-ui/core";
+
 import FormDialog from "../../../components/FormDialog";
 import EditProfileForm from "./EditProfileForm";
 import Education from "../../../components/stables/Experience/Education";
 import WorkPosition from "../../../components/stables/Experience/WorkPosition";
+import PositionForm from "../../../components/stables/Experience/PositionForm";
+
+import { getUser } from "../../../modules/session/selectors";
+import { getDateFormatted } from "../../../libs/datetime";
 
 const useStyles = makeStyles({
   head: {
     ...Guidelines.layouts.w100,
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    alignItems: "flex-start"
   },
   titleChild: {
     ...Guidelines.layouts.mb32,
@@ -66,7 +70,7 @@ function Field(props) {
         </Grid>
         <Grid item xs={9} sm={9}>
           <Typography className={classes.value} component="p">
-            {props.value}
+            {props.value || "-"}
           </Typography>
         </Grid>
       </Grid>
@@ -97,34 +101,90 @@ const styles = theme => ({
     ...Guidelines.layouts.flexMiddle,
     fontSize: 20
   },
-  gridBtn: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    ...Guidelines.layouts.mr24
-  },
-  btn: {
-    ...Guidelines.layouts.mt32,
-  }
 });
 
 class ProfilePage extends React.Component {
   state = {
-    open: false
+    openProfile: false,
+    openPosition: false,
+    positionId: null,
+    isNewPosition: false
   };
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
+  closePosition = () =>
+    this.setState({
+      openPosition: false,
+      positionId: null,
+      isNewPosition: false
+    });
+
+  handleOpenProfile = () => {
+    this.setState({ openProfile: true });
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
+  handleCloseProfile = () => {
+    this.setState({ openProfile: false });
   };
+
+  handleOpenPositionNew = () =>
+    this.setState({
+      openPosition: true,
+      positionId: null,
+      isNewPosition: true
+    });
+
+  handleOpenPositionUpdate = positionId =>
+    this.setState({
+      positionId,
+      openPosition: true,
+      isNewPosition: false
+    });
+
+  handleClosePosition = () => {
+    if (this.state.isNewPosition) {
+      window.alertDialog(
+        "Apakah anda yakin?",
+        "Jika anda tutup, maka pernyataan anda akan hilang.",
+        this.closePosition
+      );
+    } else {
+      this.closePosition();
+    }
+  };
+
+  handleAfterSubmit = res => {
+    if (!res.error) {
+      this.closePosition();
+    }
+  };
+
+  renderPositionForm() {
+    const { openPosition, positionId, isNewPosition } = this.state;
+    const title = isNewPosition ? "Tambah Posisi" : "Ubah Posisi";
+    return (
+      <FormDialog
+        title={title}
+        open={openPosition}
+        onClose={this.handleClosePosition}
+      >
+        <PositionForm
+          update={!isNewPosition}
+          positionId={positionId}
+          afterSubmit={this.handleAfterSubmit}
+        />
+      </FormDialog>
+    );
+  }
 
   renderBody() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
+    let location = user.profile.residenceCity || "";
+    location = location
+      ? `${location}, ${user.profile.residenceCountry}`
+      : user.profile.residenceCountry;
+
     return (
-      <Paper className={classes.paper} elevation={1}>
+      <React.Fragment>
         <Typography className={classes.title} variant="h5" component="h3">
           Info Pribadi
         </Typography>
@@ -133,75 +193,66 @@ class ProfilePage extends React.Component {
         </Typography>
 
         <Paper className={classes.paperChild} elevation={1}>
-          <Head onClick={this.handleClickOpen} Icon={EditIcon}>
+          <Head onClick={this.handleOpenProfile} Icon={EditIcon}>
             Profil
           </Head>
-          <Field label="Nama" value="Wisnu Ramadhan" />
-          <Field label="Tanggal Lahir" value="1998/06/13" />
-          <Field label="Email" value="wisnu@ui.ac.id" />
-          <Field label="Nomor Telepon" value="081212345677" />
-          <Field label="Lokasi" value="Depok, Indonesia" />
-          <Field label="Website" value="www.scele.ui.ac.id" />
+          <Field label="Nama" value={user.name} />
+          <Field
+            label="Tanggal Lahir"
+            value={getDateFormatted(user.profile.birthdate, "DD MMMM YYYY")}
+          />
+          <Field label="Email" value={user.email} />
+          <Field label="Nomor Telepon" value={user.profile.phoneNumber} />
+          <Field label="Lokasi" value={location} />
+          <Field label="Website" value={user.profile.websiteUrl} />
         </Paper>
 
         <Paper className={classes.paperChild} elevation={1}>
-          <Head onClick={this.handleClickOpen} Icon={EditIcon}>
-            Kata Sandi
-          </Head>
+          <Head>Kata Sandi</Head>
           <Field label="Kata Sandi" value="*******" />
         </Paper>
 
         <Paper className={classes.paperChild} elevation={1}>
           <Head>Pendidikan</Head>
-          <Education/>
+          <Education />
         </Paper>
 
         <Paper className={classes.paperChild} elevation={1}>
-          <Head Icon={AddBoxIcon} onClick={() => null}>
+          <Head Icon={AddBoxIcon} onClick={this.handleOpenPositionNew}>
             Posisi Pekerjaan
           </Head>
-          <WorkPosition/>
+          <WorkPosition
+            onEdit={this.handleOpenPositionUpdate}
+            onAdd={this.handleOpenPositionNew}
+          />
         </Paper>
-      </Paper>
+      </React.Fragment>
     );
   }
 
   render() {
-    const { classes } = this.props;
     return (
       <React.Fragment>
         <FormDialog
           title="Ubah Profil"
-          open={this.state.open}
-          onClose={this.handleClose}
+          open={this.state.openProfile}
+          onClose={this.handleCloseProfile}
         >
-          <DialogContent>
-            <DialogContentText>
-              <EditProfileForm />
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Grid item xs={12} sm={12} className={classes.gridBtn}>
-              <Button
-                onClick={this.handleClose}
-                className={classes.btn}
-                color="secondary"
-              >
-                Batal
-              </Button>
-              <Button
-                className={classes.btn}
-                variant="contained"
-                color="primary"
-              >
-                Simpan
-              </Button>
-            </Grid>
-          </DialogActions>
+          <EditProfileForm onSuccess={this.handleCloseProfile} />
         </FormDialog>
+        {this.renderPositionForm()}
         {this.renderBody()}
       </React.Fragment>
     );
   }
 }
-export default withStyles(styles)(ProfilePage);
+
+function createContainer() {
+  const mapStateToProps = state => ({
+    user: getUser(state)
+  });
+
+  return connect(mapStateToProps)(withStyles(styles)(ProfilePage));
+}
+
+export default createContainer();

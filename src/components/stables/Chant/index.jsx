@@ -18,14 +18,14 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import Warning from "@material-ui/icons/Warning";
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
 
 import { Guidelines } from "../../../styles";
 import { makePathVariableUri } from "../../../libs/navigation";
@@ -69,7 +69,7 @@ const styles = theme => ({
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.marginAuto,
     ...Guidelines.layouts.mb8,
-    justifiyContent: "space-between",
+    justifiyContent: "space-between"
   }
 });
 
@@ -97,8 +97,7 @@ class Screen extends React.Component {
     this.setState({
       checked: this.props.hasLiked,
       numberLikes: this.props.numberLikes
-    })
-
+    });
   }
 
   handleClick = event => {
@@ -106,10 +105,12 @@ class Screen extends React.Component {
   };
 
   handleUpdate = () => {
-    this.props.history.push(makePathVariableUri(paths.CHANNEL_CHANT_UPDATE, {
-      channelId: this.props.channel,
-      chantId: this.props.id
-    }))
+    this.props.history.push(
+      makePathVariableUri(paths.CHANNEL_CHANT_UPDATE, {
+        channelId: this.props.channel,
+        chantId: this.props.id
+      })
+    );
   };
 
   handleClickOpenDialog = () => {
@@ -133,21 +134,25 @@ class Screen extends React.Component {
 
   handleLike = () => {
     heliosV1.channel
-      .likeChant(
-        this.props.id
-      ).then(
-        this.setState({checked: true, numberLikes: (this.state.numberLikes+1)})
-      )
-  }
+      .likeChant(this.props.id)
+      .then(
+        this.setState({
+          checked: true,
+          numberLikes: this.state.numberLikes + 1
+        })
+      );
+  };
 
   handleUnlike = () => {
     heliosV1.channel
-      .unlikeChant(
-        this.props.id
-      ).then(
-        this.setState({checked:false, numberLikes: (this.state.numberLikes-1)})
-      )
-  }
+      .unlikeChant(this.props.id)
+      .then(
+        this.setState({
+          checked: false,
+          numberLikes: this.state.numberLikes - 1
+        })
+      );
+  };
 
   renderCardHeader() {
     const { classes, deleted } = this.props;
@@ -166,42 +171,68 @@ class Screen extends React.Component {
         }
         action={
           <div>
-          <IconButton aria-owns={anchorEl ? 'simple-menu' : undefined}
-          aria-haspopup="true"
-          onClick={(this.props.user.id === this.props.author) ? this.handleClick : null}>
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={this.handleClose}
-          >
-          <MenuItem onClick={this.handleUpdate}>Mengubah Chant</MenuItem>
-          <MenuItem onClick={this.handleClickOpenDialog}>Menghapus Chant</MenuItem>
-          </Menu>
-          <Dialog
-          open={this.state.openDialog}
-          onClose={this.handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-          className={classes.dialog}
-        >
-        <DialogTitle id="alert-dialog-title" className={classes.dialogTitle}><Warning className={classes.warningIcon}/></DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description" className={classes.dialogContent}>
-            Apakah kamu yakin akan menghapus Chant ini?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions className={classes.dialogActions}>
-            <Button onClick={this.handleCloseDialog} style={{backgroundColor: "white", color:"black"}} variant="contained" color="primary">
-              Tidak
-            </Button>
-            <Button onClick={() => this.props.onDelete(this.props.id)} style={{backgroundColor: "#F1A153", color:"white"}} variant="contained" autoFocus>
-              Iya, saya yakin
-            </Button>
-          </DialogActions>
-        </Dialog>
+            <IconButton
+              aria-owns={anchorEl ? "simple-menu" : undefined}
+              aria-haspopup="true"
+              onClick={
+                this.props.user.id === this.props.author
+                  ? this.handleClick
+                  : null
+              }
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={this.handleClose}
+            >
+              <MenuItem onClick={this.handleUpdate}>Mengubah Chant</MenuItem>
+              <MenuItem onClick={this.handleClickOpenDialog}>
+                Menghapus Chant
+              </MenuItem>
+            </Menu>
+            <Dialog
+              open={this.state.openDialog}
+              onClose={this.handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              className={classes.dialog}
+            >
+              <DialogTitle
+                id="alert-dialog-title"
+                className={classes.dialogTitle}
+              >
+                <Warning className={classes.warningIcon} />
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText
+                  id="alert-dialog-description"
+                  className={classes.dialogContent}
+                >
+                  Apakah kamu yakin akan menghapus Chant ini?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions className={classes.dialogActions}>
+                <Button
+                  onClick={this.handleCloseDialog}
+                  style={{ backgroundColor: "white", color: "black" }}
+                  variant="contained"
+                  color="primary"
+                >
+                  Tidak
+                </Button>
+                <Button
+                  onClick={() => this.props.onDelete(this.props.id)}
+                  style={{ backgroundColor: "#F1A153", color: "white" }}
+                  variant="contained"
+                  autoFocus
+                >
+                  Iya, saya yakin
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
         }
         title={name}
@@ -213,13 +244,12 @@ class Screen extends React.Component {
   render() {
     const { classes, margin, overflow, max, deleted } = this.props;
     const { isLoading } = this.state;
-    
-    var Converter = require('react-showdown').Converter;
-var converter = new Converter();
- 
-var markdown = this.props.body
-var reactElement = converter.convert(markdown);
 
+    var Converter = require("react-showdown").Converter;
+    var converter = new Converter();
+
+    var markdown = this.props.body;
+    var reactElement = converter.convert(markdown);
 
     return (
       <Card className={classes.card} style={{ marginLeft: margin + "px" }}>
@@ -259,7 +289,9 @@ var reactElement = converter.convert(markdown);
                       checked={this.state.checked}
                     />
                   }
-                  onChange={this.state.checked ? this.handleUnlike : this.handleLike}
+                  onChange={
+                    this.state.checked ? this.handleUnlike : this.handleLike
+                  }
                   label={this.state.numberLikes}
                 />
                 <IconButton aria-label="Share" onClick={this.handleReply}>
