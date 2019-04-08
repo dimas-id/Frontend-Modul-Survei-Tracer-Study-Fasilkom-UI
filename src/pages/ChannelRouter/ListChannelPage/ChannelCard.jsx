@@ -45,7 +45,7 @@ class Screen extends React.PureComponent {
         <CardMedia
           className={classes.media}
           image={this.props.coverImgUrl}
-          title="Contemplative Reptile"
+          title="Channel Cover"
         />
         <CardContent>
         <Grid container item xs={12} spacing={24}>
