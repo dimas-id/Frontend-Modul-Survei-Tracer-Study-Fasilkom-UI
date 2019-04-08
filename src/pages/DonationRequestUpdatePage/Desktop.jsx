@@ -148,7 +148,7 @@ class Screen extends React.Component {
       [FIELDS.goalAmount]: 0,
       [FIELDS.proposalUrl]: ""
     },
-    donationProgram: null
+    donationRequest: null
   };
 
   handleChange = event => {
@@ -179,14 +179,45 @@ class Screen extends React.Component {
     }
   };
 
+  componentDidMount() {
+    const requestId = this.props.match.params.requestId;
+    heliosV1.donation
+      .getDonationProgramRequestDetail(this.props.user.id, requestId)
+      .then(result => {
+        this.setState({ donationRequest: result.data });
+        this.setState({
+          values: {
+            [FIELDS.categoryName]: result.data.categoryName,
+            [FIELDS.title]: result.data.title,
+            [FIELDS.description]: result.data.description,
+            [FIELDS.startDate]: result.data.startDate,
+            [FIELDS.endDate]: result.data.endDate,
+            [FIELDS.goalAmount]: result.data.goalAmount,
+            [FIELDS.proposalUrl]: result.data.proposalUrl
+          },
+        })
+      })
+      .catch(error => {
+        if (error.response.status === 404) {
+          this.props.history.replace(paths.ERROR_404);
+        }
+      })
+
+      .finally(() => {
+        this.setState({ loading: false });
+      });
+  }
+  
   handleSubmit = e => {
+    const requestId = this.props.match.params.requestId;
     const { user, history } = this.props;
     const { values } = this.state;
     const userId = this.props.user.id;
 
     heliosV1.donation
-      .createDonationRequest(
+      .updateDonationRequest(
         userId,
+        requestId,
         values[FIELDS.categoryName],
         values[FIELDS.title],
         values[FIELDS.description],
@@ -279,6 +310,7 @@ class Screen extends React.Component {
                     name={FIELDS.categoryName}
                     value={values[FIELDS.categoryName]}
                     onChange={this.handleChange}
+                    defaultValue= {values[FIELDS.categoryName]}
                     SelectProps={{
                       MenuProps: {
                         className: classes.menu

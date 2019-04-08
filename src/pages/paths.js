@@ -40,6 +40,7 @@ export const TIMELINE_CHANT = `${CHANNEL}/timeline`;
 export const CHANNEL_CHANT_DETAIL = `${CHANNEL}/c/:channelId/chants/:chantId`;
 export const USER_DONATION_REQUEST_LIST = `${DONASI}/users/:username/pengajuan-donasi`;
 export const DONATION_REQUEST_DETAIL = `${DONASI}/users/:username/pengajuan-donasi/:requestId`;
+export const DONATION_REQUEST_UPDATE = `${DONASI}/users/:username/pengajuan-donasi/:requestId/update`;
 
 export default {
   HOME,
@@ -81,4 +82,5 @@ export default {
   CHANNEL_CHANT_DETAIL,
   REGISTER_EXTERNAL,
   DONATION_REQUEST_DETAIL,
+  DONATION_REQUEST_UPDATE
 };

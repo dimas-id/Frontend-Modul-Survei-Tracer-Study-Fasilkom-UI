@@ -2,12 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-
 import { withStyles } from "@material-ui/core/styles";
-
 import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
-
 import Grid from "@material-ui/core/Grid";
 import heliosV1 from "../../modules/api/helios/v1";
 import { LinesLoader, LoadingFill } from "../../components/Loading";
@@ -28,7 +25,6 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 4
   }
 });
-
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
