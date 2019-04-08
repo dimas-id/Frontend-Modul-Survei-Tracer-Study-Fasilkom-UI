@@ -27,9 +27,12 @@ const styles = theme => ({
     ...Guidelines.layouts.pl32,
     ...Guidelines.layouts.pb32
   },
-  gridInfo: {
+  roleInfo: {
     ...Guidelines.layouts.flexDirRow,
-    ...Guidelines.layouts.flexMiddle
+    ...Guidelines.layouts.flexMiddle,
+    [theme.breakpoints.down("sm")]: {
+      ...Guidelines.layouts.flexDirCol
+    }
   },
   title: {
     ...Guidelines.fonts.medium,
@@ -114,28 +117,30 @@ class HomePage extends React.Component {
             Selamat datang, {user.firstName} 😊
           </Typography>
 
-          <div className={classes.gridInfo}>
-            <div>
-              {user.isVerified ? (
-                <Chip
-                  label="Terverifikasi"
-                  color="primary"
-                  className={classes.chip}
-                />
-              ) : (
-                <Chip
-                  label="Belum Terverifikasi"
-                  color="secondary"
-                  variant="outlined"
-                  className={classes.chip}
-                />
-              )}
-              {user.isStaff | user.isSuperUser ? (
-                <Chip label="Admin" color="default" className={classes.chip} />
-              ) : (
-                ""
-              )}
-            </div>{" "}
+          <div className={classes.roleInfo}>
+            {user.isVerified ? (
+              <Chip
+                label="Terverifikasi"
+                color="primary"
+                className={classes.chip}
+              />
+            ) : (
+              <Chip
+                label="Belum Terverifikasi"
+                color="secondary"
+                variant="outlined"
+                className={classes.chip}
+              />
+            )}
+            {user.isStaff || user.isSuperUser ? (
+              <Chip
+                label={`Admin (${user.groups.join(",")})`}
+                color="default"
+                className={classes.chip}
+              />
+            ) : (
+              ""
+            )}
             {!user.isVerified && (
               <Button
                 color="primary"
