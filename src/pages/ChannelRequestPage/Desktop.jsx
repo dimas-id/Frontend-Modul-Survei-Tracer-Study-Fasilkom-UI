@@ -47,11 +47,10 @@ class Screen extends React.Component {
   };
 
   handleCoverImgUrl({ data, status }) {
-    if(status === 201){
+    if (status === 201) {
       this.setState({
         coverImgUrl: data.fileUrl
       });
-
     }
   }
 
@@ -78,12 +77,17 @@ class Screen extends React.Component {
         this.state.title,
         this.state.description
       )
+      .then(this.handleOpenSuccessMsg)
       .then(() => {
-        history.push(makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {username: user.username}));
+        history.push(
+          makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
+            username: user.username
+          })
+        );
         this.handleOpenSuccessMsg();
       })
-    .catch(this.handleOpenErrorMsg);
-  }
+      .catch(this.handleOpenErrorMsg);
+  };
 
   handleOpenSuccessMsg = () => {
     this.setState({ openSuccessMsg: true });

@@ -15,9 +15,11 @@ import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 
 import heliosV1 from "../../modules/api/helios/v1";
-import { getUserId } from "../../modules/session/selectors";
+import { getUser } from "../../modules/session/selectors";
 import { BulletList } from "react-content-loader";
 import { makePathVariableUri } from "../../libs/navigation";
 import paths from "../../pages/paths";
@@ -78,21 +80,75 @@ class Screen extends React.Component {
   componentDidMount() {
     const { channelId } = this.props.match.params;
     heliosV1.channel
-      .getChannelRequestDetail(this.props.userId, channelId)
+      .getChannelRequestDetail(this.props.user.id, channelId)
       .then(result => {
         this.setState({ channelRequest: result.data });
+      })
+      .catch(error => {
+        if (error.response.status === 404) {
+          this.props.history.replace(paths.ERROR_404);
+        }
       })
       .finally(() => {
         this.setState({ loading: false });
       });
   }
 
+  handleClickDelete(userId, channelId) {
+    const { user, history } = this.props;
+    window.alertDialog(
+      "Konfirmasi Penghapusan", //title
+      "Apakah anda yakin menghapus pengajuan channel ini?",
+      () => {
+        heliosV1.channel
+          .deleteChannelRequest(userId, channelId)
+          .then(() => {
+            this.setState({ loading: true });
+          })
+          .then(() => {
+            this.handleOpenSuccessMsg();
+            history.push(
+              makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
+                username: user.username
+              })
+            );
+            this.handleOpenSuccessMsg();
+          })
+          .catch(this.handleOpenErrorMsg);
+      }
+    );
+  }
+    handleOpenSuccessMsg = () => {
+      this.setState({ openSuccessMsg: true });
+    };
+
+    handleCloseSuccessMsg = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+
+      this.setState({ openSuccessMsg: false });
+    };
+
+    handleOpenErrorMsg = () => {
+      this.setState({ openErrorMsg: true });
+    };
+
+    handleCloseErrorMsg = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+
+      this.setState({ openErrorMsg: false });
+    };
+  
+
   static propTypes = {
     classes: PropTypes.shape().isRequired
   };
 
   renderContent() {
-    const { classes } = this.props;
+    const { user, classes } = this.props;
     const {
       id,
       coverImgUrl,
@@ -161,10 +217,16 @@ class Screen extends React.Component {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={12} className={classes.gridBtn}>
-          
             <Button
+              disabled={this.state.verificationStatus !== "RJ"}
               className={`${classes.btn} ${classes.btnDelete}`}
               variant="contained"
+              onClick={() => {
+                this.handleClickDelete(
+                  user.id,
+                  this.props.match.params.channelId
+                );
+              }}
             >
               Hapus
             </Button>
@@ -173,6 +235,7 @@ class Screen extends React.Component {
               to={makePathVariableUri(paths.CHANNEL_REQUEST_UPDATE, {
                 channelId: id
               })}
+              disabled={this.state.verificationStatus !== "RJ"}
               className={classes.btn}
               variant="contained"
               color="primary"
@@ -181,6 +244,36 @@ class Screen extends React.Component {
             </Button>
           </Grid>
         </Grid>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openSuccessMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseSuccessMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseSuccessMsg}
+            variant="success"
+            message={`Program Donasi Berhasil dihapus`}
+          />
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openErrorMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseErrorMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseErrorMsg}
+            variant="error"
+            message={`Program Donasi gagal dihapus`}
+          />
+        </Snackbar>
       </React.Fragment>
     );
   }
@@ -208,7 +301,7 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    userId: getUserId(state)
+    user: getUser(state)
   });
 
   const mapDispatchToProps = dispatch => ({});

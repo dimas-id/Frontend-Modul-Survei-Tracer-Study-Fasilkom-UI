@@ -85,9 +85,6 @@ class Screen extends React.Component {
     this.setState({
       description: target.value
     });
-    console.log(this.state.coverImgUrl);
-    console.log(this.state.title);
-    console.log(this.state.description);
   }
 
   handleSubmit = e => {
@@ -109,8 +106,8 @@ class Screen extends React.Component {
           makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
             username: user.username
           })
-        );
-        this.handleOpenSuccessMsg();
+        )
+        .then(this.handleOpenSuccessMsg)
       })
       .catch(this.handleOpenErrorMsg);
   }
