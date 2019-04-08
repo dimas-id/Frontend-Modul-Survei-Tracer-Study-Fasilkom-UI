@@ -14,16 +14,15 @@ export default Object.freeze({
     http.get(`${API_V1_URL}/users/${userId}/channel-requests/`),
   getChannelRequestDetail: (userId, channelId) =>
     http.get(`${API_V1_URL}/users/${userId}/channel-requests/${channelId}`),
-    getTimeline: () => http.get(`${API_V1_URL}/timeline`),
-    getChantDetail: (userId, chantId) => http.get(`${API_V1_URL}/users/${userId}/chants/${chantId}`),
-    createChannelRequest: (userId, coverImgUrl, title, description) =>
-        http.post(`${API_V1_URL}/users/${userId}/channel-requests/`, {
-            coverImgUrl,
-            title,
-            description
-        }),
+  getTimeline: () => http.get(`${API_V1_URL}/timeline`),
   getChantDetail: (userId, chantId) =>
     http.get(`${API_V1_URL}/users/${userId}/chants/${chantId}`),
+  createChannelRequest: (userId, coverImgUrl, title, description) =>
+    http.post(`${API_V1_URL}/users/${userId}/channel-requests/`, {
+      coverImgUrl,
+      title,
+      description
+    }),
   postChant: (userId, channel, parentChant, title, body) =>
     http.post(`${API_V1_URL}/users/${userId}/chants`, {
       title,
@@ -38,13 +37,11 @@ export default Object.freeze({
     }),
   deleteChant: (userId, chantId) =>
     http.delete(`${API_V1_URL}/users/${userId}/chants/${chantId}`),
-  likeChant: chantId => 
-    http.post(`${API_V1_URL}/chants/${chantId}/like`),
-  unlikeChant: chantId =>
-    http.post(`${API_V1_URL}/chants/${chantId}/unlike`),
-  getNumberOfChantsUser : () => http.get(`${API_V1_URL}/me`),
+  likeChant: chantId => http.post(`${API_V1_URL}/chants/${chantId}/like`),
+  unlikeChant: chantId => http.post(`${API_V1_URL}/chants/${chantId}/unlike`),
+  getNumberOfChantsUser: () => http.get(`${API_V1_URL}/me`),
   subscribeChannel: channelId =>
     http.post(`${API_V1_URL}/channels/${channelId}/subscribe`),
-    unsubscribeChannel: channelId =>
-    http.post(`${API_V1_URL}/channels/${channelId}/unsubscribe`),
+  unsubscribeChannel: channelId =>
+    http.post(`${API_V1_URL}/channels/${channelId}/unsubscribe`)
 });
