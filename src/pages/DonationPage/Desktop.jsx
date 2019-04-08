@@ -2,32 +2,27 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 
 import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
 
-import DonationCard from "./DonationCard";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import heliosV1 from "../../modules/api/helios/v1";
 import { LinesLoader, LoadingFill } from "../../components/Loading";
-import paths from "../paths";
 import { getUser } from "../../modules/session/selectors";
-import { makePathVariableUri } from "../../libs/navigation";
+import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
+import { Container } from "../../components/Container";
+import { Guidelines } from "../../styles";
+import DonationCard from "../../components/stables/DonationCard";
+import Particle from "../../components/Particle";
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1
-  },
-
-  heroContent: {
-    maxWidth: 600,
-    margin: "0 auto",
-    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
+  container: {
+    ...Guidelines.layouts.mt32,
+    ...Guidelines.layouts.pr40,
+    ...Guidelines.layouts.pl40
   },
   heroButtons: {
     marginTop: theme.spacing.unit * 4
@@ -46,7 +41,7 @@ class Screen extends React.Component {
     heliosV1.donation
       .getDonationProgramList()
       .then(result => {
-        console.log(result.data)
+        console.log(result.data);
         this.setState({ donationProgramList: result.data.results });
       })
       .finally(() => {
@@ -56,81 +51,31 @@ class Screen extends React.Component {
 
   renderContent() {
     return (
-      <Grid container spacing={24}>
+      <Grid container>
         {this.state.donationProgramList.map(donation => (
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <DonationCard {...donation} />
           </Grid>
         ))}
       </Grid>
     );
   }
+
   render() {
     const { loading } = this.state;
     if (loading) {
       return LinesLoader;
     }
-    const { classes, user } = this.props;
+    const { classes } = this.props;
     return (
       <React.Fragment>
-        <NavbarAuth />
-        <main>
-          <div className={classes.heroUnit}>
-            <div className={classes.heroContent}>
-              <Typography
-                component="h1"
-                variant="h2"
-                align="center"
-                color="textPrimary"
-                gutterBottom
-              >
-                Donasi
-              </Typography>
-              <Typography
-                variant="h6"
-                align="center"
-                color="textSecondary"
-                paragraph
-              >
-                Halaman program donasi
-              </Typography>
-              <div className={classes.heroButtons}>
-                <Grid container spacing={16} justify="center">
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      href={paths.DONATION_REQUEST}
-                    >
-                      Ajukan Program Donasi
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      component={Link}
-                      to={makePathVariableUri(paths.USER_DONATION_LIST, {
-                        username: user.username
-                      })}
-                    >
-                      Riwayat Donasi
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      component={Link}
-                      to={makePathVariableUri(paths.USER_DONATION_REQUEST_LIST, {
-                        username: user.username
-                      })}
-                    >
-                      Riwayat Pengajuan Donasi
-                    </Button>
-                  </Grid>
-                </Grid>
-              </div>
-            </div>
-          </div>
-        </main>
-        {loading ? <LoadingFill /> : this.renderContent()}
+        <NavbarAuth title="Daftar Program Donasi" />
+        <NavbarBackDonation />
+        <Particle name="cloud2" left={0} top={160} />
+        <Particle name="cloud1" right={0} top={400} />
+        <Container className={classes.container}>
+          {loading ? <LoadingFill /> : this.renderContent()}
+        </Container>
       </React.Fragment>
     );
   }
