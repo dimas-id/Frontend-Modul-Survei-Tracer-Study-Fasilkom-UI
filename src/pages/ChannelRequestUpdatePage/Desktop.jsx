@@ -70,7 +70,7 @@ class Screen extends React.Component {
   handleCoverImgUrl({ data, status }) {
     if (status === 201) {
       this.setState({
-        coverImgUrl: data.value
+        coverImgUrl: data.fileUrl
       });
     }
   }
