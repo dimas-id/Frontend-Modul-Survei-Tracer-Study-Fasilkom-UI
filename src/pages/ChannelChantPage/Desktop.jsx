@@ -6,7 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import { authorize } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
+import { NavbarAuth, NavbarBackChannel } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import ChantCard from "../../components/stables/Chant";
 import ChannelCard from "../../components/stables/ChannelCard";
@@ -114,7 +114,7 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack />
+        <NavbarBackChannel channelId={this.props.match.params.channelId} chantId={null}/>
 
         <Container className={classes.root}>
           <Grid className={classes.grid} container spacing={24}>

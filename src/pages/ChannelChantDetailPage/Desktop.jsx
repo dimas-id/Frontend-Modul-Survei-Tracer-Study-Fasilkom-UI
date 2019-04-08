@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 
 import { authorize } from "../../components/hocs/auth";
-import { NavbarBack, NavbarAuth } from "../../components/stables/Navbar";
+import { NavbarBackChannel , NavbarAuth } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import ChantCard from "../../components/stables/Chant";
 import { LoadingFill } from "../../components/Loading";
@@ -86,7 +86,8 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack />
+        <NavbarBackChannel channelId={this.props.match.params.channelId} chantId={this.props.match.params.chantId}
+         />
         <Container>
           {isLoading ? <LoadingFill /> : this.renderChantCard()}
         </Container>
