@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import { Guidelines } from "../../../styles";
-{/*import FileUploadInput from "../../stables/FileUploadInput";*/}
+import FileUploadInput from "../../stables/FileUploadInput";
 
 const styles = theme => ({
   form: {
@@ -51,8 +51,8 @@ function ChannelRequestForm({
           </Typography>
         </Grid>
         <Grid item xs={9} sm={9}>
-          {/*<FileUploadInput onChange={onChangeCoverImgUrl} value={coverImgUrl} />*/}
-          <TextField
+          <FileUploadInput name="coverImgUrl" onChange={onChangeCoverImgUrl} value={coverImgUrl} />
+          {/*<TextField
             id="outlined-title"
             className={classes.textField}
             placeholder="URL untuk gambar cover Channel yang diajukan"
@@ -64,7 +64,7 @@ function ChannelRequestForm({
             value={coverImgUrl}
             fullWidth
             required
-          />
+          />*/}
         </Grid>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>

@@ -44,10 +44,12 @@ class Screen extends React.Component {
     description: ""
   };
 
-  handleCoverImgUrl({ target }) {
-    this.setState({
-      coverImgUrl: target.value
-    });
+  handleCoverImgUrl({ data, status }) {
+    if(status === 201){
+      this.setState({
+        coverImgUrl: data.coverImgUrl
+      });
+    }
   }
 
   handleTitle({ target }) {
