@@ -57,7 +57,7 @@ class Authenticated extends React.PureComponent {
 
   checkVerified() {
     const { user, mustVerified } = this.props;
-    if (mustVerified && !user.isVerified) {
+    if (!user.isSuperuser && mustVerified && !user.isVerified) {
       this.redirectTo404();
     }
   }

@@ -81,8 +81,6 @@ function Field(props) {
 const styles = theme => ({
   paper: {
     ...Guidelines.layouts.pt32,
-    ...Guidelines.layouts.pr32,
-    ...Guidelines.layouts.pl32,
     ...Guidelines.layouts.pb32
   },
   paperChild: {
@@ -99,8 +97,12 @@ const styles = theme => ({
   },
   subtitle: {
     ...Guidelines.layouts.flexMiddle,
-    fontSize: 20
-  },
+    fontSize: 20,
+    [theme.breakpoints.down("sm")]: {
+      ...Guidelines.layouts.pr32,
+      ...Guidelines.layouts.pl32
+    }
+  }
 });
 
 class ProfilePage extends React.Component {
@@ -185,31 +187,32 @@ class ProfilePage extends React.Component {
 
     return (
       <React.Fragment>
-        <Typography className={classes.title} variant="h5" component="h3">
-          Info Pribadi
-        </Typography>
-        <Typography className={classes.subtitle} component="p">
-          Info pribadi yang Anda gunakan di layanan ILUNI12 Channel
-        </Typography>
+        <Paper className={classes.paper}>
+          <Typography className={classes.title} variant="h5" component="h3">
+            Info Pribadi
+          </Typography>
+          <Typography className={classes.subtitle} component="p">
+            Info pribadi yang Anda gunakan di layanan ILUNI12 Channel
+          </Typography>
 
-        <Paper className={classes.paperChild} elevation={1}>
-          <Head onClick={this.handleOpenProfile} Icon={EditIcon}>
-            Profil
-          </Head>
-          <Field label="Nama" value={user.name} />
-          <Field
-            label="Tanggal Lahir"
-            value={getDateFormatted(user.profile.birthdate, "DD MMMM YYYY")}
-          />
-          <Field label="Email" value={user.email} />
-          <Field label="Nomor Telepon" value={user.profile.phoneNumber} />
-          <Field label="Lokasi" value={location} />
-          <Field label="Website" value={user.profile.websiteUrl} />
-        </Paper>
-
-        <Paper className={classes.paperChild} elevation={1}>
-          <Head>Kata Sandi</Head>
-          <Field label="Kata Sandi" value="*******" />
+          <div className={classes.paperChild}>
+            <Head onClick={this.handleOpenProfile} Icon={EditIcon}>
+              Profil
+            </Head>
+            <Field label="Nama" value={user.name} />
+            <Field
+              label="Tanggal Lahir"
+              value={getDateFormatted(user.profile.birthdate, "DD MMMM YYYY")}
+            />
+            <Field label="Email" value={user.email} />
+            <Field label="Nomor Telepon" value={user.profile.phoneNumber} />
+            <Field label="Lokasi" value={location} />
+            <Field label="Website" value={user.profile.websiteUrl} />
+          </div>
+          <div className={classes.paperChild}>
+            <Head>Kata Sandi</Head>
+            <Field label="Kata Sandi" value="*******" />
+          </div>
         </Paper>
 
         <Paper className={classes.paperChild} elevation={1}>

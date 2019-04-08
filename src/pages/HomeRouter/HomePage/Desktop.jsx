@@ -130,8 +130,8 @@ class HomePage extends React.Component {
                   className={classes.chip}
                 />
               )}
-              {user.isStaff | user.isSuperUser ? (
-                <Chip label="Admin" color="default" className={classes.chip} />
+              {user.isStaff || user.isSuperUser ? (
+                <Chip label={`Admin (${user.groups.join(',')})`} color="default" className={classes.chip} />
               ) : (
                 ""
               )}
