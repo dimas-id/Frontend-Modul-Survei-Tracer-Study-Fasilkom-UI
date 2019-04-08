@@ -83,4 +83,10 @@ Donation.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
+Donation.defaultProps = {
+  title: "Program Donasi", 
+  description: "Yuk kita berdonasi untuk Fasilkom UI!", 
+  startDate: "2019/04/08",
+  endDate: "2020/11/10"
+};
 export default withStyles(styles)(Donation);

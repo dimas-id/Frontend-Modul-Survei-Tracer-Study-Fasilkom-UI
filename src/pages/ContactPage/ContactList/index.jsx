@@ -223,9 +223,9 @@ class ContactList extends React.Component {
                     <b>Kota, Negara</b>
                   </Grid>
                   <Grid item xs={7}>
-                    {currentContact.residenceCity +
+                    {(currentContact.residenceCity || "-" ) +
                       ", " +
-                      currentContact.residenceCountry || "-"}
+                      (currentContact.residenceCountry || "-")}
                   </Grid>
 
                   <Grid item xs={5}>
