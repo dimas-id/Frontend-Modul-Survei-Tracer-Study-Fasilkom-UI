@@ -16,7 +16,7 @@ import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
 import paths from "../paths";
 import { makePathVariableUri } from "../../libs/navigation";
 import heliosV1 from "../../modules/api/helios/v1";
-import { getUserId } from "../../modules/session/selectors";
+import { getUser } from "../../modules/session/selectors";
 
 const styles = theme => ({
   paper: {
@@ -47,9 +47,9 @@ class Screen extends React.Component {
   };
 
   handleCoverImgUrl({ data, status }) {
-    if(status === 201){
+    if (status === 201) {
       this.setState({
-        coverImgUrl: data.fileUrl 
+        coverImgUrl: data.fileUrl
       });
     }
   }
@@ -66,10 +66,10 @@ class Screen extends React.Component {
     });
   }
 
-  handleSubmit() {
+  handleSubmit = e => {
+    e.preventDefault();
     const { user, history } = this.props;
     const userId = this.props.user.id;
-
     heliosV1.channel
       .createChannelRequest(
         userId,
@@ -77,13 +77,17 @@ class Screen extends React.Component {
         this.state.title,
         this.state.description
       )
+      .then(this.handleOpenSuccessMsg)
       .then(() => {
-        history.push(makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {username: user.username}));
+        history.push(
+          makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
+            username: user.username
+          })
+        );
         this.handleOpenSuccessMsg();
-        
       })
       .catch(this.handleOpenErrorMsg);
-  }
+  };
 
   handleOpenSuccessMsg = () => {
     this.setState({ openSuccessMsg: true });
@@ -133,6 +137,7 @@ class Screen extends React.Component {
               onChangeTitle={this.handleTitle.bind(this)}
               onChangeDescription={this.handleDescription.bind(this)}
               onSubmit={this.handleSubmit.bind(this)}
+              type="create"
             />
           </Paper>
         </Container>
@@ -174,7 +179,7 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    userId: getUserId(state)
+    user: getUser(state)
   });
 
   const mapDispatchToProps = dispatch => ({});

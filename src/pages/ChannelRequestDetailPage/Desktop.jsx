@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -14,10 +15,14 @@ import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 
 import heliosV1 from "../../modules/api/helios/v1";
-import { getUserId } from "../../modules/session/selectors";
+import { getUser } from "../../modules/session/selectors";
 import { BulletList } from "react-content-loader";
+import { makePathVariableUri } from "../../libs/navigation";
+import paths from "../../pages/paths";
 
 const styles = theme => ({
   paper: {
@@ -75,33 +80,101 @@ class Screen extends React.Component {
   componentDidMount() {
     const { channelId } = this.props.match.params;
     heliosV1.channel
-      .getChannelRequestDetail(this.props.userId, channelId)
+      .getChannelRequestDetail(this.props.user.id, channelId)
       .then(result => {
         this.setState({ channelRequest: result.data });
+        console.log(result.data)
+      })
+      .catch(error => {
+        if (error.response.status === 404) {
+          this.props.history.replace(paths.ERROR_404);
+        }
       })
       .finally(() => {
         this.setState({ loading: false });
       });
   }
 
+  canBeDeleted() {
+    const { verificationStatus } = this.state.channelRequest;
+
+    return (
+      verificationStatus === "RJ"
+    );
+  }
+  handleClickDelete = (userId, channelId, e) =>  {
+    
+    if (!this.canBeDeleted()) {
+      e.preventDefault();
+      return;
+    };
+
+    const { user, history } = this.props;
+
+    window.alertDialog(
+      "Konfirmasi Penghapusan", //title
+      "Apakah anda yakin menghapus pengajuan channel ini?",
+      () => {
+        heliosV1.channel
+          .deleteChannelRequest(userId, channelId)
+          .then(() => {
+            this.setState({ loading: true });
+          })
+          .then(() => {
+            this.handleOpenSuccessMsg();
+            history.push(
+              makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
+                username: user.username
+              })
+            );
+            this.handleOpenSuccessMsg();
+          })
+          .catch(this.handleOpenErrorMsg);
+      }
+    );
+  };
+
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
+
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSuccessMsg: false });
+  };
+
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
+
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openErrorMsg: false });
+  };
+
   static propTypes = {
     classes: PropTypes.shape().isRequired
   };
 
   renderContent() {
-    const { classes } = this.props;
+    const { user, classes } = this.props;
     const {
+      id,
       coverImgUrl,
       title,
       description,
       verificationStatus,
       notes
     } = this.state.channelRequest;
+    const isEnabled = this.canBeDeleted();
     return (
       <React.Fragment>
-        <Typography className={classes.title} variant="h5" component="h3">
-          Detail Pengajuan Channel
-        </Typography>
         <Grid container spacing={24} className={classes.gridContainer}>
           <Grid item xs={3} sm={3} className={classes.gridLabel}>
             <Typography component="p" className={classes.label}>
@@ -161,16 +234,62 @@ class Screen extends React.Component {
           </Grid>
           <Grid item xs={12} sm={12} className={classes.gridBtn}>
             <Button
+              disabled={!isEnabled}
               className={`${classes.btn} ${classes.btnDelete}`}
               variant="contained"
+              onClick={() => {
+                this.handleClickDelete(
+                  user.id,
+                  this.props.match.params.channelId
+                );
+              }}
             >
               Hapus
             </Button>
-            <Button className={classes.btn} variant="contained" color="primary">
+            <Button
+              disabled={!isEnabled}
+              component={Link}
+              to={makePathVariableUri(paths.CHANNEL_REQUEST_UPDATE, {
+                channelId: id
+              })}
+              className={classes.btn}
+              variant="contained"
+              color="primary"
+            >
               Ubah
             </Button>
           </Grid>
         </Grid>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openSuccessMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseSuccessMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseSuccessMsg}
+            variant="success"
+            message={`Pengajuan Channel berhasil dihapus`}
+          />
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openErrorMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseErrorMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseErrorMsg}
+            variant="error"
+            message={`Pengajuan Channel gagal dihapus`}
+          />
+        </Snackbar>
       </React.Fragment>
     );
   }
@@ -185,6 +304,9 @@ class Screen extends React.Component {
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>
+            <Typography className={classes.title} variant="h5" component="h3">
+              Detail Pengajuan Channel
+            </Typography>
             {loading ? <BulletList /> : this.renderContent()}
           </Paper>
         </Container>
@@ -195,7 +317,7 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    userId: getUserId(state)
+    user: getUser(state)
   });
 
   const mapDispatchToProps = dispatch => ({});
