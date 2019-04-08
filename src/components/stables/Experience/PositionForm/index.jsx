@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import omit from "lodash/omit";
 
+import moment from 'moment';
 import keymirror from "keymirror";
 import { Formik } from "formik";
 
@@ -62,7 +63,7 @@ function getBlankValues() {
     [FIELDS.industryName]: "",
     [FIELDS.locationName]: "",
     [FIELDS.isCurrent]: false,
-    [FIELDS.dateStarted]: null,
+    [FIELDS.dateStarted]: moment(),
     [FIELDS.dateEnded]: null
   };
 }
@@ -81,6 +82,8 @@ function PositionForm({
     payload[FIELDS.dateStarted] = getDateFormatted(values[FIELDS.dateStarted]);
     if (!values[FIELDS.isCurrent]) {
       payload[FIELDS.dateEnded] = getDateFormatted(values[FIELDS.dateEnded]);
+    } else {
+      payload[FIELDS.dateEnded] = null
     }
 
     const submitAction = update ? updatePos : createPos;
