@@ -173,7 +173,7 @@ class Screen extends React.Component {
       verificationStatus,
       notes
     } = this.state.channelRequest;
-    const isEnabled = this.canBeDeleted();
+    const isEnabled = this.canBeDeletedAndUpdated();
     return (
       <React.Fragment>
         <Grid container spacing={24} className={classes.gridContainer}>

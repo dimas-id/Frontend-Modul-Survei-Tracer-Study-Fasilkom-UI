@@ -77,7 +77,6 @@ class Screen extends React.Component {
         this.state.title,
         this.state.description
       )
-      .then(this.handleOpenSuccessMsg)
       .then(() => {
         history.push(
           makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
