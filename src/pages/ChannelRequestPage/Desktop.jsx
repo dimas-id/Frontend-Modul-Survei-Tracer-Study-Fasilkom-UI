@@ -47,19 +47,9 @@ class Screen extends React.Component {
   };
 
   handleCoverImgUrl({ data, status }) {
-    /**
-     * nah soal gabisa upload itu helios yang harus diganti AWS keynya?
-     * HAH
-     * helios apa atlas? 
-     * WKWKWK MAAP
-     * aduh wkwkwkw udah ya berarti?
-     */
-    console.log(data) // coba liat hasilnya di console isinya apa
     if(status === 201){
       this.setState({
-        coverImgUrl: data.fileUrl // ini teh salah, lain kali di console log wkwkw ko ga muncul consolenyaa
-        // kalo uploadnya gagal ya ga keluar
-        // menurut gua di formnya di kasih tunjuk aja coverImgUrlnya pake <img src={coverImgUrl}
+        coverImgUrl: data.fileUrl 
       });
     }
   }
