@@ -9,6 +9,8 @@ import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 import Particle from "../../components/Particle";
 import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
 import heliosV1 from "../../modules/api/helios/v1";
@@ -68,7 +70,33 @@ class Screen extends React.Component {
         this.state.title,
         this.state.description
       )
+      .then(this.handleOpenSuccessMsg)
+      .catch(this.handleOpenErrorMsg);
   }
+
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
+
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSuccessMsg: false });
+  };
+
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
+
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openErrorMsg: false });
+  };
 
   render() {
     const { classes } = this.props;
@@ -98,6 +126,37 @@ class Screen extends React.Component {
             />
           </Paper>
         </Container>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openSuccessMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseSuccessMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseSuccessMsg}
+            variant="success"
+            message={`Pengajuan Channel berhasil dibuat`}
+          />
+        </Snackbar>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openErrorMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseErrorMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseErrorMsg}
+            variant="error"
+            message={`Pengajuan Channel gagal dibuat`}
+          />
+        </Snackbar>
       </React.Fragment>
     );
   }

@@ -6,11 +6,12 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import { Guidelines } from "../../../styles";
+import FileUploadInput from "../../stables/FileUploadInput";
 
 const styles = theme => ({
   form: {
     ...Guidelines.layouts.flexDirCol,
-    marginTop: 48,
+    marginTop: 48
   },
   gridLabel: {
     display: "flex",
@@ -20,8 +21,7 @@ const styles = theme => ({
     fontSize: 16,
     ...Guidelines.fonts.bold
   },
-  textField: {
-  },
+  textField: {},
   gridBtn: {
     display: "flex",
     justifyContent: "flex-end"
@@ -42,7 +42,6 @@ function ChannelRequestForm({
   onChangeDescription,
   onSubmit
 }) {
-  
   return (
     <form className={classes.form}>
       <Grid container spacing={24}>
@@ -52,18 +51,8 @@ function ChannelRequestForm({
           </Typography>
         </Grid>
         <Grid item xs={9} sm={9}>
-          <TextField
-            id="outlined-text-input"
-            className={classes.textField}
-            placeholder="Pilih gambar cover Channel"
-            type="text"
-            margin="normal"
-            variant="outlined"
-            onChange={onChangeCoverImgUrl}
-            value={coverImgUrl}
-            fullWidth
-            required
-            />
+          <FileUploadInput onChange={onChangeCoverImgUrl} value={coverImgUrl} />
+
         </Grid>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>
@@ -83,7 +72,7 @@ function ChannelRequestForm({
             value={title}
             fullWidth
             required
-            />
+          />
         </Grid>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>
@@ -103,7 +92,7 @@ function ChannelRequestForm({
             value={description}
             fullWidth
             required
-            />
+          />
         </Grid>
         <Grid item xs={12} sm={12} className={classes.gridBtn}>
           <Button
@@ -112,7 +101,7 @@ function ChannelRequestForm({
             color="primary"
             type="submit"
             onClick={onSubmit}
-            >
+          >
             Simpan
           </Button>
         </Grid>
@@ -125,4 +114,4 @@ ChannelRequestForm.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ChannelRequestForm)
+export default withStyles(styles)(ChannelRequestForm);
