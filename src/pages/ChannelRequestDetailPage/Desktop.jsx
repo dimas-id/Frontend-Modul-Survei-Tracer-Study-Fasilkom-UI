@@ -102,6 +102,7 @@ class Screen extends React.Component {
       verificationStatus === "RJ"
     );
   }
+
   handleClickDelete = (userId, channelId, e) =>  {
     
     if (!this.canBeDeleted()) {
@@ -222,16 +223,22 @@ class Screen extends React.Component {
               {STATUS[verificationStatus]}
             </Typography>
           </Grid>
+          {isEnabled ?
           <Grid item xs={3} sm={3} className={classes.gridLabel}>
             <Typography component="p" className={classes.label}>
               Alasan Penolakan
             </Typography>
           </Grid>
+          : null
+          }
+          {isEnabled ?
           <Grid item xs={9} sm={9}>
             <Typography component="p" className={classes.content}>
               {notes}
             </Typography>
-          </Grid>
+          </Grid> :
+          null
+          }
           <Grid item xs={12} sm={12} className={classes.gridBtn}>
             <Button
               disabled={!isEnabled}
