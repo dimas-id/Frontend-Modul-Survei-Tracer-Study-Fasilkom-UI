@@ -51,7 +51,7 @@ function ChannelRequestForm({
           </Typography>
         </Grid>
         <Grid item xs={9} sm={9}>
-          <FileUploadInput name="coverImgUrl" onChange={onChangeCoverImgUrl} value={coverImgUrl} />
+          <FileUploadInput name="coverImgUrl" value={coverImgUrl} onChange={onChangeCoverImgUrl}/>
           {/*<TextField
             id="outlined-title"
             className={classes.textField}

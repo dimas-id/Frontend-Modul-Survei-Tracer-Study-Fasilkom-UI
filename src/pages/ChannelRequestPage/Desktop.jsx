@@ -13,6 +13,8 @@ import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 import Particle from "../../components/Particle";
 import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
+import paths from "../paths";
+import { makePathVariableUri } from "../../libs/navigation";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUserId } from "../../modules/session/selectors";
 
@@ -45,9 +47,19 @@ class Screen extends React.Component {
   };
 
   handleCoverImgUrl({ data, status }) {
+    /**
+     * nah soal gabisa upload itu helios yang harus diganti AWS keynya?
+     * HAH
+     * helios apa atlas? 
+     * WKWKWK MAAP
+     * aduh wkwkwkw udah ya berarti?
+     */
+    console.log(data) // coba liat hasilnya di console isinya apa
     if(status === 201){
       this.setState({
-        coverImgUrl: data.coverImgUrl
+        coverImgUrl: data.fileUrl // ini teh salah, lain kali di console log wkwkw ko ga muncul consolenyaa
+        // kalo uploadnya gagal ya ga keluar
+        // menurut gua di formnya di kasih tunjuk aja coverImgUrlnya pake <img src={coverImgUrl}
       });
     }
   }
@@ -65,17 +77,25 @@ class Screen extends React.Component {
   }
 
   handleSubmit() {
+    const { user, history } = this.props;
+    const userId = this.props.user.id;
+
     heliosV1.channel
       .createChannelRequest(
-        this.props.userId,
+        userId,
         this.state.coverImgUrl,
         this.state.title,
         this.state.description
       )
-      .then(this.handleOpenSuccessMsg)
+      .then(() => {
+        history.push(makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {username: user.username}));
+        this.handleOpenSuccessMsg();
+        
+      })
       .catch(this.handleOpenErrorMsg);
   }
-  andleOpenSuccessMsg = () => {
+
+  handleOpenSuccessMsg = () => {
     this.setState({ openSuccessMsg: true });
   };
 
