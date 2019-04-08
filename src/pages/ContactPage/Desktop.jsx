@@ -13,6 +13,7 @@ import { Container } from "../../components/Container";
 import ContactList from "./ContactList";
 import FilterMenu from "./FilterMenu";
 import { Guidelines } from "../../styles";
+import Particle from "../../components/Particle";
 
 const styles = theme => ({
   container: {
@@ -65,13 +66,18 @@ class Screen extends React.Component {
             value: name
           }}
         />
+        <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Grid container spacing={24}>
             <Grid item xs={12} sm={3}>
-              <FilterMenu onChange={this.handleToggle} handleCheck={this.handleCheck} categories={categories}/>
+              <FilterMenu
+                onChange={this.handleToggle}
+                handleCheck={this.handleCheck}
+                categories={categories}
+              />
             </Grid>
             <Grid item xs={12} sm={9}>
-              <ContactList query={this.state}/>
+              <ContactList query={this.state} />
             </Grid>
           </Grid>
         </Container>
