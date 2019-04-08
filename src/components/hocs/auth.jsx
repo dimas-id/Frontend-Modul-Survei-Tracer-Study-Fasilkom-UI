@@ -118,14 +118,16 @@ export const authorize = options => Component => {
 /**
  * @deprecated since version 1.0 (Iterasi 1)
  */
-export const withAuth = (
-  Component,
-  options = { roles: [ROLES.PUBLIC], mustVerified: false }
-) => {
+export const withAuth = (Component, options) => {
+  const defaults = {
+    roles: [ROLES.PUBLIC],
+    mustVerified: true,
+    ...options
+  };
   window.deprecationWarning(
-    "withAuth is deprecated. Use authorize instead."
+    "withAuth is deprecated. Use authorize instead. (src/components/hocs/auth.jsx)"
   );
-  return authorize(options)(Component);
+  return authorize(defaults)(Component);
 };
 
 export default {

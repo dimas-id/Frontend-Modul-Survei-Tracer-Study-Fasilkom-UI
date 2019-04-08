@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import { Guidelines } from "../../../styles";
-import { withAuth } from "../../../components/hocs/auth";
 import { getUser } from "../../../modules/session/selectors";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -208,13 +207,11 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
-    withRouter(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(withStyles(styles)(HomePage))
-    )
+  return withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(withStyles(styles)(HomePage))
   );
 }
 

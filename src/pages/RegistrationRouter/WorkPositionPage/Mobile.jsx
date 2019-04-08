@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { withAuth } from "../../../components/hocs/auth";
+import { authorize } from "../../../components/hocs/auth";
 import { NavbarAuth } from "../../../components/stables/Navbar";
 import { Container } from "../../../components/Container";
 import FormDialog from "../../../components/FormDialog";
@@ -104,7 +104,9 @@ class WorkPositionPage extends React.Component {
 }
 
 function createContainer() {
-  return withAuth(connect(state => ({}))(WorkPositionPage));
+  return authorize({
+    mustVerified: false
+  })(connect(state => ({}))(WorkPositionPage));
 }
 
 export default createContainer();

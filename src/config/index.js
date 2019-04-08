@@ -1,7 +1,11 @@
 export const isDevelopment = process.env.NODE_ENV === "development";
 
 window.deprecationWarning =
-  process.env.NODE_ENV !== "production" ? console.warn : function() {};
+  process.env.NODE_ENV !== "production"
+    ? function(message) {
+        console.warn(`DEPRECATION WARNING: ${message}`);
+      }
+    : function() {};
 
 const developmentConstants = () => {
   const env = {
