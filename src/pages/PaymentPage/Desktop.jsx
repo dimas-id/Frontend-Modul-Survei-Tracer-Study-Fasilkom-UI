@@ -84,7 +84,6 @@ class Screen extends React.Component {
       donationProgramName,
       paymentDetail,
       amount,
-      bankNumberDest,
       uniqueCode
     } = this.state.donationTransaction;
 
@@ -129,7 +128,7 @@ class Screen extends React.Component {
                 <Typography gutterBottom variant="h5" component="h2">
                   Tansfer ke :
                 </Typography>
-                <Typography component="p">{bankNumberDest}</Typography>
+                <Typography component="p">{paymentDetail.bankNumberDest}</Typography>
                 <Button
                   className={classes.btn}
                   variant="contained"

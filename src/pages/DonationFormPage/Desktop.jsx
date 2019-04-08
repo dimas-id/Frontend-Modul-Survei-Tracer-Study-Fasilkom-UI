@@ -79,15 +79,15 @@ const styles = theme => ({
 });
 const banks = [
   {
-    value: -1,
+    value: "",
     label: "Pilih Metode Pembayaran"
   },
   {
-    value: 0,
+    value: "BNI",
     label: "Transfer BNI"
   },
   {
-    value: 1,
+    value: "MDR",
     label: "Transfer Mandiri"
   }
 ];
@@ -106,7 +106,7 @@ class Screen extends React.Component {
   state = {
     values: {
       [FIELDS.amount]: 0,
-      [FIELDS.bankNumberDest]: -1,
+      [FIELDS.bankNumberDest]: "",
       [FIELDS.bankNumberSource]: "",
       [FIELDS.estPaymentDate]: moment()
     },

@@ -31,6 +31,7 @@ import UserVerifyPage from "./UserVerifyPage"
 import paths from "./paths";
 import UserDonationRequestListPage from "./UserDonationRequestListPage";
 import DonationRequestDetailPage from "./DonationRequestDetailPage";
+import DonationRequestUpdatePage from "./DonationRequestUpdatePage";
 
 export default function Pages() {
   return (
@@ -93,6 +94,13 @@ const ROUTES = [
     route: {
       path: paths.DONATION_REQUEST,
       component: DonationRequestPage
+    }
+  },
+  {
+    title: "Donation Request Update",
+    route: {
+      path: paths.DONATION_REQUEST_UPDATE,
+      component: DonationRequestUpdatePage
     }
   },
   {

@@ -19,7 +19,10 @@ import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
 import { LinesLoader } from "../../components/Loading";
 import paths from "../paths";
-
+import { Link } from "react-router-dom";
+import { makePathVariableUri } from "../../libs/navigation";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 
 const styles = theme => ({
   paper: {
@@ -81,6 +84,7 @@ class Screen extends React.Component {
   state = {
     bank: "0",
     DonationRequest: null,
+    donationProgramList: null,
     loading: true
   };
   componentDidMount() {
@@ -88,15 +92,14 @@ class Screen extends React.Component {
     heliosV1.donation
       .getDonationProgramRequestDetail(this.props.user.id, requestId)
       .then(result => {
-        console.log(result.data);
         this.setState({ DonationRequest: result.data });
       })
-      .catch(error=> {
-        if(error.response.status === 404){
-          this.props.history.replace(paths.ERROR_404)
+      .catch(error => {
+        if (error.response.status === 404) {
+          this.props.history.replace(paths.ERROR_404);
         }
       })
-      
+
       .finally(() => {
         this.setState({ loading: false });
       });
@@ -106,6 +109,54 @@ class Screen extends React.Component {
     this.setState({
       [name]: event.target.value
     });
+  };
+  handleClickDelete(userId, requestId) {
+    const { user, history } = this.props;
+    window.alertDialog(
+      "Konfirmasi Penghapusan", //title
+      "Apakah anda yakin menghapus pengajuan program donasi ini?",
+      () => {
+        heliosV1.donation
+          .deleteDonationRequest(userId, requestId)
+          .then(() => {
+            this.setState({ loading: true });
+          })
+          .then(() => {
+            this.handleOpenSuccessMsg();
+            history.push(
+              makePathVariableUri(paths.USER_DONATION_REQUEST_LIST, {
+                username: user.username
+              })
+            );
+            this.handleOpenSuccessMsg();
+          })
+          .catch(this.handleOpenErrorMsg)
+          
+      }
+    );
+  }
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
+
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSuccessMsg: false });
+  };
+
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
+
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openErrorMsg: false });
   };
 
   render() {
@@ -204,7 +255,7 @@ class Screen extends React.Component {
                 </Grid>
                 <Grid item xs={8} sm={8}>
                   <Typography component="p" className={classes.label}>
-                   Rp{goalAmount}
+                    Rp{goalAmount}
                   </Typography>
                 </Grid>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
@@ -223,13 +274,24 @@ class Screen extends React.Component {
                     variant="contained"
                     color="primary"
                     type="submit"
+                    component={Link}
+                    to={makePathVariableUri(paths.DONATION_REQUEST_UPDATE, {
+                      requestId: this.props.match.params.requestId,
+                      username: user.username
+                      // to={makePathVariableUri(paths.DONATION_REQUEST_DETAIL , {
+                      //   requestId: row.id,  username: user.username
+                    })}
                   >
                     Ubah
                   </Button>
                   <Button
                     className={classes.btn}
                     variant="contained"
-                    color="secondary"
+                    color="error"
+                    onClick={() => {
+                      this.handleClickDelete(user.id, this.props.match.params.requestId);
+
+                    }}
                   >
                     Hapus
                   </Button>
@@ -238,6 +300,36 @@ class Screen extends React.Component {
             </form>
           </Paper>
         </Container>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openSuccessMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseSuccessMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseSuccessMsg}
+            variant="success"
+            message={`Program Donasi Berhasil dihapus`}
+          />
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openErrorMsg}
+          autoHideDuration={6000}
+          onClose={this.handleCloseErrorMsg}
+        >
+          <SnackbarContentWrapper
+            onClose={this.handleCloseErrorMsg}
+            variant="error"
+            message={`Program Donasi gagal dihapus`}
+          />
+        </Snackbar>
       </React.Fragment>
     );
   }
