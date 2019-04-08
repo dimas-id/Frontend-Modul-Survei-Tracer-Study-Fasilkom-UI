@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
 import { PersistGate } from "redux-persist/integration/react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { history, store, persistor } from "./modules";
 import { setAuthToken } from "./libs/http";
@@ -30,6 +31,7 @@ function App() {
         onBeforeLift={setAuthTokenAfterPersist}
       >
         <MuiThemeProvider theme={theme}>
+          <CssBaseline />
           <ConnectedRouter history={history}>
             <Pages />
           </ConnectedRouter>

@@ -1,4 +1,6 @@
 import get from "lodash/get";
+import pick from "lodash/pick";
+
 import { sessionAction } from "./index";
 import { getUserRefreshToken, getUserId } from "./selectors";
 import { setAuthToken } from "../../libs/http";
@@ -33,7 +35,37 @@ export const register = payload => {
   };
 };
 
+export const updateUserProfile = payload => {
+  return async (dispatch, getState, { atlasAPIv1 }) => {
+    const userProfile = pick(payload, [
+      "residenceCity",
+      "residenceCountry",
+      "residenceLng",
+      "residenceLat",
+      "websiteUrl",
+      "phoneNumber"
+    ]);
+
+    const userData = {
+      profile: userProfile
+    };
+
+    try {
+      const response = await atlasAPIv1.session.patchUserById(
+        getUserId(getState()),
+        userData
+      );
+      await dispatch(sessionAction.setUser(response.data));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+
 export const verifyUser = (
+  firstName,
+  lastName,
   birthdate,
   latestCsuiClassYear,
   latestCsuiProgram,
@@ -44,11 +76,13 @@ export const verifyUser = (
       const response = await atlasAPIv1.session.patchUserById(
         getUserId(getState()),
         {
+          firstName,
+          lastName,
           uiSsoNpm,
           profile: {
             birthdate,
             latestCsuiClassYear,
-            latestCsuiProgram,
+            latestCsuiProgram
           }
         }
       );
