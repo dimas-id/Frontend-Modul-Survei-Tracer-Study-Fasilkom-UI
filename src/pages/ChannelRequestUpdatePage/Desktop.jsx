@@ -107,7 +107,7 @@ class Screen extends React.Component {
             username: user.username
           })
         )
-        .then(this.handleOpenSuccessMsg)
+        .this.handleOpenSuccessMsg();
       })
       .catch(this.handleOpenErrorMsg);
   }
