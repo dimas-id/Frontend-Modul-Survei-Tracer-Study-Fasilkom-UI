@@ -81,7 +81,7 @@ class Screen extends React.Component {
     });
   }
 
-  handleDescription({ target }) {
+  handleDescription({ data }) {
     this.setState({
       description: data.value
     });
