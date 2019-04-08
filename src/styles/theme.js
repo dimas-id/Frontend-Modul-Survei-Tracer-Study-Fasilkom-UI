@@ -34,6 +34,7 @@ export function themeFactory({ type }) {
       // Use the system font instead of the default Roboto font.
       useNextVariants: true,
       fontFamily: [
+        "Source Sans Pro",
         "-apple-system",
         "BlinkMacSystemFont",
         '"Segoe UI"',

@@ -69,6 +69,7 @@ class Screen extends React.Component {
         title={channelDetail.title}
         description={channelDetail.description}
         coverImgUrl={channelDetail.coverImgUrl}
+        id={channelDetail.id}
       />
     );
   }
@@ -82,7 +83,7 @@ class Screen extends React.Component {
         {listChant.map(chant => (
           <div className={classes.card}>
             <ChantCard
-              deleted={Boolean(chant.dateCreated)}
+              deleted={Boolean(chant.dateDeleted)}
               key={chant.id}
               dateCreated={chant.dateCreated}
               numberLikes={chant.numberLikes}
@@ -93,6 +94,7 @@ class Screen extends React.Component {
               author={chant.author}
               overflow="hidden"
               max="64px"
+              numberChildrens={chant.numberChildrens}
             />
           </div>
         ))}

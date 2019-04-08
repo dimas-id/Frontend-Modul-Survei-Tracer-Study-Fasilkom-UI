@@ -40,7 +40,8 @@ const styles = theme => ({
 class Screen extends React.PureComponent {
   state = {
     title: "",
-    body: ""
+    body: "",
+    parentChant: null
   }
 
   handleTitle({ target }) {
@@ -55,11 +56,17 @@ class Screen extends React.PureComponent {
     });
   }
 
+  componentDidMount(){
+    if(Boolean(this.props.location.state)){
+      this.setState({ parentChant: this.props.location.state.parentId})
+    }
+  }
   handleSubmit() {
     heliosV1.channel
       .postChant(
         this.props.user.id,
         this.props.match.params.channelId,
+        this.state.parentChant,
         this.state.title,
         this.state.body
       )

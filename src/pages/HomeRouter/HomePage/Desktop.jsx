@@ -1,24 +1,25 @@
 import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+
+import { Guidelines } from "../../../styles";
+import { withAuth } from "../../../components/hocs/auth";
+import { getUser } from "../../../modules/session/selectors";
 
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { Guidelines } from "../../../styles";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import FormDialog from "../../../components/FormDialog";
-
+import { Avatar, Chip } from "@material-ui/core";
+import CategoryPaper from "./CategoryPaper"
+import paths from "../../paths";
 
 const styles = theme => ({
   avatar: {
     width: 120,
     height: 120
   },
-
   paper: {
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.flexMiddle,
@@ -56,11 +57,24 @@ const styles = theme => ({
   button: {
     display: "flex",
     alignItems: "center"
+  },
+  profilePic: {
+    borderRadius: "50%",
+    width: "100px",
+    height: "100px"
+  },
+  bigAvatar: {
+    margin: 10,
+    width: 90,
+    height: 90
+  },
+  chip: {
+    margin: 10
   }
 });
 class HomePage extends React.Component {
   state = {
-    open: false,
+    open: false
   };
 
   handleClickOpen = () => {
@@ -71,93 +85,77 @@ class HomePage extends React.Component {
     this.setState({ open: false });
   };
 
-  render (){
-    const { classes } = this.props;
+  openVerificationDialog = () => {
+    window.alertDialog(
+      "Verfikasi Akun",
+      "Apakah anda ingin verifikasi akun anda sekarang?",
+      () => {this.props.history.push(paths.USER_VERIFY)}
+    );
+  }
+
+  render() {
+    const { classes, user } = this.props;
+    const { profile } = user;
+
     return (
       <React.Fragment>
-        <FormDialog title="Info Verifikasi" open={this.state.open} onClose={this.handleClose}>
-          <DialogContent>
-            <DialogContentText>
-              Let Google help apps determine location. This means sending
-              anonymous location data to Google, even when no apps are running.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="secondary">
-              Batal
-            </Button>
-            <Button onClick={this.handleClose} color="primary" autoFocus>
-              Verifikasi Sekarang
-            </Button>
-          </DialogActions>
-        </FormDialog>
         <Paper className={classes.paper} elevation={1}>
-          <AccountCircleIcon className={classes.avatar} fontSize="large" />
+          <Avatar
+            alt="Profile Pic"
+            src={profile.profilePicUrl}
+            className={classes.bigAvatar}
+          />
           <Typography className={classes.title} variant="h5" component="h3">
-            Selamat datang, Wisnu Ramadhan
+            Selamat datang, {user.firstName} 😊
           </Typography>
+
           <div className={classes.gridInfo}>
-            <Typography className={classes.subtitle} component="p">
-              Akun Anda belum terverifikasi
-            </Typography>
-            <Button
+            <div>
+              {user.isVerified ? (
+                <Chip
+                  label="Terverifikasi"
+                  color="primary"
+                  className={classes.chip}
+                />
+              ) : (
+                <Chip
+                  label="Belum Terverifikasi"
+                  color="secondary"
+                  variant="outlined"
+                  className={classes.chip}
+                />
+              )}
+              {user.isStaff | user.isSuperUser ? (
+                <Chip label="Admin" color="default" className={classes.chip} />
+              ) : (
+                ""
+              )}
+            </div>{" "}
+            {!user.isVerified &&     <Button
               color="primary"
               className={classes.button}
-              onClick={this.handleClickOpen}
+              onClick={this.openVerificationDialog}
             >
-              Info selengkapnya
-            </Button>
+              Verifikasi Sekarang
+            </Button>}
+        
           </div>
+
           <Grid container spacing={24}>
             <Grid item xs={12} md={6}>
-              <Paper className={classes.paperChild} elevation={1}>
-                <Typography
-                  className={classes.titleChild}
-                  variant="h5"
-                  component="h3"
-                >
-                  Donasi
-                </Typography>
-                <Grid container spacing={24}>
-                  <Grid item xs={6} sm={6}>
-                    <Typography className={classes.subtitleChild} component="p">
-                      Sarana untuk menyalurkan salah satu bentuk kepedulian sosial
-                      Anda
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-                    gambar awan
-                  </Grid>
-                  <Button color="primary" className={classes.button}>
-                    Lihat Donasi >
-                  </Button>
-                </Grid>
-              </Paper>
+              <CategoryPaper title="Donasi" description="Sarana untuk menyalurkan salah satu bentuk kepedulian sosial Anda" imageName="cloudDonation" path={paths.DONASI}/>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Paper className={classes.paperChild} elevation={1}>
-                <Typography
-                  className={classes.titleChild}
-                  variant="h5"
-                  component="h3"
-                >
-                  Channel
-                </Typography>
-                <Grid container spacing={24}>
-                  <Grid item xs={6} sm={6}>
-                    <Typography className={classes.subtitleChild} component="p">
-                      Sarana bertukar informasi antar pengguna yang disajikan
-                      dengan berbagai kategori
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-                    gambar awan
-                  </Grid>
-                  <Button color="primary" className={classes.button}>
-                    Lihat Channel >
-                  </Button>
-                </Grid>
-              </Paper>
+              <CategoryPaper title="Channel" description="Sarana bertukar informasi antar pengguna yang disajikan dengan berbagai kategori" imageName="cloudChannel" path={paths.CHANNEL}/>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <CategoryPaper title="Dashboard" description="Sarana untuk mengetahui perkembangan ILUNI12 sekarang" imageName="cloudDashboard" pathUrl="http://localhost:8000/__admin__/" />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <CategoryPaper title="Email Blaster" description="Sarana untuk mengirimkan email secara personal ke orang-orang" imageName="cloudEmail" path={paths.CRM_EMAIL_TEMPLATE_LIST}/>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <CategoryPaper title="Daftar Kontrak Pengguna" description="Sarana untuk mengirimkan email secara personal ke pengguna" imageName="cloudContact" path={paths.CRM_CONTACT}/>
             </Grid>
           </Grid>
         </Paper>
@@ -165,4 +163,22 @@ class HomePage extends React.Component {
     );
   }
 }
-export default withStyles(styles)(HomePage)
+
+function createContainer() {
+  const mapStateToProps = state => ({
+    user: getUser(state)
+  });
+
+  const mapDispatchToProps = dispatch => ({});
+
+  return withAuth(
+    withRouter(
+      connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )(withStyles(styles)(HomePage))
+    )
+  );
+}
+
+export default createContainer();

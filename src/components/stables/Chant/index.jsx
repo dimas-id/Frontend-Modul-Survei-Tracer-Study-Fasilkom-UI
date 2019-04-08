@@ -9,7 +9,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import ShareIcon from "@material-ui/icons/Share";
+import CommentIcon from "@material-ui/icons/Comment";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
@@ -20,6 +20,7 @@ import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 
 import { Guidelines } from "../../../styles";
 import { makePathVariableUri } from "../../../libs/navigation";
+import { getDateFormatted } from "../../../libs/datetime";
 import paths from "../../../pages/paths";
 
 import { withAuth } from "../../../components/hocs/auth";
@@ -47,24 +48,33 @@ const styles = theme => ({
 
 class Screen extends React.Component {
   state = {
-    isLoading: false,
+    isLoading: true,
     userDetail: null
   };
 
   componentDidMount() {
     if (!this.props.deleted) {
-      this.setState({ isLoading: true }, () => {
-        atlasV1.session
-          .getUserById(this.props.author)
-          .then(result => {
-            this.setState({ userDetail: result.data });
-          })
-          .finally(() => {
-            this.setState({ isLoading: false });
-          });
-      });
+      atlasV1.session
+        .getUserById(this.props.author)
+        .then(result => {
+          this.setState({ userDetail: result.data });
+        })
+        .finally(() => {
+          this.setState({ isLoading: false });
+        });
     }
   }
+
+  handleReply = () => {
+    this.props.history.push(
+      makePathVariableUri(paths.CHANNEL_CHANT_CREATE, {
+        channelId: this.props.channel
+      }),
+      {
+        parentId: this.props.id
+      }
+    );
+  };
 
   renderCardHeader() {
     const { classes, deleted } = this.props;
@@ -86,7 +96,7 @@ class Screen extends React.Component {
           </IconButton>
         }
         title={name}
-        subheader={this.props.dateCreated}
+        subheader={getDateFormatted(this.props.dateCreated, "DD MMMM YYYY")}
       />
     );
   }
@@ -97,13 +107,13 @@ class Screen extends React.Component {
 
     return (
       <Card className={classes.card} style={{ marginLeft: margin + "px" }}>
-        {isLoading ? <LoadingFill /> : this.renderCardHeader()}
+        {deleted ? null : isLoading ? <LoadingFill /> : this.renderCardHeader()}
         {deleted ? (
           "Chant telah dihapus"
         ) : (
           <React.Fragment>
             <CardContent>
-              <Typography variant="title" gutterBottom>
+              <Typography variant="h6" gutterBottom>
                 {this.props.title}
               </Typography>
               <div
@@ -135,8 +145,15 @@ class Screen extends React.Component {
                   }
                   label={this.props.numberLikes}
                 />
-                <IconButton aria-label="Share">
-                  <ShareIcon />
+                <IconButton aria-label="Share" onClick={this.handleReply}>
+                  <CommentIcon  />
+                  <Typography
+                    variant="body2"
+                    style={{ marginLeft: "10px" }}
+                    gutterBottom
+                  >
+                    {this.props.numberChildrens}
+                  </Typography>
                 </IconButton>
               </div>
             </CardActions>

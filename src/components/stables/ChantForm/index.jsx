@@ -43,7 +43,7 @@ function ChantCreateForm({
     <form className={classes.form}>
       <div className={classes.formInline}>
       <Typography component="p" className={classes.label}>
-            Judul *
+            Judul 
         </Typography>
         <TextField
           autoFocus
@@ -54,7 +54,6 @@ function ChantCreateForm({
           value={title}
           margin="normal"
           variant="outlined"
-          required
         />
       </div>
       <div className={classes.formInline}>
