@@ -83,6 +83,7 @@ class Screen extends React.Component {
       .getChannelRequestDetail(this.props.user.id, channelId)
       .then(result => {
         this.setState({ channelRequest: result.data });
+        console.log(result.data)
       })
       .catch(error => {
         if (error.response.status === 404) {
@@ -94,8 +95,22 @@ class Screen extends React.Component {
       });
   }
 
-  handleClickDelete(userId, channelId) {
+  canBeDeleted() {
+    const { verificationStatus } = this.state.channelRequest;
+
+    return (
+      verificationStatus === "RJ"
+    );
+  }
+  handleClickDelete = (userId, channelId, e) =>  {
+    
+    if (!this.canBeDeleted()) {
+      e.preventDefault();
+      return;
+    };
+
     const { user, history } = this.props;
+
     window.alertDialog(
       "Konfirmasi Penghapusan", //title
       "Apakah anda yakin menghapus pengajuan channel ini?",
@@ -117,7 +132,8 @@ class Screen extends React.Component {
           .catch(this.handleOpenErrorMsg);
       }
     );
-  }
+  };
+
   handleOpenSuccessMsg = () => {
     this.setState({ openSuccessMsg: true });
   };
@@ -156,6 +172,7 @@ class Screen extends React.Component {
       verificationStatus,
       notes
     } = this.state.channelRequest;
+    const isEnabled = this.canBeDeleted();
     return (
       <React.Fragment>
         <Grid container spacing={24} className={classes.gridContainer}>
@@ -217,7 +234,7 @@ class Screen extends React.Component {
           </Grid>
           <Grid item xs={12} sm={12} className={classes.gridBtn}>
             <Button
-              disabled={this.state.verificationStatus !== "RJ"}
+              disabled={!isEnabled}
               className={`${classes.btn} ${classes.btnDelete}`}
               variant="contained"
               onClick={() => {
@@ -230,6 +247,7 @@ class Screen extends React.Component {
               Hapus
             </Button>
             <Button
+              disabled={!isEnabled}
               component={Link}
               to={makePathVariableUri(paths.CHANNEL_REQUEST_UPDATE, {
                 channelId: id
