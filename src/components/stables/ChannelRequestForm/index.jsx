@@ -1,15 +1,17 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import { Guidelines } from "../../../styles";
+import FileUploadInput from "../../stables/FileUploadInput";
 
 const styles = theme => ({
   form: {
     ...Guidelines.layouts.flexDirCol,
-    marginTop: 48,
+    marginTop: 48
   },
   gridLabel: {
     display: "flex",
@@ -19,8 +21,7 @@ const styles = theme => ({
     fontSize: 16,
     ...Guidelines.fonts.bold
   },
-  textField: {
-  },
+  textField: {},
   gridBtn: {
     display: "flex",
     justifyContent: "flex-end"
@@ -31,8 +32,16 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(function(props) {
-  const { classes } = props;
+function ChannelRequestForm({
+  classes,
+  coverImgUrl,
+  title,
+  description,
+  onChangeCoverImgUrl,
+  onChangeTitle,
+  onChangeDescription,
+  onSubmit
+}) {
   return (
     <form className={classes.form}>
       <Grid container spacing={24}>
@@ -42,18 +51,7 @@ export default withStyles(styles)(function(props) {
           </Typography>
         </Grid>
         <Grid item xs={9} sm={9}>
-          <TextField
-            id="outlined-text-input"
-            className={classes.textField}
-            placeholder="Placeholder"
-            type="text"
-            name="judul"
-            autoComplete="judul"
-            margin="normal"
-            variant="outlined"
-            fullWidth
-            required
-          />
+          <FileUploadInput accept="image/*" onChange={onChangeCoverImgUrl} />
         </Grid>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>
@@ -62,14 +60,15 @@ export default withStyles(styles)(function(props) {
         </Grid>
         <Grid item xs={9} sm={9}>
           <TextField
-            id="outlined-text-input"
+            id="outlined-title"
             className={classes.textField}
             placeholder="Judul Channel yang diajukan"
             type="text"
-            name="judul"
-            autoComplete="judul"
+            name="title"
             margin="normal"
             variant="outlined"
+            onChange={onChangeTitle}
+            value={title}
             fullWidth
             required
           />
@@ -81,14 +80,15 @@ export default withStyles(styles)(function(props) {
         </Grid>
         <Grid item xs={9} sm={9}>
           <TextField
-            id="outlined-text-input"
+            id="outlined-description"
             className={classes.textField}
             placeholder="Deskripsi Channel yang diajukan"
             type="text"
-            name="deskripsi"
-            autoComplete="deskripsi"
+            name="description"
             margin="normal"
             variant="outlined"
+            onChange={onChangeDescription}
+            value={description}
             fullWidth
             required
           />
@@ -99,6 +99,7 @@ export default withStyles(styles)(function(props) {
             variant="contained"
             color="primary"
             type="submit"
+            onClick={onSubmit}
           >
             Simpan
           </Button>
@@ -106,4 +107,10 @@ export default withStyles(styles)(function(props) {
       </Grid>
     </form>
   );
-});
+}
+
+ChannelRequestForm.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(ChannelRequestForm);

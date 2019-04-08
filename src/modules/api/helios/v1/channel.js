@@ -14,7 +14,14 @@ export default Object.freeze({
     http.get(`${API_V1_URL}/users/${userId}/channel-requests/`),
   getChannelRequestDetail: (userId, channelId) =>
     http.get(`${API_V1_URL}/users/${userId}/channel-requests/${channelId}`),
-  getTimeline: () => http.get(`${API_V1_URL}/timeline`),
+    getTimeline: () => http.get(`${API_V1_URL}/timeline`),
+    getChantDetail: (userId, chantId) => http.get(`${API_V1_URL}/users/${userId}/chants/${chantId}`),
+    createChannelRequest: (userId, coverImgUrl, title, description) =>
+        http.post(`${API_V1_URL}/users/${userId}/channel-requests/`, {
+            coverImgUrl,
+            title,
+            description
+        }),
   getChantDetail: (userId, chantId) =>
     http.get(`${API_V1_URL}/users/${userId}/chants/${chantId}`),
   postChant: (userId, channel, parentChant, title, body) =>

@@ -48,7 +48,6 @@ class Screen extends React.PureComponent {
     heliosV1.channel
     .getChantDetail(this.props.user.id, this.props.match.params.chantId)
       .then(result => {
-        console.log(result)
         this.setState({
           title: result.data.title,
           body: result.data.body
@@ -122,7 +121,7 @@ class Screen extends React.PureComponent {
             <Typography variant="h5" component="h3">
               Mengubah Chant
             </Typography>
-            <ChantForm 
+            <ChantForm
             title={title}
             body={body}
             onChantTitle={this.handleTitle.bind(this)}

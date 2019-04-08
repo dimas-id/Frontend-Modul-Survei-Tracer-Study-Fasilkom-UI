@@ -77,7 +77,6 @@ class Screen extends React.Component {
     heliosV1.channel
       .getChannelRequestDetail(this.props.userId, channelId)
       .then(result => {
-        console.log(result.data);
         this.setState({ channelRequest: result.data });
       })
       .finally(() => {
