@@ -95,6 +95,7 @@ class Screen extends React.Component {
               overflow="hidden"
               max="64px"
               numberChildrens={chant.numberChildrens}
+              hasLiked={chant.hasLikedByCurrentUser}
             />
           </div>
         ))}
