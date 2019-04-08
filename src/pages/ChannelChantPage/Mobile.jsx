@@ -1,19 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 
-import { withAuth } from '../../components/hocs/auth';
-import { NavbarAuth } from '../../components/stables/Navbar';
-import { Container, ContainerFluid } from '../../components/Container';
+import { authorize } from "../../components/hocs/auth";
+import { NavbarAuth } from "../../components/stables/Navbar";
+import { Container, ContainerFluid } from "../../components/Container";
 
 const styles = theme => ({});
 
 class Screen extends React.PureComponent {
   static propTypes = {
-    classes: PropTypes.shape().isRequired,
+    classes: PropTypes.shape().isRequired
   };
 
   render() {
@@ -32,7 +32,7 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
+  return authorize({ mustVerified: true })(
     withRouter(
       connect(
         mapStateToProps,

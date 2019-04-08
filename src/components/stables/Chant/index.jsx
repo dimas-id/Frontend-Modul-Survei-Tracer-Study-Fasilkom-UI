@@ -23,7 +23,7 @@ import { makePathVariableUri } from "../../../libs/navigation";
 import { getDateFormatted } from "../../../libs/datetime";
 import paths from "../../../pages/paths";
 
-import { withAuth } from "../../../components/hocs/auth";
+import { authorize } from "../../../components/hocs/auth";
 import { LoadingFill } from "../../../components/Loading";
 
 import atlasV1 from "../../../modules/api/atlas/v1";
@@ -146,7 +146,7 @@ class Screen extends React.Component {
                   label={this.props.numberLikes}
                 />
                 <IconButton aria-label="Share" onClick={this.handleReply}>
-                  <CommentIcon  />
+                  <CommentIcon />
                   <Typography
                     variant="body2"
                     style={{ marginLeft: "10px" }}
@@ -169,7 +169,7 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
+  return authorize({ mustVerified: true })(
     withRouter(
       connect(
         mapStateToProps,

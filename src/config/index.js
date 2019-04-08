@@ -1,18 +1,21 @@
-export const isDevelopment = process.env.NODE_ENV === 'development';
+export const isDevelopment = process.env.NODE_ENV === "development";
+
+window.deprecationWarning =
+  process.env.NODE_ENV !== "production" ? console.warn : function() {};
 
 const developmentConstants = () => {
   const env = {
-    ATLAS: 'http://localhost:8000',
-    HELIOS: 'http://localhost:8004'
+    ATLAS: "http://localhost:8000",
+    HELIOS: "http://localhost:8004"
   };
-  console.log('--- b3: development environment ---');
+  console.log("--- b3: development environment ---");
   console.log(`--- ${JSON.stringify(env, null, 2)}  ---`);
   return env;
 };
 
 const productionConstants = () => ({
-  ATLAS: 'https://b3-atlas.herokuapp.com',
-  HELIOS: 'https://b3-helios.herokuapp.com'
+  ATLAS: "https://b3-atlas.herokuapp.com",
+  HELIOS: "https://b3-helios.herokuapp.com"
 });
 
 const constants = () => {
