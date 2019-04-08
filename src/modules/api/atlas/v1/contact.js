@@ -7,7 +7,7 @@ export default Object.freeze({
     http.get(
       makeQueryUri(
         `${API_V1_URL}/contacts`,
-        { name, category },
+        { name, category, limit:5000, offset:0 }, // Asumsi alumni < 500
         { indices: false }
       )
     )
