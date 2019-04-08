@@ -9,6 +9,7 @@ import {
   isLoggedIn as _isLoggedIn,
   getUser
 } from "../../modules/session/selectors";
+import { loadUser } from "../../modules/session/thunks";
 import paths from "../../pages/paths";
 
 export const ROLES = Object.freeze(
@@ -36,12 +37,21 @@ class Authenticated extends React.PureComponent {
   };
 
   componentDidMount() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, user } = this.props;
     if (!isLoggedIn) {
       this.redirectToLogin();
     } else {
-      this.checkUserRole();
-      this.checkVerified();
+      /**
+       * just load the user, this is intended. it will just uncovenience
+       * that user need to wait the load to be finished just for checking.
+       * yes, it will not use the latest but it is fast, maybe another refresh?
+       */
+      try {
+        this.props.load(user.id);
+      } finally {
+        this.checkUserRole();
+        this.checkVerified();
+      }
     }
   }
 
@@ -92,7 +102,9 @@ function createContainer() {
     user: getUser(state)
   });
 
-  const mapDispatchToProps = () => ({});
+  const mapDispatchToProps = dispatch => ({
+    load: id => dispatch(loadUser(id))
+  });
 
   return withRouter(
     connect(
