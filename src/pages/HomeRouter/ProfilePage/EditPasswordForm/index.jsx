@@ -33,14 +33,13 @@ const styles = theme => ({
 });
 
 function EditProfileForm(props) {
-  console.log(user);
-  const { classes, user } = props;
+  const { classes } = props;
   return (
     <form className={classes.form}>
       <Grid container spacing={24}>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>
-            Kata sandi saat ini 
+            Kata sandi saat ini
           </Typography>
         </Grid>
         <Grid item xs={9} sm={9}>

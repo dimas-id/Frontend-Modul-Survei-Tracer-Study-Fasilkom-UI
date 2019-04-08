@@ -15,6 +15,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 import MomentUtils from "@date-io/moment";
 
@@ -74,6 +75,7 @@ const VALIDATOR = {
   [FIELDS.uiSsoNpm]: Validation.number().notRequired()
 };
 
+
 function SelectPrograms(props) {
   const inputLabelRef = React.useRef(null);
 
@@ -117,9 +119,18 @@ function SelectPrograms(props) {
           </MenuItem>
         ))}
       </Select>
+      <FormHelperText
+        variant="outlined"
+        error={props.error}
+        required
+        margin="dense"
+      >
+        {props.helperText}
+      </FormHelperText>
     </FormControl>
   );
 }
+
 
 const RegistrationForm = withStyles(styles)(
   ({

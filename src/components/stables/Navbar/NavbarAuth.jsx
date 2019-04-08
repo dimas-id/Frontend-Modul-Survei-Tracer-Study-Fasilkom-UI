@@ -226,12 +226,20 @@ class NavbarAuth extends React.Component {
         >
           <MenuItem
             className={classes.menuItem}
-            onClick={this.handleCloseUserMenu}
+            component={Link}
+            to={paths.USER_PROFILE}
           >
             Profil
           </MenuItem>
+          <MenuItem
+            className={classes.menuItem}
+            component={Link}
+            to={paths.USER_PREFERENCE}
+          >
+            Preferensi
+          </MenuItem>
           <MenuItem className={classes.menuItem} onClick={this.handleLogout}>
-            Logout
+            Keluar
           </MenuItem>
         </Menu>
       </div>

@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
-import moment from 'moment';
 
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -31,7 +30,6 @@ const styles = theme => ({
   }
 });
 
-
 class Registration extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
@@ -52,31 +50,6 @@ class Registration extends React.Component {
 
   setErrorMessage(errorMessage) {
     this.setState({ errorMessage });
-  }
-
-  getInitialValues() {
-    const {
-      firstName,
-      lastName,
-      birthdate,
-      latestCsuiClassYear,
-      latestCsuiProgram,
-      uiSsoNpm,
-      email,
-      password,
-      repassword
-    } = RegistrationForm.fields;
-    return {
-      [firstName]: '',
-      [lastName]: '',
-      [birthdate]: moment(),
-      [latestCsuiClassYear]: moment(),
-      [latestCsuiProgram]: '',
-      [uiSsoNpm]: '',
-      [password]: '',
-      [repassword]: '',
-      [email]: '',
-    }
   }
 
   redirectToNextPage = () => {
@@ -100,13 +73,6 @@ class Registration extends React.Component {
     } = RegistrationForm.fields;
 
     const currentValues = { ...values };
-
-    if (currentValues[password] !== currentValues[repassword]) {
-      actions.setFieldError(repassword, "Konfirmasi password tidak sama");
-      actions.setSubmitting(false);
-      return;
-    }
-
     currentValues[birthdate] = getDateFormatted(currentValues[birthdate]);
     currentValues[latestCsuiClassYear] = getDateFormatted(
       currentValues[latestCsuiClassYear],
@@ -169,11 +135,7 @@ class Registration extends React.Component {
             {errorMessage}
           </Typography>
         )}
-        <RegistrationForm
-          validateOnChange={false}
-          onSubmit={this.handleRegistration}
-          initialValues={this.getInitialValues()}
-        />
+        <RegistrationForm onSubmit={this.handleRegistration} />
       </div>
     );
   }
