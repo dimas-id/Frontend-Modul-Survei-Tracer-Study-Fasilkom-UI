@@ -18,6 +18,7 @@ import heliosV1 from "../../modules/api/helios/v1";
 import { getUserId } from "../../modules/session/selectors";
 import { BulletList } from "react-content-loader";
 import paths from "../../pages/paths";
+import { makePathVariableUri } from "../../libs/navigation";
 
 const styles = theme => ({
   paper: {
@@ -66,37 +67,48 @@ class Screen extends React.Component {
       });
   }
 
-  handleCoverImgUrl({ target }) {
-    this.setState({
-      coverImgUrl: target.value
-    });
+  handleCoverImgUrl({ data, status }) {
+    if (status === 201) {
+      this.setState({
+        coverImgUrl: data.value
+      });
+    }
   }
 
-  handleTitle({ target }) {
+  handleTitle({ data }) {
     this.setState({
-      title: target.value
+      title: data.value
     });
   }
 
   handleDescription({ target }) {
     this.setState({
-      description: target.value
+      description: data.value
     });
   }
 
   handleSubmit() {
+    const { user, history } = this.props;
+    const userId = this.props.user.id;
+
     heliosV1.channel
       .updateChannelRequest(
-        this.props.userId,
+        userId,
         this.state.coverImgUrl,
         this.state.title,
         this.state.description
       )
-      .then(() => window.location.href = (paths.CHANNEL_REQUEST_LIST))
-      .then(this.handleOpenSuccessMsg)
+      .then(() => {
+        history.push(
+          makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
+            username: user.username
+          })
+        );
+        this.handleOpenSuccessMsg();
+      })
       .catch(this.handleOpenErrorMsg);
   }
-  HandleOpenSuccessMsg = () => {
+  handleOpenSuccessMsg = () => {
     this.setState({ openSuccessMsg: true });
   };
 
@@ -121,7 +133,7 @@ class Screen extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { coverImgUrl, title, description, loading } = this.state
+    const { coverImgUrl, title, description, loading } = this.state;
 
     return (
       <React.Fragment>
@@ -137,50 +149,52 @@ class Screen extends React.Component {
               Perubahan Channel yang Anda ajukan akan diproses oleh Admin untuk
               dibuat
             </Typography>
-            {loading ? <BulletList /> : 
-             <ChannelRequestForm
-             coverImgUrl={coverImgUrl}
-             title={title}
-             description={description}
-             onChangeCoverImgUrl={this.handleCoverImgUrl.bind(this)}
-             onChangeTitle={this.handleTitle.bind(this)}
-             onChangeDescription={this.handleDescription.bind(this)}
-             onSubmit={this.handleSubmit.bind(this)}
-             type="update"
-           />
-          }
+            {loading ? (
+              <BulletList />
+            ) : (
+              <ChannelRequestForm
+                coverImgUrl={coverImgUrl}
+                title={title}
+                description={description}
+                onChangeCoverImgUrl={this.handleCoverImgUrl.bind(this)}
+                onChangeTitle={this.handleTitle.bind(this)}
+                onChangeDescription={this.handleDescription.bind(this)}
+                onSubmit={this.handleSubmit.bind(this)}
+                type="update"
+              />
+            )}
           </Paper>
           <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left"
+            }}
+            open={this.state.openSuccessMsg}
+            autoHideDuration={6000}
             onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Pengajuan Channel berhasil diubah`}
-          />
-        </Snackbar>
+          >
+            <SnackbarContentWrapper
+              onClose={this.handleCloseSuccessMsg}
+              variant="success"
+              message={`Pengajuan Channel berhasil diubah`}
+            />
+          </Snackbar>
 
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left"
+            }}
+            open={this.state.openErrorMsg}
+            autoHideDuration={6000}
             onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={`Pengajuan Channel gagal diubah`}
-          />
-        </Snackbar>
+          >
+            <SnackbarContentWrapper
+              onClose={this.handleCloseErrorMsg}
+              variant="error"
+              message={`Pengajuan Channel gagal diubah`}
+            />
+          </Snackbar>
         </Container>
       </React.Fragment>
     );

@@ -53,8 +53,8 @@ function ChannelRequestForm({
         </Grid>
         <Grid item xs={9} sm={9}>
           <Grid container spacing={24}>
-              {type === "update" ? (
-                <Grid item xs={2} sm={2}>
+            {type === "update" ? (
+              <Grid item xs={2} sm={2}>
                 <img
                   style={{
                     width: 80,
@@ -64,13 +64,13 @@ function ChannelRequestForm({
                   src={coverImgUrl}
                   alt="cover channel"
                 />
-              </Grid>)
-              : null}
+              </Grid>
+            ) : null}
 
             <Grid item xs={2} sm={2}>
               <FileUploadInput
+                accept="image/*"
                 onChange={onChangeCoverImgUrl}
-                value={coverImgUrl}
               />
             </Grid>
           </Grid>
