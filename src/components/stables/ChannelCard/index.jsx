@@ -37,6 +37,9 @@ const styles = theme => ({
   }
 });
 
+/**
+ * @TODO SIMPLIFY THIS
+ */
 class Screen extends React.Component {
   state = {
     subscribed: false,
@@ -46,66 +49,81 @@ class Screen extends React.Component {
   };
 
   componentDidMount() {
+    /**
+     * @TODO bisa constructor langsung saja
+     */
     this.setState({
       subscribed: this.props.hasSubscribed,
       variant: this.props.hasSubscribed ? "contained" : "outlined",
       label: this.props.hasSubscribed ? "Berlangganan" : "Langganan",
-      backgroundColor: this.props.hasSubscribed ? "#00C7E5" : "#FFFFFF" 
-    })
+      backgroundColor: this.props.hasSubscribed ? "#00C7E5" : "#FFFFFF"
+    });
   }
 
   handleSubscribe = () => {
     heliosV1.channel
-      .subscribeChannel(
-        this.props.id
-      ).then(
-        this.setState({subscribed: true, variant: "contained", label: "Berlangganan", backgroundColor: "#00C7E5"})
-      )
-  }
+      .subscribeChannel(this.props.id)
+      .then(
+        this.setState({
+          subscribed: true,
+          variant: "contained",
+          label: "Berlangganan",
+          backgroundColor: "#00C7E5"
+        })
+      );
+  };
 
   handleUnsubscribe = () => {
     heliosV1.channel
-      .unsubscribeChannel(
-        this.props.id
-      ).then(
-        this.setState({subscribed: false, variant: "outlined", label: "Langganan", backgroundColor: "#FFFFFF"})
-      )
-    }
+      .unsubscribeChannel(this.props.id)
+      .then(
+        this.setState({
+          subscribed: false,
+          variant: "outlined",
+          label: "Langganan",
+          backgroundColor: "#FFFFFF"
+        })
+      );
+  };
 
   render() {
     const { classes } = this.props;
-  return (
-    <Card className={classes.card}>
-                <CardMedia
-                  className={classes.media}
-                  image={this.props.coverImgUrl}
-                  title="Contemplative Reptile"
-                />
-                <CardContent>
-                  <Typography
-                    className={classes.textChannel}
-                    gutterBottom
-                    variant="h5"
-                    component="h2"
-                  >
-                    {this.props.title}
-                  </Typography>
-                  <Typography className={classes.textChannel} component="p">
-                    {this.props.description}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    variant={this.state.variant}
-                    className={classes.button}
-                    backgroundColor="{this.state.backgroundColor}"
-                    onClick={this.state.subscribed ? this.handleUnsubscribe : this.handleSubscribe}
-                  >
-                    {this.state.label}
-                  </Button>
-                </CardActions>
-              </Card>
-  );
+    return (
+      <Card className={classes.card}>
+        <CardMedia
+          className={classes.media}
+          image={this.props.coverImgUrl}
+          title="Contemplative Reptile"
+        />
+        <CardContent>
+          <Typography
+            className={classes.textChannel}
+            gutterBottom
+            variant="h5"
+            component="h2"
+          >
+            {this.props.title}
+          </Typography>
+          <Typography className={classes.textChannel} component="p">
+            {this.props.description}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button
+            variant={this.state.variant}
+            className={classes.button}
+            backgroundColor="{this.state.backgroundColor}"
+            onClick={
+              this.state.subscribed
+                ? this.handleUnsubscribe
+                : this.handleSubscribe
+            }
+          >
+            {this.state.label}
+          </Button>
+        </CardActions>
+      </Card>
+    );
   }
 }
 
