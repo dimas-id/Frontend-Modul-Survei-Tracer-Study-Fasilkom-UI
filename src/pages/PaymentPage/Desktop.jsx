@@ -19,6 +19,8 @@ import { getUser } from "../../modules/session/selectors";
 import { Link } from "react-router-dom";
 import paths from "../paths";
 import { makePathVariableUri } from "../../libs/navigation";
+import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
+
 
 
 const styles = theme => ({
@@ -89,6 +91,7 @@ class Screen extends React.Component {
     return (
       <ContainerFluid>
         <NavbarAuth title="Screen" />
+        <NavbarBackDonation/>
         <Container className={classes.container}>
           <Grid container spacing={24} className={classes.gridPaper}>
             <Grid item xs={6} sm={6}>
