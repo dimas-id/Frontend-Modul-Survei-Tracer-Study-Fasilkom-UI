@@ -13,7 +13,7 @@ import TableWithPaginate from "../../components/TableWithPaginate";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
-import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
+import { NavbarAuth} from "../../components/stables/Navbar";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
 import { LinesLoader } from "../../components/Loading";
@@ -21,6 +21,8 @@ import { getDateFormatted } from "../../libs/datetime";
 import paths from "../paths";
 import { Link } from "react-router-dom";
 import { makePathVariableUri } from "../../libs/navigation";
+import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
+
 
 const styles = theme => ({
   container: {
@@ -79,7 +81,7 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack title="Daftar Permohonan Program Donasi" />
+        <NavbarBackDonation title="Daftar Permohonan Program Donasi" />
         <Container className={classes.container}>
           <Grid container spacing={24}>
             <Grid item xs={12} sm={12}>

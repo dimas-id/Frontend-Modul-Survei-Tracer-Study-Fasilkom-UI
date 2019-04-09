@@ -5,6 +5,7 @@ import { withRouter } from "react-router";
 
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
 import { withAuth } from "../../components/hocs/auth";
 import { Container } from "../../components/Container";
@@ -13,13 +14,17 @@ import TableWithPaginate from "../../components/TableWithPaginate";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
-import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
+import { NavbarAuth } from "../../components/stables/Navbar";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
 import { LinesLoader} from "../../components/Loading";
 import { Link } from "react-router-dom";
 import paths from "../paths";
 import { makePathVariableUri } from "../../libs/navigation";
+import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
+import Particle from "../../components/Particle";
+
+
 
 const styles = theme => ({
   container: {
@@ -27,6 +32,13 @@ const styles = theme => ({
     ...Guidelines.layouts.mt32,
     ...Guidelines.layouts.mr64,
     ...Guidelines.layouts.ml64
+  },
+  paper: {
+    ...Guidelines.layouts.mt16,
+    ...Guidelines.layouts.pt32,
+    ...Guidelines.layouts.pr32,
+    ...Guidelines.layouts.pl32,
+    ...Guidelines.layouts.pb32
   }
 });
 
@@ -72,8 +84,12 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack title="Daftar Donasi Saya"/>
+        <NavbarBackDonation/>
+        <Particle name="cloud2" left={0} top={160} />
+
         <Container className={classes.container}>
+        <Paper className={classes.paper} elevation={1}>
+
           <Grid container spacing={24}>
             <Grid item xs={12} sm={12}>
               <TableWithPaginate
@@ -114,6 +130,7 @@ class Screen extends React.Component {
               />
             </Grid>
           </Grid>
+          </Paper>
         </Container>
       </React.Fragment>
     );

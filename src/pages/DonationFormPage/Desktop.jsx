@@ -10,7 +10,8 @@ import CardIcon from "@material-ui/icons/CreditCardOutlined";
 import Grid from "@material-ui/core/Grid";
 
 import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
+import { NavbarAuth } from "../../components/stables/Navbar";
+import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
@@ -195,11 +196,11 @@ class Screen extends React.Component {
       return LinesLoader;
     }
 
-    const { title, description } = this.state.donationProgram;
+    const { title, description, proposalUrl } = this.state.donationProgram;
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack />
+        <NavbarBackDonation />
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Grid container spacing={24}>
@@ -213,7 +214,11 @@ class Screen extends React.Component {
                     <Typography component="p">{description}</Typography>
                   </CardContent>
                 <Grid item xs={12} sm={12} className={classes.btnProposal}>
-                  <Button variant="outlined" color="inherit">
+                  <Button 
+                  variant="outlined" 
+                  color="inherit"
+                  href={proposalUrl}
+                  >
                     Lihat Proposal
                   </Button>
                 </Grid>
