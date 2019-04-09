@@ -2,12 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+
 import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
+import { NavbarAuth, NavbarBackForChannelRequest} from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -62,6 +65,11 @@ class Screen extends React.Component {
           description: result.data.description
         });
       })
+      .catch(error => {
+        if (error.response.status === 404) {
+          this.props.history.replace(paths.ERROR_404);
+        }
+      })
       .finally(() => {
         this.setState({ loading: false });
       });
@@ -90,7 +98,6 @@ class Screen extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const { channelId } = this.props.match.params;
-    const { user, history } = this.props;
     const userId = this.props.user.id;
 
     heliosV1.channel
@@ -101,14 +108,7 @@ class Screen extends React.Component {
         this.state.title,
         this.state.description
       )
-      .then(() => {
-        history.push(
-          makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
-            username: user.username
-          })
-        )
-        .this.handleOpenSuccessMsg();
-      })
+      .then(this.handleOpenSuccessMsg)
       .catch(this.handleOpenErrorMsg);
   }
   handleOpenSuccessMsg = () => {
@@ -135,13 +135,25 @@ class Screen extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { user, classes } = this.props;
     const { coverImgUrl, title, description, loading } = this.state;
+    const action = (
+      <Button
+        component={Link}
+        to={makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
+          userId: user.id
+        })}
+        backgroundColor="white"
+        size="small"
+      >
+        Riwayat Pengajuan Channel
+      </Button>
+    );
 
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack />
+        <NavbarBackForChannelRequest />
         <Particle name="cloud2" left={0} top={160} />
         <Container>
           <Paper className={classes.paper} elevation={1}>
@@ -180,6 +192,7 @@ class Screen extends React.Component {
               onClose={this.handleCloseSuccessMsg}
               variant="success"
               message={`Pengajuan Channel berhasil diubah`}
+              action={action}
             />
           </Snackbar>
 
