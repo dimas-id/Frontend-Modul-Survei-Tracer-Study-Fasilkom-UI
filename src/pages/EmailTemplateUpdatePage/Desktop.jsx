@@ -16,6 +16,7 @@ import heliosV1 from "../../modules/api/helios/v1";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
+import { humanizeError } from "../../libs/response";
 
 const styles = theme => ({
   container: {
@@ -37,7 +38,8 @@ class Screen extends React.Component {
     body: "",
     description: "",
     subject: "",
-    loading: true
+    loading: true,
+    errorMessage: null
   };
 
   componentDidMount() {
@@ -87,7 +89,13 @@ class Screen extends React.Component {
     });
   }
 
+  setErrorMessage(errorMessage) {
+    this.setState({ errorMessage });
+  }
+
   handleSubmit() {
+    this.setErrorMessage("");
+
     heliosV1.email
       .updateEmailTemplate(
         this.props.match.params.idEmailTemplate,
@@ -97,7 +105,21 @@ class Screen extends React.Component {
         this.state.subject
       )
       .then(this.handleOpenSuccessMsg)
-      .catch(this.handleOpenErrorMsg);
+      .catch(err => {
+        const fields = ["title", "body", "description", "subject"];
+
+        const humanizedErr = humanizeError(err.response.data, fields);
+
+        this.setErrorMessage(
+          `Judul: ${humanizedErr.title}, Subjek: ${
+            humanizedErr.subject
+          }, Deskripsi: ${humanizedErr.description}, Isi: ${humanizedErr.body}`
+        );
+
+        this.setState({ openErrorMsg: true });
+
+        return err;
+      });
   }
 
   handleOpenSuccessMsg = () => {
@@ -110,10 +132,6 @@ class Screen extends React.Component {
     }
 
     this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
   };
 
   handleCloseErrorMsg = (event, reason) => {
@@ -183,7 +201,7 @@ class Screen extends React.Component {
           <SnackbarContentWrapper
             onClose={this.handleCloseErrorMsg}
             variant="error"
-            message={`Templat Email gagal disimpan`}
+            message={this.state.errorMessage}
           />
         </Snackbar>
       </React.Fragment>
