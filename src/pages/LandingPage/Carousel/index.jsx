@@ -47,9 +47,11 @@ class Carousel extends React.Component {
   }
 
   renderCarousel() {
-    return this.state.donationProgramList.map(donation => (
-      <DonationCard {...donation} />
-    ));
+    const { donationProgramList } = this.state;
+    return (
+      donationProgramList &&
+      donationProgramList.map(donation => <DonationCard {...donation} />)
+    );
   }
 
   render() {
@@ -93,7 +95,7 @@ class Carousel extends React.Component {
 
     const { loading } = this.state;
     if (loading) {
-      return LoadingFill;
+      return <LoadingFill />;
     }
 
     return <Slider {...settings}>{this.renderCarousel()}</Slider>;
