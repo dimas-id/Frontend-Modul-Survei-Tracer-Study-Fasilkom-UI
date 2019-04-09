@@ -8,3 +8,4 @@ export { default as NavbarBackChannel } from './NavbarBackChannel';
 export { default as NavbarWithSearch } from './NavbarWithSearch';
 export { default as NavbarEmailTemplate } from './NavbarEmailTemplate';
 export { default as NavbarBackWithChannelRequest } from './NavbarBackWithChannelRequest';
+export { default as NavbarBackForChannelRequest } from './NavbarBackForChannelRequest';

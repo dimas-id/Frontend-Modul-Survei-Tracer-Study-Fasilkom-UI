@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
 import { authorize } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
+import { NavbarAuth, NavbarBackForChannelRequest } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
@@ -83,7 +83,7 @@ class Screen extends React.Component {
       .getChannelRequestDetail(this.props.user.id, channelId)
       .then(result => {
         this.setState({ channelRequest: result.data });
-        console.log(result.data)
+        console.log(result.data);
       })
       .catch(error => {
         if (error.response.status === 404) {
@@ -98,19 +98,14 @@ class Screen extends React.Component {
   canBeDeletedAndUpdated() {
     const { verificationStatus } = this.state.channelRequest;
 
-    return (
-      verificationStatus === "RJ"
-    );
+    return verificationStatus === "RJ";
   }
 
-  handleClickDelete = (userId, channelId, e) =>  {
-    
+  handleClickDelete = (userId, channelId, e) => {
     if (!this.canBeDeletedandUpdated()) {
       e.preventDefault();
       return;
-    };
-
-    const { user, history } = this.props;
+    }
 
     window.alertDialog(
       "Konfirmasi Penghapusan", //title
@@ -121,15 +116,7 @@ class Screen extends React.Component {
           .then(() => {
             this.setState({ loading: true });
           })
-          .then(() => {
-            this.handleOpenSuccessMsg();
-            history.push(
-              makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
-                username: user.username
-              })
-            );
-            this.handleOpenSuccessMsg();
-          })
+          .then(this.handleOpenSuccessMsg)
           .catch(this.handleOpenErrorMsg);
       }
     );
@@ -174,6 +161,18 @@ class Screen extends React.Component {
       notes
     } = this.state.channelRequest;
     const isEnabled = this.canBeDeletedAndUpdated();
+    const action = (
+      <Button
+        component={Link}
+        to={makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
+          userId: user.id
+        })}
+        color="secondary"
+        size="small"
+      >
+        Riwayat Pengajuan Channel
+      </Button>
+    );
     return (
       <React.Fragment>
         <Grid container spacing={24} className={classes.gridContainer}>
@@ -223,22 +222,20 @@ class Screen extends React.Component {
               {STATUS[verificationStatus]}
             </Typography>
           </Grid>
-          {isEnabled ?
-          <Grid item xs={3} sm={3} className={classes.gridLabel}>
-            <Typography component="p" className={classes.label}>
-              Alasan Penolakan
-            </Typography>
-          </Grid>
-          : null
-          }
-          {isEnabled ?
-          <Grid item xs={9} sm={9}>
-            <Typography component="p" className={classes.content}>
-              {notes}
-            </Typography>
-          </Grid> :
-          null
-          }
+          {isEnabled ? (
+            <Grid item xs={3} sm={3} className={classes.gridLabel}>
+              <Typography component="p" className={classes.label}>
+                Alasan Penolakan
+              </Typography>
+            </Grid>
+          ) : null}
+          {isEnabled ? (
+            <Grid item xs={9} sm={9}>
+              <Typography component="p" className={classes.content}>
+                {notes}
+              </Typography>
+            </Grid>
+          ) : null}
           <Grid item xs={12} sm={12} className={classes.gridBtn}>
             <Button
               disabled={!isEnabled}
@@ -279,7 +276,8 @@ class Screen extends React.Component {
           <SnackbarContentWrapper
             onClose={this.handleCloseSuccessMsg}
             variant="success"
-            message={`Pengajuan Channel berhasil dihapus`}
+            message={`Pengajuan Channel berhasil dihapus lihat perubahan pada {Riwayat Pengajuan Channel}`}
+            action={action}
           />
         </Snackbar>
         <Snackbar
@@ -307,7 +305,7 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack />
+        <NavbarBackForChannelRequest />
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>
