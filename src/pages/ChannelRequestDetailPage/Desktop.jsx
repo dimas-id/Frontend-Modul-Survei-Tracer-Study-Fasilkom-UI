@@ -95,9 +95,8 @@ class Screen extends React.Component {
       });
   }
 
-  canBeDeletedAndUpdated() {
+  canBeDeletedAndUpdated = () => {
     const { verificationStatus } = this.state.channelRequest;
-
     return verificationStatus === "RJ";
   }
 
