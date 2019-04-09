@@ -59,6 +59,8 @@ class InComlete extends React.Component {
 
   getInitialValue() {
     const {
+      firstName,
+      lastName,
       birthdate,
       latestCsuiClassYear,
       latestCsuiProgram,
@@ -68,7 +70,7 @@ class InComlete extends React.Component {
     const { user } = this.props;
     const { profile } = user;
     return {
-      ...pick(user, [uiSsoNpm]),
+      ...pick(user, [firstName, lastName, uiSsoNpm]),
       ...pick(profile, [birthdate, latestCsuiClassYear, latestCsuiProgram])
     };
   }
@@ -77,6 +79,8 @@ class InComlete extends React.Component {
     this.setErrorMessage("");
 
     const {
+      firstName,
+      lastName,
       birthdate,
       latestCsuiClassYear,
       latestCsuiProgram,
@@ -95,6 +99,8 @@ class InComlete extends React.Component {
 
     this.props
       .verifyUser(
+        currentValues[firstName],
+        currentValues[lastName],
         currentValues[birthdate],
         currentValues[latestCsuiClassYear],
         currentValues[latestCsuiProgram],

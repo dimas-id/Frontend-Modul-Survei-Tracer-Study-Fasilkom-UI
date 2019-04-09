@@ -34,19 +34,24 @@ const styles = theme => ({
     color: "white"
   },
   buttonPic: {
-    ...layouts.marginAuto,
+    ...layouts.marginAuto
   }
 });
 
 const savedText = localStorage.getItem("chantBody") || '';
 function ChantCreateForm({
-  classes, title, body, onChantTitle, onChangeBody, onSubmit
+  classes,
+  title,
+  body,
+  onChantTitle,
+  onChangeBody,
+  onSubmit
 }) {
       return (
     <form className={classes.form}>
       <div className={classes.formInline}>
-      <Typography component="p" className={classes.label}>
-            Judul 
+        <Typography component="p" className={classes.label}>
+          Judul
         </Typography>
         <TextField
           autoFocus
@@ -57,18 +62,15 @@ function ChantCreateForm({
           value={title}
           margin="normal"
           variant="outlined"
-          // inputProps={{
-          //   maxLength: 200,
-          // }}
           error={title.length>200 ? true : false}
           helperText={title.length>200 ? "Judul tidak boleh melebihi 200 karakter" : false}
         />
       </div>
       <div className={classes.formInline}>
-      <Typography component="p" className={classes.label}>
-            Deskripsi *
-          </Typography>
-          <div className={classes.textField}>
+        <Typography component="p" className={classes.label}>
+          Deskripsi *
+        </Typography>
+        <div className={classes.textField}>
           <Editor
             placeholder="Deskripsi Chant hari ini?"
             onChange={target => onChangeBody(target())}
@@ -113,7 +115,7 @@ function ChantCreateForm({
         </Button>
       </div>
     </form>
-  )
+  );
 }
 
 export default withStyles(styles)(ChantCreateForm);

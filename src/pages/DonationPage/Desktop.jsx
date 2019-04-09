@@ -21,9 +21,6 @@ const styles = theme => ({
     ...Guidelines.layouts.pr40,
     ...Guidelines.layouts.pl40
   },
-  heroButtons: {
-    marginTop: theme.spacing.unit * 4
-  }
 });
 class Screen extends React.Component {
   static propTypes = {

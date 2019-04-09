@@ -40,7 +40,8 @@ function ChannelRequestForm({
   onChangeCoverImgUrl,
   onChangeTitle,
   onChangeDescription,
-  onSubmit
+  onSubmit,
+  type
 }) {
   return (
     <form className={classes.form}>
@@ -51,7 +52,29 @@ function ChannelRequestForm({
           </Typography>
         </Grid>
         <Grid item xs={9} sm={9}>
-          <FileUploadInput accept="image/*" onChange={onChangeCoverImgUrl} />
+        <Grid container spacing={24}>
+          {type === "update" ? (
+            <Grid item xs={2} sm={2}>
+              <img
+                style={{
+                  width: 80,
+                  height: 80,
+                  objectFit: "cover"
+                }}
+                src={coverImgUrl}
+                alt="cover channel"
+              />
+            </Grid>
+          ) : null}
+
+          <Grid item xs={2} sm={2}>
+            <FileUploadInput
+              accept="image/*"
+              onChange={onChangeCoverImgUrl}
+              value={coverImgUrl}
+            />
+          </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>

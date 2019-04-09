@@ -40,7 +40,7 @@ function LandingMobile({ classes }) {
           <div className={classes.divWrapper}>
             <Typography variant="h3" className={classes.textWrapper}>
               <b>
-                Ups, ada <i>error</i>
+                Ups, halaman tidak ditemukan
               </b>{" "}
               <span role="img" aria-label="sad">
                 😭

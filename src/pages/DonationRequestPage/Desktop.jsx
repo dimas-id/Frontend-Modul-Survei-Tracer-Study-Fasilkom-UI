@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
 import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
+import { NavbarAuth} from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -33,6 +33,7 @@ import { Link } from "react-router-dom";
 import paths from "../paths";
 import { makePathVariableUri } from "../../libs/navigation";
 import moment from "moment";
+import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
 
 const styles = theme => ({
   paper: {
@@ -73,9 +74,6 @@ const styles = theme => ({
     ...Guidelines.layouts.mt64,
     width: 120
   },
-  input: {
-    display: "none"
-  }
 });
 
 const categories = [
@@ -239,7 +237,7 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack />
+        <NavbarBackDonation />
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>
