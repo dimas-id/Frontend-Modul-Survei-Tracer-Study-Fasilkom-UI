@@ -101,7 +101,7 @@ class Screen extends React.Component {
   }
 
   handleClickDelete = (userId, channelId, e) => {
-    if (!this.canBeDeletedandUpdated()) {
+    if (!this.canBeDeletedAndUpdated()) {
       e.preventDefault();
       return;
     }
