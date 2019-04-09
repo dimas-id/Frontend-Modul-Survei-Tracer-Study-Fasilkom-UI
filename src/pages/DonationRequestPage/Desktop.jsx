@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
 import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth} from "../../components/stables/Navbar";
+import { NavbarAuth } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -34,6 +34,7 @@ import paths from "../paths";
 import { makePathVariableUri } from "../../libs/navigation";
 import moment from "moment";
 import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
+import { humanizeError } from "../../libs/response";
 
 const styles = theme => ({
   paper: {
@@ -73,7 +74,7 @@ const styles = theme => ({
   btn: {
     ...Guidelines.layouts.mt64,
     width: 120
-  },
+  }
 });
 
 const categories = [
@@ -201,9 +202,11 @@ class Screen extends React.Component {
               username: user.username
             })
           );
-        }, 1000)
+        }, 1000);
       })
-      .catch(this.handleOpenErrorMsg);
+      .catch(({ response }) => {
+        this.handleOpenErrorMsg(JSON.stringify(humanizeError(response.data)));
+      });
   };
   handleOpenSuccessMsg = () => {
     this.setState({ openSuccessMsg: true });
@@ -217,8 +220,8 @@ class Screen extends React.Component {
     this.setState({ openSuccessMsg: false });
   };
 
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
+  handleOpenErrorMsg = msg => {
+    this.setState({ openErrorMsg: msg });
   };
 
   handleCloseErrorMsg = (event, reason) => {
@@ -444,14 +447,16 @@ class Screen extends React.Component {
             vertical: "bottom",
             horizontal: "left"
           }}
-          open={this.state.openErrorMsg}
+          open={Boolean(this.state.openErrorMsg)}
           autoHideDuration={6000}
           onClose={this.handleCloseErrorMsg}
         >
           <SnackbarContentWrapper
             onClose={this.handleCloseErrorMsg}
             variant="error"
-            message={`Pengajuan Program Donasi gagal disimpan`}
+            message={`Pengajuan Program Donasi gagal disimpan\n${
+              this.state.openErrorMsg
+            }`}
           />
         </Snackbar>
       </React.Fragment>
