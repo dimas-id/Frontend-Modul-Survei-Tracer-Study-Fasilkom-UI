@@ -10,7 +10,8 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
 import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
+import { NavbarAuth } from "../../components/stables/Navbar";
+import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 
@@ -61,7 +62,8 @@ const styles = theme => ({
   },
   btn: {
     ...Guidelines.layouts.mt64,
-    width: 120
+    width: 120,
+    ...Guidelines.layouts.mr32
   },
   input: {
     display: "none"
@@ -75,6 +77,19 @@ const STATUS = {
   RJM: "Ditolak Manajemen",
   PRM: "Diproses Manajemen",
   ACM: "Program Donasi Diterima"
+};
+const CATEGORIES = {
+  XXX: "Pilih Kategori Donasi",
+  INF: "Sarana dan Infrastruktur",
+  MED: "Bantuan Medis dan Kesehatan",
+  BCN: "Bencana Alam",
+  HAD: "Hadiah dan Apresiasi",
+  SOS: "Kegiatan Sosial",
+  KEM: "Kemanusiaan",
+  LIN: "Lingkungan",
+  PTI: "Panti Asuhan",
+  RIB: "Rumah Ibadah",
+  RFC: "Run for Charity"
 };
 
 class Screen extends React.Component {
@@ -104,6 +119,12 @@ class Screen extends React.Component {
         this.setState({ loading: false });
       });
   }
+  canBeDeleted() {
+    
+    const { verificationStatus } = this.state.DonationRequest;
+  
+    return verificationStatus === "RJA";
+  }
 
   handleChange = name => event => {
     this.setState({
@@ -130,8 +151,7 @@ class Screen extends React.Component {
             );
             this.handleOpenSuccessMsg();
           })
-          .catch(this.handleOpenErrorMsg)
-          
+          .catch(this.handleOpenErrorMsg);
       }
     );
   }
@@ -166,20 +186,21 @@ class Screen extends React.Component {
       return LinesLoader;
     }
     const {
-      // kategori, judul donasi, tanggal mulai, tanggal selesai, unggah proposal, status
       categoryName,
       title,
       startDate,
       endDate,
       proposalUrl,
       goalAmount,
-      verificationStatus
+      verificationStatus,
+      notes
     } = this.state.DonationRequest;
+    const isEnabled = this.canBeDeleted();
 
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack />
+        <NavbarBackDonation />
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>
@@ -205,7 +226,7 @@ class Screen extends React.Component {
                 </Grid>
                 <Grid item xs={8} sm={8}>
                   <Typography component="p" className={classes.label}>
-                    {categoryName}
+                    {CATEGORIES[categoryName]}
                   </Typography>
                 </Grid>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
@@ -240,7 +261,7 @@ class Screen extends React.Component {
                 </Grid>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
                   <Typography component="p" className={classes.label}>
-                    Proposal
+                    Tautan Proposal
                   </Typography>
                 </Grid>
                 <Grid item xs={8} sm={8}>
@@ -268,6 +289,20 @@ class Screen extends React.Component {
                     {STATUS[verificationStatus]}
                   </Typography>
                 </Grid>
+                {isEnabled ? (
+                  <Grid item xs={4} sm={4} className={classes.gridLabel}>
+                    <Typography component="p" className={classes.label}>
+                      Alasan Penolakan
+                    </Typography>
+                  </Grid>
+                ) : null}
+                {isEnabled ? (
+                  <Grid item xs={8} sm={8}>
+                    <Typography component="p" className={classes.content}>
+                      {notes}
+                    </Typography>
+                  </Grid>
+                ) : null}
                 <Grid item xs={12} sm={12} className={classes.gridBtn}>
                   <Button
                     className={classes.btn}
@@ -278,19 +313,21 @@ class Screen extends React.Component {
                     to={makePathVariableUri(paths.DONATION_REQUEST_UPDATE, {
                       requestId: this.props.match.params.requestId,
                       username: user.username
-                      // to={makePathVariableUri(paths.DONATION_REQUEST_DETAIL , {
-                      //   requestId: row.id,  username: user.username
+                      
                     })}
                   >
                     Ubah
                   </Button>
                   <Button
                     className={classes.btn}
+                    disabled={!isEnabled}
                     variant="contained"
                     color="error"
                     onClick={() => {
-                      this.handleClickDelete(user.id, this.props.match.params.requestId);
-
+                      this.handleClickDelete(
+                        user.id,
+                        this.props.match.params.requestId
+                      );
                     }}
                   >
                     Hapus
