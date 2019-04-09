@@ -1,8 +1,11 @@
 import http from "../../../../libs/http";
 import { API_V1_URL } from "../config";
+import { makeQueryUri } from "../../../../libs/navigation";
 
 export default Object.freeze({
-  getEmailTemplateList: () => http.get(`${API_V1_URL}/email-templates`),
+  getEmailTemplateList: () =>
+    http.get(
+      makeQueryUri(`${API_V1_URL}/email-templates`, { limit: 5000, offset: 0 })),
   getEmailTemplateById: emailTemplateId =>
     http.get(`${API_V1_URL}/email-templates/${emailTemplateId}`),
   updateEmailTemplate: (emailTemplateId, title, body, description, subject) =>
