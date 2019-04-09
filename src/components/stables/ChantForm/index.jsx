@@ -6,8 +6,6 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 
-import FileUploadInput from "../../../components/stables/FileUploadInput";
-
 import { layouts, fonts } from "../../../styles/guidelines";
 
 import http from "../../../libs/http";
@@ -40,6 +38,7 @@ const styles = theme => ({
   }
 });
 
+const savedText = localStorage.getItem("chantBody") || '';
 function ChantCreateForm({
   classes,
   title,
@@ -48,7 +47,7 @@ function ChantCreateForm({
   onChangeBody,
   onSubmit
 }) {
-  return (
+      return (
     <form className={classes.form}>
       <div className={classes.formInline}>
         <Typography component="p" className={classes.label}>
@@ -63,9 +62,8 @@ function ChantCreateForm({
           value={title}
           margin="normal"
           variant="outlined"
-          inputProps={{
-            maxLength: 200
-          }}
+          error={title.length>200 ? true : false}
+          helperText={title.length>200 ? "Judul tidak boleh melebihi 200 karakter" : false}
         />
       </div>
       <div className={classes.formInline}>
@@ -76,23 +74,37 @@ function ChantCreateForm({
           <Editor
             placeholder="Deskripsi Chant hari ini?"
             onChange={target => onChangeBody(target())}
-            defaultValue={body}
+            defaultValue={savedText}
             uploadImage={file => {
               console.log("File upload triggered: ", file);
               const data = new FormData();
               data.append("file", file);
               const UPLOAD_ENPOINT = `${env.HELIOS}/api/v1/upload/image`;
               return http
-                .put(UPLOAD_ENPOINT, data)
-                .then(resp => resp.data.fileUrl); // -> kurang ini
+              .put(UPLOAD_ENPOINT, data)
+              .then(resp => resp.data.fileUrl) // -> kurang ini
             }}
-          />
-        </div>
+            />
+      </div>
+        {/* <TextField
+          id="descritpion"
+          label="Deskripsi Chant hari ini?"
+          multiline
+          rowsMax="5"
+          className={classes.textField}
+          onChange={onChangeBody}
+          margin="normal"
+          variant="outlined"
+          value={body}
+          required
+        /> */}
       </div>
       <div className={classes.formInline}>
-        <div className={classes.buttonPic}>
-          <FileUploadInput onChange={console.log} accept="application/pdf" />
-        </div>
+        {/* <div className={classes.buttonPic}> */}
+        {/* <FileUploadInput 
+                  onChange={console.log}
+                  accept="application/pdf"/>
+                  </div> */}
         <Button
           variant="contained"
           color="primary"

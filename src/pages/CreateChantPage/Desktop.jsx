@@ -38,10 +38,15 @@ const styles = theme => ({
 });
 
 class Screen extends React.PureComponent {
-  state = {
-    title: "",
-    body: "",
-    parentChant: null
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: "",
+      body: "",
+      parentChant: null
+    }
+
+    localStorage.removeItem('chantBody')
   }
 
   handleTitle({ target }) {
@@ -100,7 +105,7 @@ class Screen extends React.PureComponent {
 
   render() {
     const { classes } = this.props;
-    const { title, body } = this.state;
+    const { title } = this.state;
 
     return (
       <React.Fragment>
@@ -115,7 +120,6 @@ class Screen extends React.PureComponent {
             </Typography>
             <ChantForm 
             title={title}
-            body={body}
             onChantTitle={this.handleTitle.bind(this)}
             onChangeBody={this.handleBody.bind(this)}
             onSubmit={this.handleSubmit.bind(this)}

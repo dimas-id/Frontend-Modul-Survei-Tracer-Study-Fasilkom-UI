@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import debounce from 'lodash/debounce'
 import { withRouter } from "react-router";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -41,7 +42,8 @@ class Screen extends React.PureComponent {
   state = {
     title: "",
     body: "",
-    loading: true
+    loading: true,
+    defaultValue: ""
   }
 
   componentDidMount() {
@@ -50,8 +52,10 @@ class Screen extends React.PureComponent {
       .then(result => {
         this.setState({
           title: result.data.title,
-          body: result.data.body
+          body: result.data.body,
+          defaultValue: result.data.body
         });
+        localStorage.setItem('chantBody', result.data.body)
       })
       .finally(() => {
         this.setState({ loading: false });
@@ -64,10 +68,13 @@ class Screen extends React.PureComponent {
     });
   }
 
-  handleBody({ target }) {
+  handleBody( target ) {
+    const saveLocal = debounce(() => {
+      localStorage.setItem('chantBody', target)
+    }, 250)
     this.setState({
-      body: target.value
-    });
+      body: target
+    }, saveLocal);
   }
 
   handleSubmit() {
@@ -78,6 +85,9 @@ class Screen extends React.PureComponent {
         this.state.title,
         this.state.body
       )
+      .then(() => {
+        localStorage.removeItem("chantBody")
+      })
       .then(this.handleOpenSuccessMsg)
       .catch(this.handleOpenErrorMsg)
   }
@@ -108,7 +118,7 @@ class Screen extends React.PureComponent {
 
   render() {
     const { classes } = this.props;
-    const { title, body } = this.state;
+    const { title, defaultValue } = this.state;
 
     return (
       <React.Fragment>
@@ -123,7 +133,7 @@ class Screen extends React.PureComponent {
             </Typography>
             <ChantForm
             title={title}
-            body={body}
+            body={defaultValue}
             onChantTitle={this.handleTitle.bind(this)}
             onChangeBody={this.handleBody.bind(this)}
             onSubmit={this.handleSubmit.bind(this)}
