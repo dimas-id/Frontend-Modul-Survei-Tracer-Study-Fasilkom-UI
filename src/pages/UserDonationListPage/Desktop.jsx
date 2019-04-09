@@ -23,15 +23,16 @@ import paths from "../paths";
 import { makePathVariableUri } from "../../libs/navigation";
 import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
 import Particle from "../../components/Particle";
-
-
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.mt32,
-    ...Guidelines.layouts.mr64,
-    ...Guidelines.layouts.ml64
+    ...Guidelines.layouts.mr32,
+    ...Guidelines.layouts.ml32,
+    ...Guidelines.layouts.pr32,
+    ...Guidelines.layouts.pl32,
   },
   paper: {
     ...Guidelines.layouts.mt16,
@@ -89,6 +90,9 @@ class Screen extends React.Component {
 
         <Container className={classes.container}>
         <Paper className={classes.paper} elevation={1}>
+        <Typography className={classes.title} variant="h5" component="h3">
+              Daftar Donasi Saya
+            </Typography>
 
           <Grid container spacing={24}>
             <Grid item xs={12} sm={12}>

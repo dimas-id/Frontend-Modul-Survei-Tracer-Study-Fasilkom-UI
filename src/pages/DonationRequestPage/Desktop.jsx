@@ -194,12 +194,14 @@ class Screen extends React.Component {
         values[FIELDS.proposalUrl]
       )
       .then(() => {
-        history.push(
-          makePathVariableUri(paths.USER_DONATION_REQUEST_LIST, {
-            username: user.username
-          })
-        );
         this.handleOpenSuccessMsg();
+        setTimeout(() => {
+          history.push(
+            makePathVariableUri(paths.USER_DONATION_REQUEST_LIST, {
+              username: user.username
+            })
+          );
+        }, 1000)
       })
       .catch(this.handleOpenErrorMsg);
   };
