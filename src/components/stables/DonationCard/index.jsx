@@ -36,7 +36,7 @@ const styles = theme => ({
 });
 
 function Donation(props) {
-  const { classes, id, title, description, startDate, endDate } = props;
+  const { classes, id, title, description, startDate, endDate, percentageReached } = props;
 
   return (
     <React.Fragment>
@@ -53,6 +53,9 @@ function Donation(props) {
             </Typography>
             <Typography color="textSecondary" className={classes.margin}>
               {startDate} hingga {endDate}
+            </Typography>
+            <Typography color="textSecondary" className={classes.margin}>
+              Pencapaian Target : {percentageReached} %
             </Typography>
             <Divider variant="middle" />
             <Typography component="p" className={classes.margin}>

@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import paths from "../paths";
 import { makePathVariableUri } from "../../libs/navigation";
 import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
+import Particle from "../../components/Particle";
 
 
 
@@ -92,6 +93,8 @@ class Screen extends React.Component {
       <ContainerFluid>
         <NavbarAuth title="Screen" />
         <NavbarBackDonation/>
+        <Particle name="cloud2" left={0} top={160} />
+        <Particle name="cloud1" right={0} top={400} />
         <Container className={classes.container}>
           <Grid container spacing={24} className={classes.gridPaper}>
             <Grid item xs={6} sm={6}>

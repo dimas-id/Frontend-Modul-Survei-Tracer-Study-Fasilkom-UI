@@ -28,8 +28,17 @@ const styles = theme => ({
   container: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.mt32,
-    ...Guidelines.layouts.mr64,
-    ...Guidelines.layouts.ml64
+    ...Guidelines.layouts.mr32,
+    ...Guidelines.layouts.ml32,
+    ...Guidelines.layouts.pr32,
+    ...Guidelines.layouts.pl32,
+  },
+  paper: {
+    ...Guidelines.layouts.mt16,
+    ...Guidelines.layouts.pt32,
+    ...Guidelines.layouts.pr32,
+    ...Guidelines.layouts.pl32,
+    ...Guidelines.layouts.pb32
   }
 });
 
