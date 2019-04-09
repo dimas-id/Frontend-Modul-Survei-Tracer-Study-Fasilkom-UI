@@ -48,6 +48,13 @@ class Screen extends React.Component {
       });
   }
 
+
+  handleDelete = chantId => {
+    heliosV1.channel
+      .deleteChant(this.props.user.id, chantId)
+      .then(this.loadChant);
+  };
+  
   renderChantCard() {
     const { listChant } = this.state;
     const { classes } = this.props;
@@ -74,6 +81,7 @@ class Screen extends React.Component {
               deleted={Boolean(chant.dateDeleted)}
               numberChildrens={chant.numberChildrens}
               hasLiked={chant.hasLikedByCurrentUser}
+              onDelete={this.handleDelete}
             />
           </div>
         ))}
