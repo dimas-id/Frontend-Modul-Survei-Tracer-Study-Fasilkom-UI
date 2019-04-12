@@ -67,7 +67,7 @@ class Screen extends React.Component {
         this.setState({
           subscribed: true,
           variant: "contained",
-          label: "Berlangganan",
+          label: "Sudah Berlangganan",
           backgroundColor: "#00C7E5"
         })
       );
@@ -80,7 +80,7 @@ class Screen extends React.Component {
         this.setState({
           subscribed: false,
           variant: "outlined",
-          label: "Langganan",
+          label: "Berlangganan",
           backgroundColor: "#FFFFFF"
         })
       );
