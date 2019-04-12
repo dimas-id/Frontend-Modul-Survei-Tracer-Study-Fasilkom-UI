@@ -5,15 +5,21 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
 import { PersistGate } from "redux-persist/integration/react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
-import { history, store, persistor } from "./modules";
+
 import { setAuthToken } from "./libs/http";
+import { history, store, persistor } from "./modules";
+import { createGlobalDialog, createGlobalSnackbar } from "./modules/utility";
 
 import AlertDialog from "./components/Alert";
+import { SnackbarNotifier, SnackbarProvider } from "./components/Snackbar";
 import { SplashScreen } from "./components/Loading";
 
 import Pages from "./pages";
 import { theme } from "./styles";
 import "./config";
+
+createGlobalDialog(store);
+createGlobalSnackbar(store);
 
 function setAuthTokenAfterPersist() {
   const token = get(store.getState(), "session.token.access");
@@ -29,10 +35,13 @@ function App() {
         onBeforeLift={setAuthTokenAfterPersist}
       >
         <MuiThemeProvider theme={theme}>
-          <ConnectedRouter history={history}>
-            <Pages />
-          </ConnectedRouter>
-          <AlertDialog />
+          <SnackbarProvider>
+            <ConnectedRouter history={history}>
+              <Pages />
+            </ConnectedRouter>
+            <AlertDialog />
+            <SnackbarNotifier />
+          </SnackbarProvider>
         </MuiThemeProvider>
       </PersistGate>
     </Provider>

@@ -7,7 +7,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Fade from "@material-ui/core/Fade";
 
 import { layouts } from "../../../styles/guidelines";
-import { enhanceForm } from "../../../components/hocs/form";
+import { enhanceForm, Validation } from "../../../components/hocs/form";
 import LinkedInButton from "../../../components/stables/LinkedInButton";
 
 const styles = theme => ({
@@ -27,6 +27,13 @@ const styles = theme => ({
 
 const C_PASSWORD = "password";
 const C_EMAIL = "email";
+
+const VALIDATOR = {
+  [C_EMAIL]: Validation.string()
+    .email("Email tidak valid.")
+    .required("Wajib diisi."),
+  [C_PASSWORD]: Validation.string().required("Wajib diisi.")
+};
 
 const LoginForm = withStyles(styles)(
   ({
@@ -95,7 +102,10 @@ const LoginForm = withStyles(styles)(
 //   [C_EMAIL]: Validation.string().required('Email dibutuhkan.'),
 //   [C_PASSWORD]: Validation.string().required('Password dibutuhkan.'),
 // };
-const enhancedLoginForm = enhanceForm({ displayName: "LoginForm" })(LoginForm);
+const enhancedLoginForm = enhanceForm({
+  displayName: "LoginForm",
+  validator: VALIDATOR
+})(LoginForm);
 enhancedLoginForm.field = {
   email: C_EMAIL,
   password: C_PASSWORD

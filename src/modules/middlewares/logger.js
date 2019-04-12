@@ -1,6 +1,6 @@
-export const loggerMiddleware = store => next => action => {
+export default () => next => action => {
   console.group(action.type);
-  console.info('dispatching', action);
+  console.info("dispatching", action);
   let result = next(action);
   console.groupEnd();
   return result;

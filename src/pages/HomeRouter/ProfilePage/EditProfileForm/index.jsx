@@ -8,7 +8,6 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import Snackbar from "@material-ui/core/Snackbar";
 import { withStyles } from "@material-ui/core/styles";
 
 import { humanizeError } from "../../../../libs/response";
@@ -39,13 +38,10 @@ const VALIDATOR = Validation.object().shape({
 });
 
 function EditProfileForm({ classes, update, user, onSuccess }) {
-  const [showSnackbars, setShowSnackbars] = React.useState("");
-
   function handleSubmit(values, actions) {
     update(values)
-      .then((resp) => {
-        setShowSnackbars("Profil berhasil disimpan");
-        onSuccess && onSuccess(resp)
+      .then(resp => {
+        onSuccess && onSuccess(resp);
       })
       .catch(({ response }) => {
         const errMessages = humanizeError(response.data.profile, [
@@ -53,7 +49,6 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
           FIELDS.websiteUrl
         ]);
         errMessages && actions.setErrors(errMessages);
-        setShowSnackbars(`Gagal menyimpan profil: ${response.status}`);
       })
       .finally(() => {
         actions.setSubmitting(false);
@@ -65,6 +60,8 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
       [FIELDS.name]: user[FIELDS.name],
       [FIELDS.email]: user[FIELDS.email],
       [FIELDS.birthdate]: user.profile[FIELDS.birthdate],
+      [FIELDS.residenceCity]: user.profile[FIELDS.residenceCity] || "",
+      [FIELDS.residenceCountry]: user.profile[FIELDS.residenceCountry] || "",
       [FIELDS.phoneNumber]: user.profile[FIELDS.phoneNumber] || "",
       [FIELDS.websiteUrl]: user.profile[FIELDS.websiteUrl] || ""
     };
@@ -204,20 +201,6 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
           );
         }}
       </Formik>
-      <Snackbar
-        className={classes.snackbar}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left"
-        }}
-        open={Boolean(showSnackbars)}
-        autoHideDuration={4000}
-        onClose={() => setShowSnackbars(false)}
-        ContentProps={{
-          "aria-describedby": "message-id"
-        }}
-        message={<span id="message-id">{showSnackbars}</span>}
-      />
     </React.Fragment>
   );
 }

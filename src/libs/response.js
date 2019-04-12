@@ -2,7 +2,7 @@ import pick from 'lodash/pick';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 
-function getNonFieldError(errResponse) {
+export function getNonFieldError(errResponse) {
   let err = get(errResponse, 'nonFieldErrors', null);
   if (!isEmpty(err)) {
     let s = '';

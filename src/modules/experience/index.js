@@ -9,7 +9,7 @@ const INITIAL_STATE = {
   educations: undefined
 };
 
-export default function experienceReducer(state, action) {
+export function experienceReducer(state, action) {
   switch (action.type) {
     case SET_WORK_POSITIONS:
       return {
@@ -36,3 +36,8 @@ export const experienceActions = Object.freeze({
     payload: educations
   })
 });
+
+export default {
+  experienceActions,
+  experienceReducer
+}
