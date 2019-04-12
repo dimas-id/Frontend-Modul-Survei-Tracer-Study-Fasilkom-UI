@@ -39,13 +39,14 @@ class InComlete extends React.Component {
 
   componentDidMount() {
     const { user, history, load } = this.props;
-    load(user.id).then(() => {
-      if (this.props.user.isVerified) {
-        history.replace(paths.HOME);
-      } else {
-        this.setState({ loading: false });
-      }
-    });
+    Boolean(user) &&
+      load(user.id).then(() => {
+        if (this.props.user.isVerified) {
+          history.replace(paths.HOME);
+        } else {
+          this.setState({ loading: false });
+        }
+      });
   }
 
   setErrorMessage(errorMessage) {
@@ -68,11 +69,15 @@ class InComlete extends React.Component {
     } = InCompleteForm.fields;
 
     const { user } = this.props;
-    const { profile } = user;
-    return {
-      ...pick(user, [firstName, lastName, uiSsoNpm]),
-      ...pick(profile, [birthdate, latestCsuiClassYear, latestCsuiProgram])
-    };
+    if (Boolean(user)) {
+      const { profile } = user;
+      return {
+        ...pick(user, [firstName, lastName, uiSsoNpm]),
+        ...pick(profile, [birthdate, latestCsuiClassYear, latestCsuiProgram])
+      };
+    }
+
+    return {};
   }
 
   handleInComlete = (values, actions) => {

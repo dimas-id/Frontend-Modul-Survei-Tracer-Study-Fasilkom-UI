@@ -8,7 +8,6 @@ import green from "@material-ui/core/colors/green";
 import Fab from "@material-ui/core/Fab";
 import CheckIcon from "@material-ui/icons/Check";
 import FileIcon from "@material-ui/icons/AttachFileOutlined";
-import Snackbar from "@material-ui/core/Snackbar";
 
 import { humanizeError } from "../../../libs/response";
 import http from "../../../libs/http";
@@ -39,9 +38,6 @@ const styles = theme => ({
     top: -6,
     left: -6,
     zIndex: 1
-  },
-  snackbar: {
-    margin: theme.spacing.unit
   }
 });
 
@@ -49,7 +45,6 @@ function FileUploadInput({ onChange, accept, classes }) {
   const inputRef = React.useRef();
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
-  const [showSnackbars, setShowSnackbars] = React.useState("");
   const [progress, setProgress] = React.useState(0);
 
   const buttonClassname = classNames({
@@ -77,13 +72,15 @@ function FileUploadInput({ onChange, accept, classes }) {
       http
         .put(UPLOAD_ENPOINT, data, config)
         .then(function(res) {
-          setShowSnackbars("Upload completed");
+          window.notifySnackbar("Upload berhasil", { variant: "success" });
           setSuccess(true);
           return onChange && onChange(res);
         })
         .catch(function(err) {
           const readable = humanizeError(err.response.data, ["file"]);
-          setShowSnackbars(`Upload failed: ${readable.file}`);
+          window.notifySnackbar(`Upload gagal: ${readable.file}`, {
+            variant: "error"
+          });
         })
         .finally(() => {
           setLoading(false);
@@ -92,52 +89,36 @@ function FileUploadInput({ onChange, accept, classes }) {
   }
 
   return (
-    <React.Fragment>
-      <Snackbar
-        className={classes.snackbar}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left"
-        }}
-        open={Boolean(showSnackbars)}
-        autoHideDuration={4000}
-        onClose={() => setShowSnackbars(false)}
-        ContentProps={{
-          "aria-describedby": "message-id"
-        }}
-        message={<span id="message-id">{showSnackbars}</span>}
-      />
-      <div className={classes.root}>
-        <div className={classes.wrapper}>
-          <label htmlFor="button-file">
-            <input
-              ref={inputRef}
-              accept={accept}
-              className={classes.input}
-              id="button-file"
-              type="file"
-              onChange={handleOnChange}
-            />
-            <Fab
-              color="primary"
-              className={buttonClassname}
-              onClick={() => {
-                inputRef.current.click();
-              }}
-            >
-              {success ? <CheckIcon color="#fff" /> : <FileIcon color="#fff" />}
-            </Fab>
-          </label>
-          {loading && (
-            <CircularProgress
-              size={68}
-              className={classes.fabProgress}
-              value={progress}
-            />
-          )}
-        </div>
+    <div className={classes.root}>
+      <div className={classes.wrapper}>
+        <label htmlFor="button-file">
+          <input
+            ref={inputRef}
+            accept={accept}
+            className={classes.input}
+            id="button-file"
+            type="file"
+            onChange={handleOnChange}
+          />
+          <Fab
+            color="primary"
+            className={buttonClassname}
+            onClick={() => {
+              inputRef.current.click();
+            }}
+          >
+            {success ? <CheckIcon color="#fff" /> : <FileIcon color="#fff" />}
+          </Fab>
+        </label>
+        {loading && (
+          <CircularProgress
+            size={68}
+            className={classes.fabProgress}
+            value={progress}
+          />
+        )}
       </div>
-    </React.Fragment>
+    </div>
   );
 }
 

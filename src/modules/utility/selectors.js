@@ -11,3 +11,7 @@ export function isShowAlert(state) {
 export function getAlert(state) {
   return get(getUtility(state), "alert");
 }
+
+export function getSnackbarNotifications(state) {
+  return get(getUtility(state), "notifications");
+}

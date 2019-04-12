@@ -12,7 +12,7 @@ const INITIAL_STATE = {
   user: undefined
 };
 
-export default function sessionReducer(state, action) {
+export function sessionReducer(state, action) {
   switch (action.type) {
     case SET_TOKEN:
       return {
@@ -44,7 +44,7 @@ export default function sessionReducer(state, action) {
   }
 }
 
-export const sessionAction = Object.freeze({
+export const sessionActions = Object.freeze({
   setToken: (access, refresh) => ({
     type: SET_TOKEN,
     payload: { access, refresh }
@@ -67,3 +67,8 @@ export const sessionAction = Object.freeze({
     type: CLEAR_SESSION
   })
 });
+
+export default {
+  sessionReducer,
+  sessionActions
+};

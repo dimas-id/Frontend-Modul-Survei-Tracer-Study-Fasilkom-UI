@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Redirect, withRouter } from "react-router";
 
 import { loadUser } from "../../modules/session/thunks";
-import { sessionAction } from "../../modules/session";
+import { sessionActions } from "../../modules/session";
 import { setAuthToken } from "../../libs/http";
 import { makeQueryUri } from "../../libs/navigation";
 import { LoadingScreen } from "../../components/Loading";
@@ -69,9 +69,9 @@ export default withRouter(
     }),
     dispatch => ({
       load: userId => dispatch(loadUser(userId)),
-      clearSession: () => dispatch(sessionAction.clearSession()),
+      clearSession: () => dispatch(sessionActions.clearSession()),
       setToken: (access, refresh) =>
-        dispatch(sessionAction.setToken(access, refresh))
+        dispatch(sessionActions.setToken(access, refresh))
     })
   )(Desktop)
 );

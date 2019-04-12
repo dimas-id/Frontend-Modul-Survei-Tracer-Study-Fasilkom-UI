@@ -48,6 +48,7 @@
     "lodash": "^4.17.11",
     "material-ui-pickers": "^2.2.4",
     "moment": "^2.24.0",
+    "notistack": "^0.6.1",
     "qs": "^6.6.0",
     "react": "^16.8.5",
     "react-content-loader": "^4.2.1",

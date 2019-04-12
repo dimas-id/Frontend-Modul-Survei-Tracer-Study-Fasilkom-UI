@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import has from "lodash/has";
-
 import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 
 import { login as _login } from "../../../modules/session/thunks";
 import { layouts } from "../../../styles/guidelines";
@@ -30,7 +28,7 @@ function getInitialValue() {
   };
 }
 
-class Login extends React.Component {
+class Login extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
     login: PropTypes.func.isRequired,
@@ -38,19 +36,11 @@ class Login extends React.Component {
     location: PropTypes.shape().isRequired
   };
 
-  state = {
-    errorMessage: null
-  };
-
   componentDidMount() {
     const { loggedIn, history } = this.props;
     if (loggedIn) {
       history.replace(paths.HOME);
     }
-  }
-
-  setErrorMessage(errorMessage) {
-    this.setState({ errorMessage });
   }
 
   getRedirectPath() {
@@ -72,7 +62,6 @@ class Login extends React.Component {
 
   handleLogin = (values, actions) => {
     const { login } = this.props;
-    this.setErrorMessage("");
     actions.setErrors(getInitialValue());
     login(values.email, values.password)
       .catch(err => {
@@ -83,8 +72,6 @@ class Login extends React.Component {
           has(humanizedErr, LoginForm.field.password)
         ) {
           actions.setErrors(humanizedErr);
-        } else {
-          this.setErrorMessage(humanizedErr);
         }
         actions.setSubmitting(false);
         return err;
@@ -94,14 +81,8 @@ class Login extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { errorMessage } = this.state;
     return (
       <div className={classes.container}>
-        {!!errorMessage && (
-          <Typography gutterBottom align="center" color="error">
-            {errorMessage}
-          </Typography>
-        )}
         <LoginForm
           onSubmit={this.handleLogin}
           initialValues={getInitialValue()}
