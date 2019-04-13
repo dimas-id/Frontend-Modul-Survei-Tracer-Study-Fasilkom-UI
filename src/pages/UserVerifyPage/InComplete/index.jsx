@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import pick from "lodash/pick";
+import omitBy from "lodash/omitBy";
+import isNull from "lodash/isNull";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 
@@ -33,8 +35,7 @@ class InComlete extends React.Component {
   };
 
   state = {
-    loading: true,
-    errorMessage: null
+    loading: true
   };
 
   componentDidMount() {
@@ -47,10 +48,6 @@ class InComlete extends React.Component {
           this.setState({ loading: false });
         }
       });
-  }
-
-  setErrorMessage(errorMessage) {
-    this.setState({ errorMessage });
   }
 
   redirectToNextPage = () => {
@@ -68,21 +65,32 @@ class InComlete extends React.Component {
       uiSsoNpm
     } = InCompleteForm.fields;
 
+    const defaultValues = {
+      [firstName]: "",
+      [lastName]: "",
+      [birthdate]: new Date(),
+      [latestCsuiClassYear]: new Date(),
+      [latestCsuiProgram]: "",
+      [uiSsoNpm]: ""
+    };
+
     const { user } = this.props;
     if (Boolean(user)) {
       const { profile } = user;
       return {
-        ...pick(user, [firstName, lastName, uiSsoNpm]),
-        ...pick(profile, [birthdate, latestCsuiClassYear, latestCsuiProgram])
+        ...defaultValues,
+        ...omitBy(pick(user, [firstName, lastName, uiSsoNpm]), isNull),
+        ...omitBy(
+          pick(profile, [birthdate, latestCsuiClassYear, latestCsuiProgram]),
+          isNull
+        )
       };
     }
 
-    return {};
+    return defaultValues;
   }
 
   handleInComlete = (values, actions) => {
-    this.setErrorMessage("");
-
     const {
       firstName,
       lastName,
@@ -120,28 +128,20 @@ class InComlete extends React.Component {
         ];
 
         const humanizedErr = humanizeError(err.response.data, fields);
-        if (typeof humanizedError === "string") {
-          this.setErrorMessage(humanizedErr);
-        } else {
+        if (typeof humanizedError !== "string") {
           actions.setErrors(humanizedErr);
         }
         actions.setSubmitting(false);
-        return err;
+        return err.response;
       })
       .then(resp => isStatusOK(resp) && this.redirectToNextPage());
   };
 
   render() {
     const { classes } = this.props;
-    const { errorMessage } = this.state;
 
     return (
       <div className={classes.container}>
-        {!!errorMessage && (
-          <Typography gutterBottom align="center" color="error">
-            {errorMessage}
-          </Typography>
-        )}
         <InCompleteForm
           enableReinitialize
           onSubmit={this.handleInComlete}
@@ -159,9 +159,23 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({
     load: userId => dispatch(loadUser(userId)),
-    verifyUser: (birthdate, latestCsuiClassYear, latestCsuiProgram, uiSsoNpm) =>
+    verifyUser: (
+      firstName,
+      lastName,
+      birthdate,
+      latestCsuiClassYear,
+      latestCsuiProgram,
+      uiSsoNpm
+    ) =>
       dispatch(
-        verifyUser(birthdate, latestCsuiClassYear, latestCsuiProgram, uiSsoNpm)
+        verifyUser(
+          firstName,
+          lastName,
+          birthdate,
+          latestCsuiClassYear,
+          latestCsuiProgram,
+          uiSsoNpm
+        )
       )
   });
 
