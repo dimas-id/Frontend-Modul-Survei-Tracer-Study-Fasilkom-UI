@@ -72,10 +72,16 @@ const FIELDS = keymirror({
 const VALIDATOR = {
   [FIELDS.firstName]: Validation.string().required("Wajib diisi"),
   [FIELDS.lastName]: Validation.string().required("Wajib diisi"),
-  [FIELDS.birthdate]: Validation.date().required("Wajib diisi"),
-  [FIELDS.latestCsuiClassYear]: Validation.date().required("Wajib diisi"),
-  [FIELDS.latestCsuiProgram]: Validation.string().required("Wajib diisi"),
-  [FIELDS.uiSsoNpm]: Validation.number().notRequired()
+  [FIELDS.birthdate]: Validation.date("Tanggal lahir tidak valid").required(
+    "Wajib diisi"
+  ),
+  [FIELDS.latestCsuiClassYear]: Validation.date(
+    "Angkatan tidak valid"
+  ).required("Wajib diisi"),
+  [FIELDS.latestCsuiProgram]: Validation.string(
+    "Program studi tidak valid"
+  ).required("Wajib diisi"),
+  [FIELDS.uiSsoNpm]: Validation.number("NPM tidak valid").notRequired()
 };
 
 function SelectPrograms(props) {
