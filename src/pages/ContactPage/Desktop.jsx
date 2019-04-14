@@ -1,46 +1,44 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
 
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarWithSearch } from "../../components/stables/Navbar";
-import { Container } from "../../components/Container";
+import {authorize, ROLES} from "../../components/hocs/auth";
+import {NavbarAuth, NavbarWithSearch} from "../../components/stables/Navbar";
+import {Container} from "../../components/Container";
 
 import ContactList from "./ContactList";
 import FilterMenu from "./FilterMenu";
-import { Guidelines } from "../../styles";
+import {Guidelines} from "../../styles";
 import Particle from "../../components/Particle";
 
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.mt32,
     ...Guidelines.layouts.pr40,
-    ...Guidelines.layouts.pl40
-  }
+    ...Guidelines.layouts.pl40,
+  },
 });
 
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
 
   state = {
     name: "",
-    categories: []
+    categories: [],
   };
 
-  handleSearch = ({ target }) => {
+  handleSearch = ({target}) => {
     this.setState({
-      name: target.value
+      name: target.value,
     });
   };
 
   handleToggle = value => () => {
-    const { categories } = this.state;
+    const {categories} = this.state;
     const currentIndex = categories.indexOf(value);
     const newCategories = [...categories];
     if (currentIndex === -1) {
@@ -49,24 +47,25 @@ class Screen extends React.Component {
       newCategories.splice(currentIndex, 1);
     }
     this.setState({
-      categories: newCategories
+      categories: newCategories,
     });
   };
 
   render() {
-    const { classes } = this.props;
-    const { categories, name } = this.state;
+    const {classes} = this.props;
+    const {categories, name} = this.state;
 
     return (
       <React.Fragment>
-        <NavbarAuth title="Daftar Kontak" />
+        <NavbarAuth title="Daftar Kontak"/>
         <NavbarWithSearch
           inputProps={{
+            placeholder: "Cari kontak alumni...",
             onChange: this.handleSearch,
-            value: name
+            value: name,
           }}
         />
-        <Particle name="cloud2" left={0} top={160} />
+        <Particle name="cloud2" left={0} top={160}/>
         <Container className={classes.container}>
           <Grid container spacing={24}>
             <Grid item xs={12} sm={3}>
@@ -77,7 +76,7 @@ class Screen extends React.Component {
               />
             </Grid>
             <Grid item xs={12} sm={9}>
-              <ContactList query={this.state} />
+              <ContactList query={this.state}/>
             </Grid>
           </Grid>
         </Container>
@@ -87,18 +86,10 @@ class Screen extends React.Component {
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
-
-  const mapDispatchToProps = dispatch => ({});
-
-  return withAuth(
-    withRouter(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(withStyles(styles)(Screen))
-    )
-  );
+  return authorize({
+    mustVerified: true,
+    roles: [ROLES.STAFF],
+  })(withStyles(styles)(Screen));
 }
 
 export default createContainer();
