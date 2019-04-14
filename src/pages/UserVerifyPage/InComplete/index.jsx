@@ -7,7 +7,6 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 
 import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 
 import paths from "../../paths";
 import { humanizeError, isStatusOK } from "../../../libs/response";

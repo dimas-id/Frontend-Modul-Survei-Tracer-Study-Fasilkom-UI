@@ -247,13 +247,13 @@ class NavbarAuth extends React.Component {
   }
 
   render() {
-    const { classes, title, position } = this.props;
+    const { classes, title, position, isLoggedIn } = this.props;
     return (
       <AppBar position={position} className={classes.appbar}>
         <Toolbar>
           <Button
             component={Link}
-            to="/"
+            to={isLoggedIn ? paths.USER_PROFILE : paths.LANDING}
             disableRipple
             className={classes.menuButton}
             aria-label="Menu"

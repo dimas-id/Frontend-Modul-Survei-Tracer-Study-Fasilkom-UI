@@ -139,7 +139,7 @@ function SelectPrograms(props) {
   );
 }
 
-const RegistrationForm = withStyles(styles)(
+const Form = withStyles(styles)(
   ({
     classes,
     isSubmitting,
@@ -286,10 +286,10 @@ const RegistrationForm = withStyles(styles)(
   }
 );
 
-const enhancedRegistrationForm = enhanceForm({
-  displayName: "RegistrationForm",
+const IncompleteForm = enhanceForm({
+  displayName: "IncompleteForm",
   validator: VALIDATOR
-})(RegistrationForm);
-enhancedRegistrationForm.fields = FIELDS;
+})(Form);
+IncompleteForm.fields = FIELDS;
 
-export default enhancedRegistrationForm;
+export default IncompleteForm;
