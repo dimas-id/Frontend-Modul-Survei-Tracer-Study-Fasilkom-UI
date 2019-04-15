@@ -55,7 +55,7 @@ const ROUTES = [
     },
     route: {
       path: "/timeline",
-      component: () => <Timeline />
+      component: Timeline
     }
   },
   {
@@ -66,7 +66,7 @@ const ROUTES = [
     },
     route: {
       path: "/users/:username",
-      component: () => <ProfileComponent/>
+      component: ProfileComponent
     }
   }
 ];

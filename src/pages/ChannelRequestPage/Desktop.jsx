@@ -2,23 +2,24 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+
 import { withStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBackForChannelRequest } from "../../components/stables/Navbar";
+
+import { authorize, ROLES } from "../../components/hocs/auth";
+import {
+  NavbarAuth,
+  NavbarBackForChannelRequest
+} from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 import Particle from "../../components/Particle";
 import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
-import paths from "../paths";
-import { makePathVariableUri } from "../../libs/navigation";
 import heliosV1 from "../../modules/api/helios/v1";
-import { getUser } from "../../modules/session/selectors";
+import { getUserId } from "../../modules/session/selectors";
+
+import paths from "../paths";
 
 const styles = theme => ({
   paper: {
@@ -70,7 +71,8 @@ class Screen extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const userId = this.props.user.id;
+    const { userId, history } = this.props;
+
     heliosV1.channel
       .createChannelRequest(
         userId,
@@ -78,48 +80,23 @@ class Screen extends React.Component {
         this.state.title,
         this.state.description
       )
-      .then(this.handleOpenSuccessMsg)
-      .catch(this.handleOpenErrorMsg);
-  };
-
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
+      .then(({ data }) => {
+        window.notifySnackbar(
+          `Pengajuan Channel '${data.title}' berhasil dibuat`,
+          { variant: "success" }
+        );
+        history.push(paths.CHANNEL_REQUEST_LIST);
+      })
+      .catch(() => {
+        window.notifySnackbar("Pengajuan Channel gagal dibuat", {
+          variant: "error"
+        });
+      });
   };
 
   render() {
-    const { user, classes } = this.props;
+    const { classes } = this.props;
     const { coverImgUrl, title, description } = this.state;
-    const action = (
-      <Button
-        component={Link}
-        to={makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
-          userId: user.id
-        })}
-        backgroundColor="white"
-        size="small"
-      >
-        Riwayat Pengajuan Channel
-      </Button>
-    );
 
     return (
       <React.Fragment>
@@ -141,43 +118,11 @@ class Screen extends React.Component {
               onChangeCoverImgUrl={this.handleCoverImgUrl.bind(this)}
               onChangeTitle={this.handleTitle.bind(this)}
               onChangeDescription={this.handleDescription.bind(this)}
-              onSubmit={this.handleSubmit.bind(this)}
+              onSubmit={this.handleSubmit}
               type="create"
             />
           </Paper>
         </Container>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Pengajuan Channel berhasil dibuat`}
-            action={action}
-          />
-        </Snackbar>
-
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={`Pengajuan Channel gagal dibuat`}
-          />
-        </Snackbar>
       </React.Fragment>
     );
   }
@@ -185,16 +130,14 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    userId: getUserId(state)
   });
 
-  const mapDispatchToProps = dispatch => ({});
-
-  return withAuth(
+  return authorize({ mustVerified: true, roles: [ROLES.PUBLIC] })(
     withRouter(
       connect(
         mapStateToProps,
-        mapDispatchToProps
+        null
       )(withStyles(styles)(Screen))
     )
   );

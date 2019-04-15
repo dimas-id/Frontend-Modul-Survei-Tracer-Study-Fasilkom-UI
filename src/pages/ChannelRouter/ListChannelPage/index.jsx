@@ -1,21 +1,21 @@
 import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
+import {connect} from "react-redux";
+import {withRouter} from "react-router";
+import {Link} from "react-router-dom";
 
 import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-import { Guidelines } from "../../../styles";
+import {Guidelines} from "../../../styles";
 
 import heliosV1 from "../../../modules/api/helios/v1";
 
-import { Container } from "../../../components/Container";
-import { withAuth } from "../../../components/hocs/auth";
-import { LoadingFill } from "../../../components/Loading";
+import {Container} from "../../../components/Container";
+import {authorize, ROLES} from "../../../components/hocs/auth";
+import {LoadingFill} from "../../../components/Loading";
 
-import { makePathVariableUri } from "../../../libs/navigation";
+import {makePathVariableUri} from "../../../libs/navigation";
 import paths from "../../../pages/paths";
 
 import ChannelCard from "./ChannelCard";
@@ -27,43 +27,43 @@ const styles = theme => ({
     ...Guidelines.layouts.pl24,
     ...Guidelines.layouts.pt24,
     ...Guidelines.layouts.pb24,
-    ...Guidelines.layouts.borderBox
+    ...Guidelines.layouts.borderBox,
   },
   chantWrapper: {
     maxHeight: 64,
     lineHeight: 64,
     overflow: "hidden",
-    textOverflow: "ellipsis"
+    textOverflow: "ellipsis",
   },
   actions: {
     display: "flex",
     ...Guidelines.layouts.flexDirCol,
-    alignItems: "flex-start"
-  }
+    alignItems: "flex-start",
+  },
 });
 
 class Screen extends React.Component {
   state = {
     listChannel: null,
-    isLoading: true
+    isLoading: true,
   };
 
   renderListChannel() {
-    const { listChannel } = this.state;
+    const {listChannel} = this.state;
 
     return (
       <React.Fragment>
         {listChannel.map(channel => (
           <Grid item xs={4}>
-          <Link to={makePathVariableUri(paths.CHANNEL_CHANT, {
-                      channelId: channel.id
-                    })}>
-            <ChannelCard
-              key={channel.id}
-              title={channel.title}
-              coverImgUrl={channel.coverImgUrl}
-            />
-          </Link>
+            <Link to={makePathVariableUri(paths.CHANNEL_CHANT, {
+              channelId: channel.id,
+            })}>
+              <ChannelCard
+                key={channel.id}
+                title={channel.title}
+                coverImgUrl={channel.coverImgUrl}
+              />
+            </Link>
           </Grid>
         ))}
       </React.Fragment>
@@ -74,16 +74,16 @@ class Screen extends React.Component {
     heliosV1.channel
       .getListChannel()
       .then(result => {
-        this.setState({ listChannel: result.data.results });
+        this.setState({listChannel: result.data.results});
       })
       .finally(() => {
-        this.setState({ isLoading: false });
+        this.setState({isLoading: false});
       });
   }
 
   render() {
-    const { classes } = this.props;
-    const { isLoading } = this.state;
+    const {classes} = this.props;
+    const {isLoading} = this.state;
 
     return (
       <Container className={classes.root}>
@@ -91,7 +91,7 @@ class Screen extends React.Component {
           Daftar Channel
         </Typography>
         <Grid container spacing={12}>
-          {isLoading ? <LoadingFill /> : this.renderListChannel()}
+          {isLoading ? <LoadingFill/> : this.renderListChannel()}
         </Grid>
       </Container>
     );
@@ -103,13 +103,13 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
+  return authorize({mustVerified: true, roles: [ROLES.PUBLIC]})(
     withRouter(
       connect(
         mapStateToProps,
-        mapDispatchToProps
-      )(withStyles(styles)(Screen))
-    )
+        mapDispatchToProps,
+      )(withStyles(styles)(Screen)),
+    ),
   );
 }
 
