@@ -11,12 +11,13 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
 import { authorize } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBackForChannelRequest } from "../../components/stables/Navbar";
+import {
+  NavbarAuth,
+  NavbarBackForChannelRequest
+} from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
@@ -72,6 +73,10 @@ const STATUS = {
 };
 
 class Screen extends React.Component {
+  static propTypes = {
+    classes: PropTypes.shape().isRequired
+  };
+
   state = {
     channelRequest: null,
     loading: true
@@ -82,23 +87,19 @@ class Screen extends React.Component {
     heliosV1.channel
       .getChannelRequestDetail(this.props.user.id, channelId)
       .then(result => {
-        this.setState({ channelRequest: result.data });
-        console.log(result.data);
+        this.setState({ channelRequest: result.data, loading: false });
       })
       .catch(error => {
         if (error.response.status === 404) {
           this.props.history.replace(paths.ERROR_404);
         }
-      })
-      .finally(() => {
-        this.setState({ loading: false });
       });
   }
 
   canBeDeletedAndUpdated = () => {
     const { verificationStatus } = this.state.channelRequest;
     return verificationStatus === "RJ";
-  }
+  };
 
   handleClickDelete = (userId, channelId, e) => {
     if (!this.canBeDeletedAndUpdated()) {
@@ -115,38 +116,18 @@ class Screen extends React.Component {
           .then(() => {
             this.setState({ loading: true });
           })
-          .then(this.handleOpenSuccessMsg)
-          .catch(this.handleOpenErrorMsg);
+          .then(() => {
+            window.notifySnackbar("Request Channel berhasil dihapus", {
+              variant: "success"
+            });
+          })
+          .catch(() => {
+            window.notifySnackbar("Request Channel tidak dapat dihapus", {
+              variant: "warning"
+            });
+          });
       }
     );
-  };
-
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
-  };
-
-  static propTypes = {
-    classes: PropTypes.shape().isRequired
   };
 
   renderContent() {
@@ -160,18 +141,7 @@ class Screen extends React.Component {
       notes
     } = this.state.channelRequest;
     const isEnabled = this.canBeDeletedAndUpdated();
-    const action = (
-      <Button
-        component={Link}
-        to={makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
-          userId: user.id
-        })}
-        color="secondary"
-        size="small"
-      >
-        Riwayat Pengajuan Channel
-      </Button>
-    );
+
     return (
       <React.Fragment>
         <Grid container spacing={24} className={classes.gridContainer}>
@@ -263,37 +233,6 @@ class Screen extends React.Component {
             </Button>
           </Grid>
         </Grid>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Pengajuan Channel berhasil dihapus lihat perubahan pada {Riwayat Pengajuan Channel}`}
-            action={action}
-          />
-        </Snackbar>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={`Pengajuan Channel gagal dihapus`}
-          />
-        </Snackbar>
       </React.Fragment>
     );
   }
