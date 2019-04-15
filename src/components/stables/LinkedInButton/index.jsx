@@ -25,7 +25,7 @@ export default withRouter(
 
     const tempConfig = {};
     if (isDevelopment) {
-      tempConfig.linkedinUrl = `${env.ATLAS}/api/v1/external-auths/linkedin`;
+      tempConfig.href = `${env.ATLAS}/api/v1/external-auths/linkedin`;
     } else {
       tempConfig.onClick = () => {
         window.notifySnackbar(
