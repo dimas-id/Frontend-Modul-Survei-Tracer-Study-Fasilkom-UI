@@ -6,6 +6,14 @@ import ContentLoader, {
   List
 } from "react-content-loader";
 
+export function LineLoader(props) {
+  return (
+    <ContentLoader {...props}>
+      <rect width={props.width} height={props.height} />
+    </ContentLoader>
+  );
+}
+
 export function LinesLoader(props) {
   return (
     <ContentLoader {...props}>

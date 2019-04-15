@@ -8,7 +8,7 @@ import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import Snackbar from "@material-ui/core/Snackbar";
 
-import { ListLoader } from "../../Loading";
+import { LineLoader } from "../../Loading";
 import atlasV1 from "../../../modules/api/atlas/v1";
 import { getUserId } from "../../../modules/session/selectors";
 import { Guidelines } from "../../../styles";
@@ -16,12 +16,14 @@ import { Guidelines } from "../../../styles";
 const styles = makeStyles(theme => ({
   head: {
     ...Guidelines.layouts.w100,
+    ...Guidelines.layouts.mb16,
+    ...Guidelines.layouts.mt16,
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   preference: {
-    ...Guidelines.layouts.mb32,
     ...Guidelines.fonts.normal,
+    ...Guidelines.layouts.flexMiddle,
     fontSize: 20
   },
   switch: {
@@ -33,20 +35,6 @@ const styles = makeStyles(theme => ({
   }
 }));
 
-function Head(props) {
-  const classes = styles();
-  return (
-    <div className={classes.head}>
-      <Typography className={classes.preference} variant="h5" component="h3">
-        {props.children}
-      </Typography>
-      {props.onChange && (
-        <Switch className={classes.switch} {...props} color="primary" />
-      )}
-    </div>
-  );
-}
-
 const FIELDS = keymirror({
   couldContactMe: null,
   shouldSendEvent: null,
@@ -55,6 +43,32 @@ const FIELDS = keymirror({
   shouldSendNewsletter: null,
   shouldSendDonationInfo: null
 });
+
+function Head(props) {
+  const classes = styles();
+  return (
+    <div className={classes.head}>
+      {props.loading ? (
+        <div style={{ maxHeight: 52 }}>
+          <LineLoader width="100%" height="52" />
+        </div>
+      ) : (
+        <React.Fragment>
+          <Typography
+            className={classes.preference}
+            variant="body1"
+            component="p"
+          >
+            {props.children}
+          </Typography>
+          {props.onChange && (
+            <Switch className={classes.switch} {...props} color="primary" />
+          )}
+        </React.Fragment>
+      )}
+    </div>
+  );
+}
 
 function Preference({ userId }) {
   const classes = styles();
@@ -84,7 +98,7 @@ function Preference({ userId }) {
 
   function handleChange({ target }) {
     // set first, think later
-    setPreference({...preference, [target.name]: target.checked});
+    setPreference({ ...preference, [target.name]: target.checked });
     atlasV1.session
       .patchPreference(userId, {
         [target.name]: target.checked
@@ -101,7 +115,7 @@ function Preference({ userId }) {
   return (
     <React.Fragment>
       {loading ? (
-        <ListLoader />
+        Array.apply(null, Array(5)).map(index => <Head loading key={index} />)
       ) : (
         <React.Fragment>
           <Head
