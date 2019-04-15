@@ -8,6 +8,7 @@ import { isLoggedIn } from "../../../modules/session/selectors";
 import env from "../../../config";
 import paths from "../../../pages/paths";
 import LinkedInLogo from "../../../assets/img/LinkedIn.png";
+import { isDevelopment } from "../../../config";
 
 const mapStateToProps = state => ({
   loggedIn: isLoggedIn(state)
@@ -21,9 +22,21 @@ export default withRouter(
     if (isLoggedIn) {
       history.replace(paths.HOME);
     }
-    const linkedinUrl = `${env.ATLAS}/api/v1/external-auths/linkedin`;
+
+    const tempConfig = {};
+    if (isDevelopment) {
+      tempConfig.linkedinUrl = `${env.ATLAS}/api/v1/external-auths/linkedin`;
+    } else {
+      tempConfig.onClick = () => {
+        window.notifySnackbar(
+          "Sorry for inconvenience, LinkedIn only works on local for now :(",
+          { variant: "info" }
+        );
+      };
+    }
+
     return (
-      <Button variant="outlined" {...ButtonProps} href={linkedinUrl}>
+      <Button variant="outlined" {...ButtonProps} {...tempConfig}>
         <img
           src={LinkedInLogo}
           alt="LinkedIn"
