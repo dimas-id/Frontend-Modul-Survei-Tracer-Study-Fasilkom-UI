@@ -161,13 +161,15 @@ class Screen extends React.Component {
     if (deleted) {
       return null;
     }
-
-    const { name } = this.state.userDetail;
-    const { profilePicUrl } = this.state.userDetail.profile;
+    
+    // const { username } = this.props.author.username;
+    // const { lastName } = this.props.author.lastName;
+    // const { frontName } = this.props.author.firstName;
+    // const { profilePicUrl } = this.state.userDetail.profile;
     return (
       <CardHeader
         avatar={
-          <Avatar alt={name} src={profilePicUrl} className={classes.avatar} />
+          <Avatar alt={this.props.author.username} className={classes.avatar} />
         }
         action={
           <div>
@@ -235,7 +237,7 @@ class Screen extends React.Component {
             </Dialog>
           </div>
         }
-        title={name}
+        title={this.props.author.username}
         subheader={getDateFormatted(this.props.dateCreated, "DD MMMM YYYY")}
       />
     );
