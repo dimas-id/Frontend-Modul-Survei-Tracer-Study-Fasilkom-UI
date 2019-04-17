@@ -13,6 +13,9 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2
+  },
+  listItem: {
+    whiteSpace: 'nowrap'
   }
 });
 
@@ -27,7 +30,7 @@ function EmailTemplateVariableMenu({ classes, onPick }) {
           "{{ latest_csui_class_year }}",
           "{{ email }}"
         ].map(value => (
-          <ListItem key={value} button>
+          <ListItem key={value} button className={classes.listItem}>
             <ListItemText primary={value} onClick={() => onPick(value)} />
           </ListItem>
         ))}
