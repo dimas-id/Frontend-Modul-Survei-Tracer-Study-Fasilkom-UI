@@ -22,8 +22,6 @@ const styles = theme => ({
   container: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.mt32,
-    ...Guidelines.layouts.mr64,
-    ...Guidelines.layouts.ml64
   }
 });
 
