@@ -5,7 +5,7 @@ import {withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import {authorize, ROLES} from "../../components/hocs/auth";
-import {NavbarAuth, NavbarWithSearch} from "../../components/stables/Navbar";
+import {NavbarAuth, NavbarBackWithSearch} from "../../components/stables/Navbar";
 import {Container} from "../../components/Container";
 
 import ContactList from "./ContactList";
@@ -58,7 +58,7 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth title="Daftar Kontak"/>
-        <NavbarWithSearch
+        <NavbarBackWithSearch
           inputProps={{
             placeholder: "Cari kontak alumni...",
             onChange: this.handleSearch,
