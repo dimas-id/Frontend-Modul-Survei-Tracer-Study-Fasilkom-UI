@@ -13,6 +13,8 @@ import { Guidelines } from "../../../styles/index.js";
 import { NavbarModal } from "../../../components/stables/Navbar/index.js";
 import { LoadingFill } from "../../../components/Loading/";
 import WrappedVirtualizedTable from "../../../components/stables/WrappedVirtualizedTable";
+import emptyContactImg from "../../../assets/states/EmptyContact.svg";
+import { Container } from "../../../components/Container";
 
 const styles = theme => ({
   table: {
@@ -55,6 +57,24 @@ const styles = theme => ({
     borderRadius: "50%",
     width: "50px",
     height: "50px"
+  },
+  container: {
+    ...Guidelines.layouts.flexMiddle,
+    ...Guidelines.layouts.flexDirCol,
+    ...Guidelines.layouts.w100,
+    ...Guidelines.layouts.h100,
+  },
+  emptyImg: {
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "35%"
+    },
+    [theme.breakpoints.up("sm")]: {
+      maxWidth: "50%"
+    }
+  },
+  desc: {
+    fontSize: 20,
+    maxWidth: 500
   }
 });
 
@@ -121,40 +141,52 @@ class ContactList extends React.Component {
           )}
           {!loading && (
             <React.Fragment>
-              {contactList.length > 0 ?
-              (<WrappedVirtualizedTable
-                rowCount={contactList.length}
-                rowGetter={({ index }) => contactList[index]}
-                onRowClick={this.modalOpen}
-                loading
-                columns={[
-                  {
-                    width: 180,
-                    flexGrow: 1.0,
-                    label: "Nama",
-                    dataKey: "name"
-                  },
-                  {
-                    width: 120,
-                    label: "Angkatan",
-                    dataKey: "latestCsuiClassYear",
-                    numeric: true
-                  },
-                  {
-                    width: 190,
-                    label: "Email",
-                    dataKey: "email"
-                  },
-                  {
-                    width: 160,
-                    label: "Nomor Telepon",
-                    dataKey: "phoneNumber"
-                  }
-                ]}
-              />) : (
-                <React.Fragment>
-                  <p>awdwd</p>
-                </React.Fragment>
+              {contactList.length > 0 ? (
+                <WrappedVirtualizedTable
+                  rowCount={contactList.length}
+                  rowGetter={({ index }) => contactList[index]}
+                  onRowClick={this.modalOpen}
+                  loading
+                  columns={[
+                    {
+                      width: 180,
+                      flexGrow: 1.0,
+                      label: "Nama",
+                      dataKey: "name"
+                    },
+                    {
+                      width: 120,
+                      label: "Angkatan",
+                      dataKey: "latestCsuiClassYear",
+                      numeric: true
+                    },
+                    {
+                      width: 190,
+                      label: "Email",
+                      dataKey: "email"
+                    },
+                    {
+                      width: 160,
+                      label: "Nomor Telepon",
+                      dataKey: "phoneNumber"
+                    }
+                  ]}
+                />
+              ) : (
+                <Container className={classes.container}>
+                  <img
+                    src={emptyContactImg}
+                    alt="Empty"
+                    className={classes.emptyImg}
+                  />
+                  <Typography
+                    component="p"
+                    align="center"
+                    className={classes.desc}
+                  >
+                    Maaf kontak tidak ditemukan
+                  </Typography>
+                </Container>
               )}
             </React.Fragment>
           )}
@@ -228,7 +260,7 @@ class ContactList extends React.Component {
                     <b>Kota, Negara</b>
                   </Grid>
                   <Grid item xs={7}>
-                    {(currentContact.residenceCity || "-" ) +
+                    {(currentContact.residenceCity || "-") +
                       ", " +
                       (currentContact.residenceCountry || "-")}
                   </Grid>
