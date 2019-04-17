@@ -75,7 +75,7 @@ class EmailTemplateList extends React.Component {
           .deleteEmailTemplate(idEmailTemplate)
           .then(this.handleOpenSuccessMsg)
           .then(() => {
-            this.setState({ loading: true })
+            this.setState({ loading: true });
           })
           .catch(this.handleOpenErrorMsg)
           .finally(() => {
@@ -141,8 +141,8 @@ class EmailTemplateList extends React.Component {
                 >
                   <ListItemText
                     primary={template.title}
-                    secondary={`Dibuat pada ${getDateFormatted(
-                      template.dateCreated
+                    secondary={`Dibuat pada tanggal ${getDateFormatted(
+                      template.dateCreated, "DD MMMM YYYY"
                     )}`}
                   />
                   <ListItemSecondaryAction>
