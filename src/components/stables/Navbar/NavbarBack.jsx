@@ -39,7 +39,7 @@ function NavbarBack({ classes, history, title, Content }) {
             {title}
           </Typography>
         )}
-        {Content && <Content />}
+        {Content}
       </Toolbar>
     </AppBar>
   );
