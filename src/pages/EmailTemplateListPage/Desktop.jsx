@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withAuth } from "../../components/hocs/auth";
 import {
   NavbarAuth,
-  NavbarEmailTemplate
+  NavbarBackEmailTemplate
 } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 
@@ -33,7 +33,7 @@ class Screen extends React.PureComponent {
     return (
       <React.Fragment>
         <NavbarAuth title="Daftar Templat Email" />
-        <NavbarEmailTemplate />
+        <NavbarBackEmailTemplate />
         <Container className={classes.container}>
           <EmailTemplateList />
         </Container>
