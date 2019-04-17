@@ -40,7 +40,7 @@ class NavbarBackChannel extends React.Component {
 
     return (
       <NavbarBack
-        Content={() => (
+        Content={(
           <Grid container spacing={24} >
             <Grid item xs={8}>
             </Grid>
