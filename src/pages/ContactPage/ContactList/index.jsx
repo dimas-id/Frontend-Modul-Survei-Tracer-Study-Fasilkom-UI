@@ -121,7 +121,8 @@ class ContactList extends React.Component {
           )}
           {!loading && (
             <React.Fragment>
-              <WrappedVirtualizedTable
+              {contactList.length > 0 ?
+              (<WrappedVirtualizedTable
                 rowCount={contactList.length}
                 rowGetter={({ index }) => contactList[index]}
                 onRowClick={this.modalOpen}
@@ -150,7 +151,11 @@ class ContactList extends React.Component {
                     dataKey: "phoneNumber"
                   }
                 ]}
-              />
+              />) : (
+                <React.Fragment>
+                  <p>awdwd</p>
+                </React.Fragment>
+              )}
             </React.Fragment>
           )}
         </Paper>

@@ -22,7 +22,7 @@ class NavbarBackWithChannelRequest extends React.Component {
 
     return (
       <NavbarBack
-        Content={() => (
+        Content={(
           <Grid container spacing={24} justify="flex-end" alignItems="center">
             <Grid item>
               <Button
