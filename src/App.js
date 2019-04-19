@@ -16,7 +16,7 @@ import { SplashScreen } from "./components/Loading";
 
 import Pages from "./pages";
 import { theme } from "./styles";
-import "./config";
+import { isDevelopment } from "./config";
 
 createGlobalDialog(store);
 createGlobalSnackbar(store);
@@ -26,13 +26,15 @@ function setAuthTokenAfterPersist() {
   setAuthToken(token);
 }
 
-class App extends React.PureCompnent {
+class App extends React.PureComponent {
   componentDidCatch(error, errorInfo) {
     // default scope
-    Sentry.withScope(scope => {
-      scope.setExtras(errorInfo);
-      const eventId = Sentry.captureException(error);
-    });
+    if (!isDevelopment) {
+      Sentry.withScope(scope => {
+        scope.setExtras(errorInfo);
+        Sentry.captureException(error);
+      });
+    }
   }
 
   render() {
