@@ -1,6 +1,6 @@
 import React from "react";
 import get from "lodash/get";
-
+import * as Sentry from "@sentry/browser";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
 import { PersistGate } from "redux-persist/integration/react";
@@ -26,26 +26,36 @@ function setAuthTokenAfterPersist() {
   setAuthToken(token);
 }
 
-function App() {
-  return (
-    <Provider store={store}>
-      <PersistGate
-        loading={<SplashScreen />}
-        persistor={persistor}
-        onBeforeLift={setAuthTokenAfterPersist}
-      >
-        <MuiThemeProvider theme={theme}>
-          <SnackbarProvider>
-            <ConnectedRouter history={history}>
-              <Pages />
-            </ConnectedRouter>
-            <AlertDialog />
-            <SnackbarNotifier />
-          </SnackbarProvider>
-        </MuiThemeProvider>
-      </PersistGate>
-    </Provider>
-  );
+class App extends React.PureCompnent {
+  componentDidCatch(error, errorInfo) {
+    // default scope
+    Sentry.withScope(scope => {
+      scope.setExtras(errorInfo);
+      const eventId = Sentry.captureException(error);
+    });
+  }
+
+  render() {
+    return (
+      <Provider store={store}>
+        <PersistGate
+          loading={<SplashScreen />}
+          persistor={persistor}
+          onBeforeLift={setAuthTokenAfterPersist}
+        >
+          <MuiThemeProvider theme={theme}>
+            <SnackbarProvider>
+              <ConnectedRouter history={history}>
+                <Pages />
+              </ConnectedRouter>
+              <AlertDialog />
+              <SnackbarNotifier />
+            </SnackbarProvider>
+          </MuiThemeProvider>
+        </PersistGate>
+      </Provider>
+    );
+  }
 }
 
 export default App;
