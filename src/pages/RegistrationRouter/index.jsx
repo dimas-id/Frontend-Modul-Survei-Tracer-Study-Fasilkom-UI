@@ -50,8 +50,9 @@ function getInitialStep(currentPath) {
 }
 
 export default withRouter(function RegistrationRouter({ history, location }) {
+  const tempStep = getInitialStep(location.pathname);
   const [currentStep, setCurrentStep] = React.useState(
-    getInitialStep(location.pathname)
+    tempStep === -1 ? 1 : tempStep
   );
 
   React.useEffect(() => {
@@ -59,7 +60,11 @@ export default withRouter(function RegistrationRouter({ history, location }) {
     if (currentStep === MAX_STEP) {
       // finally, redirect to user dashboard
       history.push(paths.HOME);
-    } else if (targetPath !== location.pathname) {
+    } else if (
+      (location.pathname.includes(paths.WORK_POSITION) ||
+        location.pathname.includes(paths.PREFERENCE)) &&
+      targetPath !== location.pathname
+    ) {
       // target path after next/back
       history.push(targetPath);
     }
@@ -77,16 +82,18 @@ export default withRouter(function RegistrationRouter({ history, location }) {
     <React.Fragment>
       <Particle name="cloud2" top={120} left={0} />
       <RouterWrapper paths={ROUTES} />
-      {currentStep > 0 && (
-        <StepProgress
-          start={1}
-          steps={MAX_STEP}
-          activeStep={currentStep}
-          onBack={handleBack}
-          onNext={handleNext}
-          position="bottom"
-        />
-      )}
+      {currentStep > 0 &&
+        (location.pathname.includes(paths.WORK_POSITION) ||
+          location.pathname.includes(paths.PREFERENCE)) && (
+          <StepProgress
+            start={1}
+            steps={MAX_STEP}
+            activeStep={currentStep}
+            onBack={handleBack}
+            onNext={handleNext}
+            position="bottom"
+          />
+        )}
     </React.Fragment>
   );
 });
