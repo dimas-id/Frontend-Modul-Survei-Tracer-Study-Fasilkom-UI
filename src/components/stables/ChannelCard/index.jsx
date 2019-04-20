@@ -37,53 +37,38 @@ const styles = theme => ({
   }
 });
 
-/**
- * @TODO SIMPLIFY THIS
- */
 class Screen extends React.Component {
-  state = {
-    subscribed: false,
-    variant: "outlined",
-    label: "subscribe",
-    backgroundColor: "#FFFFFF"
-  };
-
-  componentDidMount() {
-    /**
-     * @TODO bisa constructor langsung saja
-     */
-    this.setState({
+  constructor(props) {
+    super(props);
+    this.state = {
       subscribed: this.props.hasSubscribed,
-      variant: this.props.hasSubscribed ? "contained" : "outlined",
-      label: this.props.hasSubscribed ? "Berlangganan" : "Langganan",
-      backgroundColor: this.props.hasSubscribed ? "#00C7E5" : "#FFFFFF"
-    });
+      hover: false
+    };
   }
 
   handleSubscribe = () => {
-    heliosV1.channel
-      .subscribeChannel(this.props.id)
-      .then(
-        this.setState({
-          subscribed: true,
-          variant: "contained",
-          label: "Sudah Berlangganan",
-          backgroundColor: "#00C7E5"
-        })
-      );
+    heliosV1.channel.subscribeChannel(this.props.id).then(
+      this.setState({
+        subscribed: true,
+        hover: false
+      })
+    );
   };
 
   handleUnsubscribe = () => {
-    heliosV1.channel
-      .unsubscribeChannel(this.props.id)
-      .then(
-        this.setState({
-          subscribed: false,
-          variant: "outlined",
-          label: "Berlangganan",
-          backgroundColor: "#FFFFFF"
-        })
-      );
+    heliosV1.channel.unsubscribeChannel(this.props.id).then(
+      this.setState({
+        subscribed: false
+      })
+    );
+  };
+
+  hoverOn = () => {
+    this.setState({ hover: true });
+  };
+
+  hoverOff = () => {
+    this.setState({ hover: false });
   };
 
   render() {
@@ -93,7 +78,7 @@ class Screen extends React.Component {
         <CardMedia
           className={classes.media}
           image={this.props.coverImgUrl}
-          title="Contemplative Reptile"
+          title={this.props.title}
         />
         <CardContent>
           <Typography
@@ -110,16 +95,27 @@ class Screen extends React.Component {
         </CardContent>
         <CardActions>
           <Button
-            variant={this.state.variant}
-            className={classes.button}
-            backgroundColor="{this.state.backgroundColor}"
+            style={{
+              backgroundColor: this.state.subscribed
+                ? this.state.hover
+                  ? "#ff4935"
+                  : "#00C7E5"
+                : "#FFFFFF",
+              border: this.state.subscribed ? "" : "1px solid black"
+            }}
             onClick={
               this.state.subscribed
                 ? this.handleUnsubscribe
                 : this.handleSubscribe
             }
+            onMouseEnter={this.hoverOn}
+            onMouseLeave={this.hoverOff}
           >
-            {this.state.label}
+            {this.state.subscribed
+              ? this.state.hover
+                ? "Batalkan Langganan"
+                : "Sudah Berlangganan"
+              : "Berlangganan"}
           </Button>
         </CardActions>
       </Card>
