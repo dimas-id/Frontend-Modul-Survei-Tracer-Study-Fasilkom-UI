@@ -109,14 +109,21 @@ class InComlete extends React.Component {
       );
     }
 
+    const params = [
+      currentValues[firstName],
+      currentValues[lastName],
+      currentValues[birthdate],
+      currentValues[latestCsuiClassYear],
+      currentValues[latestCsuiProgram],
+    ];
+
+    if (currentValues[uiSsoNpm]) {
+      params.push(currentValues[uiSsoNpm])
+    }
+
     this.props
       .verifyUser(
-        currentValues[firstName],
-        currentValues[lastName],
-        currentValues[birthdate],
-        currentValues[latestCsuiClassYear],
-        currentValues[latestCsuiProgram],
-        currentValues[uiSsoNpm] || null,
+        ...params,
       )
       .catch(err => {
         const fields = [
