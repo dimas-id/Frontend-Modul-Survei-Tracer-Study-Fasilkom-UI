@@ -89,7 +89,7 @@ class InComlete extends React.Component {
     return defaultValues;
   }
 
-  handleInComlete = (values, actions) => {
+  handleInComplete = (values, actions) => {
     const {
       firstName,
       lastName,
@@ -116,7 +116,7 @@ class InComlete extends React.Component {
         currentValues[birthdate],
         currentValues[latestCsuiClassYear],
         currentValues[latestCsuiProgram],
-        currentValues[uiSsoNpm]
+        currentValues[uiSsoNpm] || null
       )
       .catch(err => {
         const fields = [
@@ -143,7 +143,7 @@ class InComlete extends React.Component {
       <div className={classes.container}>
         <InCompleteForm
           enableReinitialize
-          onSubmit={this.handleInComlete}
+          onSubmit={this.handleInComplete}
           initialValues={this.getInitialValue()}
         />
       </div>
