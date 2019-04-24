@@ -1,20 +1,19 @@
-import React from "react";
-import PropTypes from "prop-types";
-import pick from "lodash/pick";
-import omitBy from "lodash/omitBy";
+import {withStyles} from "@material-ui/core/styles";
 import isNull from "lodash/isNull";
-import { withRouter } from "react-router";
-import { connect } from "react-redux";
-
-import { withStyles } from "@material-ui/core/styles";
+import omitBy from "lodash/omitBy";
+import pick from "lodash/pick";
+import PropTypes from "prop-types";
+import React from "react";
+import {connect} from "react-redux";
+import {withRouter} from "react-router";
+import {getDateFormatted} from "../../../libs/datetime";
+import {humanizeError, isStatusOK} from "../../../libs/response";
+import {getUser} from "../../../modules/session/selectors";
+import {loadUser, verifyUser} from "../../../modules/session/thunks";
+import {Guidelines} from "../../../styles";
 
 import paths from "../../paths";
-import { humanizeError, isStatusOK } from "../../../libs/response";
-import { getDateFormatted } from "../../../libs/datetime";
-import { verifyUser, loadUser } from "../../../modules/session/thunks";
-import { getUser } from "../../../modules/session/selectors";
 import InCompleteForm from "./InCompleteForm";
-import { Guidelines } from "../../../styles";
 
 const styles = theme => ({
   container: {
@@ -22,35 +21,35 @@ const styles = theme => ({
     ...Guidelines.layouts.flexMiddle,
     ...Guidelines.layouts.w100,
     ...Guidelines.layouts.borderBox,
-    ...Guidelines.layouts.pt64
-  }
+    ...Guidelines.layouts.pt64,
+  },
 });
 
 class InComlete extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
     history: PropTypes.shape().isRequired,
-    location: PropTypes.shape().isRequired
+    location: PropTypes.shape().isRequired,
   };
 
   state = {
-    loading: true
+    loading: true,
   };
 
   componentDidMount() {
-    const { user, history, load } = this.props;
+    const {user, history, load} = this.props;
     Boolean(user) &&
-      load(user.id).then(() => {
-        if (this.props.user.isVerified) {
-          history.replace(paths.HOME);
-        } else {
-          this.setState({ loading: false });
-        }
-      });
+    load(user.id).then(() => {
+      if (this.props.user.isVerified) {
+        history.replace(paths.HOME);
+      } else {
+        this.setState({loading: false});
+      }
+    });
   }
 
   redirectToNextPage = () => {
-    const { history } = this.props;
+    const {history} = this.props;
     history.replace(paths.REGISTER_WORK_POSITION);
   };
 
@@ -61,7 +60,7 @@ class InComlete extends React.Component {
       birthdate,
       latestCsuiClassYear,
       latestCsuiProgram,
-      uiSsoNpm
+      uiSsoNpm,
     } = InCompleteForm.fields;
 
     const defaultValues = {
@@ -70,19 +69,20 @@ class InComlete extends React.Component {
       [birthdate]: new Date(),
       [latestCsuiClassYear]: new Date(),
       [latestCsuiProgram]: "",
-      [uiSsoNpm]: ""
+      [uiSsoNpm]: "",
     };
 
-    const { user } = this.props;
+    const {user} = this.props;
     if (Boolean(user)) {
-      const { profile } = user;
+      const {profile} = user;
+
+      const fromProfile = omitBy(pick(profile, [birthdate, latestCsuiProgram]), isNull);
+      fromProfile[latestCsuiClassYear] = new Date(profile[latestCsuiClassYear] || (new Date()).getFullYear(), 1, 1);
+
       return {
         ...defaultValues,
         ...omitBy(pick(user, [firstName, lastName, uiSsoNpm]), isNull),
-        ...omitBy(
-          pick(profile, [birthdate, latestCsuiClassYear, latestCsuiProgram]),
-          isNull
-        )
+        ...fromProfile,
       };
     }
 
@@ -96,16 +96,16 @@ class InComlete extends React.Component {
       birthdate,
       latestCsuiClassYear,
       latestCsuiProgram,
-      uiSsoNpm
+      uiSsoNpm,
     } = InCompleteForm.fields;
 
-    const currentValues = { ...values };
+    const currentValues = {...values};
 
     currentValues[birthdate] = getDateFormatted(currentValues[birthdate]);
     if (Boolean(currentValues[latestCsuiClassYear])) {
       currentValues[latestCsuiClassYear] = getDateFormatted(
         currentValues[latestCsuiClassYear],
-        "YYYY"
+        "YYYY",
       );
     }
 
@@ -116,14 +116,14 @@ class InComlete extends React.Component {
         currentValues[birthdate],
         currentValues[latestCsuiClassYear],
         currentValues[latestCsuiProgram],
-        currentValues[uiSsoNpm] || null
+        currentValues[uiSsoNpm] || null,
       )
       .catch(err => {
         const fields = [
           birthdate,
           latestCsuiClassYear,
           latestCsuiProgram,
-          uiSsoNpm
+          uiSsoNpm,
         ];
 
         const humanizedErr = humanizeError(err.response.data, fields);
@@ -137,7 +137,7 @@ class InComlete extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const {classes} = this.props;
 
     return (
       <div className={classes.container}>
@@ -153,7 +153,7 @@ class InComlete extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
   });
 
   const mapDispatchToProps = dispatch => ({
@@ -164,7 +164,7 @@ function createContainer() {
       birthdate,
       latestCsuiClassYear,
       latestCsuiProgram,
-      uiSsoNpm
+      uiSsoNpm,
     ) =>
       dispatch(
         verifyUser(
@@ -173,16 +173,16 @@ function createContainer() {
           birthdate,
           latestCsuiClassYear,
           latestCsuiProgram,
-          uiSsoNpm
-        )
-      )
+          uiSsoNpm,
+        ),
+      ),
   });
 
   return withRouter(
     connect(
       mapStateToProps,
-      mapDispatchToProps
-    )(withStyles(styles)(InComlete))
+      mapDispatchToProps,
+    )(withStyles(styles)(InComlete)),
   );
 }
 
