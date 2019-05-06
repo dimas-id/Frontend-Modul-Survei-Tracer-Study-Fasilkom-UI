@@ -1,11 +1,12 @@
 import http from "../../../../libs/http";
-import { API_V1_URL } from "../config";
-import { makeQueryUri } from "../../../../libs/navigation";
+import {API_V1_URL} from "../config";
+import {makeQueryUri} from "../../../../libs/navigation";
 
 export default Object.freeze({
   getEmailTemplateList: () =>
     http.get(
-      makeQueryUri(`${API_V1_URL}/email-templates`, { limit: 5000, offset: 0 })),
+      makeQueryUri(`${API_V1_URL}/email-templates`, {limit: 5000, offset: 0})
+    ),
   getEmailTemplateById: emailTemplateId =>
     http.get(`${API_V1_URL}/email-templates/${emailTemplateId}`),
   updateEmailTemplate: (emailTemplateId, title, body, description, subject) =>
@@ -13,15 +14,16 @@ export default Object.freeze({
       title,
       body,
       description,
-      subject
+      subject,
     }),
   createEmailTemplate: (title, body, description, subject) =>
     http.post(`${API_V1_URL}/email-templates`, {
       title,
       body,
       description,
-      subject
+      subject,
     }),
   deleteEmailTemplate: emailTemplateId =>
-    http.delete(`${API_V1_URL}/email-templates/${emailTemplateId}`)
+    http.delete(`${API_V1_URL}/email-templates/${emailTemplateId}`),
+  getTemplateTags: () => http.get(`${API_V1_URL}/email-templates/tags`),
 });
