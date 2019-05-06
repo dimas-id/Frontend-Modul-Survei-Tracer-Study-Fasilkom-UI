@@ -1,75 +1,96 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import {connect} from "react-redux";
+import {withRouter} from "react-router";
 
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
-import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
-import { Container } from "../../components/Container";
-import { Guidelines } from "../../styles";
+import {authorize} from "../../components/hocs/auth";
+import {NavbarAuth, NavbarBack} from "../../components/stables/Navbar";
+import {Container} from "../../components/Container";
+import {Guidelines} from "../../styles";
 import EmailTemplateForm from "../../components/stables/EmailTemplateForm";
-import EmailTemplateVariableMenu from "../../components/stables/EmailTemplateVariableMenu";
+import EmailTemplateVariableMenu from "../../components/stables/EmailTemplateTagsMenu";
 import heliosV1 from "../../modules/api/helios/v1";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
-import { humanizeError } from "../../libs/response";
+import {humanizeError} from "../../libs/response";
 
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.mt32,
-  }
+  },
+  showTemplateResult: {
+    ...Guidelines.layouts.pt16,
+    ...Guidelines.layouts.pr16,
+    ...Guidelines.layouts.pl16,
+    ...Guidelines.layouts.pb16,
+  },
 });
 
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
 
-  state = {
-    title: "",
-    body: "",
-    description: "",
-    subject: "",
-    errorMessage: null
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: "",
+      body: "",
+      description: "",
+      subject: "",
+      errorMessage: null,
+    };
+
+    this.bodyInputRef = React.createRef();
+  }
 
   handleVariable(variable) {
-    this.setState(prevState => ({
-      body: prevState.body + " " + variable + " "
-    }));
+    const {current} = this.bodyInputRef;
+    const endPos = current.selectionEnd;
+
+    const currentBody = this.state.body;
+
+    const startPos =
+      current.selectionStart === endPos ? 0 : current.selectionStart;
+
+    const leftBody = currentBody.substring(startPos, endPos);
+    const rightBody = currentBody.substring(endPos, currentBody.length);
+
+    this.setState({body: `${leftBody} ${variable} ${rightBody}`});
   }
 
-  handleTitle({ target }) {
+  handleTitle({target}) {
     this.setState({
-      title: target.value
+      title: target.value,
     });
   }
 
-  handleBody({ target }) {
+  handleBody({target}) {
     this.setState({
-      body: target.value
+      body: target.value,
     });
   }
 
-  handleSubject({ target }) {
+  handleSubject({target}) {
     this.setState({
-      subject: target.value
+      subject: target.value,
     });
   }
 
-  handleDescription({ target }) {
+  handleDescription({target}) {
     this.setState({
-      description: target.value
+      description: target.value,
     });
   }
-  
+
   setErrorMessage(errorMessage) {
-    this.setState({ errorMessage });
+    this.setState({errorMessage});
   }
 
   handleSubmit() {
@@ -84,26 +105,23 @@ class Screen extends React.Component {
       )
       .then(this.handleOpenSuccessMsg)
       .catch(err => {
-        const fields = [
-          'title',
-          'body',
-          'description',
-          'subject'
-        ];
+        const fields = ["title", "body", "description", "subject"];
 
         const humanizedErr = humanizeError(err.response.data, fields);
 
-        this.setErrorMessage(`Judul: ${humanizedErr.title}, Subjek: ${humanizedErr.subject}, Deskripsi: ${humanizedErr.description}, Isi: ${humanizedErr.body}`);
-        console.log(this.state.errorMessage)
+        this.setErrorMessage(
+          `Judul: ${humanizedErr.title}, Subjek: ${
+            humanizedErr.subject
+          }, Deskripsi: ${humanizedErr.description}, Isi: ${humanizedErr.body}`
+        );
+        this.setState({openErrorMsg: true});
 
-        this.setState({ openErrorMsg: true })
-        
         return err;
       });
   }
 
   handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
+    this.setState({openSuccessMsg: true});
   };
 
   handleCloseSuccessMsg = (event, reason) => {
@@ -111,21 +129,20 @@ class Screen extends React.Component {
       return;
     }
 
-    this.setState({ openSuccessMsg: false });
+    this.setState({openSuccessMsg: false});
   };
-
 
   handleCloseErrorMsg = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
 
-    this.setState({ openErrorMsg: false });
+    this.setState({openErrorMsg: false});
   };
 
   render() {
-    const { classes } = this.props;
-    const { title, body, description, subject } = this.state;
+    const {classes} = this.props;
+    const {title, body, description, subject} = this.state;
 
     return (
       <React.Fragment>
@@ -133,6 +150,12 @@ class Screen extends React.Component {
         <NavbarBack />
         <Container className={classes.container}>
           <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <Paper elevation={1} className={classes.showTemplateResult}>
+                <h4 style={{marginTop: 0}}>Tinjau Templat</h4>
+                <div dangerouslySetInnerHTML={{__html: body}} />
+              </Paper>
+            </Grid>
             <Grid item xs={12} sm={9}>
               <EmailTemplateForm
                 title={title}
@@ -144,6 +167,7 @@ class Screen extends React.Component {
                 onChangeSubject={this.handleSubject.bind(this)}
                 onChangeDescription={this.handleDescription.bind(this)}
                 onSubmit={this.handleSubmit.bind(this)}
+                setBodyRef={this.bodyInputRef}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -156,7 +180,7 @@ class Screen extends React.Component {
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "left"
+            horizontal: "left",
           }}
           open={this.state.openSuccessMsg}
           autoHideDuration={6000}
@@ -172,7 +196,7 @@ class Screen extends React.Component {
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "left"
+            horizontal: "left",
           }}
           open={this.state.openErrorMsg}
           autoHideDuration={6000}
@@ -194,7 +218,10 @@ function createContainer() {
 
   const mapDispatchToProps = dispatch => ({});
 
-  return withAuth(
+  return authorize({
+    mustVerified: false,
+    roles: [authorize.STAFF, authorize.SUPERUSER],
+  })(
     withRouter(
       connect(
         mapStateToProps,

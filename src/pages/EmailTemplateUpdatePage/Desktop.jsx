@@ -11,7 +11,7 @@ import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import EmailTemplateForm from "../../components/stables/EmailTemplateForm";
-import EmailTemplateVariableMenu from "../../components/stables/EmailTemplateVariableMenu";
+import EmailTemplateVariableMenu from "../../components/stables/EmailTemplateTagsMenu";
 import heliosV1 from "../../modules/api/helios/v1";
 
 import Snackbar from "@material-ui/core/Snackbar";

@@ -11,7 +11,7 @@
     "clean": "rm -rf ./node_modules",
     "lint": "cross-env npm-run-all lint:eslint",
     "lint:eslint": "./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern node_modules/",
-    "lint:prettier": "prettier \"*.{js,jsx}\" --print-width 80 --single-quote --trailing-comma es5 --write",
+    "lint:prettier": "prettier \"*.{js,jsx}\" --print-width 80 --trailing-comma es5 --write",
     "start": "cross-env npm-run-all start:js",
     "start:js": "react-scripts start",
     "test": "cross-env npm-run-all lint test:js",
