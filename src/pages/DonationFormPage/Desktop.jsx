@@ -1,21 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import {connect} from "react-redux";
+import {withRouter} from "react-router";
 import moment from "moment";
 
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import CardIcon from "@material-ui/icons/CreditCardOutlined";
 import Grid from "@material-ui/core/Grid";
 
-import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth } from "../../components/stables/Navbar";
+import {withAuth} from "../../components/hocs/auth";
+import {NavbarAuth} from "../../components/stables/Navbar";
 import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
-import { Container } from "../../components/Container";
-import { Guidelines } from "../../styles";
+import {Container} from "../../components/Container";
+import {Guidelines} from "../../styles";
 import Particle from "../../components/Particle";
-import { Typography } from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -23,84 +23,84 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import MomentUtils from "@date-io/moment";
-import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
-import { getUser } from "../../modules/session/selectors";
+import {MuiPickersUtilsProvider, InlineDatePicker} from "material-ui-pickers";
+import {getUser} from "../../modules/session/selectors";
 import bundar from "../../assets/bundar.png";
 import heliosV1 from "../../modules/api/helios/v1";
-import { LinesLoader } from "../../components/Loading";
+import {LinesLoader} from "../../components/Loading";
 import keyMirror from "keymirror";
-import { getDateFormatted } from "../../libs/datetime";
+import {getDateFormatted} from "../../libs/datetime";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import paths from "../paths";
-import { makePathVariableUri } from "../../libs/navigation";
+import {makePathVariableUri} from "../../libs/navigation";
 
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.pr64,
-    ...Guidelines.layouts.pl64
+    ...Guidelines.layouts.pl64,
   },
   media: {
-    height: 300
+    height: 300,
   },
   paper: {
-    ...Guidelines.layouts.mt16
+    ...Guidelines.layouts.mt16,
   },
   paperForm: {
     ...Guidelines.layouts.mt16,
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
   cardContent: {
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
 
   form: {
     ...Guidelines.layouts.flexDirCol,
-    ...Guidelines.layouts.w100
+    ...Guidelines.layouts.w100,
   },
   btnProposal: {
     display: "flex",
     justifyContent: "flex-end",
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
   btn: {
     ...Guidelines.layouts.mt32,
-    width: "auto"
-  }
+    width: "auto",
+  },
 });
 const banks = [
   {
     value: "",
-    label: "Pilih Metode Pembayaran"
+    label: "Pilih Metode Pembayaran",
   },
   {
     value: "BNI",
-    label: "Transfer BNI"
+    label: "Transfer BNI",
   },
   {
     value: "MDR",
-    label: "Transfer Mandiri"
-  }
+    label: "Transfer Mandiri",
+  },
 ];
 
 const FIELDS = keyMirror({
   amount: null,
   bankNumberDest: null,
   bankNumberSource: null,
-  estPaymentDate: null
+  estPaymentDate: null,
 });
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
 
   state = {
@@ -108,11 +108,11 @@ class Screen extends React.Component {
       [FIELDS.amount]: 0,
       [FIELDS.bankNumberDest]: "",
       [FIELDS.bankNumberSource]: "",
-      [FIELDS.estPaymentDate]: moment()
+      [FIELDS.estPaymentDate]: moment(),
     },
     // estPaymentDate: null,
     donationProgram: null,
-    loading: true
+    loading: true,
   };
 
   componentDidMount() {
@@ -120,10 +120,10 @@ class Screen extends React.Component {
     heliosV1.donation
       .getDonationProgramDetail(idProgram)
       .then(result => {
-        this.setState({ donationProgram: result.data });
+        this.setState({donationProgram: result.data});
       })
       .finally(() => {
-        this.setState({ loading: false });
+        this.setState({loading: false});
       });
   }
 
@@ -131,8 +131,8 @@ class Screen extends React.Component {
     this.setState({
       values: {
         ...this.state.values,
-        [event.target.name]: event.target.value
-      }
+        [event.target.name]: event.target.value,
+      },
     });
   };
 
@@ -140,14 +140,14 @@ class Screen extends React.Component {
     this.setState(prevState => ({
       values: {
         ...prevState.values,
-        [name]: value
-      }
+        [name]: value,
+      },
     }));
   };
 
   handleSubmit = e => {
-    const { history } = this.props;
-    const { values } = this.state;
+    const {history} = this.props;
+    const {values} = this.state;
     const idProgram = this.props.match.params.idProgram;
 
     heliosV1.donation
@@ -158,15 +158,19 @@ class Screen extends React.Component {
         values[FIELDS.bankNumberSource],
         getDateFormatted(values[FIELDS.estPaymentDate], "YYYY-MM-DD")
       )
-      .then(({ data }) => {
-        history.push(makePathVariableUri(paths.DONATION_PAYMENT_DETAIL, {donationId: data.id}))
-        this.handleOpenSuccessMsg()
+      .then(({data}) => {
+        history.push(
+          makePathVariableUri(paths.DONATION_PAYMENT_DETAIL, {
+            donationId: data.id,
+          })
+        );
+        this.handleOpenSuccessMsg();
       })
       .catch(this.handleOpenErrorMsg);
   };
 
   handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
+    this.setState({openSuccessMsg: true});
   };
 
   handleCloseSuccessMsg = (event, reason) => {
@@ -174,11 +178,11 @@ class Screen extends React.Component {
       return;
     }
 
-    this.setState({ openSuccessMsg: false });
+    this.setState({openSuccessMsg: false});
   };
 
   handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
+    this.setState({openErrorMsg: true});
   };
 
   handleCloseErrorMsg = (event, reason) => {
@@ -186,17 +190,17 @@ class Screen extends React.Component {
       return;
     }
 
-    this.setState({ openErrorMsg: false });
+    this.setState({openErrorMsg: false});
   };
 
   render() {
-    const { user, classes } = this.props;
-    const { loading, values } = this.state;
+    const {user, classes} = this.props;
+    const {loading, values} = this.state;
     if (loading) {
       return LinesLoader;
     }
 
-    const { title, description, proposalUrl } = this.state.donationProgram;
+    const {title, description, proposalUrl} = this.state.donationProgram;
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -206,19 +210,15 @@ class Screen extends React.Component {
           <Grid container spacing={24}>
             <Grid item sm={12} md={6}>
               <Paper className={classes.paper}>
-                  <CardMedia className={classes.media} image={bundar} />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {title}
-                    </Typography>
-                    <Typography component="p">{description}</Typography>
-                  </CardContent>
+                <CardMedia className={classes.media} image={bundar} />
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {title}
+                  </Typography>
+                  <Typography component="p">{description}</Typography>
+                </CardContent>
                 <Grid item xs={12} sm={12} className={classes.btnProposal}>
-                  <Button 
-                  variant="outlined" 
-                  color="inherit"
-                  href={proposalUrl}
-                  >
+                  <Button variant="outlined" color="inherit" href={proposalUrl}>
                     Lihat Proposal
                   </Button>
                 </Grid>
@@ -251,7 +251,7 @@ class Screen extends React.Component {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">Rp</InputAdornment>
-                      )
+                      ),
                     }}
                   />
                   <TextField
@@ -264,8 +264,8 @@ class Screen extends React.Component {
                     onChange={this.handleChange}
                     SelectProps={{
                       MenuProps: {
-                        className: classes.menu
-                      }
+                        className: classes.menu,
+                      },
                     }}
                     helperText="Pilih bank tujuan pembayaran"
                     margin="normal"
@@ -294,7 +294,7 @@ class Screen extends React.Component {
                         <InputAdornment position="start">
                           <CardIcon />
                         </InputAdornment>
-                      )
+                      ),
                     }}
                   />
 
@@ -329,7 +329,7 @@ class Screen extends React.Component {
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "left"
+            horizontal: "left",
           }}
           open={this.state.openSuccessMsg}
           autoHideDuration={6000}
@@ -345,7 +345,7 @@ class Screen extends React.Component {
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "left"
+            horizontal: "left",
           }}
           open={this.state.openErrorMsg}
           autoHideDuration={6000}
@@ -364,7 +364,7 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
   });
 
   const mapDispatchToProps = dispatch => ({});
