@@ -1,42 +1,49 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+import {Link, withRouter} from "react-router-dom";
+
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { Link } from "react-router-dom";
 
 const styles = theme => ({
   paper: {
-    width: "100%"
+    width: "100%",
   },
   menuItem: {
     height: 64,
     "&:focus": {
       backgroundColor: "#B2F5FF",
       "& $primary, & $icon": {
-        color: theme.palette.common.black
-      }
-    }
+        color: theme.palette.common.black,
+      },
+    },
+  },
+  activeItem: {
+    backgroundColor: "#B2F5FF",
   },
   primary: {
-    fontSize: 20
+    fontSize: 20,
   },
-  icon: {}
+  icon: {},
 });
 
-function Menu({ classes, paths }) {
+function Menu({classes, paths, location}) {
+  const currentPath = location.pathname;
   return (
     <Paper className={classes.paper}>
       <MenuList>
         {paths.map(
-          ({ menu, title }) =>
+          ({menu, title}) =>
             menu && (
               <MenuItem
                 key={menu.path}
-                className={classes.menuItem}
+                className={`${classes.menuItem} ${menu.path === currentPath &&
+                  classes.activeItem}`}
                 component={Link}
                 to={menu.path}
               >
@@ -46,7 +53,7 @@ function Menu({ classes, paths }) {
                   </ListItemIcon>
                 )}
                 <ListItemText
-                  classes={{ primary: classes.primary }}
+                  classes={{primary: classes.primary}}
                   inset
                   primary={title}
                 />
@@ -59,7 +66,7 @@ function Menu({ classes, paths }) {
 }
 
 Menu.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Menu);
+export default withRouter(withStyles(styles)(Menu));
