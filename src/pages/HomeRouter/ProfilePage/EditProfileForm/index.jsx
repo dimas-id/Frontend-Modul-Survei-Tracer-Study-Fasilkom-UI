@@ -122,7 +122,6 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
                     <Grid item xs={6}>
                       <TextField
                         id="outlined-residence-city"
-                        type="tel"
                         className={classes.textField}
                         margin="normal"
                         variant="outlined"
@@ -138,7 +137,6 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
                     <Grid item xs={6}>
                       <TextField
                         id="outlined-residence-country"
-                        type="tel"
                         className={classes.textField}
                         margin="normal"
                         variant="outlined"
