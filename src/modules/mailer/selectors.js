@@ -1,21 +1,33 @@
 import get from "lodash/get";
 
-export function getMailerState(state) {
-  return get(state, "mailer");
-}
-
-export function getTemplateTags(state) {
+export function selectTemplateTags(state) {
   return get(state, "mailer.tags");
 }
 
-export function getTemplateHtmlTags(state) {
-  return get(getTemplateTags(state), "htmlTags");
+export function selectTemplateHtmlTags(state) {
+  return get(selectTemplateTags(state), "htmlTags");
 }
 
-export function getTemplateFields(state) {
-  return get(getTemplateTags(state), "fields");
+export function selectTemplateFields(state) {
+  return get(selectTemplateTags(state), "fields");
 }
 
-export function getTemplateOperators(state) {
-  return get(getTemplateTags(state), "operators");
+export function selectTemplateOperators(state) {
+  return get(selectTemplateTags(state), "operators");
+}
+
+export function selectTemplates(state) {
+  return get(state, "mailer.templates");
+}
+
+export function selectTemplateById(state, templateId) {
+  const arr = selectTemplates(state);
+  if (!templateId || !Array.isArray(arr)) {
+    return null;
+  }
+  return arr.find(val => val.id === templateId);
+}
+
+export function selectBatch(state) {
+  return get(state, "mailer.batch");
 }

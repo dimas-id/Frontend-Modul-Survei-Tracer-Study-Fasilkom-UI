@@ -1,12 +1,13 @@
-import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { layouts } from '../../../styles/guidelines';
+import React from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import {layouts} from "../../../styles/guidelines";
 
 export default class LoadingScreen extends React.PureComponent {
   render() {
-    const { children } = this.props;
+    const {children, className} = this.props;
     return (
       <div
+        className={className}
         style={{
           ...layouts.flexDirCol,
           ...layouts.flexMiddle,

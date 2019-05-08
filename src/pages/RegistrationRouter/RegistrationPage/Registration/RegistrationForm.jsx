@@ -3,8 +3,8 @@ import keymirror from "keymirror";
 import ReactDOM from "react-dom";
 
 import moment from "moment";
-import { Formik } from "formik";
-import { withStyles } from "@material-ui/core/styles";
+import {Formik} from "formik";
+import {withStyles} from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -21,10 +21,10 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 
 import MomentUtils from "@date-io/moment";
 
-import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
+import {MuiPickersUtilsProvider, InlineDatePicker} from "material-ui-pickers";
 
-import { Guidelines } from "../../../../styles";
-import { Validation } from "../../../../components/hocs/form";
+import {Guidelines} from "../../../../styles";
+import {Validation} from "../../../../components/hocs/form";
 import LinkedInButton from "../../../../components/stables/LinkedInButton";
 
 const styles = theme => ({
@@ -32,35 +32,35 @@ const styles = theme => ({
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.flexMiddle,
     ...Guidelines.layouts.w100,
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   },
   formContent: {
-    ...Guidelines.layouts.flexDirRow
+    ...Guidelines.layouts.flexDirRow,
   },
   field: {
     minWidth: "100%",
     ...Guidelines.layouts.w100,
     ...Guidelines.layouts.flex1,
-    color: "black"
+    color: "black",
   },
   btn: {
     ...Guidelines.layouts.mt64,
-    ...Guidelines.layouts.mb24
+    ...Guidelines.layouts.mb24,
   },
   select: {
     ...Guidelines.layouts.mt16,
-    ...Guidelines.layouts.mb16
-  }
+    ...Guidelines.layouts.mb16,
+  },
 });
 
 const PROGRAMS = [
-  { value: "S1-IK", label: "S1 - Ilmu Komputer" },
-  { value: "S1_KI-IK", label: "S1 KI - Ilmu Komputer" },
-  { value: "S1-SI", label: "S1 - Sistem Informasi" },
-  { value: "S1_EKS-SI", label: "S1 Ekstensi - Sistem Informasi" },
-  { value: "S2-IK", label: "S2 - Ilmu Komputer" },
-  { value: "S2-TI", label: "S2 - Teknologi Informasi" },
-  { value: "S3-IK", label: "S3 - Ilmu Komputer" }
+  {value: "S1-IK", label: "S1 - Ilmu Komputer"},
+  {value: "S1_KI-IK", label: "S1 KI - Ilmu Komputer"},
+  {value: "S1-SI", label: "S1 - Sistem Informasi"},
+  {value: "S1_EKS-SI", label: "S1 Ekstensi - Sistem Informasi"},
+  {value: "S2-IK", label: "S2 - Ilmu Komputer"},
+  {value: "S2-TI", label: "S2 - Teknologi Informasi"},
+  {value: "S3-IK", label: "S3 - Ilmu Komputer"},
 ];
 
 const FIELDS = keymirror({
@@ -72,7 +72,7 @@ const FIELDS = keymirror({
   uiSsoNpm: null,
   email: null,
   password: null,
-  repassword: null
+  repassword: null,
 });
 
 const VALIDATOR = Validation.object().shape({
@@ -91,11 +91,11 @@ const VALIDATOR = Validation.object().shape({
     .matches(
       /^(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$/,
       "Minimal 8 karakter mengandung hanya huruf atau angka"
-    )
+    ),
 });
 
 function validatePassword(values) {
-  const { password, repassword } = RegistrationForm.fields;
+  const {password, repassword} = RegistrationForm.fields;
   const error = {};
   if (values[password] !== values[repassword]) {
     error[repassword] = "Konfirmasi password tidak sama";
@@ -114,7 +114,7 @@ function getInitialValues() {
     uiSsoNpm,
     email,
     password,
-    repassword
+    repassword,
   } = FIELDS;
   return {
     [firstName]: "",
@@ -125,7 +125,7 @@ function getInitialValues() {
     [uiSsoNpm]: "",
     [password]: "",
     [repassword]: "",
-    [email]: ""
+    [email]: "",
   };
 }
 
@@ -133,12 +133,12 @@ function SelectPrograms(props) {
   const inputLabelRef = React.useRef(null);
 
   const [state, setState] = React.useState({
-    labelWidth: 0
+    labelWidth: 0,
   });
   React.useEffect(() => {
     setState({
       ...state,
-      labelWidth: ReactDOM.findDOMNode(inputLabelRef.current).offsetWidth
+      labelWidth: ReactDOM.findDOMNode(inputLabelRef.current).offsetWidth,
     });
   }, []);
 
@@ -147,7 +147,7 @@ function SelectPrograms(props) {
       variant="outlined"
       className={`${props.classes.field} ${props.classes.select}`}
     >
-      <InputLabel ref={inputLabelRef} htmlFor="LatestCsuiProgram">
+      <InputLabel ref={inputLabelRef} htmlFor="LatestCsuiProgram" required>
         Gelar dan Program Studi Terakhir
       </InputLabel>
       <Select
@@ -159,6 +159,7 @@ function SelectPrograms(props) {
             id="LatestCsuiProgram"
             labelWidth={state.labelWidth}
             name={FIELDS.latestCsuiProgram}
+            required
           />
         }
       >
@@ -184,7 +185,7 @@ function SelectPrograms(props) {
   );
 }
 
-const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
+const RegistrationForm = withStyles(styles)(function({classes, onSubmit}) {
   return (
     <Formik
       initialValues={getInitialValues()}
@@ -199,15 +200,15 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
         values,
         errors,
         setFieldValue,
-        touched
+        touched,
       }) => {
         return (
           <form className={classes.form}>
             <Grid container spacing={24}>
-              <Grid item xs={12} style={{ paddingBottom: 0 }}>
+              <Grid item xs={12} style={{paddingBottom: 0}}>
                 <Typography color="error">* Wajib diisi</Typography>
               </Grid>
-              <Grid item xs={12} md={6} style={{ paddingTop: 0 }}>
+              <Grid item xs={12} md={6} style={{paddingTop: 0}}>
                 <TextField
                   autoFocus
                   id="FirstName"
@@ -226,7 +227,7 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   }
                 />
               </Grid>
-              <Grid item xs={12} md={6} style={{ paddingTop: 0 }}>
+              <Grid item xs={12} md={6} style={{paddingTop: 0}}>
                 <TextField
                   id="LastName"
                   label="Nama Belakang"
@@ -255,7 +256,7 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   helperText={errors[FIELDS.email]}
                   onChange={t => setFieldValue(FIELDS.email, t.target.value)}
                   inputProps={{
-                    type: "email"
+                    type: "email",
                   }}
                 />
               </Grid>
@@ -290,7 +291,7 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   required
                   value={values[FIELDS.password]}
                   inputProps={{
-                    type: "password"
+                    type: "password",
                   }}
                   error={touched[FIELDS.password] && !!errors[FIELDS.password]}
                   helperText={
@@ -311,7 +312,7 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   required
                   value={values[FIELDS.repassword]}
                   inputProps={{
-                    type: "password"
+                    type: "password",
                   }}
                   error={
                     touched[FIELDS.repassword] && !!errors[FIELDS.repassword]
@@ -359,7 +360,7 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   onChange={t => setFieldValue(FIELDS.uiSsoNpm, t.target.value)}
                   inputProps={{
                     type: "number",
-                    maxLength: 10
+                    maxLength: 10,
                   }}
                 />
               </Grid>

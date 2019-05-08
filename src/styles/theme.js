@@ -1,9 +1,9 @@
-import { createMuiTheme } from "@material-ui/core/styles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import {createMuiTheme} from "@material-ui/core/styles";
+import {fade} from "@material-ui/core/styles/colorManipulator";
 
 // @todo: use colors guideline
 
-export function themeFactory({ type }) {
+export function themeFactory({type}) {
   const currentType = type || "light";
   return createMuiTheme({
     palette: {
@@ -18,17 +18,17 @@ export function themeFactory({ type }) {
       type: currentType,
       primary: {
         // light: will be calculated from palette.primary.main,
-        main: "#00C7E5"
+        main: "#00C7E5",
         // dark: will be calculated from palette.primary.main,
         // contrastText: will be calculated to contrast with palette.primary.main
       },
       secondary: {
-        main: "#022047"
+        main: "#022047",
         // dark: will be calculated from palette.secondary.main,
       },
       error: {
-        main: "#E24C4C"
-      }
+        main: "#E24C4C",
+      },
     },
     typography: {
       // Use the system font instead of the default Roboto font.
@@ -44,15 +44,28 @@ export function themeFactory({ type }) {
         "sans-serif",
         '"Apple Color Emoji"',
         '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"'
-      ].join(",")
-    }
+        '"Segoe UI Symbol"',
+      ].join(","),
+    },
   });
 }
 
 const theme = themeFactory({});
 
 theme.overrides = {
+  MuiAppBar: {
+    root: {
+      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    },
+  },
+  MuiPaper: {
+    root: {
+      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    },
+    elevation1: {
+      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    },
+  },
   MuiOutlinedInput: {
     root: {
       overflow: "hidden",
@@ -61,10 +74,10 @@ theme.overrides = {
       transition: theme.transitions.create(["border-color", "box-shadow"]),
       "&:focused": {
         boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
-        borderColor: theme.palette.primary.main
-      }
-    }
-  }
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
 };
 
 export default theme;
