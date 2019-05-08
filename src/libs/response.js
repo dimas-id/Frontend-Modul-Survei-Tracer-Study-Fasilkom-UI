@@ -1,18 +1,18 @@
-import pick from 'lodash/pick';
-import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
+import pick from "lodash/pick";
+import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 
 export function getNonFieldError(errResponse) {
-  let err = get(errResponse, 'nonFieldErrors', null);
+  let err = get(errResponse, "nonFieldErrors", null);
   if (!isEmpty(err)) {
-    let s = '';
+    let s = "";
     err.forEach(val => {
       s += `${val}\n`;
     });
     return s;
   }
 
-  err = get(errResponse, 'detail', null);
+  err = get(errResponse, "detail", null);
   if (!isEmpty(err)) {
     return err;
   }
@@ -32,13 +32,13 @@ export function humanizeError(errResponse, keys = []) {
   if (!isEmpty(res)) {
     keys.forEach(key => {
       if (key in res) {
-        let s = '';
+        let s = "";
         res[key].forEach(sErr => {
           s += `${sErr}\n`;
         });
         res[key] = s;
       } else {
-        res[key] = '';
+        res[key] = "";
       }
     });
 
@@ -53,11 +53,7 @@ export function humanizeError(errResponse, keys = []) {
  * @param {object} response response from axios
  */
 export function getStatus(response) {
-  const status = get(response, 'status', undefined);
-  if (!status) {
-    return undefined;
-  }
-  return status;
+  return get(response, "status", undefined);
 }
 
 /**
@@ -67,6 +63,11 @@ export function getStatus(response) {
 export function isStatusOK(response) {
   const status = getStatus(response);
   return status >= 200 && status < 300;
+}
+
+export function notFound(response) {
+  const status = getStatus(response);
+  return status === 404;
 }
 
 /**

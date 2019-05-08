@@ -1,14 +1,16 @@
-import React from 'react';
-import { withFormik } from 'formik';
+import React from "react";
+import {withFormik, Formik} from "formik";
 
-export const Validation = require('yup');
+export const Validation = require("yup");
 
-export function enhanceForm({ validator, validate, ...otherConfig }) {
+export const Form = Formik;
+
+export function enhanceForm({validator, validate, ...otherConfig}) {
   const enhancer = withFormik({
     ...otherConfig,
     isInitialValid: props => {
-      const { isInitialValid, ...property } = props;
-      if (isInitialValid && typeof isInitialValid === 'function') {
+      const {isInitialValid, ...property} = props;
+      if (isInitialValid && typeof isInitialValid === "function") {
         isInitialValid(property);
       } else {
         return isInitialValid;
@@ -36,22 +38,22 @@ export function enhanceForm({ validator, validate, ...otherConfig }) {
        *
        * You can pass props from parent if needed or just pass function in config with key validate,
        */
-      if (props.validate && typeof validate === 'function') {
+      if (props.validate && typeof validate === "function") {
         return props.validate(values, props);
       }
 
-      if (validate && typeof validate === 'function') {
+      if (validate && typeof validate === "function") {
         return validate(values, props);
       }
     },
     validationSchema: props =>
       Validation.object().shape(
-        typeof validator === 'function' ? validator(props) : validator
+        typeof validator === "function" ? validator(props) : validator
       ),
-    handleSubmit: (values, { props, ...actions }) => {
+    handleSubmit: (values, {props, ...actions}) => {
       // prevent infinite recursive by take out onSubmit and give others
-      const { onSubmit, ...property } = props;
-      if (onSubmit && typeof onSubmit === 'function') {
+      const {onSubmit, ...property} = props;
+      if (onSubmit && typeof onSubmit === "function") {
         onSubmit(values, actions, property);
       }
     },
@@ -64,7 +66,26 @@ export function enhanceForm({ validator, validate, ...otherConfig }) {
   };
 }
 
+export function getFieldProps(name, {values, errors, handleChange, touched}) {
+  const error = Boolean(touched[name] && errors[name]);
+  const result = {
+    error,
+    onChange: handleChange,
+  };
+
+  if (error && errors[name]) {
+    result.helperText = errors[name];
+  }
+
+  if (values) {
+    result.value = values[name];
+  }
+
+  return result;
+}
+
 export default {
   enhanceForm,
+  Form,
   Validation,
 };

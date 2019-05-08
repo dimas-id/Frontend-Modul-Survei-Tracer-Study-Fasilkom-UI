@@ -4,9 +4,9 @@ import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
 import {getTemplateTags} from "../../../modules/mailer/thunks";
 import {
-  getTemplateHtmlTags,
-  getTemplateFields,
-  getTemplateOperators,
+  selectTemplateHtmlTags,
+  selectTemplateFields,
+  selectTemplateOperators,
 } from "../../../modules/mailer/selectors";
 
 import Tags from "./Tags";
@@ -76,9 +76,9 @@ EmailTemplateTagsMenu.propTypes = {
 
 export default connect(
   state => ({
-    html: getTemplateHtmlTags(state),
-    variables: getTemplateFields(state),
-    operators: getTemplateOperators(state),
+    html: selectTemplateHtmlTags(state),
+    variables: selectTemplateFields(state),
+    operators: selectTemplateOperators(state),
   }),
   dispatch => ({
     loadTags: () => dispatch(getTemplateTags()),

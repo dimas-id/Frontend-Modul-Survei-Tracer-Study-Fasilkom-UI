@@ -69,9 +69,6 @@
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "rich-markdown-editor": "^9.1.2",
-    "slate-drop-or-paste-images": "^0.9.1",
-    "slate-mark-hotkeys": "^0.2.0",
-    "slate-paste-linkify": "^0.7.0",
     "slick-carousel": "^1.8.1",
     "yup": "^0.27.0"
   },
