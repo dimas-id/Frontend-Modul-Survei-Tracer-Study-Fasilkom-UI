@@ -34,10 +34,6 @@ const styles = theme => ({
   paper: {
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.flexMiddle,
-    ...Guidelines.layouts.pt16,
-    ...Guidelines.layouts.pr16,
-    ...Guidelines.layouts.pl16,
-    ...Guidelines.layouts.pb16,
   },
   listSection: {
     backgroundColor: "inherit",
@@ -134,7 +130,7 @@ class EmailTemplateList extends React.Component {
           <List className={classes.root}>
             {loading &&
               Array.apply(null, Array(9)).map(() => (
-                <LinesLoaderEmailTemplate height="24" />
+                <LinesLoaderEmailTemplate height="24" style={{paddingLeft: 8, paddingRight: 8}}/>
               ))}
             {!loading && noTemplate && (
               <div className={classes.empty}>
