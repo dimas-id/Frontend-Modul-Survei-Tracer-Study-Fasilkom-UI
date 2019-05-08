@@ -127,7 +127,7 @@ class EmailTemplateList extends React.Component {
   render() {
     const {classes} = this.props;
     const {emailTemplateList, loading} = this.state;
-    const noTemplate = !isEmpty(emailTemplateList);
+    const noTemplate = isEmpty(emailTemplateList);
     return (
       <React.Fragment>
         <Paper className={classes.paper}>

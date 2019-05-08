@@ -21,7 +21,7 @@ const styles = theme => ({
   }
 });
 
-function Navbar({ classes, history, title, content }) {
+function Navbar({ classes, title, content }) {
   return (
     <AppBar position="static" className={classes.appbar}>
       <Toolbar>

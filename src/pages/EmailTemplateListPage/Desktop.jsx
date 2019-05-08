@@ -32,8 +32,8 @@ class Screen extends React.PureComponent {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <NavbarAuth title="Daftar Templat Email" />
-        <NavbarBackEmailTemplate />
+        <NavbarAuth  />
+        <NavbarBackEmailTemplate title="Daftar Templat Email" />
         <Container className={classes.container}>
           <EmailTemplateList />
         </Container>
