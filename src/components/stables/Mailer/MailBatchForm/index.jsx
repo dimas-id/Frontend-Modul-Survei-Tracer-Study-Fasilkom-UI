@@ -10,8 +10,8 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/styles";
 
-import {selectTemplates} from "../../../../modules/mailer/selectors";
-import {getTemplates} from "../../../../modules/mailer/thunks";
+import {selectTemplates} from "../../../../modules/crm/mailer/selectors";
+import {getTemplates} from "../../../../modules/crm/mailer/thunks";
 import {Guidelines} from "../../../../styles";
 
 import Select from "../../../Select";
@@ -71,7 +71,7 @@ function renderTemplateItem(templates, value) {
   ));
 }
 
-function Form({templates, disabled, ...otherProps}) {
+function Form({templates, disabled, children, ...otherProps}) {
   const [loadingTemplate, setLoadingTemplate] = React.useState(true);
   React.useEffect(() => {
     otherProps.dispatch(getTemplates()).finally(() => {
@@ -199,6 +199,7 @@ function Form({templates, disabled, ...otherProps}) {
             )}
           />
         </Paper>
+        {children}
       </Grid>
     </Grid>
   );

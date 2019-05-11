@@ -12,7 +12,7 @@ import atlasV1 from "../../../modules/api/atlas/v1";
 import { Guidelines } from "../../../styles/index.js";
 import { NavbarModal } from "../../../components/stables/Navbar/index.js";
 import { LoadingFill } from "../../../components/Loading/";
-import WrappedVirtualizedTable from "../../../components/stables/WrappedVirtualizedTable";
+import WrappedVirtualizedTable from "../../../components/VirtualizedTable";
 import emptyContactImg from "../../../assets/states/EmptyContact.svg";
 import { Container } from "../../../components/Container";
 

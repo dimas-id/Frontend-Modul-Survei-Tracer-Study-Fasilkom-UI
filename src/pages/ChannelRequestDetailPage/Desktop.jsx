@@ -126,7 +126,8 @@ class Screen extends React.Component {
               variant: "warning"
             });
           });
-      }
+      },
+      () => null
     );
   };
 

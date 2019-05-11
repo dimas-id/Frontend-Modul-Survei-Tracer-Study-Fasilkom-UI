@@ -1,10 +1,10 @@
 import http from "../../../../libs/http";
-import {API_V1_URL} from "../config";
-import {makeQueryUri} from "../../../../libs/navigation";
+import { API_V1_URL } from "../config";
+import { makeQueryUri } from "../../../../libs/navigation";
 
 export default Object.freeze({
   getEmailTemplateList: (limit = 5000, offset = 0) =>
-    http.get(makeQueryUri(`${API_V1_URL}/email-templates`, {limit, offset})),
+    http.get(makeQueryUri(`${API_V1_URL}/email-templates`, { limit, offset })),
   getEmailTemplateById: emailTemplateId =>
     http.get(`${API_V1_URL}/email-templates/${emailTemplateId}`),
   updateEmailTemplate: (emailTemplateId, title, body, description, subject) =>
@@ -36,4 +36,7 @@ export default Object.freeze({
     }),
   updateBatch: (batchId, payload) =>
     http.patch(`${API_V1_URL}/batches/${batchId}`, payload),
+
+  postJobs: (batchId, jobs) =>
+    http.post(`${API_V1_URL}/batches/${batchId}/jobs`, jobs),
 });

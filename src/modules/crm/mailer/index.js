@@ -1,12 +1,12 @@
 /**
  * Reducer for utility
  */
-const SET_TEMPLATE_TAGS = "email/SET_TEMPLATE_TAGS";
-const CLEAR_TEMPLATE_TAGS = "email/CLEAR_TEMPLATE_TAGS";
-const SET_TEMPLATES = "email/SET_TEMPLATES";
-const CLEAR_TEMPLATES = "email/CLEAR_TEMPLATES";
-const SET_BATCH = "email/SET_BATCH";
-const CLEAR_BATCH = "email/CLEAR_BATCH";
+const SET_TEMPLATE_TAGS = "crm/mailer/SET_TEMPLATE_TAGS";
+const CLEAR_TEMPLATE_TAGS = "crm/mailer/CLEAR_TEMPLATE_TAGS";
+const SET_TEMPLATES = "crm/mailer/SET_TEMPLATES";
+const CLEAR_TEMPLATES = "crm/mailer/CLEAR_TEMPLATES";
+const SET_BATCH = "crm/mailer/SET_BATCH";
+const CLEAR_BATCH = "crm/mailer/CLEAR_BATCH";
 
 const INITIAL_STATE = {
   tags: {},

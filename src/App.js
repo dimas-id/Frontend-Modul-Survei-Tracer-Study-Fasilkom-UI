@@ -1,22 +1,23 @@
 import React from "react";
 import get from "lodash/get";
 import * as Sentry from "@sentry/browser";
-import { Provider } from "react-redux";
-import { ConnectedRouter } from "connected-react-router";
-import { PersistGate } from "redux-persist/integration/react";
-import { MuiThemeProvider } from "@material-ui/core/styles";
+import {Provider} from "react-redux";
+import {ConnectedRouter} from "connected-react-router";
+import {PersistGate} from "redux-persist/integration/react";
+import {MuiThemeProvider} from "@material-ui/core/styles";
 
-import { setAuthToken } from "./libs/http";
-import { history, store, persistor } from "./modules";
-import { createGlobalDialog, createGlobalSnackbar } from "./modules/utility";
+import {setAuthToken} from "./libs/http";
+import {history, store, persistor} from "./modules";
+import {createGlobalDialog, createGlobalSnackbar} from "./modules/utility";
 
 import AlertDialog from "./components/Alert";
-import { SnackbarNotifier, SnackbarProvider } from "./components/Snackbar";
-import { SplashScreen } from "./components/Loading";
+import {SnackbarNotifier, SnackbarProvider} from "./components/Snackbar";
+import {SplashScreen} from "./components/Loading";
 
 import Pages from "./pages";
-import { theme } from "./styles";
-import { isDevelopment } from "./config";
+import paths from "./pages/paths";
+import {theme} from "./styles";
+import {isDevelopment} from "./config";
 
 createGlobalDialog(store);
 createGlobalSnackbar(store);
@@ -27,6 +28,7 @@ function setAuthTokenAfterPersist() {
 }
 
 class App extends React.PureComponent {
+
   componentDidCatch(error, errorInfo) {
     // default scope
     if (!isDevelopment) {
@@ -34,6 +36,9 @@ class App extends React.PureComponent {
         scope.setExtras(errorInfo);
         Sentry.captureException(error);
       });
+      history.replace(paths.ERROR);
+    } else {
+      throw error
     }
   }
 

@@ -28,8 +28,8 @@ exports.CRM_EMAIL_TEMPLATE_CREATE = `${exports.CRM}/email-template/create`;
 exports.CRM_EMAIL_TEMPLATE_UPDATE = `${
   exports.CRM
 }/email-template/:idEmailTemplate`;
-exports.CRM_EMAIL_BATCH_CREATE = `${exports.CRM}/batch/create`;
-exports.CRM_EMAIL_BATCH_UPDATE = `${exports.CRM}/batch/update/:batchId`;
+exports.CRM_EMAIL_BATCH_CREATE = `${exports.CRM}/mailer/create`;
+exports.CRM_EMAIL_BATCH_UPDATE = `${exports.CRM}/mailer/update/:batchId`;
 exports.CHANNEL = "/channels";
 exports.CHANNEL_REQUEST = `${exports.CHANNEL}/request`;
 exports.CHANNEL_REQUEST_LIST = `${exports.CHANNEL}/request/list`;

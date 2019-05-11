@@ -12,7 +12,7 @@ import {createBrowserHistory} from "history";
 import {sessionReducer} from "./session";
 import {experienceReducer} from "./experience";
 import {utilityReducer, utilityActions} from "./utility";
-import {mailerReducer} from "./mailer";
+import {crmReducer} from "./crm";
 
 // middleware
 import loggerMiddleware from "./middlewares/logger";
@@ -26,11 +26,13 @@ import {isDevelopment} from "../config";
 const composeEnhancers =
   (isDevelopment && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
-export const history = createBrowserHistory();
+export const history = createBrowserHistory({
+  basename: process.env.PUBLIC_URL
+});
 const rootReducer = combineReducers({
   session: persistReducer({key: "session", storage}, sessionReducer),
   experience: persistReducer({key: "experience", storage}, experienceReducer),
-  mailer: mailerReducer,
+  crm: persistReducer({key: "crm", storage}, crmReducer),
   utility: utilityReducer,
   router: connectRouter(history),
 });

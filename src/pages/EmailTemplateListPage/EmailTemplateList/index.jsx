@@ -92,7 +92,8 @@ class EmailTemplateList extends React.Component {
                 this.setState({loading: false});
               });
           });
-      }
+      },
+      () => null
     );
   }
 
