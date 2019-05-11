@@ -50,7 +50,7 @@ function WorkPosition({ onAdd, onEdit, load, positions, userId }) {
                 time={`${getDateFormatted(pos.dateStarted, "MMM YYYY")} - ${
                   pos.dateEnded
                     ? getDateFormatted(pos.dateEnded, "MMM YYYY")
-                    : "Masih"
+                    : "Sekarang"
                 }`}
               />
             </Grid>
