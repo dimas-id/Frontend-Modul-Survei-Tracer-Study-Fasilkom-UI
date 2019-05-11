@@ -33,10 +33,8 @@ import { getDateFormatted } from "../../../libs/datetime";
 import paths from "../../../pages/paths";
 
 import { authorize } from "../../../components/hocs/auth";
-import { LoadingFill } from "../../../components/Loading";
 
 import { getUser } from "../../../modules/session/selectors";
-import atlasV1 from "../../../modules/api/atlas/v1";
 import heliosV1 from "../../../modules/api/helios/v1";
 
 const styles = theme => ({
@@ -83,21 +81,11 @@ class Screen extends React.Component {
   };
 
   componentDidMount() {
-    if (!this.props.deleted) {
-      atlasV1.session
-        .getUserById(this.props.author)
-        .then(result => {
-          this.setState({ userDetail: result.data });
-        })
-        .finally(() => {
-          this.setState({ isLoading: false });
-        });
-    }
-
     this.setState({
       checked: this.props.hasLiked,
       numberLikes: this.props.numberLikes
     });
+      
   }
 
   handleClick = event => {
@@ -177,7 +165,7 @@ class Screen extends React.Component {
               aria-owns={anchorEl ? "simple-menu" : undefined}
               aria-haspopup="true"
               onClick={
-                this.props.user.id === this.props.author
+                this.props.user.id === this.props.author.id
                   ? this.handleClick
                   : null
               }
@@ -244,18 +232,11 @@ class Screen extends React.Component {
   }
 
   render() {
-    const { classes, margin, overflow, max, deleted } = this.props;
-    const { isLoading } = this.state;
-
-    var Converter = require("react-showdown").Converter;
-    var converter = new Converter();
-
-    var markdown = this.props.body;
-    var reactElement = converter.convert(markdown);
+    const { classes, margin, overflow, max, deleted, body } = this.props;
 
     return (
       <Card className={classes.card} style={{ marginLeft: margin + "px" }}>
-        {deleted ? null : isLoading ? <LoadingFill /> : this.renderCardHeader()}
+        {deleted ? null : this.renderCardHeader()}
         {deleted ? (
           "Chant telah dihapus"
         ) : (
@@ -268,9 +249,7 @@ class Screen extends React.Component {
                 className={classes.chantWrapper}
                 style={{ overflow: overflow, maxHeight: max, maxLine: max }}
               >
-                <Typography variant="body2" gutterBottom>
-                  {reactElement}
-                </Typography>
+                <Typography variant="body2" component="div" gutterBottom dangerouslySetInnerHTML={{ __html:body }}/>>
               </div>
             </CardContent>
             <CardActions className={classes.actions} disableActionSpacing>

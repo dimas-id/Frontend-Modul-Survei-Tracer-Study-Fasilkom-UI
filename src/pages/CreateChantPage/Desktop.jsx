@@ -45,8 +45,6 @@ class Screen extends React.PureComponent {
       body: "",
       parentChant: null
     }
-
-    localStorage.removeItem('chantBody')
   }
 
   handleTitle({ target }) {
