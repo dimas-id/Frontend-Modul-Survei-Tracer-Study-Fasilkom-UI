@@ -1,15 +1,15 @@
 import React from "react";
-import Editor from "rich-markdown-editor";
 
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {withStyles} from "@material-ui/core/styles";
 
-import {layouts, fonts} from "../../../styles/guidelines";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-import http from "../../../libs/http";
-import env from "../../../config";
+import {layouts, fonts} from "../../../styles/guidelines";
+import {CustomUploadAdapterPlugin} from "./UploadAdapter";
 
 const styles = theme => ({
   form: {
@@ -38,7 +38,6 @@ const styles = theme => ({
   },
 });
 
-const savedText = localStorage.getItem("chantBody") || "";
 function ChantCreateForm({
   classes,
   title,
@@ -75,18 +74,16 @@ function ChantCreateForm({
           Deskripsi *
         </Typography>
         <div className={classes.textField}>
-          <Editor
-            placeholder="Deskripsi Chant hari ini?"
-            onChange={target => onChangeBody(target())}
-            defaultValue={savedText}
-            uploadImage={file => {
-              console.log("File upload triggered: ", file);
-              const data = new FormData();
-              data.append("file", file);
-              const UPLOAD_ENPOINT = `${env.HELIOS}/api/v1/upload/image`;
-              return http
-                .put(UPLOAD_ENPOINT, data)
-                .then(resp => resp.data.fileUrl); // -> kurang ini
+          <CKEditor
+            editor={ClassicEditor}
+            config={{
+              extraPlugins: [CustomUploadAdapterPlugin, ],
+              removePlugins: ['Table', 'BlockQuote']
+            }}
+            data={body}          
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              onChangeBody(data);
             }}
           />
         </div>
