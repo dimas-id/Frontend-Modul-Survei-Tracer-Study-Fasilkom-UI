@@ -6,7 +6,6 @@ import NavbarBack from "./NavbarBack";
 import paths from "../../../pages/paths";
 import AddIcon from "@material-ui/icons/Add";
 import EmailIcon from "@material-ui/icons/Email";
-import {Grid} from "@material-ui/core";
 
 class NavbarBackEmailTemplate extends React.Component {
   render() {

@@ -12,7 +12,6 @@ import { Guidelines } from "../../../styles";
 
 import FormDialog from "../../../components/FormDialog";
 import EditProfileForm from "./EditProfileForm";
-import Education from "../../../components/stables/Experience/Education";
 import WorkPosition from "../../../components/stables/Experience/WorkPosition";
 import PositionForm from "../../../components/stables/Experience/PositionForm";
 
@@ -24,24 +23,24 @@ const useStyles = makeStyles({
     ...Guidelines.layouts.w100,
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
   },
   titleChild: {
     ...Guidelines.layouts.mb32,
     ...Guidelines.fonts.bold,
-    fontSize: 28
+    fontSize: 28,
   },
   gridField: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   label: {
     ...Guidelines.fonts.bold,
-    fontSize: 16
+    fontSize: 16,
   },
   value: {
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });
 
 function Head(props) {
@@ -81,28 +80,28 @@ function Field(props) {
 const styles = theme => ({
   paper: {
     ...Guidelines.layouts.pt32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
   paperChild: {
     ...Guidelines.layouts.mt24,
     ...Guidelines.layouts.pt24,
     ...Guidelines.layouts.pr24,
     ...Guidelines.layouts.pl24,
-    ...Guidelines.layouts.pb24
+    ...Guidelines.layouts.pb24,
   },
   title: {
     ...Guidelines.layouts.flexMiddle,
     ...Guidelines.fonts.medium,
-    fontSize: 32
+    fontSize: 32,
   },
   subtitle: {
     ...Guidelines.layouts.flexMiddle,
     fontSize: 20,
     [theme.breakpoints.down("sm")]: {
       ...Guidelines.layouts.pr32,
-      ...Guidelines.layouts.pl32
-    }
-  }
+      ...Guidelines.layouts.pl32,
+    },
+  },
 });
 
 class ProfilePage extends React.Component {
@@ -110,14 +109,14 @@ class ProfilePage extends React.Component {
     openProfile: false,
     openPosition: false,
     positionId: null,
-    isNewPosition: false
+    isNewPosition: false,
   };
 
   closePosition = () =>
     this.setState({
       openPosition: false,
       positionId: null,
-      isNewPosition: false
+      isNewPosition: false,
     });
 
   handleOpenProfile = () => {
@@ -132,14 +131,14 @@ class ProfilePage extends React.Component {
     this.setState({
       openPosition: true,
       positionId: null,
-      isNewPosition: true
+      isNewPosition: true,
     });
 
   handleOpenPositionUpdate = positionId =>
     this.setState({
       positionId,
       openPosition: true,
-      isNewPosition: false
+      isNewPosition: false,
     });
 
   handleClosePosition = () => {
@@ -147,7 +146,8 @@ class ProfilePage extends React.Component {
       window.alertDialog(
         "Apakah anda yakin?",
         "Jika anda tutup, maka pernyataan anda akan hilang.",
-        this.closePosition
+        this.closePosition,
+        () => null
       );
     } else {
       this.closePosition();
@@ -187,7 +187,7 @@ class ProfilePage extends React.Component {
 
     return (
       <React.Fragment>
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} elevation={1}>
           <Typography className={classes.title} variant="h5" component="h3">
             Info Pribadi
           </Typography>
@@ -215,10 +215,10 @@ class ProfilePage extends React.Component {
           </div>
         </Paper>
 
-        <Paper className={classes.paperChild} elevation={1}>
-          <Head>Pendidikan</Head>
-          <Education />
-        </Paper>
+        {/*<Paper className={classes.paperChild} elevation={1}>*/}
+        {/*  <Head>Pendidikan</Head>*/}
+        {/*  <Education />*/}
+        {/*</Paper>*/}
 
         <Paper className={classes.paperChild} elevation={1}>
           <Head Icon={AddBoxIcon} onClick={this.handleOpenPositionNew}>
@@ -252,7 +252,7 @@ class ProfilePage extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
   });
 
   return connect(mapStateToProps)(withStyles(styles)(ProfilePage));

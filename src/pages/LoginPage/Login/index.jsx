@@ -17,14 +17,14 @@ const styles = theme => ({
   container: {
     ...layouts.flexDirCol,
     ...layouts.flexMiddle,
-    ...layouts.w100
-  }
+    ...layouts.w100,
+  },
 });
 
 function getInitialValue() {
   return {
     email: "",
-    password: ""
+    password: "",
   };
 }
 
@@ -33,7 +33,7 @@ class Login extends React.PureComponent {
     classes: PropTypes.shape().isRequired,
     login: PropTypes.func.isRequired,
     history: PropTypes.shape().isRequired,
-    location: PropTypes.shape().isRequired
+    location: PropTypes.shape().isRequired,
   };
 
   componentDidMount() {
@@ -65,13 +65,15 @@ class Login extends React.PureComponent {
     actions.setErrors(getInitialValue());
     login(values.email, values.password)
       .catch(err => {
-        const fields = [LoginForm.field.email, LoginForm.field.password];
-        const humanizedErr = humanizeError(err.response.data, fields);
-        if (
-          has(humanizedErr, LoginForm.field.email) &&
-          has(humanizedErr, LoginForm.field.password)
-        ) {
-          actions.setErrors(humanizedErr);
+        if (err.response) {
+          const fields = [LoginForm.field.email, LoginForm.field.password];
+          const humanizedErr = humanizeError(err.response.data, fields);
+          if (
+            has(humanizedErr, LoginForm.field.email) &&
+            has(humanizedErr, LoginForm.field.password)
+          ) {
+            actions.setErrors(humanizedErr);
+          }
         }
         actions.setSubmitting(false);
         return err;
@@ -94,11 +96,11 @@ class Login extends React.PureComponent {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    loggedIn: isLoggedIn(state)
+    loggedIn: isLoggedIn(state),
   });
 
   const mapDispatchToProps = dispatch => ({
-    login: (email, password) => dispatch(_login(email, password))
+    login: (email, password) => dispatch(_login(email, password)),
   });
 
   return withRouter(

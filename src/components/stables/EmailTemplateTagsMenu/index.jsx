@@ -2,12 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
-import {getTemplateTags} from "../../../modules/mailer/thunks";
+import {getTemplateTags} from "../../../modules/crm/mailer/thunks";
 import {
   selectTemplateHtmlTags,
   selectTemplateFields,
   selectTemplateOperators,
-} from "../../../modules/mailer/selectors";
+} from "../../../modules/crm/mailer/selectors";
 
 import Tags from "./Tags";
 

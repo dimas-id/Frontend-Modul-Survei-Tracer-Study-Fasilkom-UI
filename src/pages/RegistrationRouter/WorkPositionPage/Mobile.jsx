@@ -46,7 +46,8 @@ class WorkPositionPage extends React.Component {
       window.alertDialog(
         "Apakah anda yakin?",
         "Jika anda tutup, maka pernyataan anda akan hilang.",
-        this.__handleCloseModal__
+        this.__handleCloseModal__,
+        () => null
       );
     } else {
       this.__handleCloseModal__();

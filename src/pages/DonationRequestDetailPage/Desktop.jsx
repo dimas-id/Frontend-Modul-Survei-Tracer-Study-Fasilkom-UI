@@ -152,7 +152,8 @@ class Screen extends React.Component {
             this.handleOpenSuccessMsg();
           })
           .catch(this.handleOpenErrorMsg);
-      }
+      },
+      () => null
     );
   }
   handleOpenSuccessMsg = () => {
