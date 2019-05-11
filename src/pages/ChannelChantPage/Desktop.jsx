@@ -20,15 +20,15 @@ import heliosV1 from "../../modules/api/helios/v1";
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    ...layouts.mt32
+    ...layouts.mt32,
   },
   grid: {
-    ...layouts.borderBox
+    ...layouts.borderBox,
   },
   card: {
     ...layouts.ml64,
-    ...layouts.mb8
-  }
+    ...layouts.mb8,
+  },
 });
 
 class Screen extends React.Component {
@@ -36,7 +36,7 @@ class Screen extends React.Component {
     channelDetail: null,
     listChant: null,
     isLoadingChannel: true,
-    isLoadingChant: true
+    isLoadingChant: true,
   };
 
   componentDidMount() {
@@ -49,6 +49,10 @@ class Screen extends React.Component {
         this.setState({ isLoadingChannel: false });
       });
 
+    this.loadChant();
+  }
+
+  loadChant = () => {
     heliosV1.channel
       .getListChant(this.props.match.params.channelId)
       .then(result => {
@@ -57,7 +61,48 @@ class Screen extends React.Component {
       .finally(() => {
         this.setState({ isLoadingChant: false });
       });
-  }
+  };
+
+  handleDelete = (userId, chantId, channelId) => {
+    window.alertDialog(
+      "Konfirmasi Penghapusan", //title
+      "Apakah anda yakin Chant ini?",
+      () => {
+        heliosV1.channel
+          .deleteChant(userId, chantId)
+          .then(() => {
+            this.handleOpenSuccessMsg();
+            this.setState({ isLoadingChant: true }, this.loadChant);
+          })
+          .catch(this.handleOpenErrorMsg);
+      },
+      () => null
+    );
+  };
+
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
+
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSuccessMsg: false });
+  };
+
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
+
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openErrorMsg: false });
+  };
 
   renderChannel() {
     const { channelDetail } = this.state;
@@ -97,10 +142,10 @@ class Screen extends React.Component {
               max="64px"
               numberChildrens={chant.numberChildrens}
               hasLiked={chant.hasLikedByCurrentUser}
+              onDelete={this.handleDelete}
             />
           </div>
         ))}
-        <EndCard marginLeft="64" />
       </React.Fragment>
     );
   }
@@ -114,7 +159,10 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBackChannel channelId={this.props.match.params.channelId} chantId={null}/>
+        <NavbarBackChannel
+          channelId={this.props.match.params.channelId}
+          chantId={null}
+        />
 
         <Container className={classes.root}>
           <Grid className={classes.grid} container spacing={24}>
@@ -122,7 +170,14 @@ class Screen extends React.Component {
               {isLoadingChannel ? <LoadingFill /> : this.renderChannel()}
             </Grid>
             <Grid item xs={9}>
-              {isLoadingChant ? <LoadingFill /> : this.renderChant()}
+              {isLoadingChant ? (
+                <LoadingFill />
+              ) : (
+                <React.Fragment>
+                  {this.renderChant()}
+                  <EndCard marginLeft="64" />
+                </React.Fragment>
+              )}
             </Grid>
           </Grid>
         </Container>
