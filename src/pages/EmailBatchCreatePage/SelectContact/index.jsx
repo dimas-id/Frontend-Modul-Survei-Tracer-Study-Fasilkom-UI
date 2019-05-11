@@ -139,8 +139,8 @@ export default React.memo(function({ selected = [], onSelect = val => {} }) {
             id="outlined-query"
             margin="normal"
             variant="outlined"
-            label="Nama/Email kontak"
             placeholder="Cari kontak..."
+            helperText="Pencarian berdasarkan nama/email."
             fullWidth
             onChange={handleQueryChange}
           />
@@ -150,7 +150,7 @@ export default React.memo(function({ selected = [], onSelect = val => {} }) {
             id="outlined-category"
             margin="normal"
             variant="outlined"
-            label="Kategori"
+            label="Filter Kategori"
             fullWidth
             onChange={handleCategoryChange}
             value={categories}
@@ -190,10 +190,10 @@ export default React.memo(function({ selected = [], onSelect = val => {} }) {
                       return (
                         <Checkbox
                           indeterminate={
-                            numSelected > 0 && numSelected < rowCount
+                            numSelected > 0 && (numSelected < rowCount || numSelected >= rowCount)
                           }
                           disabled={loading}
-                          checked={numSelected === rowCount}
+                          checked={numSelected > rowCount}
                           onChange={handleSelectAllContact}
                         />
                       );
