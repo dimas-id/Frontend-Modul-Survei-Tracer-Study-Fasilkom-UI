@@ -10,6 +10,9 @@ import { Container } from "../../components/Container";
 import ChantCard from "../../components/stables/Chant";
 import { LoadingFill } from "../../components/Loading";
 
+
+import paths from "../../pages/paths";
+import { makePathVariableUri } from "../../libs/navigation";
 import { layouts } from "../../styles/guidelines";
 
 import heliosV1 from "../../modules/api/helios/v1";
@@ -17,21 +20,14 @@ import heliosV1 from "../../modules/api/helios/v1";
 const styles = theme => ({
   card: {
     ...layouts.ml64,
-    ...layouts.mt64,
-    ...layouts.mb8
-  },
-  endCard: {
-    ...layouts.pt16,
-    ...layouts.pb16,
-    height: "60px",
-    backgroundColor: "#9f9fa0"
+    ...layouts.mt64
   }
 });
 
 class Screen extends React.Component {
   state = {
     listChant: null,
-    isLoading: true
+    isLoading: true,
   };
 
   componentDidMount() {
@@ -49,17 +45,62 @@ class Screen extends React.Component {
   }
 
 
-  handleDelete = chantId => {
-    heliosV1.channel
-      .deleteChant(this.props.user.id, chantId)
-      .then(this.loadChant);
+  handleDelete = (userId, chantId, channelId) => {
+    window.alertDialog(
+      "Konfirmasi Penghapusan", //title
+      "Apakah anda yakin Chant ini?",
+      () => {
+        heliosV1.channel
+      .deleteChant(userId, chantId)
+      .then(() => {
+        this.setState({ isLoading: true });
+      })
+      .then(() => {
+        this.handleOpenSuccessMsg();
+        this.props.history.push(
+          makePathVariableUri(paths.CHANNEL_CHANT, {
+            channelId: channelId
+          })
+        );
+        this.handleOpenSuccessMsg();
+      })
+      .catch(this.handleOpenErrorMsg);
+      },
+      () => null
+    );
+    
   };
+
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
+
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSuccessMsg: false });
+  };
+
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
+
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openErrorMsg: false });
+  };
+
   
   renderChantCard() {
     const { listChant } = this.state;
     const { classes } = this.props;
     const distanceToParent = listChant[0].level;
-
+    
     return (
       <React.Fragment>
         {listChant.map(chant => (
