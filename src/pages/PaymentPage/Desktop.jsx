@@ -154,7 +154,6 @@ class Screen extends React.Component {
     );
   }
 }
-
 function createContainer() {
   const mapStateToProps = state => ({
     user: getUser(state)
