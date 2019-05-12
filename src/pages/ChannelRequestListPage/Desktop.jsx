@@ -38,6 +38,7 @@ const styles = theme => ({
     ...Guidelines.fonts.medium,
     fontSize: 32
   }
+  
 });
 
 const STATUS = {
