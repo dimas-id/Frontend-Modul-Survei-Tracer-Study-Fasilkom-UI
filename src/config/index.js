@@ -1,4 +1,5 @@
 export const isDevelopment = process.env.NODE_ENV === "development";
+export const PUBLIC_URL = process.env.PUBLIC_URL;
 
 window.deprecationWarning =
   process.env.NODE_ENV !== "production"
