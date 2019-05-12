@@ -73,7 +73,7 @@ const styles = theme => ({
 const STATUS = {
   RJA: "Ditolak Admin",
   PRA: "Diproses Admin",
-  ACA: "Diterima Admin, Di,anjutkan ke Manajemen",
+  ACA: "Diterima Admin, Dilanjutkan ke Manajemen",
   RJM: "Ditolak Manajemen",
   PRM: "Diproses Manajemen",
   ACM: "Program Donasi Diterima"
@@ -107,10 +107,11 @@ class Screen extends React.Component {
     heliosV1.donation
       .getDonationProgramRequestDetail(this.props.user.id, requestId)
       .then(result => {
+        console.log(result.data)
         this.setState({ DonationRequest: result.data });
       })
       .catch(error => {
-        if (error.response.status === 404) {
+        if(error.response &&  error.response.status === 404) {
           this.props.history.replace(paths.ERROR_404);
         }
       })
@@ -119,7 +120,7 @@ class Screen extends React.Component {
         this.setState({ loading: false });
       });
   }
-  canBeDeleted() {
+  canBeDeletedandUpdated() {
     
     const { verificationStatus } = this.state.DonationRequest;
   
@@ -186,16 +187,17 @@ class Screen extends React.Component {
       return LinesLoader;
     }
     const {
-      categoryName,
       title,
       startDate,
       endDate,
       proposalUrl,
       goalAmount,
       verificationStatus,
-      notes
+      notes,
+      categoryName,
+
     } = this.state.DonationRequest;
-    const isEnabled = this.canBeDeleted();
+    const isEnabled = this.canBeDeletedandUpdated();
 
     return (
       <React.Fragment>
@@ -306,6 +308,7 @@ class Screen extends React.Component {
                 <Grid item xs={12} sm={12} className={classes.gridBtn}>
                   <Button
                     className={classes.btn}
+                    disabled={!isEnabled}
                     variant="contained"
                     color="primary"
                     type="submit"

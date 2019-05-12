@@ -26,20 +26,17 @@ import Particle from "../../components/Particle";
 import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
-  container: {
-    ...Guidelines.layouts.flexDirRow,
-    ...Guidelines.layouts.mt32,
-    ...Guidelines.layouts.mr32,
-    ...Guidelines.layouts.ml32,
-    ...Guidelines.layouts.pr32,
-    ...Guidelines.layouts.pl32,
-  },
+  
   paper: {
     ...Guidelines.layouts.mt16,
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
     ...Guidelines.layouts.pb32
+  },
+  title: {
+    ...Guidelines.fonts.medium,
+    fontSize: 32
   }
 });
 
