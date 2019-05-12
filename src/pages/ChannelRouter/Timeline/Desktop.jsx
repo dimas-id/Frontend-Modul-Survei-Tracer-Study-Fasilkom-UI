@@ -41,6 +41,10 @@ class Screen extends React.Component {
   }
 
   componentDidMount() {
+    this.loadChant()
+  }
+
+  loadChant = () => {
     heliosV1.channel
       .getTimeline()
       .then(result => {
@@ -50,7 +54,48 @@ class Screen extends React.Component {
         this.setState({ isLoading: false })
       }
     )
-  }
+  };
+
+  handleDelete = (userId, chantId, channelId) => {
+    window.alertDialog(
+      "Konfirmasi Penghapusan", //title
+      "Apakah anda yakin Chant ini?",
+      () => {
+        heliosV1.channel
+          .deleteChant(userId, chantId)
+          .then(() => {
+            this.handleOpenSuccessMsg();
+            this.loadChant();
+          })
+          .catch(this.handleOpenErrorMsg);
+      },
+      () => null
+    );
+  };
+
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
+
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSuccessMsg: false });
+  };
+
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
+
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openErrorMsg: false });
+  };
   
   renderChantTimeline() {
     const { listChant } = this.state;
@@ -74,6 +119,7 @@ class Screen extends React.Component {
             deleted={Boolean(chant.dateDeleted)}
             numberChildrens={chant.numberChildrens}
             hasLiked={chant.hasLikedByCurrentUser}
+            onDelete={this.handleDelete}
           />
         </div>
       ))}
@@ -87,8 +133,14 @@ class Screen extends React.Component {
 
   return (
     <Container className={classes.root}>
-      {isLoading ? <LoadingFill /> : this.renderChantTimeline()}
-      <EndCard marginLeft="64" />
+      {isLoading ? (
+          <LoadingFill />
+        ) : (
+          <React.Fragment>
+            {this.renderChantTimeline()}
+            <EndCard marginLeft="64" />
+          </React.Fragment>
+        )}
     </Container>
   );
   }

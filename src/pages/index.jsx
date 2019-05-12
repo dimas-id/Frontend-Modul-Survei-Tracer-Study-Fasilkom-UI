@@ -38,7 +38,7 @@ import DonationRequestUpdatePage from "./DonationRequestUpdatePage";
 
 export default function Pages() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/app">
       <Switch>
         {ROUTES.map(({title, route}) => (
           <Route

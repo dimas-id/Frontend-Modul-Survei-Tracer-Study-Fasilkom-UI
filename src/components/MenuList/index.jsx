@@ -35,7 +35,7 @@ const styles = theme => ({
 function Menu({classes, paths, location}) {
   const currentPath = location.pathname;
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={1}>
       <MenuList>
         {paths.map(
           ({menu, title}) =>

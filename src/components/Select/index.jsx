@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import classNames from "classnames";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -10,6 +11,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import {LoadingFill} from "../Loading";
 
 function CustomSelect({
+  className,
   onChange,
   value,
   name,
@@ -25,6 +27,7 @@ function CustomSelect({
   classes = {},
   disabled,
   loading,
+  SelectProps = {},
 }) {
   const [labelWidth, setLabelWidth] = React.useState(0);
   const inputLabelRef = React.useRef(null);
@@ -39,7 +42,7 @@ function CustomSelect({
       variant={variant}
       fullWidth={fullWidth}
       margin={margin}
-      className={classes.formControl}
+      className={classNames(classes.formControl, className)}
       disabled={disabled}
     >
       <InputLabel
@@ -55,6 +58,7 @@ function CustomSelect({
         value={value}
         onChange={onChange}
         required={!!required}
+        {...SelectProps}
         input={
           <OutlinedInput
             required={!!required}

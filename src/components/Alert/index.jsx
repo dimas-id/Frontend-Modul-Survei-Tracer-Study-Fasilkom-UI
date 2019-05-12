@@ -35,9 +35,11 @@ function AlertDialog({ alert, open, hide }) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={withHide(onNegative)} color="secondary">
-          Tidak
-        </Button>
+        {onNegative && (
+          <Button onClick={withHide(onNegative)} color="secondary">
+            Tidak
+          </Button>
+        )}
         <Button onClick={withHide(onPositive)} color="primary" autoFocus>
           Ok
         </Button>
@@ -49,9 +51,9 @@ function AlertDialog({ alert, open, hide }) {
 export default connect(
   state => ({
     open: isShowAlert(state),
-    alert: getAlert(state)
+    alert: getAlert(state),
   }),
   dispatch => ({
-    hide: () => dispatch(utilityActions.hideAlert())
+    hide: () => dispatch(utilityActions.hideAlert()),
   })
 )(AlertDialog);

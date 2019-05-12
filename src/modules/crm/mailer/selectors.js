@@ -1,7 +1,7 @@
 import get from "lodash/get";
 
 export function selectTemplateTags(state) {
-  return get(state, "mailer.tags");
+  return get(state, "crm.mailer.tags");
 }
 
 export function selectTemplateHtmlTags(state) {
@@ -17,7 +17,7 @@ export function selectTemplateOperators(state) {
 }
 
 export function selectTemplates(state) {
-  return get(state, "mailer.templates");
+  return get(state, "crm.mailer.templates");
 }
 
 export function selectTemplateById(state, templateId) {
@@ -29,5 +29,5 @@ export function selectTemplateById(state, templateId) {
 }
 
 export function selectBatch(state) {
-  return get(state, "mailer.batch");
+  return get(state, "crm.mailer.batch");
 }

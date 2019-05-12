@@ -18,25 +18,25 @@ import heliosV1 from "../../../modules/api/helios/v1";
 const styles = theme => ({
   card: {
     ...Guidelines.layouts.ml64,
-    ...Guidelines.layouts.mb8
+    ...Guidelines.layouts.mb8,
   },
   chantWrapper: {
     maxHeight: 64,
     lineHeight: 64,
     overflow: "hidden",
-    textOverflow: "ellipsis"
+    textOverflow: "ellipsis",
   },
   actions: {
     display: "flex",
     ...Guidelines.layouts.flexDirCol,
-    alignItems: "flex-start"
-  }
+    alignItems: "flex-start",
+  },
 });
 
 class Screen extends React.Component {
   state = {
     listChantUser: null,
-    isLoading: true
+    isLoading: true,
   };
 
   componentDidMount() {
@@ -44,7 +44,7 @@ class Screen extends React.Component {
   }
 
   loadChant = () => {
-    this.setState({ isLoading: true})
+    this.setState({ isLoading: true });
     heliosV1.channel
       .getListChantUser(this.props.user.id)
       .then(result => {
@@ -55,10 +55,45 @@ class Screen extends React.Component {
       });
   };
 
-  handleDelete = chantId => {
-    heliosV1.channel
-      .deleteChant(this.props.user.id, chantId)
-      .then(this.loadChant);
+  handleDelete = (userId, chantId, channelId) => {
+    window.alertDialog(
+      "Konfirmasi Penghapusan", //title
+      "Apakah anda yakin Chant ini?",
+      () => {
+        heliosV1.channel
+          .deleteChant(userId, chantId)
+          .then(() => {
+            this.handleOpenSuccessMsg();
+            this.loadChant();
+          })
+          .catch(this.handleOpenErrorMsg);
+      },
+      () => null
+    );
+  };
+
+  handleOpenSuccessMsg = () => {
+    this.setState({ openSuccessMsg: true });
+  };
+
+  handleCloseSuccessMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSuccessMsg: false });
+  };
+
+  handleOpenErrorMsg = () => {
+    this.setState({ openErrorMsg: true });
+  };
+
+  handleCloseErrorMsg = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openErrorMsg: false });
   };
 
   renderChantUser() {
@@ -97,8 +132,14 @@ class Screen extends React.Component {
 
     return (
       <Container className={classes.root}>
-        {isLoading ? <LoadingFill /> : this.renderChantUser()}
-        <EndCard marginLeft="64" />
+        {isLoading ? (
+          <LoadingFill />
+        ) : (
+          <React.Fragment>
+            {this.renderChantUser()}
+            <EndCard marginLeft="64" />
+          </React.Fragment>
+        )}
       </Container>
     );
   }
@@ -106,7 +147,7 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
   });
 
   const mapDispatchToProps = dispatch => ({});

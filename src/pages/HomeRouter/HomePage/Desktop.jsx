@@ -93,7 +93,8 @@ class HomePage extends React.Component {
       "Apakah anda ingin verifikasi akun anda sekarang?",
       () => {
         this.props.history.push(paths.USER_VERIFY);
-      }
+      },
+      () => null
     );
   };
 

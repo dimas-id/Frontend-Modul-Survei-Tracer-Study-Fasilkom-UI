@@ -2,52 +2,53 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import { withStyles } from "@material-ui/core/styles";
-import TableCell from "@material-ui/core/TableCell";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
+import { withStyles } from "@material-ui/core/styles/index";
+import TableCell from "@material-ui/core/TableCell/index";
+import TableSortLabel from "@material-ui/core/TableSortLabel/index";
 import { AutoSizer, Column, SortDirection, Table } from "react-virtualized";
 
 const styles = theme => ({
   table: {
-    fontFamily: theme.typography.fontFamily
+    fontFamily: theme.typography.fontFamily,
   },
   flexContainer: {
     display: "flex",
     alignItems: "center",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   },
   tableRow: {
-    cursor: "pointer"
+    cursor: "pointer",
   },
   tableRowHover: {
     "&:hover": {
-      backgroundColor: theme.palette.grey[200]
-    }
+      backgroundColor: theme.palette.grey[200],
+    },
   },
   tableCell: {
-    flex: 1
+    flex: 1,
   },
   noClick: {
-    cursor: "initial"
-  }
+    cursor: "initial",
+  },
 });
 
-class MuiVirtualizedTable extends React.PureComponent {
+class VirtualizedTable extends React.PureComponent {
   getRowClassName = ({ index }) => {
     const { classes, rowClassName, onRowClick } = this.props;
 
     return classNames(classes.tableRow, classes.flexContainer, rowClassName, {
-      [classes.tableRowHover]: index !== -1 && onRowClick != null
+      [classes.tableRowHover]: index !== -1 && onRowClick != null,
     });
   };
 
-  cellRenderer = ({ cellData, columnIndex = null }) => {
+  cellRenderer = ({ cellData, columnIndex = null, padding }) => {
     const { columns, classes, rowHeight, onRowClick } = this.props;
     return (
       <TableCell
         component="div"
+        padding={padding || "default"}
         className={classNames(classes.tableCell, classes.flexContainer, {
-          [classes.noClick]: onRowClick == null
+          [classes.noClick]: onRowClick == null,
         })}
         variant="body"
         style={{ height: rowHeight }}
@@ -62,11 +63,19 @@ class MuiVirtualizedTable extends React.PureComponent {
     );
   };
 
-  headerRenderer = ({ label, columnIndex, dataKey, sortBy, sortDirection }) => {
+  headerRenderer = ({
+    label,
+    columnIndex,
+    dataKey,
+    sortBy,
+    sortDirection,
+    headerRenderer,
+    padding,
+  }) => {
     const { headerHeight, columns, classes, sort } = this.props;
     const direction = {
       [SortDirection.ASC]: "asc",
-      [SortDirection.DESC]: "desc"
+      [SortDirection.DESC]: "desc",
     };
 
     const inner =
@@ -89,11 +98,12 @@ class MuiVirtualizedTable extends React.PureComponent {
           classes.flexContainer,
           classes.noClick
         )}
+        padding={padding || "default"}
         variant="head"
         style={{ height: headerHeight }}
         align={columns[columnIndex].numeric || false ? "right" : "left"}
       >
-        {inner}
+        {Boolean(headerRenderer) ? headerRenderer() : inner}
       </TableCell>
     );
   };
@@ -112,15 +122,23 @@ class MuiVirtualizedTable extends React.PureComponent {
           >
             {columns.map(
               (
-                { cellContentRenderer = null, className, dataKey, ...other },
+                {
+                  cellContentRenderer = null,
+                  className,
+                  dataKey,
+                  headerRenderer,
+                  rowPadding,
+                  ...other
+                },
                 index
               ) => {
                 let renderer;
                 if (cellContentRenderer != null) {
                   renderer = cellRendererProps =>
                     this.cellRenderer({
+                      padding: rowPadding,
                       cellData: cellContentRenderer(cellRendererProps),
-                      columnIndex: index
+                      columnIndex: index,
                     });
                 } else {
                   renderer = this.cellRenderer;
@@ -132,7 +150,9 @@ class MuiVirtualizedTable extends React.PureComponent {
                     headerRenderer={headerProps =>
                       this.headerRenderer({
                         ...headerProps,
-                        columnIndex: index
+                        padding: rowPadding,
+                        headerRenderer,
+                        columnIndex: index,
                       })
                     }
                     className={classNames(classes.flexContainer, className)}
@@ -150,13 +170,13 @@ class MuiVirtualizedTable extends React.PureComponent {
   }
 }
 
-MuiVirtualizedTable.propTypes = {
+VirtualizedTable.propTypes = {
   classes: PropTypes.object.isRequired,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       cellContentRenderer: PropTypes.func,
       dataKey: PropTypes.string.isRequired,
-      width: PropTypes.number.isRequired
+      width: PropTypes.number.isRequired,
     })
   ).isRequired,
   headerHeight: PropTypes.number,
@@ -164,14 +184,11 @@ MuiVirtualizedTable.propTypes = {
   rowClassName: PropTypes.string,
   rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   sort: PropTypes.func,
-  
 };
 
-MuiVirtualizedTable.defaultProps = {
+VirtualizedTable.defaultProps = {
   headerHeight: 56,
-  rowHeight: 56
+  rowHeight: 56,
 };
 
-const WrappedVirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
-
-export default withStyles(styles)(WrappedVirtualizedTable);
+export default withStyles(styles)(VirtualizedTable);

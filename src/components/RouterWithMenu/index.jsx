@@ -6,7 +6,6 @@ import MenuList from "../MenuList";
 
 export default withRouter(function RouterWithMenu({
   paths,
-  classes,
   MenuHeaderComponent
 }) {
   return (

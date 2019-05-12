@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import debounce from 'lodash/debounce'
 import { withRouter } from "react-router";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -54,8 +53,7 @@ class Screen extends React.PureComponent {
           title: result.data.title,
           body: result.data.body,
           defaultValue: result.data.body
-        });
-        localStorage.setItem('chantBody', result.data.body)
+        })
       })
       .finally(() => {
         this.setState({ loading: false });
@@ -69,12 +67,9 @@ class Screen extends React.PureComponent {
   }
 
   handleBody( target ) {
-    const saveLocal = debounce(() => {
-      localStorage.setItem('chantBody', target)
-    }, 250)
     this.setState({
       body: target
-    }, saveLocal);
+    })
   }
 
   handleSubmit() {
@@ -85,9 +80,6 @@ class Screen extends React.PureComponent {
         this.state.title,
         this.state.body
       )
-      .then(() => {
-        localStorage.removeItem("chantBody")
-      })
       .then(this.handleOpenSuccessMsg)
       .catch(this.handleOpenErrorMsg)
   }

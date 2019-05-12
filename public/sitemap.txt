@@ -1,0 +1,6 @@
+http://alumni.cs.ui.ac.id/app/
+http://alumni.cs.ui.ac.id/app/register/
+http://alumni.cs.ui.ac.id/app/login/
+http://alumni.cs.ui.ac.id/app/donasi/
+http://alumni.cs.ui.ac.id/app/channels/
+http://alumni.cs.ui.ac.id/app/users/

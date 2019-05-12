@@ -17,8 +17,8 @@ import NavbarEmailBatch from "../../components/stables/Navbar/NavbarEmailBatch";
 import {Container} from "../../components/Container";
 
 import {humanizeError} from "../../libs/response";
-import {getBatchById, updateBatch} from "../../modules/mailer/thunks";
-import {selectBatch, selectTemplateById} from "../../modules/mailer/selectors";
+import {getBatchById, updateBatch} from "../../modules/crm/mailer/thunks";
+import {selectBatch, selectTemplateById} from "../../modules/crm/mailer/selectors";
 import {Guidelines} from "../../styles";
 import paths from "../paths";
 
