@@ -145,10 +145,12 @@ export const login = (email, password) => {
   };
 };
 
-export const logout = () => {
+export const logout = (force = false) => {
   return async (dispatch, getState, {API: {atlasV1}, utility}) => {
     try {
-      await atlasV1.session.refreshToken(getUserRefreshToken(getState())); // just change it
+      if(!force) {
+        await atlasV1.session.refreshToken(getUserRefreshToken(getState())); // just change it
+      }
     } finally {
       setAuthToken(undefined);
       await dispatch(sessionActions.clearSession());

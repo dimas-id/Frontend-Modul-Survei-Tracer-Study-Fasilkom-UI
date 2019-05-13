@@ -31,3 +31,11 @@ export function selectTemplateById(state, templateId) {
 export function selectBatch(state) {
   return get(state, "crm.mailer.batch");
 }
+
+export function selectBatches(state) {
+  return get(state, "crm.mailer.batches")
+}
+
+export function selectJobs(state) {
+  return get(state, "crm.mailer.jobs")
+}
