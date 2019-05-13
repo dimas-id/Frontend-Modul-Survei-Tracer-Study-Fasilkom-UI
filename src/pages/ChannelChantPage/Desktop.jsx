@@ -71,10 +71,14 @@ class Screen extends React.Component {
         heliosV1.channel
           .deleteChant(userId, chantId)
           .then(() => {
-            this.handleOpenSuccessMsg();
-            this.setState({ isLoadingChant: true }, this.loadChant);
+            this.loadChant();
+            window.notifySnackbar("Chant berhasil dihapus", {
+              variant: "success"
+            });
           })
-          .catch(this.handleOpenErrorMsg);
+          .catch(() => window.notifySnackbar("Chant tidak dapat dihapus", {
+            variant: "warning"
+          }));
       },
       () => null
     );

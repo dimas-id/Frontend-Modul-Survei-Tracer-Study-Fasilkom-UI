@@ -16,9 +16,13 @@ import Particle from "../../components/Particle";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
 
+import { makePathVariableUri } from "../../libs/navigation";
+
 import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 
 import { layouts } from "../../styles/guidelines";
+
+import paths from "../paths";
 
 const styles = theme => ({
   root: {
@@ -73,34 +77,35 @@ class Screen extends React.PureComponent {
         this.state.title,
         this.state.body
       )
-      .then(this.handleOpenSuccessMsg)
-      .catch(this.handleOpenErrorMsg)
+      .then(({ data }) => {
+        window.notifySnackbar(
+          `Chant '${data.title}' berhasil dibuat`,
+          { variant: "success" }
+        );
+        if(this.state.parentChant){
+          this.props.history.push(
+            makePathVariableUri(paths.CHANNEL_CHANT_DETAIL, {
+              channelId: data.channel,
+              chantId: this.state.parentChant
+            })
+          );
+        }
+        else{
+          this.props.history.push(
+            makePathVariableUri(paths.CHANNEL_CHANT, {
+              channelId: data.channel
+            })
+          );
+        }
+      })
+      .catch(() => {
+        window.notifySnackbar("Chant gagal dibuat", {
+          variant: "error"
+        });
+      });
   }
 
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = ( reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
-  };
-
-  handleCloseErrorMsg = ( reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
-  };
-
+  
   render() {
     const { classes } = this.props;
     const { title } = this.state;
@@ -124,37 +129,6 @@ class Screen extends React.PureComponent {
             />
           </Paper>
         </Container>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Chant berhasil dibuat`}
-          />
-        </Snackbar>
-
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={`Chant gagal dibuat`}
-          />
-        </Snackbar>
         </React.Fragment>
     );
   }

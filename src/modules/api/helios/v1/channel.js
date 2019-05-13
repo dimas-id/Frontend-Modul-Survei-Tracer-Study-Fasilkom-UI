@@ -1,5 +1,6 @@
 import http from "../../../../libs/http";
 import { API_V1_URL } from "../config";
+import { makeQueryUri } from "../../../../libs/navigation";
 
 export default Object.freeze({
   getChannelDetail: channelId =>
@@ -10,7 +11,8 @@ export default Object.freeze({
     http.get(`${API_V1_URL}/channels/${channelId}/chants/${chantId}`),
   getListChannel: () => http.get(`${API_V1_URL}/channels`),
   getListChantUser: userId => http.get(`${API_V1_URL}/users/${userId}/chants`),
-  getTimeline: () => http.get(`${API_V1_URL}/timeline`),
+  getTimeline: (limit = 100, offset = 0) => 
+    http.get(makeQueryUri(`${API_V1_URL}/timeline`, { limit, offset })),
   getChantDetail: (userId, chantId) =>
     http.get(`${API_V1_URL}/users/${userId}/chants/${chantId}`),
   postChant: (userId, channel, parentChant, title, body) =>
