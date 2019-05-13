@@ -19,5 +19,5 @@ export function getUserRefreshToken(state) {
 }
 
 export function isLoggedIn(state) {
-  return !!getUserAccessToken(state) && !isEmpty(getUser(state));
+  return Boolean(getUserAccessToken(state)) && !isEmpty(getUser(state));
 }

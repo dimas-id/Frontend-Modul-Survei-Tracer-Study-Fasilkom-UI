@@ -2,6 +2,7 @@
 
 # IDE
 /.idea
+.idea
 /.vscode
 
 # dependencies

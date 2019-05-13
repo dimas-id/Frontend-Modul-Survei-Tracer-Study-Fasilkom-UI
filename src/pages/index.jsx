@@ -1,6 +1,6 @@
 import React from "react";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {Helmet} from "react-helmet";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 import LandingPage from "./LandingPage";
 import HomeRouter from "./HomeRouter";
@@ -11,6 +11,7 @@ import CreateChantPage from "./CreateChantPage";
 import RegisterExternalAuthPage from "./RegisterExternalAuthPage";
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
+import EmailBlasterPage from "./EmailBlasterPage";
 import EmailTemplateCreatePage from "./EmailTemplateCreatePage";
 import EmailTemplateUpdatePage from "./EmailTemplateUpdatePage";
 import EmailTemplateListPage from "./EmailTemplateListPage";
@@ -40,7 +41,7 @@ export default function Pages() {
   return (
     <BrowserRouter basename="/app">
       <Switch>
-        {ROUTES.map(({title, route}) => (
+        {ROUTES.map(({ title, route }) => (
           <Route
             key={route.path}
             exact={route.exact}
@@ -201,10 +202,26 @@ const ROUTES = [
     },
   },
   {
+    title: "CRM",
+    route: {
+      path: paths.CRM,
+      component: () => <Redirect to={paths.CRM_MAILER} />,
+      exact: true,
+    },
+  },
+  {
     title: "Contact",
     route: {
       path: paths.CRM_CONTACT,
       component: ContactPage,
+    },
+  },
+  {
+    title: "Email Blaster",
+    route: {
+      path: paths.CRM_MAILER,
+      component: EmailBlasterPage,
+      exact: true,
     },
   },
   {
