@@ -136,7 +136,7 @@ class Screen extends React.Component {
                   Transfer tepat sesuai nominal berikut :
                 </Typography>
                 <Typography gutterBottom variant="h3" flexcomponent="h2">
-                    Rp {amount}
+                { new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount)}
                   </Typography>
                 <Paper className={classes.paperNominal}>
                   <List>
@@ -148,7 +148,7 @@ class Screen extends React.Component {
                     <Divider component="li" />
                     <li>
                       <Typography className={classes.dividerFullWidth} gutterBottom variant="h7" flexcomponent="h7">
-                      Jumlah Donasi : Rp {amount - uniqueCode}
+                      Jumlah Donasi : { new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount - uniqueCode)}
                       </Typography>
                     </li>
                     <Divider component="li" />
@@ -169,8 +169,6 @@ class Screen extends React.Component {
                 {isMandiri ? (
                   <img alt="Mandiri" src= {mandiri} className = {classes.image} />
                 ) : null}
-                
-          
                 <ListItemText primary={paymentDetail.bankNumberDest} secondary="KCU Depok" />
                         </ListItem>
                 <Button
@@ -193,7 +191,6 @@ class Screen extends React.Component {
     );
   }
 }
-
 function createContainer() {
   const mapStateToProps = state => ({
     user: getUser(state)

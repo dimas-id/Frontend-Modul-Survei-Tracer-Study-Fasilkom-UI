@@ -1,21 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import moment from "moment";
 
-import {withStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import CardIcon from "@material-ui/icons/CreditCardOutlined";
 import Grid from "@material-ui/core/Grid";
 
-import {withAuth} from "../../components/hocs/auth";
-import {NavbarAuth} from "../../components/stables/Navbar";
+import { withAuth } from "../../components/hocs/auth";
+import { NavbarAuth } from "../../components/stables/Navbar";
 import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
-import {Container} from "../../components/Container";
-import {Guidelines} from "../../styles";
+import { Container } from "../../components/Container";
+import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
-import {Typography} from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -23,18 +23,19 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import MomentUtils from "@date-io/moment";
-import {MuiPickersUtilsProvider, InlineDatePicker} from "material-ui-pickers";
-import {getUser} from "../../modules/session/selectors";
+import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
+import { getUser } from "../../modules/session/selectors";
 import bundar from "../../assets/bundar.png";
 import heliosV1 from "../../modules/api/helios/v1";
-import {LinesLoader} from "../../components/Loading";
+import { LinesLoader } from "../../components/Loading";
 import keyMirror from "keymirror";
-import {getDateFormatted} from "../../libs/datetime";
+import { getDateFormatted } from "../../libs/datetime";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import paths from "../paths";
-import {makePathVariableUri} from "../../libs/navigation";
+import { makePathVariableUri } from "../../libs/navigation";
+import NumberFormat from "react-number-format";
 
 const styles = theme => ({
   container: {
@@ -98,6 +99,31 @@ const FIELDS = keyMirror({
   bankNumberSource: null,
   estPaymentDate: null,
 });
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={values => {
+        onChange({
+          target: {
+            name: other.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  );
+}
+
+NumberFormatCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
@@ -105,12 +131,11 @@ class Screen extends React.Component {
 
   state = {
     values: {
-      [FIELDS.amount]: 0,
+      [FIELDS.amount]: "0",
       [FIELDS.bankNumberDest]: "",
       [FIELDS.bankNumberSource]: "",
       [FIELDS.estPaymentDate]: moment(),
     },
-    // estPaymentDate: null,
     donationProgram: null,
     loading: true,
   };
@@ -120,10 +145,10 @@ class Screen extends React.Component {
     heliosV1.donation
       .getDonationProgramDetail(idProgram)
       .then(result => {
-        this.setState({donationProgram: result.data});
+        this.setState({ donationProgram: result.data });
       })
       .finally(() => {
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   }
 
@@ -146,8 +171,8 @@ class Screen extends React.Component {
   };
 
   handleSubmit = e => {
-    const {history} = this.props;
-    const {values} = this.state;
+    const { history } = this.props;
+    const { values } = this.state;
     const idProgram = this.props.match.params.idProgram;
 
     heliosV1.donation
@@ -158,7 +183,7 @@ class Screen extends React.Component {
         values[FIELDS.bankNumberSource],
         getDateFormatted(values[FIELDS.estPaymentDate], "YYYY-MM-DD")
       )
-      .then(({data}) => {
+      .then(({ data }) => {
         history.push(
           makePathVariableUri(paths.DONATION_PAYMENT_DETAIL, {
             donationId: data.id,
@@ -170,7 +195,7 @@ class Screen extends React.Component {
   };
 
   handleOpenSuccessMsg = () => {
-    this.setState({openSuccessMsg: true});
+    this.setState({ openSuccessMsg: true });
   };
 
   handleCloseSuccessMsg = (event, reason) => {
@@ -178,11 +203,11 @@ class Screen extends React.Component {
       return;
     }
 
-    this.setState({openSuccessMsg: false});
+    this.setState({ openSuccessMsg: false });
   };
 
   handleOpenErrorMsg = () => {
-    this.setState({openErrorMsg: true});
+    this.setState({ openErrorMsg: true });
   };
 
   handleCloseErrorMsg = (event, reason) => {
@@ -190,17 +215,18 @@ class Screen extends React.Component {
       return;
     }
 
-    this.setState({openErrorMsg: false});
+    this.setState({ openErrorMsg: false });
   };
 
   render() {
-    const {user, classes} = this.props;
-    const {loading, values} = this.state;
+    const { user, classes } = this.props;
+    const { loading, values } = this.state;
     if (loading) {
       return LinesLoader;
     }
+    console.log(values[FIELDS.amount]);
 
-    const {title, description, proposalUrl} = this.state.donationProgram;
+    const { title, description, proposalUrl } = this.state.donationProgram;
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -235,10 +261,9 @@ class Screen extends React.Component {
                     className={classes.textField}
                     variant="outlined"
                   />
-
                   <TextField
                     required
-                    id="outlined-required"
+                    id="formatted-numberformat-input"
                     label="Jumlah Donasi"
                     className={classes.textField}
                     margin="normal"
@@ -246,9 +271,9 @@ class Screen extends React.Component {
                     name={FIELDS.amount}
                     value={values[FIELDS.amount]}
                     onChange={this.handleChange}
-                    type="number"
-                    helperText="Jumlah donasi dalam kelipatan ribuan"
+                    // type="number"
                     InputProps={{
+                      inputComponent: NumberFormatCustom,
                       startAdornment: (
                         <InputAdornment position="start">Rp</InputAdornment>
                       ),
