@@ -64,37 +64,18 @@ class Screen extends React.Component {
         heliosV1.channel
           .deleteChant(userId, chantId)
           .then(() => {
-            this.handleOpenSuccessMsg();
             this.loadChant();
+            window.notifySnackbar("Chant berhasil dihapus", {
+              variant: "success"
+            });
           })
-          .catch(this.handleOpenErrorMsg);
+          .catch(() => window.notifySnackbar("Chant tidak dapat dihapus", {
+            variant: "warning"
+          })
+          );
       },
       () => null
     );
-  };
-
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
   };
   
   renderChantTimeline() {

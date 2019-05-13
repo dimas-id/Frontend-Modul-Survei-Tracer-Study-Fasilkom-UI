@@ -56,45 +56,24 @@ class Screen extends React.Component {
         this.setState({ isLoading: true });
       })
       .then(() => {
-        this.handleOpenSuccessMsg();
         this.props.history.push(
           makePathVariableUri(paths.CHANNEL_CHANT, {
             channelId: channelId
           })
         );
-        this.handleOpenSuccessMsg();
+        window.notifySnackbar("Chant berhasil dihapus", {
+          variant: "success"
+        });
       })
-      .catch(this.handleOpenErrorMsg);
+      .catch(() => window.notifySnackbar("Chant tidak dapat dihapus", {
+        variant: "warning"
+      })
+      )
       },
       () => null
     );
     
   };
-
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
-  };
-
   
   renderChantCard() {
     const { listChant } = this.state;
