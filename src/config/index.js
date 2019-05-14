@@ -19,8 +19,8 @@ const developmentConstants = () => {
 };
 
 const productionConstants = () => ({
-  ATLAS: "https://b3-atlas.herokuapp.com",
-  HELIOS: "https://b3-helios.herokuapp.com"
+  ATLAS: "http://165.22.244.180:8000",
+  HELIOS: "http://165.22.244.180:8004"
 });
 
 const constants = () => {

@@ -5,7 +5,6 @@
   "author": "PROPENSI B3",
   "description": "ILUNI12 Channel Frontend",
   "license": "UNLICENSED",
-  "homepage": "/app/",
   "scripts": {
     "build": "cross-env npm-run-all build:js",
     "build:js": "react-scripts build",

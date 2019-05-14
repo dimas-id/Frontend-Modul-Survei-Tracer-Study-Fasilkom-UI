@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 import LandingPage from "./LandingPage";
@@ -31,15 +31,16 @@ import UpdateChantPage from "./UpdateChantPage";
 import ChannelRouter from "./ChannelRouter";
 import ChannelChantDetailPage from "./ChannelChantDetailPage";
 import UserVerifyPage from "./UserVerifyPage";
-
-import paths from "./paths";
 import UserDonationRequestListPage from "./UserDonationRequestListPage";
 import DonationRequestDetailPage from "./DonationRequestDetailPage";
 import DonationRequestUpdatePage from "./DonationRequestUpdatePage";
 
+import { history } from '../modules';
+import paths from "./paths";
+
 export default function Pages() {
   return (
-    <BrowserRouter basename="/app">
+    <Router history={history}>
       <Switch>
         {ROUTES.map(({ title, route }) => (
           <Route
@@ -57,7 +58,7 @@ export default function Pages() {
           />
         ))}
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 }
 
