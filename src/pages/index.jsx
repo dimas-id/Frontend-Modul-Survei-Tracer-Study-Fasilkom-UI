@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
@@ -35,7 +36,9 @@ import UserDonationRequestListPage from "./UserDonationRequestListPage";
 import DonationRequestDetailPage from "./DonationRequestDetailPage";
 import DonationRequestUpdatePage from "./DonationRequestUpdatePage";
 
+
 import { history } from '../modules';
+
 import paths from "./paths";
 
 export default function Pages() {
@@ -149,20 +152,6 @@ const ROUTES = [
     },
   },
   {
-    title: "Create Chant",
-    route: {
-      path: paths.CHANNEL_CHANT_CREATE,
-      component: CreateChantPage,
-    },
-  },
-  {
-    title: "Update Chant",
-    route: {
-      path: paths.CHANNEL_CHANT_UPDATE,
-      component: UpdateChantPage,
-    },
-  },
-  {
     title: "Donasi",
     route: {
       exact: true,
@@ -195,7 +184,7 @@ const ROUTES = [
     },
   },
   {
-    title: "Form-Donasi",
+    title: "Form Donasi",
     route: {
       exact: true,
       path: paths.DONATION_FORM,
@@ -299,6 +288,20 @@ const ROUTES = [
       exact: true,
       path: paths.CHANNEL,
       component: ChannelRouter,
+    },
+  },
+  {
+    title: "Create Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_CREATE,
+      component: CreateChantPage,
+    },
+  },
+  {
+    title: "Update Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_UPDATE,
+      component: UpdateChantPage,
     },
   },
   {
