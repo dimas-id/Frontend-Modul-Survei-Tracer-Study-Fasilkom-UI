@@ -19,13 +19,13 @@ export default withRouter(
     mapStateToProps,
     null
   )(function({ children, isLoggedIn, history, ...ButtonProps }) {
-    if (isLoggedIn) {
-      history.replace(paths.HOME);
-    }
 
     let timer = null;
 
     function handleClick() {
+      if (isLoggedIn) {
+        history.replace(paths.HOME);
+      }
       window.notifySnackbar(
         "Mengalihkan ke halaman masuk LinkedIn",
         { variant: "info" }
