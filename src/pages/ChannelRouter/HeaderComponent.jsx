@@ -38,7 +38,7 @@ export default withStyles(styles)(function(props) {
         avatar={
           <Avatar alt={props.name} src={props.profilePicUrl} className={classes.avatar} />
         }
-        title={props.name + props.lastName}
+        title={props.firstName +" "+ props.lastName}
         subheader={ props.numberOfChants ? (props.numberOfChants + " Chants" ): props.dateCreated}
       />
     </Card>

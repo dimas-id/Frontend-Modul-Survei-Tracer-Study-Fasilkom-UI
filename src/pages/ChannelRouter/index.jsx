@@ -92,7 +92,7 @@ class Screen extends React.Component {
   renderHeader = () => {
     const { user } = this.props;
     const { numberOfChants } = this.state
-    return <HeaderComponent name={user.name} lastName={user.lastName} 
+    return <HeaderComponent firstName={user.firstName} lastName={user.lastName} 
     profilePicUrl={user.profile.profilePicUrl} numberOfChants={numberOfChants}/>;
   };
 
