@@ -70,7 +70,7 @@ class EmailBatchCreatePage extends React.Component {
         }
 
         let title = "";
-        if (e.response) {
+        if (e.response && e.response.data) {
           const numUnknownContacts = e.response.data.filter(item =>
             Boolean(item.recipient)
           ).length;
