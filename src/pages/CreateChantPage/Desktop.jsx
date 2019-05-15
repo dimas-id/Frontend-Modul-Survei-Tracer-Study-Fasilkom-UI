@@ -16,6 +16,7 @@ import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
 
 import { makePathVariableUri } from "../../libs/navigation";
+import { humanizeError } from "../../libs/response";
 
 import { layouts } from "../../styles/guidelines";
 
@@ -95,10 +96,20 @@ class Screen extends React.PureComponent {
           );
         }
       })
-      .catch(() => {
-        window.notifySnackbar("Chant gagal dibuat", {
-          variant: "error"
-        });
+      .catch(({ response }) => {
+        if(response) {
+          const err = humanizeError(response.data);
+          if (err.body) {
+            window.notifySnackbar("Field 'Deskripsi' tidak boleh kosong", {
+                  variant: "error"
+                });
+          }
+          else{
+            window.notifySnackbar("Sepertinya terjadi kesalahan", {
+              variant: "error"
+            });
+          }
+        }
       });
   }
 
