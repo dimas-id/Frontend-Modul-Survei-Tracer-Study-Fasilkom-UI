@@ -6,7 +6,6 @@ import {getTemplateTags} from "../../../modules/crm/mailer/thunks";
 import {
   selectTemplateHtmlTags,
   selectTemplateFields,
-  selectTemplateOperators,
 } from "../../../modules/crm/mailer/selectors";
 
 import Tags from "./Tags";
@@ -26,7 +25,6 @@ function EmailTemplateTagsMenu({
   loadTags,
   html,
   variables,
-  operators,
   onPick,
 }) {
   const [loading, setLoading] = React.useState(true);
@@ -58,14 +56,6 @@ function EmailTemplateTagsMenu({
           onPick={onPick}
         />
       </div>
-      <div className={classes.tagMenuWrapper}>
-        <Tags
-          items={operators}
-          title="Daftar Operator"
-          loading={loading}
-          onPick={onPick}
-        />
-      </div>
     </div>
   );
 }
@@ -78,7 +68,6 @@ export default connect(
   state => ({
     html: selectTemplateHtmlTags(state),
     variables: selectTemplateFields(state),
-    operators: selectTemplateOperators(state),
   }),
   dispatch => ({
     loadTags: () => dispatch(getTemplateTags()),
