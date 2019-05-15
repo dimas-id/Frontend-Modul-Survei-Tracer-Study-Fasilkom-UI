@@ -49,7 +49,7 @@ const styles = theme => {
     },
     appbar: {
       top: 0,
-      backgroundColor: "#fff",
+      backgroundColor: "#fff !important",
       boxShadow: "None",
     },
     title: {
@@ -252,7 +252,6 @@ class NavbarAuth extends React.Component {
       <AppBar
         position={position}
         className={classes.appbar}
-        style={{ backgroundColor: "#fff !important" }}
       >
         <Toolbar>
           <Button
