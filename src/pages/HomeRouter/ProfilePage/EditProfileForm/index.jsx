@@ -18,8 +18,8 @@ import { Guidelines } from "../../../../styles";
 
 const styles = theme => ({
   textField: {
-    ...Guidelines.layouts.w100
-  }
+    ...Guidelines.layouts.w100,
+  },
 });
 
 const FIELDS = keymirror({
@@ -29,12 +29,17 @@ const FIELDS = keymirror({
   phoneNumber: null,
   websiteUrl: null,
   residenceCity: null,
-  residenceCountry: null
+  residenceCountry: null,
 });
 
 const VALIDATOR = Validation.object().shape({
-  [FIELDS.phoneNumber]: Validation.string().required(),
-  [FIELDS.websiteUrl]: Validation.string().notRequired()
+  [FIELDS.phoneNumber]: Validation.string()
+    .matches(
+      /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g,
+      "Nomor telepon tidak sesuai"
+    )
+    .required("Nomor telepon diperlukan"),
+  [FIELDS.websiteUrl]: Validation.string().notRequired(),
 });
 
 function EditProfileForm({ classes, update, user, onSuccess }) {
@@ -46,7 +51,7 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
       .catch(({ response }) => {
         const errMessages = humanizeError(response.data.profile, [
           FIELDS.phoneNumber,
-          FIELDS.websiteUrl
+          FIELDS.websiteUrl,
         ]);
         errMessages && actions.setErrors(errMessages);
       })
@@ -63,7 +68,7 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
       [FIELDS.residenceCity]: user.profile[FIELDS.residenceCity] || "",
       [FIELDS.residenceCountry]: user.profile[FIELDS.residenceCountry] || "",
       [FIELDS.phoneNumber]: user.profile[FIELDS.phoneNumber] || "",
-      [FIELDS.websiteUrl]: user.profile[FIELDS.websiteUrl] || ""
+      [FIELDS.websiteUrl]: user.profile[FIELDS.websiteUrl] || "",
     };
   }
 
@@ -172,6 +177,7 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
                         className={classes.textField}
                         margin="normal"
                         variant="outlined"
+                        type="url"
                         label="URL Website Pribadi"
                         name={FIELDS.websiteUrl}
                         value={values[FIELDS.websiteUrl]}
@@ -205,9 +211,9 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
 
 export default connect(
   state => ({
-    user: getUser(state)
+    user: getUser(state),
   }),
   dispatch => ({
-    update: payload => dispatch(updateUserProfile(payload))
+    update: payload => dispatch(updateUserProfile(payload)),
   })
 )(withStyles(styles)(EditProfileForm));
