@@ -83,10 +83,15 @@ class EmailBatchUpdatePage extends React.Component {
 
     actions.setSubmitting(true);
 
+    let subject = null;
+    if (values[fields.subject] && values[fields.subject].trim()) {
+      subject = values[fields.subject];
+    }
+
     const template = values[fields.template].id;
     update(batch.id, [
       values[fields.title],
-      values[fields.subject],
+      subject,
       template,
       values[fields.senderAddress],
     ])

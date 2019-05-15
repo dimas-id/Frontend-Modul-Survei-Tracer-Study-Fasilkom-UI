@@ -65,8 +65,7 @@ class EmailBatchCreatePage extends React.Component {
         history.push(paths.CRM);
       })
       .catch(e => {
-
-        if(this.setLoading) {
+        if (this.setLoading) {
           this.setLoading(false);
         }
 
@@ -102,9 +101,15 @@ class EmailBatchCreatePage extends React.Component {
       const template = values[fields.template].id;
 
       actions.setSubmitting(true);
+
+      let subject = null;
+      if (values[fields.subject] && values[fields.subject].trim()) {
+        subject = values[fields.subject];
+      }
+
       create([
         values[fields.title],
-        values[fields.subject],
+        subject,
         template,
         values[fields.senderAddress],
       ])

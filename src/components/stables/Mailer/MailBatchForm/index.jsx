@@ -47,7 +47,7 @@ const VALIDATOR = Validation.object().shape({
   [FIELDS.senderAddress]: Validation.string().required(
     "Alamat pengirim wajib diisi."
   ),
-  [FIELDS.subject]: Validation.string().required("Subyek wajib diisi."),
+  [FIELDS.subject]: Validation.string().notRequired(),
 });
 
 export function getInitialValues(values = {}) {
@@ -111,8 +111,7 @@ function Form({templates, disabled, children, ...otherProps}) {
               variant="outlined"
               label="Subyek"
               fullWidth
-              helperText="Subyek email."
-              required
+              helperText="Subyek email. Kosongkan jika menggunakan subyek dari templat."
               disabled={disabled}
               {...getFieldProps(field.name, form)}
               {...field}
