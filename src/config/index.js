@@ -1,5 +1,6 @@
 export const isDevelopment = process.env.NODE_ENV === "development";
 export const PUBLIC_URL = process.env.PUBLIC_URL;
+export const ROOT_URL = "http://165.22.244.180";
 
 window.deprecationWarning =
   process.env.NODE_ENV !== "production"
