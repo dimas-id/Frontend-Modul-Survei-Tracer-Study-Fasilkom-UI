@@ -23,20 +23,28 @@ export default withRouter(
       history.replace(paths.HOME);
     }
 
-    const tempConfig = {};
-    if (isDevelopment) {
-      tempConfig.href = `${env.ATLAS}/api/v1/external-auths/linkedin`;
-    } else {
-      tempConfig.onClick = () => {
-        window.notifySnackbar(
-          "Sorry for inconvenience, LinkedIn only works on local for now :(",
-          { variant: "info" }
-        );
-      };
+    let timer = null;
+
+    function handleClick() {
+      window.notifySnackbar(
+        "Mengalihkan ke halaman masuk LinkedIn",
+        { variant: "info" }
+      );
+      timer = setTimeout(() => {
+        window.location.replace(`${env.ATLAS}/api/v1/external-auths/linkedin`)
+      }, 1200)
     }
 
+    React.useEffect(() => {
+      return () => {
+        if (timer) {
+          clearTimeout(timer)
+        }
+      }
+    }, [])
+
     return (
-      <Button variant="outlined" {...ButtonProps} {...tempConfig}>
+      <Button variant="outlined" {...ButtonProps} onClick={handleClick}>
         <img
           src={LinkedInLogo}
           alt="LinkedIn"
