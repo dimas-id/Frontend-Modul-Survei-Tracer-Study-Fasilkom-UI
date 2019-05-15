@@ -1,8 +1,12 @@
 import http from "../../../../libs/http";
+import { makeQueryUri } from "../../../../libs/navigation";
 import { API_V1_URL } from "../config";
 
 export default Object.freeze({
-  getDonationProgramList: () => http.get(`${API_V1_URL}/donation-programs`),
+  getDonationProgramList: (limit = 50, offset = 0) =>
+    http.get(
+      makeQueryUri(`${API_V1_URL}/donation-programs`, { limit, offset })
+    ),
 
   getDonationProgramDetail: donationId =>
     http.get(`${API_V1_URL}/donation-programs/${donationId}`),
@@ -32,7 +36,7 @@ export default Object.freeze({
       amount,
       bankNumberDest,
       bankNumberSource,
-      estPaymentDate
+      estPaymentDate,
     }),
   updateDonationRequest: (
     userId,
@@ -52,7 +56,7 @@ export default Object.freeze({
       startDate,
       endDate,
       goalAmount,
-      proposalUrl
+      proposalUrl,
     }),
 
   createDonationRequest: (
@@ -72,6 +76,6 @@ export default Object.freeze({
       startDate,
       endDate,
       goalAmount,
-      proposalUrl
-    })
+      proposalUrl,
+    }),
 });

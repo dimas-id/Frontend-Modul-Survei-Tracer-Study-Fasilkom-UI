@@ -32,14 +32,10 @@ class Carousel extends React.Component {
   };
 
   componentDidMount() {
-    let newDonationList = [];
     heliosV1.donation
-      .getDonationProgramList()
-      .then(result => {
-        for (let i = 0; i < 4; i++) {
-          newDonationList.push(result.data.results[i]);
-        }
-        this.setState({ donationProgramList: newDonationList });
+      .getDonationProgramList(4)
+      .then(({ data } )=> {
+        this.setState({ donationProgramList: data.results });
       })
       .finally(() => {
         this.setState({ loading: false });
