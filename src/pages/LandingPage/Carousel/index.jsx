@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { Helmet } from "react-helmet";
+
 import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -15,26 +15,26 @@ const styles = theme => ({
   container: {
     ...Guidelines.layouts.mt32,
     ...Guidelines.layouts.pr40,
-    ...Guidelines.layouts.pl40
+    ...Guidelines.layouts.pl40,
   },
   heroButtons: {
-    marginTop: theme.spacing.unit * 4
-  }
+    marginTop: theme.spacing.unit * 4,
+  },
 });
 
 class Carousel extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
   state = {
     donationProgramList: null,
-    loading: true
+    loading: true,
   };
 
   componentDidMount() {
     heliosV1.donation
       .getDonationProgramList(4)
-      .then(({ data } )=> {
+      .then(({ data }) => {
         this.setState({ donationProgramList: data.results });
       })
       .finally(() => {
@@ -68,25 +68,25 @@ class Carousel extends React.Component {
             slidesToShow: 3,
             slidesToScroll: 3,
             infinite: true,
-            dots: true
-          }
+            dots: true,
+          },
         },
         {
           breakpoint: 600,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 2,
-            initialSlide: 2
-          }
+            initialSlide: 2,
+          },
         },
         {
           breakpoint: 480,
           settings: {
             slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
+            slidesToScroll: 1,
+          },
+        },
+      ],
     };
 
     const { loading } = this.state;
@@ -94,7 +94,24 @@ class Carousel extends React.Component {
       return <LoadingFill />;
     }
 
-    return <Slider {...settings}>{this.renderCarousel()}</Slider>;
+    return (
+      <React.Fragment>
+        <Helmet>
+          <link
+            rel="stylesheet"
+            type="text/css"
+            charset="UTF-8"
+            href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+          />
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+          />
+        </Helmet>
+        <Slider {...settings}>{this.renderCarousel()}</Slider>
+      </React.Fragment>
+    );
   }
 }
 

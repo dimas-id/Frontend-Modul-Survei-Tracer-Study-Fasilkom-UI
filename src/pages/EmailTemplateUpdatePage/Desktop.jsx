@@ -14,14 +14,13 @@ import EmailTemplateForm from "../../components/stables/EmailTemplateForm";
 import EmailTemplateVariableMenu from "../../components/stables/EmailTemplateTagsMenu";
 import heliosV1 from "../../modules/api/helios/v1";
 
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 import { humanizeError } from "../../libs/response";
+import ErrorMessageBoundary from "../../components/ErrorMessageBoundary";
 
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.flexDirRow,
-    ...Guidelines.layouts.mt32,
+    ...Guidelines.layouts.mt32
   }
 });
 
@@ -37,7 +36,7 @@ class Screen extends React.Component {
     description: "",
     subject: "",
     loading: true,
-    errorMessage: null
+    errorMessage: ["", "", "", ""],
   };
 
   componentDidMount() {
@@ -87,13 +86,7 @@ class Screen extends React.Component {
     });
   }
 
-  setErrorMessage(errorMessage) {
-    this.setState({ errorMessage });
-  }
-
   handleSubmit() {
-    this.setErrorMessage("");
-
     heliosV1.email
       .updateEmailTemplate(
         this.props.match.params.idEmailTemplate,
@@ -102,47 +95,28 @@ class Screen extends React.Component {
         this.state.description,
         this.state.subject
       )
-      .then(this.handleOpenSuccessMsg)
+      .then(() => {
+        window.notifySnackbar("Templat Email berhasil disimpan", {
+          variant: "success"
+        });
+      })
       .catch(err => {
         const fields = ["title", "body", "description", "subject"];
-
         const humanizedErr = humanizeError(err.response.data, fields);
-
-        this.setErrorMessage(
-          `Judul: ${humanizedErr.title}, Subjek: ${
-            humanizedErr.subject
-          }, Deskripsi: ${humanizedErr.description}, Isi: ${humanizedErr.body}`
-        );
-
-        this.setState({ openErrorMsg: true });
-
-        return err;
+        this.setState({
+          errorMessage: [
+            humanizedErr.title,
+            humanizedErr.subject,
+            humanizedErr.description,
+            humanizedErr.body,
+          ],
+        });
       });
   }
 
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
-  };
-
   render() {
     const { classes } = this.props;
-    const { title, body, description, subject } = this.state;
+    const { title, body, description, subject, errorMessage } = this.state;
 
     return (
       <React.Fragment>
@@ -151,17 +125,20 @@ class Screen extends React.Component {
         <Container className={classes.container}>
           <Grid container spacing={24}>
             <Grid item xs={12} sm={9}>
-              <EmailTemplateForm
-                title={title}
-                body={body}
-                subject={subject}
-                description={description}
-                onChangeTitle={this.handleTitle.bind(this)}
-                onChangeBody={this.handleBody.bind(this)}
-                onChangeSubject={this.handleSubject.bind(this)}
-                onChangeDescription={this.handleDescription.bind(this)}
-                onSubmit={this.handleSubmit.bind(this)}
-              />
+              <ErrorMessageBoundary>
+                <EmailTemplateForm
+                  title={title}
+                  body={body}
+                  subject={subject}
+                  description={description}
+                  errorMessage={errorMessage}
+                  onChangeTitle={this.handleTitle.bind(this)}
+                  onChangeBody={this.handleBody.bind(this)}
+                  onChangeSubject={this.handleSubject.bind(this)}
+                  onChangeDescription={this.handleDescription.bind(this)}
+                  onSubmit={this.handleSubmit.bind(this)}
+                />
+              </ErrorMessageBoundary>
             </Grid>
             <Grid item xs={12} sm={3}>
               <EmailTemplateVariableMenu
@@ -170,38 +147,6 @@ class Screen extends React.Component {
             </Grid>
           </Grid>
         </Container>
-
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Templat Email berhasil disimpan`}
-          />
-        </Snackbar>
-
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={this.state.errorMessage}
-          />
-        </Snackbar>
       </React.Fragment>
     );
   }

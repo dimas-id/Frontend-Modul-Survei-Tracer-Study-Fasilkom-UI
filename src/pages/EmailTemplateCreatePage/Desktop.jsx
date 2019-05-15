@@ -1,34 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
-import {withStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 
-import {authorize} from "../../components/hocs/auth";
-import {NavbarAuth, NavbarBack} from "../../components/stables/Navbar";
-import {Container} from "../../components/Container";
-import {Guidelines} from "../../styles";
+import { authorize } from "../../components/hocs/auth";
+import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
+import { Container } from "../../components/Container";
+import { Guidelines } from "../../styles";
 import EmailTemplateForm from "../../components/stables/EmailTemplateForm";
 import EmailTemplateVariableMenu from "../../components/stables/EmailTemplateTagsMenu";
 import heliosV1 from "../../modules/api/helios/v1";
 
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
-import {humanizeError} from "../../libs/response";
+import { humanizeError } from "../../libs/response";
 
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.mt32,
-  },
-  showTemplateResult: {
-    ...Guidelines.layouts.pt16,
-    ...Guidelines.layouts.pr16,
-    ...Guidelines.layouts.pl16,
-    ...Guidelines.layouts.pb16,
   },
 });
 
@@ -44,14 +36,14 @@ class Screen extends React.Component {
       body: "",
       description: "",
       subject: "",
-      errorMessage: null,
+      errorMessage: ["","","",""],
     };
 
     this.bodyInputRef = React.createRef();
   }
 
   handleVariable(variable) {
-    const {current} = this.bodyInputRef;
+    const { current } = this.bodyInputRef;
     const endPos = current.selectionEnd;
 
     const currentBody = this.state.body;
@@ -62,40 +54,34 @@ class Screen extends React.Component {
     const leftBody = currentBody.substring(startPos, endPos);
     const rightBody = currentBody.substring(endPos, currentBody.length);
 
-    this.setState({body: `${leftBody} ${variable} ${rightBody}`});
+    this.setState({ body: `${leftBody} ${variable} ${rightBody}` });
   }
 
-  handleTitle({target}) {
+  handleTitle({ target }) {
     this.setState({
       title: target.value,
     });
   }
 
-  handleBody({target}) {
+  handleBody({ target }) {
     this.setState({
       body: target.value,
     });
   }
 
-  handleSubject({target}) {
+  handleSubject({ target }) {
     this.setState({
       subject: target.value,
     });
   }
 
-  handleDescription({target}) {
+  handleDescription({ target }) {
     this.setState({
       description: target.value,
     });
   }
 
-  setErrorMessage(errorMessage) {
-    this.setState({errorMessage});
-  }
-
   handleSubmit() {
-    this.setErrorMessage("");
-
     heliosV1.email
       .createEmailTemplate(
         this.state.title,
@@ -103,46 +89,26 @@ class Screen extends React.Component {
         this.state.description,
         this.state.subject
       )
-      .then(this.handleOpenSuccessMsg)
+      .then(() => {
+        window.notifySnackbar("Templat Email berhasil disimpan", {
+          variant: "success",
+        });
+      })
       .catch(err => {
         const fields = ["title", "body", "description", "subject"];
-
         const humanizedErr = humanizeError(err.response.data, fields);
-
-        this.setErrorMessage(
-          `Judul: ${humanizedErr.title}, Subjek: ${
-            humanizedErr.subject
-          }, Deskripsi: ${humanizedErr.description}, Isi: ${humanizedErr.body}`
-        );
-        this.setState({openErrorMsg: true});
-
-        return err;
+        this.setState({errorMessage : [
+          humanizedErr.title,
+          humanizedErr.subject,
+          humanizedErr.description,
+          humanizedErr.body,
+        ]});
       });
   }
 
-  handleOpenSuccessMsg = () => {
-    this.setState({openSuccessMsg: true});
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({openSuccessMsg: false});
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({openErrorMsg: false});
-  };
-
   render() {
-    const {classes} = this.props;
-    const {title, body, description, subject} = this.state;
+    const { classes } = this.props;
+    const { title, body, description, subject, errorMessage } = this.state;
 
     return (
       <React.Fragment>
@@ -152,8 +118,8 @@ class Screen extends React.Component {
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <Paper elevation={1} className={classes.showTemplateResult}>
-                <h4 style={{marginTop: 0}}>Tinjau Templat</h4>
-                <div dangerouslySetInnerHTML={{__html: body}} />
+                <h4 style={{ marginTop: 0 }}>Tinjau Templat</h4>
+                <div dangerouslySetInnerHTML={{ __html: body }} />
               </Paper>
             </Grid>
             <Grid item xs={12} sm={9}>
@@ -162,6 +128,7 @@ class Screen extends React.Component {
                 body={body}
                 subject={subject}
                 description={description}
+                errorMessage={errorMessage}
                 onChangeTitle={this.handleTitle.bind(this)}
                 onChangeBody={this.handleBody.bind(this)}
                 onChangeSubject={this.handleSubject.bind(this)}
@@ -177,37 +144,6 @@ class Screen extends React.Component {
             </Grid>
           </Grid>
         </Container>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Templat Email berhasil disimpan`}
-          />
-        </Snackbar>
-
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={this.state.errorMessage}
-          />
-        </Snackbar>
       </React.Fragment>
     );
   }
