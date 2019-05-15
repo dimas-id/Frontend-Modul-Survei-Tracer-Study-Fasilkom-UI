@@ -25,42 +25,42 @@ import { Guidelines } from "../../../styles";
 const styles = theme => {
   return {
     logo: {
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down("sm")]: {
         width: 96,
-      }
+      },
     },
     menu: {
-      marginTop: theme.spacing.unit * 6
+      marginTop: theme.spacing.unit * 6,
     },
     menuItem: {
-      width: 160
+      width: 160,
     },
     appMenu: {
       minHeight: 90,
       maxWidth: "auto",
       maxHeight: "auto",
-      overflowY: "hidden"
+      overflowY: "hidden",
     },
     appMenuItem: {
       width: 52,
       height: 52,
       ...Guidelines.layouts.flexMiddle,
-      ...Guidelines.layouts.flexDirCol
+      ...Guidelines.layouts.flexDirCol,
     },
     appbar: {
       top: 0,
-      backgroundColor: '#fff',
-      boxShadow: "None"
+      backgroundColor: "#fff",
+      boxShadow: "None",
     },
     title: {
       flexGrow: 1,
       color: theme.palette.text.primary,
-      marginLeft: theme.spacing.unit * 4
+      marginLeft: theme.spacing.unit * 4,
     },
     buttonAsText: {
       marginLeft: theme.spacing.unit * 2,
-      marginRight: theme.spacing.unit * 2
-    }
+      marginRight: theme.spacing.unit * 2,
+    },
   };
 };
 
@@ -68,17 +68,17 @@ class NavbarAuth extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
     title: PropTypes.string,
-    position: PropTypes.string
+    position: PropTypes.string,
   };
 
   static defaultProps = {
     title: "",
-    position: "sticky"
+    position: "sticky",
   };
 
   state = {
     anchorElUserMenu: null,
-    anchorElAppMenu: null
+    anchorElAppMenu: null,
   };
 
   handleOpenUserMenu = event => {
@@ -144,15 +144,15 @@ class NavbarAuth extends React.Component {
           id="menu-appbar"
           anchorEl={anchorElAppMenu}
           classes={{
-            paper: `${classes.menu} ${classes.appMenu}`
+            paper: `${classes.menu} ${classes.appMenu}`,
           }}
           anchorOrigin={{
             vertical: "top",
-            horizontal: "right"
+            horizontal: "right",
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "right"
+            horizontal: "right",
           }}
           open={open}
           onClose={this.handleCloseAppMenu}
@@ -211,15 +211,15 @@ class NavbarAuth extends React.Component {
           id="menu-userbar"
           anchorEl={anchorElUserMenu}
           classes={{
-            paper: classes.menu
+            paper: classes.menu,
           }}
           anchorOrigin={{
             vertical: "top",
-            horizontal: "right"
+            horizontal: "right",
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "right"
+            horizontal: "right",
           }}
           open={open}
           onClose={this.handleCloseUserMenu}
@@ -249,7 +249,11 @@ class NavbarAuth extends React.Component {
   render() {
     const { classes, title, position, isLoggedIn } = this.props;
     return (
-      <AppBar position={position} className={classes.appbar}>
+      <AppBar
+        position={position}
+        className={classes.appbar}
+        style={{ backgroundColor: "#fff !important" }}
+      >
         <Toolbar>
           <Button
             component={Link}
@@ -274,11 +278,11 @@ class NavbarAuth extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    isLoggedIn: _isLoggedIn(state)
+    isLoggedIn: _isLoggedIn(state),
   });
 
   const mapDispatchToProps = dispatch => ({
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
   });
 
   return withRouter(
