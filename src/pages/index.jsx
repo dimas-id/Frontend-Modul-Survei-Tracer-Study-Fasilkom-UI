@@ -60,6 +60,16 @@ export default function Pages() {
             )}
           />
         ))}
+        <Route
+            render={() => (
+              <React.Fragment>
+                <Helmet>
+                  <title>404</title>
+                </Helmet>
+                <Error404Page/>
+              </React.Fragment>
+            )}
+          />
       </Switch>
     </Router>
   );
