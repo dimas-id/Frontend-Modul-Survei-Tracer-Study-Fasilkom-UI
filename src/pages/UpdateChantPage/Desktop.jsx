@@ -5,7 +5,6 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Snackbar from "@material-ui/core/Snackbar";
 
 import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
@@ -17,8 +16,6 @@ import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
 
 import { makePathVariableUri } from "../../libs/navigation";
-
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 
 import { layouts } from "../../styles/guidelines";
 
