@@ -261,14 +261,14 @@ class Screen extends React.Component {
                     {STATUS[verificationStatus]}
                   </Typography>
                 </Grid>
-                {!{ notes } === "" ? (
+                {Boolean(notes) ? (
                   <Grid item xs={4} sm={4} className={classes.gridLabel}>
                     <Typography component="p" className={classes.label}>
                       Catatan Khusus
                     </Typography>
                   </Grid>
                 ) : null}
-                {!{ notes } === "" ? (
+                {Boolean(notes) ? (
                   <Grid item xs={8} sm={8}>
                     <Typography component="p" className={classes.content}>
                       {notes}
