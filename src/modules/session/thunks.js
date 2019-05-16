@@ -54,6 +54,7 @@ export const updateUserProfile = payload => {
       "residenceLat",
       "websiteUrl",
       "phoneNumber",
+      "profilePicUrl"
     ]);
 
     const userData = {
