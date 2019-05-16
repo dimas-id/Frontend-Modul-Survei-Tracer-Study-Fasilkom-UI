@@ -233,9 +233,9 @@ class Screen extends React.Component {
                 </Grid>
                 <Grid item xs={8} sm={8}>
                   <Typography component="p">
-                    <Link href={proposalUrl} className={classes.link}>
+                    <a href={proposalUrl} className={classes.link}>
                       {proposalUrl}
-                    </Link>
+                    </a>
                   </Typography>
                 </Grid>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
@@ -261,14 +261,14 @@ class Screen extends React.Component {
                     {STATUS[verificationStatus]}
                   </Typography>
                 </Grid>
-                {!{ notes } == "" ? (
+                {!{ notes } === "" ? (
                   <Grid item xs={4} sm={4} className={classes.gridLabel}>
                     <Typography component="p" className={classes.label}>
                       Catatan Khusus
                     </Typography>
                   </Grid>
                 ) : null}
-                {!{ notes } == "" ? (
+                {!{ notes } === "" ? (
                   <Grid item xs={8} sm={8}>
                     <Typography component="p" className={classes.content}>
                       {notes}

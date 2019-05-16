@@ -27,8 +27,7 @@ import heliosV1 from "../../modules/api/helios/v1";
 import { LinesLoader } from "../../components/Loading";
 import keyMirror from "keymirror";
 import { getDateFormatted } from "../../libs/datetime";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
+
 import { Link } from "react-router-dom";
 import paths from "../paths";
 import { makePathVariableUri } from "../../libs/navigation";
@@ -44,6 +43,7 @@ const styles = theme => ({
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
     ...Guidelines.layouts.pb32,
+    boxSizing: "border-box"
   },
   title: {
     ...Guidelines.fonts.medium,
@@ -54,8 +54,8 @@ const styles = theme => ({
   },
   form: {
     ...Guidelines.layouts.flexDirCol,
+    boxSizing: "border-box",
     marginTop: 42,
-    width: 800,
   },
   gridLabel: {
     display: "flex",
@@ -64,9 +64,6 @@ const styles = theme => ({
   label: {
     fontSize: 16,
     ...Guidelines.fonts.bold,
-  },
-  textField: {
-    width: 800,
   },
   gridBtn: {
     display: "flex",
@@ -251,30 +248,7 @@ class Screen extends React.Component {
         }
       });
   };
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = msg => {
-    this.setState({ openErrorMsg: msg });
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
-  };
-
+  
   render() {
     const { user, classes } = this.props;
     const { loading, values, error } = this.state;
@@ -306,6 +280,7 @@ class Screen extends React.Component {
                 <Grid item xs={9} sm={9}>
                   <TextField
                     disabled
+                    fullWidth
                     id="oulined-dissabled"
                     defaultValue={user.name}
                     className={classes.textField}
@@ -321,6 +296,7 @@ class Screen extends React.Component {
                   <TextField
                     id="outlined-select-category"
                     select
+                    fullWidth
                     className={classes.textField}
                     name={FIELDS.categoryName}
                     value={values[FIELDS.categoryName]}
@@ -356,6 +332,7 @@ class Screen extends React.Component {
                     className={classes.textField}
                     placeholder="Judul donasi yang diajukan"
                     name={FIELDS.title}
+                    fullWidth
                     value={values[FIELDS.title]}
                     onChange={this.handleChange}
                     error={Boolean(error[FIELDS.title])}
@@ -375,6 +352,7 @@ class Screen extends React.Component {
                 <Grid item xs={9} sm={9}>
                   <TextField
                     required
+                    fullWidth
                     id="outlined-text-input"
                     className={classes.textField}
                     placeholder="Deskripsi program donasi"
@@ -401,6 +379,7 @@ class Screen extends React.Component {
                     <InlineDatePicker
                       className={classes.field}
                       clearable
+                      fullWidth
                       variant="outlined"
                       margin="normal"
                       format="YYYY-MM-DD"
@@ -424,6 +403,7 @@ class Screen extends React.Component {
                     <InlineDatePicker
                       className={classes.field}
                       clearable
+                      fullWidth
                       variant="outlined"
                       margin="normal"
                       format="YYYY-MM-DD"
@@ -445,6 +425,7 @@ class Screen extends React.Component {
                 <Grid item xs={9} sm={9}>
                   <TextField
                     required
+                    fullWidth
                     id="outlined-required"
                     className={classes.textField}
                     margin="normal"
@@ -495,38 +476,6 @@ class Screen extends React.Component {
             </form>
           </Paper>
         </Container>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Pengajuan Program Donasi Berhasil disimpan`}
-          />
-        </Snackbar>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          open={Boolean(this.state.openErrorMsg)}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={`Pengajuan Program Donasi gagal disimpan\n${
-              this.state.openErrorMsg
-            }`}
-          />
-        </Snackbar>
       </React.Fragment>
     );
   }
