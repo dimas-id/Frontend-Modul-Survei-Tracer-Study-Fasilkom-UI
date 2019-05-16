@@ -16,6 +16,7 @@ import heliosV1 from "../../modules/api/helios/v1";
 
 import { humanizeError } from "../../libs/response";
 import ErrorMessageBoundary from "../../components/ErrorMessageBoundary";
+import paths from "../paths";
 
 const styles = theme => ({
   container: {
@@ -96,9 +97,11 @@ class Screen extends React.Component {
         this.state.subject
       )
       .then(() => {
+        const { history } = this.props;
         window.notifySnackbar("Templat Email berhasil disimpan", {
           variant: "success"
         });
+        history.push(paths.CRM_EMAIL_TEMPLATE_LIST);
       })
       .catch(err => {
         const fields = ["title", "body", "description", "subject"];
