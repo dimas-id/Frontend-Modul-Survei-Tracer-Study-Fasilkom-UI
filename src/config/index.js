@@ -20,8 +20,8 @@ const developmentConstants = () => {
 };
 
 const productionConstants = () => ({
-  ATLAS: "http://165.22.244.180:8000",
-  HELIOS: "http://165.22.244.180:8004"
+  ATLAS: "https://atlas.iluni12.id",
+  HELIOS: "https://helios.iluni12.id"
 });
 
 const constants = () => {

@@ -8,7 +8,6 @@ import { isLoggedIn } from "../../../modules/session/selectors";
 import env from "../../../config";
 import paths from "../../../pages/paths";
 import LinkedInLogo from "../../../assets/img/LinkedIn.png";
-import { isDevelopment } from "../../../config";
 
 const mapStateToProps = state => ({
   loggedIn: isLoggedIn(state)

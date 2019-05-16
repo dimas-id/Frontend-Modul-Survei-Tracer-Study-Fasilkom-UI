@@ -6,8 +6,8 @@ export function getUser(state) {
 }
 
 export function getUserId(state) {
-  const user = getUser(state)
-  return user && user.id
+  const user = getUser(state);
+  return user && user.id;
 }
 
 export function getUserAccessToken(state) {
@@ -20,4 +20,8 @@ export function getUserRefreshToken(state) {
 
 export function isLoggedIn(state) {
   return Boolean(getUserAccessToken(state)) && !isEmpty(getUser(state));
+}
+
+export function selectCurrentUserGroups(state) {
+  return get(getUser(state), "groups");
 }

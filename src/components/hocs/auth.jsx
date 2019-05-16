@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import keymirror from "keymirror";
 import Fade from "@material-ui/core/Fade";
 
+import { ROLES } from "../../modules/session";
 import {
   isLoggedIn as _isLoggedIn,
   getUser,
@@ -12,13 +12,11 @@ import {
 import {loadUser} from "../../modules/session/thunks";
 import paths from "../../pages/paths";
 
-export const ROLES = Object.freeze(
-  keymirror({
-    PUBLIC: null,
-    SUPERUSER: null,
-    STAFF: null,
-  }),
-);
+// backward compability
+/**
+ * @deprecated since version 1.0 (Iterasi 1)
+ */
+export { ROLES }
 
 class Authenticated extends React.PureComponent {
   static propTypes = {

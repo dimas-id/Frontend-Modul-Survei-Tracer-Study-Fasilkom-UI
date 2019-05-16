@@ -35,7 +35,7 @@ const FIELDS = keymirror({
 const VALIDATOR = Validation.object().shape({
   [FIELDS.phoneNumber]: Validation.string()
     .matches(
-      /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g,
+      /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/g,
       "Nomor telepon tidak sesuai"
     )
     .required("Nomor telepon diperlukan"),
