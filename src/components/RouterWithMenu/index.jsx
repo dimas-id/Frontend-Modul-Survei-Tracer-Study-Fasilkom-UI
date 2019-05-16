@@ -9,12 +9,12 @@ export default withRouter(function RouterWithMenu({
   MenuHeaderComponent
 }) {
   return (
-    <Grid container spacing={24}>
-      <Grid item xs={12} md={3}>
+    <Grid container>
+      <Grid item xs={12} md={3} style={{padding: 12}}>
         {MenuHeaderComponent && <MenuHeaderComponent />}
         <MenuList paths={paths} />
       </Grid>
-      <Grid item xs={12} md={9}>
+      <Grid item xs={12} md={9} style={{padding: 12}}>
         <RouterWrapper paths={paths} />
       </Grid>
     </Grid>

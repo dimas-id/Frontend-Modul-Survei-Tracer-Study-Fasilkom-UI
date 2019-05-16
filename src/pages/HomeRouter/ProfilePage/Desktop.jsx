@@ -204,17 +204,11 @@ class ProfilePage extends React.Component {
           <Field label="Lokasi" value={location} />
           <Field label="Website" value={user.profile.websiteUrl} />
         </Paper>
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} elevation={1}>
           <Head>Kata Sandi</Head>
           <Field label="Kata Sandi" value="*******" />
         </Paper>
-
-        {/*<Paper className={classes.paperChild} elevation={1}>*/}
-        {/*  <Head>Pendidikan</Head>*/}
-        {/*  <Education />*/}
-        {/*</Paper>*/}
-
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} elevation={1}>
           <Head Icon={AddBoxIcon} onClick={this.handleOpenPositionNew}>
             Posisi Pekerjaan
           </Head>

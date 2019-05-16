@@ -8,9 +8,7 @@ import {
   getUser,
   selectCurrentUserGroups,
 } from "../../../modules/session/selectors";
-import {
-  updateUserProfile
-} from "../../../modules/session/thunks";
+import { updateUserProfile } from "../../../modules/session/thunks";
 
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -28,7 +26,7 @@ import CategoryPaper from "./CategoryPaper";
 import config from "../../../config";
 import paths from "../../paths";
 import FileUploadInput from "../../../components/stables/FileUploadInput";
-import { METABASE_URL } from "../../../config/index.js"
+import { METABASE_URL } from "../../../config/index.js";
 
 const styles = theme => ({
   avatar: {
@@ -57,21 +55,6 @@ const styles = theme => ({
   subtitle: {
     fontSize: 20,
   },
-  paperChild: {
-    ...Guidelines.layouts.mt32,
-    ...Guidelines.layouts.pt24,
-    ...Guidelines.layouts.pr24,
-    ...Guidelines.layouts.pl24,
-    ...Guidelines.layouts.pb24,
-  },
-  titleChild: {
-    ...Guidelines.fonts.bold,
-    fontSize: 28,
-  },
-  subtitleChild: {
-    ...Guidelines.layouts.mt16,
-    fontSize: 16,
-  },
   button: {
     display: "flex",
     alignItems: "center",
@@ -79,10 +62,10 @@ const styles = theme => ({
   photo: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.flexMiddle,
-    position: 'relative',
+    position: "relative",
     [theme.breakpoints.down("sm")]: {
       ...Guidelines.layouts.flexDirCol,
-      ...Guidelines.layouts.mb16
+      ...Guidelines.layouts.mb16,
     },
   },
   bigAvatar: {
@@ -91,12 +74,12 @@ const styles = theme => ({
     height: 90,
   },
   buttonUpload: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     right: 0,
     backgroundColor: "#00C7E5",
   },
-  helperText:{
+  helperText: {
     ...Guidelines.layouts.mt8,
     fontSize: 12,
   },
@@ -131,12 +114,11 @@ class HomePage extends React.Component {
     const { updatePhoto } = this.props;
     const { profilePicUrl } = this.state;
 
-    this.setState({ profilePicUrl: '' })
+    this.setState({ profilePicUrl: "" });
     updatePhoto(profilePicUrl).then(() => {
       this.handleCloseUpload();
-
-    })
-  }
+    });
+  };
 
   openVerificationDialog = () => {
     window.alertDialog(
@@ -190,8 +172,7 @@ class HomePage extends React.Component {
               className={classes.buttonUpload}
               onClick={this.handleOpenUpload}
             >
-              <CameraEnhanceIcon
-              />
+              <CameraEnhanceIcon />
             </IconButton>
           </div>
           <Typography className={classes.title} variant="h5" component="h3">
@@ -201,13 +182,13 @@ class HomePage extends React.Component {
           <div className={classes.roleInfo}>
             {user.isVerified ? (
               <Chip
-                label="Terverifikasi"
+                label="Terverifikasi ✔"
                 color="primary"
                 className={classes.chip}
               />
             ) : (
               <Chip
-                label="Belum Terverifikasi"
+                label="Belum Terverifikasi ❌"
                 color="secondary"
                 variant="outlined"
                 className={classes.chip}
@@ -351,7 +332,8 @@ function createContainer() {
   });
 
   const mapDispatchToProps = dispatch => ({
-    updatePhoto: (profilePicUrl) => dispatch(updateUserProfile({profile: { profilePicUrl }}))
+    updatePhoto: profilePicUrl =>
+      dispatch(updateUserProfile({ profilePicUrl })),
   });
 
   return withRouter(

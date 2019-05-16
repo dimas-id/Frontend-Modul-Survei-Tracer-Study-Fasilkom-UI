@@ -55,8 +55,8 @@ const styles = theme => {
       ...Guidelines.layouts.flexSpaceBetweenMiddle
     },
     appMenuItem: {
-      width: 80,
-      height: 80,
+      width: 88,
+      height: 88,
       ...Guidelines.layouts.flexMiddle,
       ...Guidelines.layouts.flexDirCol,
     },
@@ -150,7 +150,7 @@ class NavbarAuth extends React.Component {
             GROUPS.ADMIN_DONATION
         ) > -1) && (
         <React.Fragment>
-          <a href={config.ATLAS} target="_blank">
+          <a href={config.HELIOS+"/__admin__/"} target="_blank" rel="noopener noreferrer">
           <MenuItem
             className={classes.appMenuItem}
           >
@@ -169,7 +169,7 @@ class NavbarAuth extends React.Component {
       (user.isSuperuser ||
         groups.findIndex(g => g === GROUPS.ADMIN_USER) > -1) && (
         <React.Fragment>
-          <a href={config.ATLAS} target="_blank">
+          <a href={config.ATLAS+"/__admin__/"} target="_blank" rel="noopener noreferrer">
           <MenuItem
             className={classes.appMenuItem}
           >
@@ -202,7 +202,7 @@ class NavbarAuth extends React.Component {
           <img src={icons.kontak} alt="Account Icon" />
           <Typography>Kontak</Typography>
         </MenuItem>
-        <a href={METABASE_URL} target="_blank">
+        <a href={METABASE_URL} target="_blank" rel="noopener noreferrer">
           <MenuItem className={classes.appMenuItem}>
             <img src={icons.dashboard} alt="Account Icon" />
             <Typography>Dashboard</Typography>

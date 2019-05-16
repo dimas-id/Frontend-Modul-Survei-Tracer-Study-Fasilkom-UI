@@ -13,7 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import {authorize} from "../../components/hocs/auth";
 import {
   NavbarAuth,
-  NavbarBackForChannelRequest,
+  NavbarBackWithChannelRequest,
 } from "../../components/stables/Navbar";
 import {Container} from "../../components/Container";
 import {Guidelines} from "../../styles";
@@ -197,14 +197,14 @@ class Screen extends React.Component {
               {STATUS[verificationStatus]}
             </Typography>
           </Grid>
-          {isEnabled ? (
+          {Boolean(notes) ? (
             <Grid item xs={3} sm={3} className={classes.gridLabel}>
               <Typography component="p" className={classes.label}>
                 Catatan Khusus
               </Typography>
             </Grid>
           ) : null}
-          {isEnabled ? (
+          {Boolean(notes) ? (
             <Grid item xs={9} sm={9}>
               <Typography component="p" className={classes.content}>
                 {notes}
@@ -249,7 +249,7 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBackForChannelRequest />
+        <NavbarBackWithChannelRequest />
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>

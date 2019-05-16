@@ -1,51 +1,54 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
-import {Link} from "react-router-dom";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 
-import {withStyles} from "@material-ui/core/styles";
-import {NavbarAuth, NavbarBack} from "../../components/stables/Navbar";
+import { withStyles } from "@material-ui/core/styles";
+import { NavbarAuth, NavbarBackForChannelRequest } from "../../components/stables/Navbar";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
-import {withAuth} from "../../components/hocs/auth";
-import {Container} from "../../components/Container";
-import {Guidelines} from "../../styles";
+import { withAuth } from "../../components/hocs/auth";
+import { Container } from "../../components/Container";
+import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
 import TableWithPaginate from "../../components/TableWithPaginate";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import {getDateFormatted} from "../../libs/datetime";
+import { getDateFormatted } from "../../libs/datetime";
 
 import heliosV1 from "../../modules/api/helios/v1";
-import {getUserId} from "../../modules/session/selectors";
-import {LoadingFill} from "../../components/Loading";
-import {makePathVariableUri} from "../../libs/navigation";
+import { getUserId } from "../../modules/session/selectors";
+import { LoadingFill } from "../../components/Loading";
+import { makePathVariableUri } from "../../libs/navigation";
 import paths from "../../pages/paths";
 
 const styles = theme => ({
   paper: {
     ...Guidelines.layouts.mt16,
     ...Guidelines.layouts.pt32,
-    ...Guidelines.layouts.pr32,
-    ...Guidelines.layouts.pl32,
+    ...Guidelines.layouts.pr24,
+    ...Guidelines.layouts.pl24,
     ...Guidelines.layouts.pb32,
   },
   title: {
     ...Guidelines.fonts.medium,
-    fontSize: 32
-  }
-  
+    fontSize: 32,
+  },
+  ditolak: {
+    color: "red",
+  },
+  diproses: {
+    color: "#FFCC00",
+  },
+  diterima: {
+    color: "green",
+  },
 });
 
-const STATUS = {
-  RJ: "Ditolak",
-  PR: "Diproses",
-  AC: "Diterima",
-};
 class Screen extends React.Component {
   state = {
     channelRequestList: null,
@@ -58,10 +61,10 @@ class Screen extends React.Component {
     heliosV1.channel
       .getChannelRequestList(this.props.userId)
       .then(result => {
-        this.setState({channelRequestList: result.data.results});
+        this.setState({ channelRequestList: result.data.results });
       })
       .finally(() => {
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   }
 
@@ -70,39 +73,31 @@ class Screen extends React.Component {
   };
 
   handleChangePage = (event, page) => {
-    this.setState({page});
+    this.setState({ page });
   };
 
   handleChangeRowsPerPage = event => {
-    this.setState({page: 0, rowsPerPage: event.target.value});
+    this.setState({ page: 0, rowsPerPage: event.target.value });
   };
 
   renderContent() {
-    const {classes} = this.props;
-    const {channelRequestList, page, rowsPerPage} = this.state;
+    const { classes } = this.props;
+    const { channelRequestList, page, rowsPerPage } = this.state;
 
     return (
       <React.Fragment>
         <Grid container spacing={24} justify="flex-end" alignItems="center">
           <Grid item>
-            <Button
-              variant="outlined"
-              color="primary"
-              href={paths.CHANNEL_REQUEST}
-              className={classes.button}
-            >
-              <b>Ajukan Channel</b>
-            </Button>
           </Grid>
         </Grid>
         <TableWithPaginate
           columns={[
-            {name: "No."},
-            {name: "Judul Channel"},
-            {name: "Deskripsi"},
-            {name: "Tanggal Pengajuan"},
-            {name: "Status"},
-            {name: "Detail"},
+            { name: "No." },
+            { name: "Judul Channel" },
+            { name: "Deskripsi" },
+            { name: "Tanggal Pengajuan" },
+            { name: "Status" },
+            { name: "Detail" },
           ]}
           rows={channelRequestList}
           page={page}
@@ -120,7 +115,23 @@ class Screen extends React.Component {
                 {getDateFormatted(row.dateCreated, "DD MMMM YYYY")}
               </TableCell>
               <TableCell align="center">
-                {STATUS[row.verificationStatus]}
+                {row.verificationStatus === "RJ" ? (
+                  <Typography component="p" className={classes.ditolak}>
+                    Ditolak
+                  </Typography>
+                ) : null}
+
+                {row.verificationStatus === "PR" ? (
+                  <Typography component="p" className={classes.diproses}>
+                    Diproses
+                  </Typography>
+                ) : null}
+
+                {row.verificationStatus === "AC" ? (
+                  <Typography component="p" className={classes.diterima}>
+                    Diterima
+                  </Typography>
+                ) : null}
               </TableCell>
               <TableCell align="center">
                 <Button
@@ -141,12 +152,12 @@ class Screen extends React.Component {
     );
   }
   render() {
-    const {classes} = this.props;
-    const {loading} = this.state;
+    const { classes } = this.props;
+    const { loading } = this.state;
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBack />
+        <NavbarBackForChannelRequest />
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>
