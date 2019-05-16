@@ -45,7 +45,7 @@ class Authenticated extends React.PureComponent {
        * yes, it will not use the latest but it is fast, maybe another refresh?
        */
       try {
-        this.props.load(user.id, true);
+        this.props.load(user.id);
       } finally {
         this.checkUserRole();
         this.checkVerified();
@@ -99,7 +99,7 @@ function createContainer() {
   });
 
   const mapDispatchToProps = dispatch => ({
-    load: id => dispatch(loadUser(id)),
+    load: id => dispatch(loadUser(id), true),
   });
 
   return withRouter(
