@@ -59,7 +59,7 @@ const ROUTES = [
     }
   },
   {
-    title: "User Channel",
+    title: "Chant Pribadi",
     menu: {
       Icon: AccountCircleIcon,
       path: "/channels/users/:username"
