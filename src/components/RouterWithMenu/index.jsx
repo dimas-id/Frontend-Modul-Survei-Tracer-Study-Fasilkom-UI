@@ -10,11 +10,11 @@ export default withRouter(function RouterWithMenu({
 }) {
   return (
     <Grid container>
-      <Grid item xs={12} md={3} style={{margin: 12}}>
+      <Grid item xs={12} md={3} style={{padding: 12}}>
         {MenuHeaderComponent && <MenuHeaderComponent />}
         <MenuList paths={paths} />
       </Grid>
-      <Grid item xs={12} md={9} style={{margin: 12}}>
+      <Grid item xs={12} md={9} style={{padding: 12}}>
         <RouterWrapper paths={paths} />
       </Grid>
     </Grid>

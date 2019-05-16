@@ -16,29 +16,29 @@ import env from "../../../config";
 const styles = theme => ({
   root: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   wrapper: {
     margin: theme.spacing.unit,
-    position: "relative"
+    position: "relative",
   },
   input: {
-    display: "none"
+    display: "none",
   },
   buttonSuccess: {
     pointer: "cursor",
     backgroundColor: green[500],
     "&:hover": {
-      backgroundColor: green[700]
-    }
+      backgroundColor: green[700],
+    },
   },
   fabProgress: {
     color: green[500],
     position: "absolute",
     top: -6,
     left: -6,
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
 });
 
 function FileUploadInput({ onChange, accept, classes }) {
@@ -48,7 +48,7 @@ function FileUploadInput({ onChange, accept, classes }) {
   const [progress, setProgress] = React.useState(0);
 
   const buttonClassname = classNames({
-    [classes.buttonSuccess]: success
+    [classes.buttonSuccess]: success,
   });
 
   function handleOnChange(e) {
@@ -64,7 +64,7 @@ function FileUploadInput({ onChange, accept, classes }) {
           setProgress(
             Math.round((progressEvent.loaded * 100) / progressEvent.total)
           );
-        }
+        },
       };
 
       const URI = `${accept}`.includes("image") ? "image" : "file";
@@ -77,10 +77,12 @@ function FileUploadInput({ onChange, accept, classes }) {
           return onChange && onChange(res);
         })
         .catch(function(err) {
-          const readable = humanizeError(err.response.data, ["file"]);
-          window.notifySnackbar(`Upload gagal: ${readable.file}`, {
-            variant: "error"
-          });
+          if (err.response && err.response.data) {
+            const readable = humanizeError(err.response.data, ["file"]);
+            window.notifySnackbar(`Upload gagal: ${readable.file}`, {
+              variant: "error",
+            });
+          }
         })
         .finally(() => {
           setLoading(false);
@@ -125,7 +127,7 @@ function FileUploadInput({ onChange, accept, classes }) {
 FileUploadInput.propTypes = {
   accept: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  classes: PropTypes.shape().isRequired
+  classes: PropTypes.shape().isRequired,
 };
 
 export default withStyles(styles)(FileUploadInput);
