@@ -27,6 +27,9 @@ const styles = theme => ({
     marginLeft: -12,
     marginRight: 20,
   },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
 });
 
 function NavbarBackEmailTemplate({ classes, history, title, Content }) {
@@ -47,13 +50,13 @@ function NavbarBackEmailTemplate({ classes, history, title, Content }) {
           </Typography>
         )}
         <Button
-          variant="contained"
+          variant="outlined"
           color="primary"
           size="small"
           to={paths.CRM_EMAIL_TEMPLATE_CREATE}
           component={Link}
         >
-          <AddIcon />
+          <AddIcon className={classes.leftIcon} />
           Buat Templat
         </Button>
       </Toolbar>
