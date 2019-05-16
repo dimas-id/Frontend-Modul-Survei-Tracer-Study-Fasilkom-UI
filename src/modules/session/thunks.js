@@ -153,9 +153,9 @@ export const logout = (force = false) => {
         await atlasV1.session.refreshToken(getUserRefreshToken(getState())); // just change it
       }
     } finally {
+      await dispatch(push("/"));
       setAuthToken(undefined);
       await dispatch(sessionActions.clearSession());
-      await dispatch(push("/"));
       await dispatch(
         utility.enqueueSnackbar("Berhasil keluar", {variant: "success"})
       );
