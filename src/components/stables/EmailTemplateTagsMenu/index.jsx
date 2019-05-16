@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withStyles} from "@material-ui/core/styles";
-import {getTemplateTags} from "../../../modules/crm/mailer/thunks";
+import { connect } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
+import { getTemplateTags } from "../../../modules/crm/mailer/thunks";
 import {
   selectTemplateHtmlTags,
   selectTemplateFields,
@@ -16,17 +16,13 @@ const styles = theme => ({
     paddingBottom: theme.spacing.unit * 2,
   },
   tagMenuWrapper: {
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 3,
   },
+  header: {
+  }
 });
 
-function EmailTemplateTagsMenu({
-  classes,
-  loadTags,
-  html,
-  variables,
-  onPick,
-}) {
+function EmailTemplateTagsMenu({ classes, loadTags, html, variables, onPick }) {
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     loadTags()
@@ -41,17 +37,21 @@ function EmailTemplateTagsMenu({
   return (
     <div className={classes.root}>
       <div className={classes.tagMenuWrapper}>
+        <h3 style={{ marginTop: 0 }} className={classes.header}>
+          Daftar Variable
+        </h3>
         <Tags
           items={variables}
-          title="Daftar variable"
           loading={loading}
           onPick={onPick}
         />
       </div>
       <div className={classes.tagMenuWrapper}>
+        <h3 style={{ marginTop: 0 }} className={classes.header}>
+          Daftar HTML
+        </h3>
         <Tags
           items={html}
-          title="Daftar HTML"
           loading={loading}
           onPick={onPick}
         />

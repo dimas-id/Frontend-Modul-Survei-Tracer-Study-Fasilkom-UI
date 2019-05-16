@@ -6,6 +6,7 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import EyeIcon from "@material-ui/icons/Visibility";
 
 import { authorize } from "../../components/hocs/auth";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
@@ -23,6 +24,11 @@ const styles = theme => ({
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.mt32,
   },
+  showTemplateResult: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 3,
+    paddingBottom: theme.spacing.unit * 3,
+  }
 });
 
 class Screen extends React.Component {
@@ -123,7 +129,7 @@ class Screen extends React.Component {
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <Paper elevation={1} className={classes.showTemplateResult}>
-                <h4 style={{ marginTop: 0 }}>Tinjau Templat</h4>
+                <h3 style={{ marginTop: 0 }}>Tinjau Templat <EyeIcon/></h3>
                 <div dangerouslySetInnerHTML={{ __html: body }} />
               </Paper>
             </Grid>
