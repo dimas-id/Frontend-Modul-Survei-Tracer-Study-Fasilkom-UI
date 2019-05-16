@@ -22,8 +22,6 @@ import { LinesLoader } from "../../components/Loading";
 import paths from "../paths";
 import { Link } from "react-router-dom";
 import { makePathVariableUri } from "../../libs/navigation";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 
 const styles = theme => ({
   paper: {
@@ -31,43 +29,38 @@ const styles = theme => ({
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
   title: {
     ...Guidelines.fonts.medium,
-    fontSize: 32
+    fontSize: 32,
   },
-  subtitle: {
-    fontSize: 16
-  },
-  form: {
-    ...Guidelines.layouts.flexDirCol,
-    marginTop: 42,
-    width: 800
+  gridContainer: {
+    marginTop: 32,
   },
   gridLabel: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   label: {
     fontSize: 16,
-    ...Guidelines.fonts.bold
-  },
-  textField: {
-    width: 800
+    ...Guidelines.fonts.bold,
   },
   gridBtn: {
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   btn: {
     ...Guidelines.layouts.mt64,
     width: 120,
-    ...Guidelines.layouts.mr32
+    ...Guidelines.layouts.mr16,
   },
-  input: {
-    display: "none"
-  }
+  btnDelete: {
+    ...Guidelines.layouts.mt64,
+    width: 120,
+    ...Guidelines.layouts.mr16,
+    backgroundColor: "#E24C4C",
+  },
 });
 
 const STATUS = {
@@ -76,7 +69,7 @@ const STATUS = {
   ACA: "Diterima Admin, Dilanjutkan ke Manajemen",
   RJM: "Ditolak Manajemen",
   PRM: "Diproses Manajemen",
-  ACM: "Program Donasi Diterima"
+  ACM: "Program Donasi Diterima",
 };
 const CATEGORIES = {
   XXX: "Pilih Kategori Donasi",
@@ -89,18 +82,18 @@ const CATEGORIES = {
   LIN: "Lingkungan",
   PTI: "Panti Asuhan",
   RIB: "Rumah Ibadah",
-  RFC: "Run for Charity"
+  RFC: "Run for Charity",
 };
 
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
   state = {
     bank: "0",
     DonationRequest: null,
     donationProgramList: null,
-    loading: true
+    loading: true,
   };
   componentDidMount() {
     const requestId = this.props.match.params.requestId;
@@ -110,7 +103,7 @@ class Screen extends React.Component {
         this.setState({ DonationRequest: result.data });
       })
       .catch(error => {
-        if(error.response &&  error.response.status === 404) {
+        if (error.response && error.response.status === 404) {
           this.props.history.replace(paths.ERROR_404);
         }
       })
@@ -120,15 +113,14 @@ class Screen extends React.Component {
       });
   }
   canBeDeletedandUpdated() {
-    
     const { verificationStatus } = this.state.DonationRequest;
-  
+
     return verificationStatus === "RJA";
   }
 
   handleChange = name => event => {
     this.setState({
-      [name]: event.target.value
+      [name]: event.target.value,
     });
   };
   handleClickDelete(userId, requestId) {
@@ -143,42 +135,25 @@ class Screen extends React.Component {
             this.setState({ loading: true });
           })
           .then(() => {
-            this.handleOpenSuccessMsg();
+            window.notifySnackbar("Request Donasi berhasil dihapus", {
+              variant: "success",
+            });
             history.push(
               makePathVariableUri(paths.USER_DONATION_REQUEST_LIST, {
-                username: user.username
+                username: user.username,
               })
             );
-            this.handleOpenSuccessMsg();
+            // this.handleOpenSuccessMsg();
           })
-          .catch(this.handleOpenErrorMsg);
+          .catch(() => {
+            window.notifySnackbar("Request Donasi tidak dapat dihapus", {
+              variant: "warning",
+            });
+          });
       },
       () => null
     );
   }
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
-  };
 
   render() {
     const { user, classes } = this.props;
@@ -195,10 +170,8 @@ class Screen extends React.Component {
       verificationStatus,
       notes,
       categoryName,
-
     } = this.state.DonationRequest;
     const isEnabled = this.canBeDeletedandUpdated();
-
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -210,16 +183,14 @@ class Screen extends React.Component {
               Detail Pengajuan Program Donasi
             </Typography>
             <form className={classes.form}>
-              <Grid container spacing={24}>
+              <Grid container spacing={24} className={classes.gridContainer}>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
                   <Typography component="p" className={classes.label}>
                     Pengaju Program Donasi
                   </Typography>
                 </Grid>
                 <Grid item xs={8} sm={8}>
-                  <Typography component="p" className={classes.label}>
-                    {user.name}
-                  </Typography>
+                  <Typography component="p">{user.name}</Typography>
                 </Grid>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
                   <Typography component="p" className={classes.label}>
@@ -227,7 +198,7 @@ class Screen extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item xs={8} sm={8}>
-                  <Typography component="p" className={classes.label}>
+                  <Typography component="p">
                     {CATEGORIES[categoryName]}
                   </Typography>
                 </Grid>
@@ -237,9 +208,7 @@ class Screen extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item xs={8} sm={8}>
-                  <Typography component="p" className={classes.label}>
-                    {title}
-                  </Typography>
+                  <Typography component="p">{title}</Typography>
                 </Grid>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
                   <Typography component="p" className={classes.label}>
@@ -247,9 +216,7 @@ class Screen extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item xs={8} sm={8}>
-                  <Typography component="p" className={classes.label}>
-                    {startDate}
-                  </Typography>
+                  <Typography component="p">{startDate}</Typography>
                 </Grid>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
                   <Typography component="p" className={classes.label}>
@@ -257,9 +224,7 @@ class Screen extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item xs={8} sm={8}>
-                  <Typography component="p" className={classes.label}>
-                    {endDate}
-                  </Typography>
+                  <Typography component="p">{endDate}</Typography>
                 </Grid>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
                   <Typography component="p" className={classes.label}>
@@ -267,8 +232,10 @@ class Screen extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item xs={8} sm={8}>
-                  <Typography component="p" className={classes.label}>
-                    {proposalUrl}
+                  <Typography component="p">
+                    <Link href={proposalUrl} className={classes.link}>
+                      {proposalUrl}
+                    </Link>
                   </Typography>
                 </Grid>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
@@ -277,8 +244,11 @@ class Screen extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item xs={8} sm={8}>
-                  <Typography component="p" className={classes.label}>
-                    Rp{goalAmount}
+                  <Typography component="p">
+                    {new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(goalAmount)}
                   </Typography>
                 </Grid>
                 <Grid item xs={4} sm={4} className={classes.gridLabel}>
@@ -287,18 +257,18 @@ class Screen extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item xs={8} sm={8}>
-                  <Typography component="p" className={classes.label}>
+                  <Typography component="p">
                     {STATUS[verificationStatus]}
                   </Typography>
                 </Grid>
-                {isEnabled ? (
+                {!{ notes } == "" ? (
                   <Grid item xs={4} sm={4} className={classes.gridLabel}>
                     <Typography component="p" className={classes.label}>
-                      Alasan Penolakan
+                      Catatan Khusus
                     </Typography>
                   </Grid>
                 ) : null}
-                {isEnabled ? (
+                {!{ notes } == "" ? (
                   <Grid item xs={8} sm={8}>
                     <Typography component="p" className={classes.content}>
                       {notes}
@@ -307,22 +277,7 @@ class Screen extends React.Component {
                 ) : null}
                 <Grid item xs={12} sm={12} className={classes.gridBtn}>
                   <Button
-                    className={classes.btn}
-                    disabled={!isEnabled}
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    component={Link}
-                    to={makePathVariableUri(paths.DONATION_REQUEST_UPDATE, {
-                      requestId: this.props.match.params.requestId,
-                      username: user.username
-                      
-                    })}
-                  >
-                    Ubah
-                  </Button>
-                  <Button
-                    className={classes.btn}
+                    className={classes.btnDelete}
                     disabled={!isEnabled}
                     variant="contained"
                     color="error"
@@ -335,41 +290,25 @@ class Screen extends React.Component {
                   >
                     Hapus
                   </Button>
+                  <Button
+                    className={classes.btn}
+                    disabled={!isEnabled}
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    component={Link}
+                    to={makePathVariableUri(paths.DONATION_REQUEST_UPDATE, {
+                      requestId: this.props.match.params.requestId,
+                      username: user.username,
+                    })}
+                  >
+                    Ubah
+                  </Button>
                 </Grid>
               </Grid>
             </form>
           </Paper>
         </Container>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Program Donasi Berhasil dihapus`}
-          />
-        </Snackbar>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={`Program Donasi gagal dihapus`}
-          />
-        </Snackbar>
       </React.Fragment>
     );
   }
@@ -377,7 +316,7 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
   });
 
   const mapDispatchToProps = dispatch => ({});
