@@ -19,24 +19,44 @@ const styles = theme => ({
     width: "auto",
   },
   cardGrid: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing.unit * 2,
   },
   media: {
-    height: 140
+    height: 140,
   },
   cardContent: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   button: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
   },
   margin: {
-    margin: theme.spacing.unit
-  }
+    margin: theme.spacing.unit,
+  },
+  secondary: {
+    margin: theme.spacing.unit,
+    marginBottom: theme.spacing.unit*2,
+  },
+  description: {
+    margin: theme.spacing.unit,
+    display: "inline-block",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    width: "100%",
+  },
 });
 
 function Donation(props) {
-  const { classes, id, title, description, startDate, endDate, percentageReached } = props;
+  const {
+    classes,
+    id,
+    title,
+    description,
+    startDate,
+    endDate,
+    percentageReached,
+  } = props;
 
   return (
     <React.Fragment>
@@ -51,14 +71,13 @@ function Donation(props) {
             <Typography variant="h5" component="h2" className={classes.margin}>
               {title}
             </Typography>
-            <Typography color="textSecondary" className={classes.margin}>
+            <Typography color="textSecondary" className={classes.secondary}>
               {startDate} hingga {endDate}
+              <br />
+              Pencapaian Target : <strong>{percentageReached} %</strong>
             </Typography>
-            <Typography color="textSecondary" className={classes.margin}>
-              Pencapaian Target : {percentageReached} %
-            </Typography>
-            <Divider variant="middle" />
-            <Typography component="p" className={classes.margin}>
+            <Divider variant="fullWidth" />
+            <Typography component="p" className={classes.description}>
               {description}
             </Typography>
           </CardContent>
@@ -69,7 +88,7 @@ function Donation(props) {
               component={Link}
               fullWidth
               to={makePathVariableUri(paths.DONATION_FORM, {
-                idProgram: id
+                idProgram: id,
               })}
               className={classNames(classes.margin)}
             >
@@ -83,13 +102,13 @@ function Donation(props) {
 }
 
 Donation.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 Donation.defaultProps = {
-  title: "Program Donasi", 
-  description: "Yuk kita berdonasi untuk Fasilkom UI!", 
+  title: "Program Donasi",
+  description: "Yuk kita berdonasi untuk Fasilkom UI!",
   startDate: "2019/04/08",
-  endDate: "2020/11/10"
+  endDate: "2020/11/10",
 };
 export default withStyles(styles)(Donation);

@@ -21,6 +21,10 @@ const styles = theme => ({
     fontSize: 16,
     ...Guidelines.fonts.bold,
   },
+  textField: {
+    marginTop: 0,
+    marginBottom: 0,
+  },
   gridBtn: {
     display: "flex",
     justifyContent: "flex-end",
@@ -36,6 +40,7 @@ function ChannelRequestForm({
   coverImgUrl,
   title,
   description,
+  error,
   onChangeCoverImgUrl,
   onChangeTitle,
   onChangeDescription,
@@ -45,12 +50,12 @@ function ChannelRequestForm({
   return (
     <form className={classes.form}>
       <Grid container spacing={24}>
-        <Grid item xs={3} sm={3} className={classes.gridLabel}>
+        <Grid item xs={12} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>
             Gambar *
           </Typography>
         </Grid>
-        <Grid item xs={9} sm={9}>
+        <Grid item xs={12} sm={9}>
           <Grid container spacing={24}>
             {type === "update" ? (
               <Grid item xs={2} sm={2}>
@@ -72,16 +77,22 @@ function ChannelRequestForm({
                 onChange={onChangeCoverImgUrl}
                 value={coverImgUrl}
               />
+              {Boolean(error.coverImgUrl) ? (
+                <div style={{ color: "red", fontSize: 10 }}>
+                  Gambar wajib diunggah.
+                </div>
+              ) : null}
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={3} sm={3} className={classes.gridLabel}>
+        <Grid item xs={12} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>
             Judul *
           </Typography>
         </Grid>
-        <Grid item xs={9} sm={9}>
+        <Grid item xs={12} sm={9}>
           <TextField
+            required
             id="outlined-title"
             className={classes.textField}
             label="Judul Channel yang diajukan?"
@@ -91,23 +102,19 @@ function ChannelRequestForm({
             variant="outlined"
             onChange={onChangeTitle}
             value={title}
-            error={title.length > 64 ? true : false}
-            helperText={
-              title.length > 64
-                ? "Judul tidak boleh melebihi 64 karakter"
-                : false
-            }
+            error={Boolean(error.title)}
+            helperText={error.title}
             fullWidth
-            required
           />
         </Grid>
-        <Grid item xs={3} sm={3} className={classes.gridLabel}>
+        <Grid item xs={12} sm={3} className={classes.gridLabel}>
           <Typography component="p" className={classes.label}>
             Deskripsi *
           </Typography>
         </Grid>
-        <Grid item xs={9} sm={9}>
+        <Grid item xs={12} sm={9}>
           <TextField
+            required
             id="outlined-description"
             className={classes.textField}
             label="Deskripsi Channel yang diajukan?"
@@ -117,8 +124,9 @@ function ChannelRequestForm({
             variant="outlined"
             onChange={onChangeDescription}
             value={description}
+            error={Boolean(error.description)}
+            helperText={error.description}
             fullWidth
-            required
           />
         </Grid>
         <Grid item xs={12} sm={12} className={classes.gridBtn}>

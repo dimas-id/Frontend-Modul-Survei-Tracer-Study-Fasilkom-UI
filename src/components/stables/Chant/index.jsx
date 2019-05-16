@@ -52,7 +52,7 @@ const styles = theme => ({
     flexGrow: 1,
   },
   chantWrapper: {
-    textOverflow: "ellipsis",
+    textOverflow: "ellipsis"
   },
   actions: {
     display: "flex",
@@ -90,6 +90,10 @@ const styles = theme => ({
 });
 
 class Screen extends React.Component {
+  constructor(props){
+    super(props);
+    this.bodyText = React.createRef();
+  }
   state = {
     userDetail: null,
     openDialog: false,
@@ -97,14 +101,22 @@ class Screen extends React.Component {
     numberLikes: 0,
     overflow: "hidden",
     max: "64px",
+    showDetail: false
   };
 
   componentDidMount() {
+    let showDetail = false
+    if(this.bodyText.current) {
+      if(this.bodyText.current.offsetHeight > 63){
+        showDetail = true
+      }
+    }
     this.setState({
       checked: this.props.hasLiked,
       numberLikes: this.props.numberLikes,
       overflow: this.props.overflow,
       max: this.props.max,
+      showDetail,
     });
   }
 
@@ -215,7 +227,7 @@ class Screen extends React.Component {
 
   render() {
     const { classes, margin, deleted, body } = this.props;
-    const { overflow, max, anchorElShare } = this.state;
+    const { overflow, max, anchorElShare, showDetail } = this.state;
     const shareUrl =
       ROOT_URL +
       makePathVariableUri(paths.CHANNEL_CHANT_DETAIL, {
@@ -234,6 +246,7 @@ class Screen extends React.Component {
             <CardContent className={classes.cardContent}>
               <Typography variant="body1">{this.props.title}</Typography>
               <div
+                ref={this.bodyText}
                 className={classes.chantWrapper}
                 style={{ overflow: overflow, maxHeight: max, maxLine: max }}
               >
@@ -246,11 +259,11 @@ class Screen extends React.Component {
               </div>
             </CardContent>
             <CardActions className={classes.actions} disableActionSpacing>
-              <Link
+              {showDetail && <Link
                 onClick={() => this.setState({ overflow: "visible", max: "" })}
               >
                 <Typography variant="body2">Lihat Detail... </Typography>
-              </Link>
+              </Link>}
               <div>
                 <FormControlLabel
                   control={

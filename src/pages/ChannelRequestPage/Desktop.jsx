@@ -1,23 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
-import {withStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
-import {authorize, ROLES} from "../../components/hocs/auth";
-import {
-  NavbarAuth,
-  NavbarBackForChannelRequest,
-} from "../../components/stables/Navbar";
-import {Container} from "../../components/Container";
-import {Guidelines} from "../../styles";
+import { authorize, ROLES } from "../../components/hocs/auth";
+import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
+import { Container } from "../../components/Container";
+import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
 import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
 import heliosV1 from "../../modules/api/helios/v1";
-import {getUserId} from "../../modules/session/selectors";
+import { getUserId } from "../../modules/session/selectors";
+import { humanizeError } from "../../libs/response";
 
 import paths from "../paths";
 
@@ -47,9 +45,15 @@ class Screen extends React.Component {
     coverImgUrl: "",
     title: "",
     description: "",
+   
+    error: {
+      coverImgUrl: "",
+      title: "",
+      description: "",
+    },
   };
 
-  handleCoverImgUrl({data, status}) {
+  handleCoverImgUrl({ data, status }) {
     if (status === 201) {
       this.setState({
         coverImgUrl: data.fileUrl,
@@ -57,13 +61,13 @@ class Screen extends React.Component {
     }
   }
 
-  handleTitle({target}) {
+  handleTitle({ target }) {
     this.setState({
       title: target.value,
     });
   }
 
-  handleDescription({target}) {
+  handleDescription({ target }) {
     this.setState({
       description: target.value,
     });
@@ -71,7 +75,7 @@ class Screen extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const {userId, history} = this.props;
+    const { userId, history } = this.props;
 
     heliosV1.channel
       .createChannelRequest(
@@ -80,28 +84,36 @@ class Screen extends React.Component {
         this.state.title,
         this.state.description
       )
-      .then(({data}) => {
+      .then(({ data }) => {
         window.notifySnackbar(
           `Pengajuan Channel '${data.title}' berhasil dibuat`,
-          {variant: "success"}
+          { variant: "success" }
         );
         history.push(paths.CHANNEL_REQUEST_LIST);
       })
-      .catch(() => {
-        window.notifySnackbar("Pengajuan Channel gagal dibuat", {
+      .catch(error => {
+        if (error.response) {
+          this.setState({
+            error: {
+              ...this.state.error,
+              ...humanizeError(error.response.data, ["coverImgUrl","title","description"]),
+            }
+          });
+        }
+        window.notifySnackbar(`Pengajuan Channel gagal dibuat`, {
           variant: "error",
         });
       });
   };
 
   render() {
-    const {classes} = this.props;
-    const {coverImgUrl, title, description} = this.state;
+    const { classes } = this.props;
+    const { coverImgUrl, title, description, error } = this.state;
 
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBackForChannelRequest />
+        <NavbarBack />
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>
@@ -115,6 +127,7 @@ class Screen extends React.Component {
               coverImgUrl={coverImgUrl}
               title={title}
               description={description}
+              error={error}
               onChangeCoverImgUrl={this.handleCoverImgUrl.bind(this)}
               onChangeTitle={this.handleTitle.bind(this)}
               onChangeDescription={this.handleDescription.bind(this)}
@@ -133,7 +146,7 @@ function createContainer() {
     userId: getUserId(state),
   });
 
-  return authorize({mustVerified: true, roles: [ROLES.PUBLIC]})(
+  return authorize({ mustVerified: true, roles: [ROLES.PUBLIC] })(
     withRouter(
       connect(
         mapStateToProps,

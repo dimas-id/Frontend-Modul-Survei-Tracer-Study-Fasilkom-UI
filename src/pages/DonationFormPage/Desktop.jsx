@@ -61,7 +61,9 @@ const styles = theme => ({
     ...Guidelines.layouts.pl32,
     ...Guidelines.layouts.pb32,
   },
-
+  margin: {
+    margin: theme.spacing.unit * 2,
+  },
   form: {
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.w100,
@@ -136,7 +138,7 @@ class Screen extends React.Component {
       [FIELDS.bankNumberSource]: "",
       [FIELDS.estPaymentDate]: moment(),
     },
-    error:{
+    error: {
       [FIELDS.amount]: "",
       [FIELDS.bankNumberDest]: "",
       [FIELDS.bankNumberSource]: "",
@@ -196,23 +198,21 @@ class Screen extends React.Component {
           })
         );
         window.notifySnackbar("Donasi berhasil dibuat", {
-          variant: "success"
+          variant: "success",
         });
-        
       })
-      .catch((error) => {
-          if(error.response) {
-            this.setState({
-              error: {
-                ...this.state.error,
-                ...humanizeError(error.response.data, Object.keys(FIELDS)),
-              }
-            })
-            window.notifySnackbar("Gagal membuat donasi", {
-              variant: "error"
-            })
-          }
-        
+      .catch(error => {
+        if (error.response) {
+          this.setState({
+            error: {
+              ...this.state.error,
+              ...humanizeError(error.response.data, Object.keys(FIELDS)),
+            },
+          });
+          window.notifySnackbar("Gagal membuat donasi", {
+            variant: "error",
+          });
+        }
       });
   };
 
@@ -222,7 +222,14 @@ class Screen extends React.Component {
     if (loading) {
       return LinesLoader;
     }
-    const { title, description, proposalUrl, startDate, endDate, percentageReached } = this.state.donationProgram;
+    const {
+      title,
+      description,
+      proposalUrl,
+      startDate,
+      endDate,
+      percentageReached,
+    } = this.state.donationProgram;
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -234,22 +241,24 @@ class Screen extends React.Component {
               <Paper className={classes.paper}>
                 <CardMedia className={classes.media} image={bundar} />
                 <CardContent className={classes.cardContent}>
-                <Typography variant="h5" component="h2" className={classes.margin}>
-                Anda akan berdonasi untuk {title}
-
-                </Typography>
-                <Typography component="p" className={classes.margin}>
-                {description}
-                </Typography>
-                <Divider variant="middle" />
-                <Typography color="textSecondary" className={classes.margin}>
-                Estimasi tanggal pembayaran : {getDateFormatted(startDate, "DD MMMM YYYY")} hingga {getDateFormatted(endDate, "DD MMMM YYYY")}
-
-                </Typography>
-                <Typography color="textSecondary" className={classes.margin}>
-                Target tercapai : {percentageReached} %
-                </Typography>
-               
+                  <Typography
+                    variant="h5"
+                    component="h2"
+                    className={classes.margin}
+                  >
+                    Anda akan berdonasi untuk {title}
+                  </Typography>
+                  <Typography component="p" className={classes.margin}>
+                    {description}
+                  </Typography>
+                  <Divider variant="fullWidth" />
+                  <Typography color="textSecondary" className={classes.margin}>
+                    Estimasi tanggal pembayaran :{" "}
+                    {getDateFormatted(startDate, "DD MMMM YYYY")} hingga{" "}
+                    {getDateFormatted(endDate, "DD MMMM YYYY")}
+                    <br />
+                    Target tercapai : <strong>{percentageReached} %</strong>
+                  </Typography>
                 </CardContent>
                 <Grid item xs={12} sm={12} className={classes.btnProposal}>
                   <Button variant="outlined" color="inherit" href={proposalUrl}>
@@ -280,7 +289,9 @@ class Screen extends React.Component {
                     value={values[FIELDS.amount]}
                     onChange={this.handleChange}
                     error={Boolean(error[FIELDS.amount])}
-                    helperText={error[FIELDS.amount] || "masukkan jumlah pembayaran"}
+                    helperText={
+                      error[FIELDS.amount] || "Masukkan jumlah pembayaran"
+                    }
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                       startAdornment: (
@@ -302,7 +313,10 @@ class Screen extends React.Component {
                       },
                     }}
                     error={Boolean(error[FIELDS.bankNumberDest])}
-                    helperText={error[FIELDS.bankNumberDest] || "Pilih bank tujuan pembayaran"}
+                    helperText={
+                      error[FIELDS.bankNumberDest] ||
+                      "Pilih bank tujuan pembayaran"
+                    }
                     margin="normal"
                     variant="outlined"
                   >
@@ -322,7 +336,10 @@ class Screen extends React.Component {
                     onChange={this.handleChange}
                     type="number"
                     error={Boolean(error[FIELDS.bankNumberSource])}
-                    helperText={error[FIELDS.bankNumberSource] || "masukkan nomor rekening pengirim untuk validasi"}
+                    helperText={
+                      error[FIELDS.bankNumberSource] ||
+                      "Masukkan nomor rekening pengirim untuk validasi"
+                    }
                     margin="normal"
                     variant="outlined"
                     InputProps={{
@@ -342,7 +359,10 @@ class Screen extends React.Component {
                       value={values[FIELDS.estPaymentDate]}
                       onChange={this.handleDateChange(FIELDS.estPaymentDate)}
                       error={Boolean(error[FIELDS.estPaymentDate])}
-                      helperText={error[FIELDS.estPaymentDate] || "masukkan tanggal estimasi pembayaran"}
+                      helperText={
+                        error[FIELDS.estPaymentDate] ||
+                        "Masukkan tanggal estimasi pembayaran"
+                      }
                       variant="outlined"
                       margin="normal"
                       label="Estimasi Tanggal Pembayaran"

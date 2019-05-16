@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { isLoggedIn as _isLoggedIn } from "../../modules/session/selectors";
 
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
@@ -16,6 +19,7 @@ import { Guidelines } from "../../styles";
 import paths from "../paths";
 import Carousel from "./Carousel";
 
+
 const styles = theme => ({
   hero: {
     ...Guidelines.layouts.flexMiddle,
@@ -26,55 +30,61 @@ const styles = theme => ({
     ...Guidelines.layouts.borderBox,
     ...Guidelines.layouts.flexWrap,
     [theme.breakpoints.down("sm")]: {
-      ...Guidelines.layouts.pt40
-    }
+      ...Guidelines.layouts.pt40,
+    },
   },
   contentContainer: {
     minHeight: "100vh",
     ...Guidelines.layouts.pt64,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   title: {
-    ...Guidelines.fonts.heading1
+    ...Guidelines.fonts.heading1,
   },
   subtitle: {
-    fontSize: 24
+    fontSize: 24,
   },
   link: {
     color: "00C7E5",
     ...Guidelines.fonts.bold,
     ...Guidelines.layouts.mr24,
-    ...Guidelines.layouts.ml24
+    ...Guidelines.layouts.ml24,
   },
   btn: {
-    width: 360
+    width: 360,
   },
   btnGrid: {
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.flexMiddle,
     margin: "auto",
-    width: "100%"
+    width: "100%",
   },
   buttonDaftar: {
     backgroundColor: "#000",
     color: "#fff",
     "&:hover": {
-      backgroundColor: "#000"
-    }
+      backgroundColor: "#000",
+    },
   },
   bgLanding: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 });
 
-function LandingMobile({ classes }) {
+function LandingMobile({ classes, isLoggedIn, history }) {
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      history.replace(paths.HOME)
+    }
+  }, []);
+
   return (
     <React.Fragment>
       <NavbarAuth position="fixed" />
       <Particle name="cloud2" left={0} top={140} />
       <Particle name="cloud1" right={0} top={400} />
       <Container>
-        <Grid container spacing={24} className={classes.contentContainer}>
+        <Grid container spacing={0} className={classes.contentContainer}>
           <Grid item md={12} />
           <Grid item sm={12} md={6}>
             <Typography component="h1" variant="h3" className={classes.title}>
@@ -126,7 +136,8 @@ function LandingMobile({ classes }) {
             Donasi
           </Typography>
           <Typography component="p" paragraph className={classes.subtitle}>
-          Sarana untuk menyalurkan kepedulian sosial Anda terhadap masa depan bangsa
+            Sarana untuk menyalurkan kepedulian sosial Anda terhadap masa depan
+            bangsa
           </Typography>
           <Carousel />
         </Container>
@@ -149,7 +160,11 @@ function LandingMobile({ classes }) {
 }
 
 LandingMobile.propTypes = {
-  classes: PropTypes.shape().isRequired
+  classes: PropTypes.shape().isRequired,
 };
 
-export default withStyles(styles)(LandingMobile);
+export default withRouter(
+  connect(state => ({ isLoggedIn: _isLoggedIn(state) }))(
+    withStyles(styles)(LandingMobile)
+  )
+);

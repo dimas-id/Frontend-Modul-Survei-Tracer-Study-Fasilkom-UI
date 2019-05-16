@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { authorize, ROLES } from "../../components/hocs/auth";
 import {
   NavbarAuth,
-  NavbarBackForChannelRequest
+  NavbarBackWithChannelRequest
 } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
@@ -19,6 +19,7 @@ import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUserId } from "../../modules/session/selectors";
 import { BulletList } from "react-content-loader";
+import { humanizeError } from "../../libs/response";
 import paths from "../../pages/paths";
 
 const styles = theme => ({
@@ -27,20 +28,20 @@ const styles = theme => ({
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
   title: {
     ...Guidelines.fonts.medium,
-    fontSize: 32
+    fontSize: 32,
   },
   subtitle: {
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });
 
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
 
   state = {
@@ -48,7 +49,12 @@ class Screen extends React.Component {
     coverImgUrl: "",
     title: "",
     description: "",
-    loading: true
+    error: {
+      coverImgUrl: "",
+      title: "",
+      description: "",
+    },
+    loading: true,
   };
 
   componentDidMount() {
@@ -58,10 +64,13 @@ class Screen extends React.Component {
       .getChannelRequestDetail(this.props.userId, channelId)
       .then(result => {
         if (!result.data.isRejected) {
-          this.props.history.replace(paths.CHANNEL_REQUEST_LIST)
-          window.notifySnackbar("Anda hanya dapat mengubah pengajuan yang ditolak", {
-            variant: "error",
-          });
+          this.props.history.replace(paths.CHANNEL_REQUEST_LIST);
+          window.notifySnackbar(
+            "Anda hanya dapat mengubah pengajuan yang ditolak",
+            {
+              variant: "error",
+            }
+          );
         }
         this.setState({
           channelRequest: result.data,
@@ -83,20 +92,20 @@ class Screen extends React.Component {
   handleCoverImgUrl({ data, status }) {
     if (status === 201) {
       this.setState({
-        coverImgUrl: data.fileUrl
+        coverImgUrl: data.fileUrl,
       });
     }
   }
 
   handleTitle({ target }) {
     this.setState({
-      title: target.value
+      title: target.value,
     });
   }
 
   handleDescription({ target }) {
     this.setState({
-      description: target.value
+      description: target.value,
     });
   }
 
@@ -114,22 +123,30 @@ class Screen extends React.Component {
       )
       .then(({ data }) => {
         window.notifySnackbar(`Pembaruan Channel ${data.title} berhasil`, {
-          variant: "success"
+          variant: "success",
         });
         history.push(paths.CHANNEL_REQUEST_LIST);
       })
-      .catch(() => {
+      .catch(error => {
+        if (error.response) {
+          this.setState({
+            error: {
+              ...this.state.error,
+              ...humanizeError(error.response.data, ["coverImgUrl","title","description"]),
+            }
+          });
+        }
         window.notifySnackbar(`Pembaruan Channel gagal`, { variant: "error" });
       });
   };
 
   render() {
     const { classes } = this.props;
-    const { coverImgUrl, title, description, loading } = this.state;
+    const { coverImgUrl, title, description, error, loading } = this.state;
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBackForChannelRequest />
+        <NavbarBackWithChannelRequest />
         <Particle name="cloud2" left={0} top={160} />
         <Container>
           <Paper className={classes.paper} elevation={1}>
@@ -147,6 +164,7 @@ class Screen extends React.Component {
                 coverImgUrl={coverImgUrl}
                 title={title}
                 description={description}
+                error={error}
                 onChangeCoverImgUrl={this.handleCoverImgUrl.bind(this)}
                 onChangeTitle={this.handleTitle.bind(this)}
                 onChangeDescription={this.handleDescription.bind(this)}
@@ -163,7 +181,7 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    userId: getUserId(state)
+    userId: getUserId(state),
   });
 
   return authorize({ mustVerified: true, roles: [ROLES.PUBLIC] })(

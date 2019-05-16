@@ -99,7 +99,7 @@ function createContainer() {
   });
 
   const mapDispatchToProps = dispatch => ({
-    load: id => dispatch(loadUser(id)),
+    load: id => dispatch(loadUser(id), true),
   });
 
   return withRouter(

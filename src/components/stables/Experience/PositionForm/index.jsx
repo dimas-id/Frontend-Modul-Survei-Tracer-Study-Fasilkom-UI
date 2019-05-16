@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import omit from "lodash/omit";
 
-import moment from 'moment';
+import moment from "moment";
 import keymirror from "keymirror";
 import { Formik } from "formik";
 
@@ -13,15 +13,18 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
+
+import Select from "../../../Select";
 
 import { getDateFormatted } from "../../../../libs/datetime";
 import {
   createPositions,
   updateWorkPositionById,
-  deleteWorkPositionById
+  deleteWorkPositionById,
 } from "../../../../modules/experience/thunks";
 import { getWorkPositionById } from "../../../../modules/experience/selectors";
 import { Validation } from "../../../hocs/form";
@@ -33,27 +36,27 @@ const FIELDS = keymirror({
   locationName: null,
   isCurrent: null,
   dateStarted: null,
-  dateEnded: null
+  dateEnded: null,
 });
 
 const VALIDATOR = Validation.object().shape({
   [FIELDS.title]: Validation.string()
-    .required()
+    .required("Jabatan wajib diisi.")
     .max(64),
   [FIELDS.companyName]: Validation.string()
-    .required()
+    .required("Nama perusahaan wajib diisi.")
     .max(64),
   [FIELDS.industryName]: Validation.string()
-    .required()
+    .required("Nama industri wajib diisi.")
     .max(64),
   [FIELDS.locationName]: Validation.string()
-    .required()
+    .required("Lokasi wajib diisi.")
     .max(64),
   [FIELDS.isCurrent]: Validation.bool().notRequired(),
-  [FIELDS.dateStarted]: Validation.date().required(),
+  [FIELDS.dateStarted]: Validation.date().required("Waktu mulai wajib diisi."),
   [FIELDS.dateEnded]: Validation.date()
     .notRequired()
-    .nullable()
+    .nullable(),
 });
 
 function getBlankValues() {
@@ -64,7 +67,7 @@ function getBlankValues() {
     [FIELDS.locationName]: "",
     [FIELDS.isCurrent]: false,
     [FIELDS.dateStarted]: moment(),
-    [FIELDS.dateEnded]: null
+    [FIELDS.dateEnded]: null,
   };
 }
 
@@ -75,7 +78,7 @@ function PositionForm({
   positionId,
   createPos,
   updatePos,
-  deletePos
+  deletePos,
 }) {
   function submit(values, { setSubmitting }) {
     const payload = { ...omit(values, [FIELDS.isCurrent]) };
@@ -83,7 +86,7 @@ function PositionForm({
     if (!values[FIELDS.isCurrent]) {
       payload[FIELDS.dateEnded] = getDateFormatted(values[FIELDS.dateEnded]);
     } else {
-      payload[FIELDS.dateEnded] = null
+      payload[FIELDS.dateEnded] = null;
     }
 
     const submitAction = update ? updatePos : createPos;
@@ -101,11 +104,16 @@ function PositionForm({
     const isCurrent = values[FIELDS.isCurrent];
     const errors = {};
     if (!isCurrent && !Boolean(dateEnded)) {
-      errors[FIELDS.dateEnded] = `${FIELDS.dateEnded} is a required field`;
+      errors[FIELDS.dateEnded] = `Tanggal selesai wajib diisi.`;
     }
 
     return errors;
   }
+
+  const [industries, setIndustries] = React.useState([]);
+  import("./industry.json").then(val => {
+    setIndustries(val.default);
+  });
 
   return (
     <Formik
@@ -122,7 +130,7 @@ function PositionForm({
         handleChange,
         setFieldValue,
         handleSubmit,
-        isSubmitting
+        isSubmitting,
       }) => (
         <form id="positionForm">
           <DialogContent>
@@ -140,6 +148,7 @@ function PositionForm({
                   variant="outlined"
                   margin="dense"
                   fullWidth
+                  required
                 />
               </Grid>
               <Grid item xs={6}>
@@ -156,23 +165,37 @@ function PositionForm({
                   variant="outlined"
                   margin="dense"
                   fullWidth
+                  required
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
+                <Select
                   name={FIELDS.industryName}
+                  id="outlined-template"
+                  margin="dense"
+                  variant="outlined"
                   label="Industri"
+                  fullWidth
+                  helperText="Pilih industri."
+                  disabled={industries.length <= 0}
+                  loading={industries.length <= 0}
+                  required
+                  value={values[FIELDS.industryName]}
+                  onChange={handleChange}
                   error={
                     errors[FIELDS.industryName] && touched[FIELDS.industryName]
                   }
-                  value={values[FIELDS.industryName]}
-                  helperText={errors[FIELDS.industryName]}
-                  onChange={handleChange}
-                  type="text"
-                  variant="outlined"
-                  margin="dense"
-                  fullWidth
-                />
+                >
+                  {industries.map(item => (
+                    <Select.Item
+                      key={item}
+                      value={item}
+                      selected={item === values[FIELDS.industryName]}
+                    >
+                      {item}
+                    </Select.Item>
+                  ))}
+                </Select>
               </Grid>
               <Grid item xs={6}>
                 <FormControlLabel
@@ -201,6 +224,7 @@ function PositionForm({
                   variant="outlined"
                   margin="dense"
                   fullWidth
+                  required
                 />
               </Grid>
               <Grid item xs={6}>
@@ -219,6 +243,7 @@ function PositionForm({
                     variant="outlined"
                     clearable
                     fullWidth
+                    required
                   />
                 </MuiPickersUtilsProvider>
               </Grid>
@@ -246,12 +271,21 @@ function PositionForm({
           </DialogContent>
           <DialogActions>
             {update && (
-              <Button
-                color="secondary"
-                onClick={() => deletePos(positionId).then(afterSubmit)}
+              <IconButton
+                style={{ color: "#E24C4C" }}
+                onClick={() => {
+                  window.alertDialog(
+                    "Menghapus posisi",
+                    "Apakah anda yakin ingin menghapus posisi?",
+                    function() {
+                      deletePos(positionId).then(afterSubmit);
+                    },
+                    () => {}
+                  );
+                }}
               >
-                Hapus
-              </Button>
+                <DeleteIcon />
+              </IconButton>
             )}
             <Button
               fullWidth
@@ -272,14 +306,14 @@ function PositionForm({
 
 function createContainer() {
   const mapStateToProps = (state, { positionId }) => ({
-    currentPosition: getWorkPositionById(state, positionId)
+    currentPosition: getWorkPositionById(state, positionId),
   });
 
   const mapDispatchToProps = dispatch => ({
     createPos: payload => dispatch(createPositions(payload)),
     updatePos: (positionId, payload) =>
       dispatch(updateWorkPositionById(positionId, payload)),
-    deletePos: positionId => dispatch(deleteWorkPositionById(positionId))
+    deletePos: positionId => dispatch(deleteWorkPositionById(positionId)),
   });
 
   return connect(
