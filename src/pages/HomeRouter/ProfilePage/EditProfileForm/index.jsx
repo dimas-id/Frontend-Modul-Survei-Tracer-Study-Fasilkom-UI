@@ -35,7 +35,7 @@ const FIELDS = keymirror({
 const VALIDATOR = Validation.object().shape({
   [FIELDS.phoneNumber]: Validation.string()
     .matches(
-      /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/g,
+      /\+?([ -]?\d+)+|\(\d+\)([ -]\d+)/g,
       "Nomor telepon tidak sesuai"
     )
     .required("Nomor telepon diperlukan"),
@@ -136,7 +136,6 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
                         error={errors[FIELDS.residenceCity]}
                         helperText={errors[FIELDS.residenceCity]}
                         onChange={handleChange}
-                        required
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -151,7 +150,6 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
                         error={errors[FIELDS.residenceCountry]}
                         helperText={errors[FIELDS.residenceCountry]}
                         onChange={handleChange}
-                        required
                       />
                     </Grid>
 
