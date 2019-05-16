@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
+import {Guidelines} from "../../styles";
 import ChantForm from "../../components/stables/ChantForm"
 import Particle from "../../components/Particle";
 
@@ -36,7 +37,11 @@ const styles = theme => ({
   },
   container:{
     ...layouts.flexMiddle
-  }
+  },
+  title: {
+    ...Guidelines.fonts.medium,
+    fontSize: 32,
+  },
 });
 
 class Screen extends React.PureComponent {
@@ -126,7 +131,7 @@ class Screen extends React.PureComponent {
         <Particle name="cloud1" right={0} bottom="15%" />
         <Container className={classes.container}>
           <Paper className={classes.root} elevation={4}>
-            <Typography variant="h5" component="h3">
+            <Typography className={classes.title} variant="h5" component="h3">
               Membuat Chant
             </Typography>
             <ChantForm 

@@ -12,15 +12,21 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import Grid from "@material-ui/core/Grid";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import icons from "../../../assets/icons";
 import AppsIcon from "@material-ui/icons/Apps";
 
 import { logout } from "../../../modules/session/thunks";
-import { isLoggedIn as _isLoggedIn } from "../../../modules/session/selectors";
+import { GROUPS } from "../../../modules/session";
+import {
+  isLoggedIn as _isLoggedIn,
+  getUser,
+  selectCurrentUserGroups,
+} from "../../../modules/session/selectors";
 import paths from "../../../pages/paths";
 import Logo from "../../../assets/logo.svg";
 import { Guidelines } from "../../../styles";
+import config, { METABASE_URL } from "../../../config";
 
 const styles = theme => {
   return {
@@ -37,13 +43,20 @@ const styles = theme => {
     },
     appMenu: {
       minHeight: 90,
-      maxWidth: "auto",
+      width: 360,
+      padding: 8,
       maxHeight: "auto",
       overflowY: "hidden",
     },
+    menulist: {
+      padding: 0,
+      ...Guidelines.layouts.flexDirRow,
+      ...Guidelines.layouts.flexWrap,
+      ...Guidelines.layouts.flexSpaceBetweenMiddle
+    },
     appMenuItem: {
-      width: 52,
-      height: 52,
+      width: 80,
+      height: 80,
       ...Guidelines.layouts.flexMiddle,
       ...Guidelines.layouts.flexDirCol,
     },
@@ -126,6 +139,79 @@ class NavbarAuth extends React.Component {
     );
   }
 
+  renderAppMenuHeliosMenu() {
+    const { classes, groups, user } = this.props;
+    return (
+      (user.isSuperuser ||
+        groups.findIndex(
+          g =>
+            g === GROUPS.MANAGEMENT ||
+            GROUPS.ADMIN_CHANNEL ||
+            GROUPS.ADMIN_DONATION
+        ) > -1) && (
+        <React.Fragment>
+          <a href={config.ATLAS} target="_blank">
+          <MenuItem
+            className={classes.appMenuItem}
+          >
+            <img src={icons.adminHelios} alt="Account Icon" />
+            <Typography>Adm. Helios</Typography>
+          </MenuItem>
+          </a>
+        </React.Fragment>
+      )
+    );
+  }
+
+  renderAppMenuAtlasMenu() {
+    const { classes, groups, user } = this.props;
+    return (
+      (user.isSuperuser ||
+        groups.findIndex(g => g === GROUPS.ADMIN_USER) > -1) && (
+        <React.Fragment>
+          <a href={config.ATLAS} target="_blank">
+          <MenuItem
+            className={classes.appMenuItem}
+          >
+            <img src={icons.adminAtlas} alt="Account Icon" />
+            <Typography>Adm. Atlas</Typography>
+          </MenuItem>
+          </a>
+        </React.Fragment>
+      )
+    );
+  }
+
+  renderAdminAppMenuItems() {
+    const { classes, user } = this.props;
+    return user.isStaff || user.isSuperuser ? (
+      <React.Fragment>
+        <MenuItem
+          className={classes.appMenuItem}
+          component={Link}
+          to={paths.CRM}
+        >
+          <img src={icons.emailBlast} alt="Account Icon" />
+          <Typography>Email Blaster</Typography>
+        </MenuItem>
+        <MenuItem
+          className={classes.appMenuItem}
+          component={Link}
+          to={paths.CRM_CONTACT}
+        >
+          <img src={icons.kontak} alt="Account Icon" />
+          <Typography>Kontak</Typography>
+        </MenuItem>
+        <a href={METABASE_URL} target="_blank">
+          <MenuItem className={classes.appMenuItem}>
+            <img src={icons.dashboard} alt="Account Icon" />
+            <Typography>Dashboard</Typography>
+          </MenuItem>
+        </a>
+      </React.Fragment>
+    ) : null;
+  }
+
   renderAppMenu() {
     const { isLoggedIn, classes } = this.props;
     const { anchorElAppMenu } = this.state;
@@ -139,12 +225,14 @@ class NavbarAuth extends React.Component {
         >
           <AppsIcon />
         </IconButton>
-        {/* @todo: buat custom menu */}
         <Menu
           id="menu-appbar"
           anchorEl={anchorElAppMenu}
           classes={{
             paper: `${classes.menu} ${classes.appMenu}`,
+          }}
+          MenuListProps={{
+            className: classes.menulist,
           }}
           anchorOrigin={{
             vertical: "top",
@@ -157,38 +245,35 @@ class NavbarAuth extends React.Component {
           open={open}
           onClose={this.handleCloseAppMenu}
         >
-          <Grid container spacing={24}>
-            <Grid item xs={4}>
-              <MenuItem
-                className={classes.appMenuItem}
-                component={Link}
-                to={paths.HOME}
-              >
-                <AccountCircleIcon fontSize="large" />
-                <Typography>Akun</Typography>
-              </MenuItem>
-            </Grid>
-            <Grid item xs={4}>
-              <MenuItem
-                className={classes.appMenuItem}
-                component={Link}
-                to={paths.CHANNEL}
-              >
-                <AccountCircleIcon fontSize="large" />
-                <Typography>Channel</Typography>
-              </MenuItem>
-            </Grid>
-            <Grid item xs={4}>
-              <MenuItem
-                className={classes.appMenuItem}
-                component={Link}
-                to={paths.DONASI}
-              >
-                <AccountCircleIcon fontSize="large" />
-                <Typography>Donasi</Typography>
-              </MenuItem>
-            </Grid>
-          </Grid>
+          <MenuItem
+            className={classes.appMenuItem}
+            component={Link}
+            to={paths.HOME}
+          >
+            <img src={icons.akun} alt="Account Icon" />
+            <Typography>Akun</Typography>
+          </MenuItem>
+          <MenuItem
+            className={classes.appMenuItem}
+            component={Link}
+            to={paths.DONASI}
+          >
+            <img src={icons.donasi} alt="Channel Icon" />
+            <Typography>Donasi</Typography>
+          </MenuItem>
+
+          <MenuItem
+            className={classes.appMenuItem}
+            component={Link}
+            to={paths.CHANNEL}
+          >
+            <img src={icons.channel} alt="Channel Icon" />
+            <Typography>Channel</Typography>
+          </MenuItem>
+
+          {this.renderAdminAppMenuItems()}
+          {this.renderAppMenuAtlasMenu()}
+          {this.renderAppMenuHeliosMenu()}
         </Menu>
       </div>
     ) : null;
@@ -249,10 +334,7 @@ class NavbarAuth extends React.Component {
   render() {
     const { classes, title, position, isLoggedIn } = this.props;
     return (
-      <AppBar
-        position={position}
-        className={classes.appbar}
-      >
+      <AppBar position={position} className={classes.appbar}>
         <Toolbar>
           <Button
             component={Link}
@@ -277,7 +359,9 @@ class NavbarAuth extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
+    user: getUser(state),
     isLoggedIn: _isLoggedIn(state),
+    groups: selectCurrentUserGroups(state),
   });
 
   const mapDispatchToProps = dispatch => ({

@@ -53,14 +53,21 @@ class Screen extends React.Component {
 
   componentDidMount() {
     const { channelId } = this.props.match.params;
+
     heliosV1.channel
       .getChannelRequestDetail(this.props.userId, channelId)
       .then(result => {
+        if (!result.data.isRejected) {
+          this.props.history.replace(paths.CHANNEL_REQUEST_LIST)
+          window.notifySnackbar("Anda hanya dapat mengubah pengajuan yang ditolak", {
+            variant: "error",
+          });
+        }
         this.setState({
           channelRequest: result.data,
           coverImgUrl: result.data.coverImgUrl,
           title: result.data.title,
-          description: result.data.description
+          description: result.data.description,
         });
       })
       .catch(error => {
