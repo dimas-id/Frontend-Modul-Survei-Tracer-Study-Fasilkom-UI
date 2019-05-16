@@ -1,23 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import {connect} from "react-redux";
+import {withRouter} from "react-router";
 
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
-import { authorize, ROLES } from "../../components/hocs/auth";
+import {authorize, ROLES} from "../../components/hocs/auth";
 import {
   NavbarAuth,
-  NavbarBackForChannelRequest
+  NavbarBackForChannelRequest,
 } from "../../components/stables/Navbar";
-import { Container } from "../../components/Container";
-import { Guidelines } from "../../styles";
+import {Container} from "../../components/Container";
+import {Guidelines} from "../../styles";
 import Particle from "../../components/Particle";
 import ChannelRequestForm from "../../components/stables/ChannelRequestForm";
 import heliosV1 from "../../modules/api/helios/v1";
-import { getUserId } from "../../modules/session/selectors";
+import {getUserId} from "../../modules/session/selectors";
 
 import paths from "../paths";
 
@@ -27,51 +27,51 @@ const styles = theme => ({
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
   title: {
     ...Guidelines.fonts.medium,
-    fontSize: 32
+    fontSize: 32,
   },
   subtitle: {
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });
 
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
 
   state = {
     coverImgUrl: "",
     title: "",
-    description: ""
+    description: "",
   };
 
-  handleCoverImgUrl({ data, status }) {
+  handleCoverImgUrl({data, status}) {
     if (status === 201) {
       this.setState({
-        coverImgUrl: data.fileUrl
+        coverImgUrl: data.fileUrl,
       });
     }
   }
 
-  handleTitle({ target }) {
+  handleTitle({target}) {
     this.setState({
-      title: target.value
+      title: target.value,
     });
   }
 
-  handleDescription({ target }) {
+  handleDescription({target}) {
     this.setState({
-      description: target.value
+      description: target.value,
     });
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    const { userId, history } = this.props;
+    const {userId, history} = this.props;
 
     heliosV1.channel
       .createChannelRequest(
@@ -80,23 +80,23 @@ class Screen extends React.Component {
         this.state.title,
         this.state.description
       )
-      .then(({ data }) => {
+      .then(({data}) => {
         window.notifySnackbar(
           `Pengajuan Channel '${data.title}' berhasil dibuat`,
-          { variant: "success" }
+          {variant: "success"}
         );
         history.push(paths.CHANNEL_REQUEST_LIST);
       })
       .catch(() => {
         window.notifySnackbar("Pengajuan Channel gagal dibuat", {
-          variant: "error"
+          variant: "error",
         });
       });
   };
 
   render() {
-    const { classes } = this.props;
-    const { coverImgUrl, title, description } = this.state;
+    const {classes} = this.props;
+    const {coverImgUrl, title, description} = this.state;
 
     return (
       <React.Fragment>
@@ -130,10 +130,10 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    userId: getUserId(state)
+    userId: getUserId(state),
   });
 
-  return authorize({ mustVerified: true, roles: [ROLES.PUBLIC] })(
+  return authorize({mustVerified: true, roles: [ROLES.PUBLIC]})(
     withRouter(
       connect(
         mapStateToProps,

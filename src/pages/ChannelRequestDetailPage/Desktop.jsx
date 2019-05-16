@@ -1,28 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
+import {connect} from "react-redux";
+import {withRouter} from "react-router";
+import {Link} from "react-router-dom";
 
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
-import { authorize } from "../../components/hocs/auth";
+import {authorize} from "../../components/hocs/auth";
 import {
   NavbarAuth,
-  NavbarBackForChannelRequest
+  NavbarBackForChannelRequest,
 } from "../../components/stables/Navbar";
-import { Container } from "../../components/Container";
-import { Guidelines } from "../../styles";
+import {Container} from "../../components/Container";
+import {Guidelines} from "../../styles";
 import Particle from "../../components/Particle";
 
 import heliosV1 from "../../modules/api/helios/v1";
-import { getUser } from "../../modules/session/selectors";
-import { BulletList } from "react-content-loader";
-import { makePathVariableUri } from "../../libs/navigation";
+import {getUser} from "../../modules/session/selectors";
+import {BulletList} from "react-content-loader";
+import {makePathVariableUri} from "../../libs/navigation";
 import paths from "../../pages/paths";
 
 const styles = theme => ({
@@ -31,59 +31,59 @@ const styles = theme => ({
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
   title: {
     ...Guidelines.fonts.medium,
-    fontSize: 32
+    fontSize: 32,
   },
   gridContainer: {
-    marginTop: 64
+    marginTop: 64,
   },
   gridLabel: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   label: {
     fontSize: 16,
-    ...Guidelines.fonts.bold
+    ...Guidelines.fonts.bold,
   },
   content: {
     fontSize: 16,
-    ...Guidelines.fonts.normal
+    ...Guidelines.fonts.normal,
   },
   gridBtn: {
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   btn: {
     ...Guidelines.layouts.mt64,
     ...Guidelines.layouts.ml24,
-    width: 120
+    width: 120,
   },
   btnDelete: {
-    backgroundColor: "#E24C4C"
-  }
+    backgroundColor: "#E24C4C",
+  },
 });
 
 const STATUS = {
   RJ: "Ditolak",
   PR: "Diproses",
-  AC: "Diterima"
+  AC: "Diterima",
 };
 
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
 
   state = {
     channelRequest: null,
-    loading: true
+    loading: true,
   };
 
   componentDidMount() {
-    const { channelId } = this.props.match.params;
+    const {channelId} = this.props.match.params;
     heliosV1.channel
       .getChannelRequestDetail(this.props.user.id, channelId)
       .then(result => {
@@ -97,11 +97,13 @@ class Screen extends React.Component {
   }
 
   canBeDeletedAndUpdated = () => {
-    const { verificationStatus } = this.state.channelRequest;
+    const {verificationStatus} = this.state.channelRequest;
     return verificationStatus === "RJ";
   };
 
   handleClickDelete = (userId, channelId, e) => {
+    const {history} = this.props;
+
     if (!this.canBeDeletedAndUpdated()) {
       e.preventDefault();
       return;
@@ -114,32 +116,35 @@ class Screen extends React.Component {
         heliosV1.channel
           .deleteChannelRequest(userId, channelId)
           .then(() => {
-            this.setState({ loading: true });
+            this.setState({loading: true});
           })
           .then(() => {
-            window.notifySnackbar("Request Channel berhasil dihapus", {
-              variant: "success"
-            });
+            window.notifySnackbar(
+              `Pengajuan Channel berhasil dihapus`,
+              {variant: "success"}
+            );
+            history.push(paths.CHANNEL_REQUEST_LIST);
           })
           .catch(() => {
-            window.notifySnackbar("Request Channel tidak dapat dihapus", {
-              variant: "warning"
+            window.notifySnackbar("Pengajuan Channel gagal dibuat", {
+              variant: "error",
             });
           });
       },
       () => null
     );
   };
+  
 
   renderContent() {
-    const { user, classes } = this.props;
+    const {user, classes} = this.props;
     const {
       id,
       coverImgUrl,
       title,
       description,
       verificationStatus,
-      notes
+      notes,
     } = this.state.channelRequest;
     const isEnabled = this.canBeDeletedAndUpdated();
 
@@ -156,7 +161,7 @@ class Screen extends React.Component {
               style={{
                 width: 80,
                 height: 80,
-                objectFit: "cover"
+                objectFit: "cover",
               }}
               src={coverImgUrl}
               alt="cover channel"
@@ -195,7 +200,7 @@ class Screen extends React.Component {
           {isEnabled ? (
             <Grid item xs={3} sm={3} className={classes.gridLabel}>
               <Typography component="p" className={classes.label}>
-                Alasan Penolakan
+                Catatan Khusus
               </Typography>
             </Grid>
           ) : null}
@@ -224,7 +229,7 @@ class Screen extends React.Component {
               disabled={!isEnabled}
               component={Link}
               to={makePathVariableUri(paths.CHANNEL_REQUEST_UPDATE, {
-                channelId: id
+                channelId: id,
               })}
               className={classes.btn}
               variant="contained"
@@ -238,8 +243,8 @@ class Screen extends React.Component {
     );
   }
   render() {
-    const { classes } = this.props;
-    const { loading } = this.state;
+    const {classes} = this.props;
+    const {loading} = this.state;
 
     return (
       <React.Fragment>
@@ -261,12 +266,12 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
   });
 
   const mapDispatchToProps = dispatch => ({});
 
-  return authorize({ mustVerified: true })(
+  return authorize({mustVerified: true})(
     withRouter(
       connect(
         mapStateToProps,

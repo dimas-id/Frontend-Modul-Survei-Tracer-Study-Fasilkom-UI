@@ -11,25 +11,24 @@ import FileUploadInput from "../../stables/FileUploadInput";
 const styles = theme => ({
   form: {
     ...Guidelines.layouts.flexDirCol,
-    marginTop: 48
+    marginTop: 48,
   },
   gridLabel: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   label: {
     fontSize: 16,
-    ...Guidelines.fonts.bold
+    ...Guidelines.fonts.bold,
   },
-  textField: {},
   gridBtn: {
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   btn: {
     ...Guidelines.layouts.mt64,
-    width: 120
-  }
+    width: 120,
+  },
 });
 
 function ChannelRequestForm({
@@ -41,7 +40,7 @@ function ChannelRequestForm({
   onChangeTitle,
   onChangeDescription,
   onSubmit,
-  type
+  type,
 }) {
   return (
     <form className={classes.form}>
@@ -52,28 +51,28 @@ function ChannelRequestForm({
           </Typography>
         </Grid>
         <Grid item xs={9} sm={9}>
-        <Grid container spacing={24}>
-          {type === "update" ? (
+          <Grid container spacing={24}>
+            {type === "update" ? (
+              <Grid item xs={2} sm={2}>
+                <img
+                  style={{
+                    width: 80,
+                    height: 80,
+                    objectFit: "cover",
+                  }}
+                  src={coverImgUrl}
+                  alt="cover channel"
+                />
+              </Grid>
+            ) : null}
+
             <Grid item xs={2} sm={2}>
-              <img
-                style={{
-                  width: 80,
-                  height: 80,
-                  objectFit: "cover"
-                }}
-                src={coverImgUrl}
-                alt="cover channel"
+              <FileUploadInput
+                accept="image/*"
+                onChange={onChangeCoverImgUrl}
+                value={coverImgUrl}
               />
             </Grid>
-          ) : null}
-
-          <Grid item xs={2} sm={2}>
-            <FileUploadInput
-              accept="image/*"
-              onChange={onChangeCoverImgUrl}
-              value={coverImgUrl}
-            />
-          </Grid>
           </Grid>
         </Grid>
         <Grid item xs={3} sm={3} className={classes.gridLabel}>
@@ -85,13 +84,19 @@ function ChannelRequestForm({
           <TextField
             id="outlined-title"
             className={classes.textField}
-            placeholder="Judul Channel yang diajukan"
+            label="Judul Channel yang diajukan?"
             type="text"
             name="title"
             margin="normal"
             variant="outlined"
             onChange={onChangeTitle}
             value={title}
+            error={title.length > 64 ? true : false}
+            helperText={
+              title.length > 64
+                ? "Judul tidak boleh melebihi 64 karakter"
+                : false
+            }
             fullWidth
             required
           />
@@ -105,7 +110,7 @@ function ChannelRequestForm({
           <TextField
             id="outlined-description"
             className={classes.textField}
-            placeholder="Deskripsi Channel yang diajukan"
+            label="Deskripsi Channel yang diajukan?"
             type="text"
             name="description"
             margin="normal"
@@ -133,7 +138,7 @@ function ChannelRequestForm({
 }
 
 ChannelRequestForm.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(ChannelRequestForm);

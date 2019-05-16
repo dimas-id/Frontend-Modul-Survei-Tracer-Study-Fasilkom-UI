@@ -22,6 +22,11 @@ import PreferencePage from "./PreferencePage";
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.mt32
+  },
+  particle: {
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "flex-end"
   }
 });
 

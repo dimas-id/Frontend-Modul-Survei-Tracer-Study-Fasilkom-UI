@@ -26,6 +26,7 @@ const styles = theme => ({
   },
   label: {
     ...layouts.marginAuto,
+    fontSize: 16,
     ...fonts.bold,
   },
   button: {
