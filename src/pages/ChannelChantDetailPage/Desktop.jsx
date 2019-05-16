@@ -5,11 +5,10 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 
 import { authorize } from "../../components/hocs/auth";
-import { NavbarBackChannel , NavbarAuth } from "../../components/stables/Navbar";
+import { NavbarBackChannel, NavbarAuth } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import ChantCard from "../../components/stables/Chant";
 import { LoadingFill } from "../../components/Loading";
-
 
 import paths from "../../pages/paths";
 import { makePathVariableUri } from "../../libs/navigation";
@@ -20,8 +19,8 @@ import heliosV1 from "../../modules/api/helios/v1";
 const styles = theme => ({
   card: {
     ...layouts.ml64,
-    ...layouts.mt64
-  }
+    ...layouts.mt64,
+  },
 });
 
 class Screen extends React.Component {
@@ -31,6 +30,16 @@ class Screen extends React.Component {
   };
 
   componentDidMount() {
+    this.loadChant();
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.match.params.chantId !== this.props.match.params.chantId) {
+      this.loadChant()
+    }
+  }
+
+  loadChant = () => {
     heliosV1.channel
       .getListChantReply(
         this.props.match.params.channelId,
@@ -42,8 +51,7 @@ class Screen extends React.Component {
       .finally(() => {
         this.setState({ isLoading: false });
       });
-  }
-
+  };
 
   handleDelete = (userId, chantId, channelId) => {
     window.alertDialog(
@@ -51,35 +59,35 @@ class Screen extends React.Component {
       "Apakah anda yakin Chant ini?",
       () => {
         heliosV1.channel
-      .deleteChant(userId, chantId)
-      .then(() => {
-        this.setState({ isLoading: true });
-      })
-      .then(() => {
-        this.props.history.push(
-          makePathVariableUri(paths.CHANNEL_CHANT, {
-            channelId: channelId
+          .deleteChant(userId, chantId)
+          .then(() => {
+            this.setState({ isLoading: true });
           })
-        );
-        window.notifySnackbar("Chant berhasil dihapus", {
-          variant: "success"
-        });
-      })
-      .catch(() => window.notifySnackbar("Chant tidak dapat dihapus", {
-        variant: "warning"
-      })
-      )
+          .then(() => {
+            this.props.history.push(
+              makePathVariableUri(paths.CHANNEL_CHANT, {
+                channelId: channelId,
+              })
+            );
+            window.notifySnackbar("Chant berhasil dihapus", {
+              variant: "success",
+            });
+          })
+          .catch(() =>
+            window.notifySnackbar("Chant tidak dapat dihapus", {
+              variant: "warning",
+            })
+          );
       },
       () => null
     );
-    
   };
-  
+
   renderChantCard() {
     const { listChant } = this.state;
     const { classes } = this.props;
     const distanceToParent = listChant[0].level;
-    
+
     return (
       <React.Fragment>
         {listChant.map(chant => (
@@ -114,8 +122,10 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBackChannel channelId={this.props.match.params.channelId} chantId={this.props.match.params.chantId}
-         />
+        <NavbarBackChannel
+          channelId={this.props.match.params.channelId}
+          chantId={this.props.match.params.chantId}
+        />
         <Container>
           {isLoading ? <LoadingFill /> : this.renderChantCard()}
         </Container>
