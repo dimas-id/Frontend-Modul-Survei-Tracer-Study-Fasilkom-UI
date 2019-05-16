@@ -27,8 +27,8 @@ import heliosV1 from "../../modules/api/helios/v1";
 import { LinesLoader } from "../../components/Loading";
 import keyMirror from "keymirror";
 import { getDateFormatted } from "../../libs/datetime";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
+import { humanizeError } from "../../libs/response";
+import NumberFormat from "react-number-format";
 import { Link } from "react-router-dom";
 import paths from "../paths";
 import { makePathVariableUri } from "../../libs/navigation";
@@ -53,8 +53,8 @@ const styles = theme => ({
   },
   form: {
     ...Guidelines.layouts.flexDirCol,
+    boxSizing: "border-box",
     marginTop: 42,
-    width: 800
   },
   gridLabel: {
     display: "flex",
@@ -64,9 +64,6 @@ const styles = theme => ({
     fontSize: 16,
     ...Guidelines.fonts.bold
   },
-  textField: {
-    width: 800
-  },
   gridBtn: {
     display: "flex",
     justifyContent: "flex-end"
@@ -75,9 +72,6 @@ const styles = theme => ({
     ...Guidelines.layouts.mt64,
     width: 120
   },
-  input: {
-    display: "none"
-  }
 });
 
 const categories = [
@@ -135,6 +129,26 @@ const FIELDS = keyMirror({
   goalAmount: null,
   proposalUrl: null
 });
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={values => {
+        onChange({
+          target: {
+            name: other.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  );
+}
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired
@@ -150,7 +164,16 @@ class Screen extends React.Component {
       [FIELDS.goalAmount]: 0,
       [FIELDS.proposalUrl]: ""
     },
-    donationRequest: null
+    error: {
+      [FIELDS.categoryName]: "",
+      [FIELDS.title]: "",
+      [FIELDS.description]: "",
+      [FIELDS.startDate]: "",
+      [FIELDS.endDate]: "",
+      [FIELDS.goalAmount]: "",
+      [FIELDS.proposalUrl]: "",
+    },
+    donationRequest: null,
   };
 
   handleChange = event => {
@@ -229,42 +252,36 @@ class Screen extends React.Component {
         values[FIELDS.proposalUrl]
       )
       .then(() => {
+        setTimeout(() => {
         history.push(
           makePathVariableUri(paths.USER_DONATION_REQUEST_LIST, {
-            username: user.username
+            username: user.username,
           })
         );
-        this.handleOpenSuccessMsg();
-      })
-      .catch(this.handleOpenErrorMsg);
-  };
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
+        window.notifySnackbar("Pengajuan Program Donasi Berhasil Diubah", {
+          variant: "success",
+        });
+      }, 1000);
+    })
 
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
+    .catch(error => {
+      if (error.response) {
+        this.setState({
+          error: {
+            ...this.state.error,
+            ...humanizeError(error.response.data, Object.keys(FIELDS)),
+          },
+        });
+        window.notifySnackbar("Pengajuan Program Donasi Gagal Diubah", {
+          variant: "error",
+        });
+      }
+    });
   };
 
   render() {
     const { user, classes } = this.props;
-    const { loading, values } = this.state;
+    const { loading, values, error } = this.state;
     if (loading) {
       return <LinesLoader />;
     }
@@ -277,10 +294,10 @@ class Screen extends React.Component {
         <Container className={classes.container}>
           <Paper className={classes.paper} elevation={1}>
             <Typography className={classes.title} variant="h5" component="h3">
-              Ajukan Program Donasi
+              Ubah pengajuan Program Donasi
             </Typography>
             <Typography className={classes.subtitle} component="p">
-              Program donasi yang Anda ajukan akan diproses oleh Admin untuk
+              Program donasi yang Anda ubah akan diproses oleh Admin untuk
               dibuat
             </Typography>
             <form className={classes.form}>
@@ -293,6 +310,7 @@ class Screen extends React.Component {
                 <Grid item xs={9} sm={9}>
                   <TextField
                     disabled
+                    fullWidth
                     id="oulined-dissabled"
                     defaultValue={user.name}
                     className={classes.textField}
@@ -308,17 +326,21 @@ class Screen extends React.Component {
                   <TextField
                     id="outlined-select-category"
                     select
+                    fullWidth
                     className={classes.textField}
                     name={FIELDS.categoryName}
                     value={values[FIELDS.categoryName]}
                     onChange={this.handleChange}
                     defaultValue= {values[FIELDS.categoryName]}
+                    error={Boolean(error[FIELDS.categoryName])}
+                    helperText={
+                      error[FIELDS.categoryName] || "masukkan kategori donasi"
+                    }
                     SelectProps={{
                       MenuProps: {
                         className: classes.menu
                       }
                     }}
-                    helperText="Pilih Kategori Donasi"
                     margin="normal"
                     variant="outlined"
                   >
@@ -340,10 +362,15 @@ class Screen extends React.Component {
                     id="outlined-text-input"
                     className={classes.textField}
                     placeholder="Judul donasi yang diajukan"
+                    fullWidth
                     name={FIELDS.title}
                     value={values[FIELDS.title]}
                     onChange={this.handleChange}
                     autoComplete="judul"
+                    error={Boolean(error[FIELDS.title])}
+                    helperText={
+                      error[FIELDS.title] || "masukkan judul program donasi"
+                    }
                     margin="normal"
                     variant="outlined"
                   />
@@ -357,11 +384,17 @@ class Screen extends React.Component {
                   <TextField
                     required
                     id="outlined-text-input"
+                    fullWidth
                     className={classes.textField}
                     placeholder="Deskripsi program donasi"
                     name={FIELDS.description}
                     value={values[FIELDS.description]}
                     onChange={this.handleChange}
+                    error={Boolean(error[FIELDS.description])}
+                    helperText={
+                      error[FIELDS.description] ||
+                      "masukkan deskripsi program donasi"
+                    }
                     autoComplete="judul"
                     margin="normal"
                     variant="outlined"
@@ -377,9 +410,14 @@ class Screen extends React.Component {
                     <InlineDatePicker
                       className={classes.field}
                       clearable
+                      fullWidth
                       variant="outlined"
                       margin="normal"
                       format="YYYY-MM-DD"
+                      error={Boolean(error[FIELDS.startDate])}
+                      helperText={
+                        error[FIELDS.startDate] || "masukkan tanggal mulai program donasi"
+                      }
                       name={FIELDS.startDate}
                       value={values[FIELDS.startDate]}
                       onChange={this.handleDateChange(FIELDS.startDate)}
@@ -396,9 +434,14 @@ class Screen extends React.Component {
                     <InlineDatePicker
                       className={classes.field}
                       clearable
+                      fullWidth
                       variant="outlined"
                       margin="normal"
                       format="YYYY-MM-DD"
+                      error={Boolean(error[FIELDS.endDate])}
+                      helperText={
+                        error[FIELDS.endDate] || "masukkan tanggal berakhir program donasi"
+                      }
                       name={FIELDS.endDate}
                       value={values[FIELDS.endDate]}
                       onChange={this.handleDateChange(FIELDS.endDate)}
@@ -413,6 +456,7 @@ class Screen extends React.Component {
                 <Grid item xs={9} sm={9}>
                   <TextField
                     required
+                    fullWidth
                     id="outlined-required"
                     label="Jumlah Donasi"
                     className={classes.textField}
@@ -421,8 +465,11 @@ class Screen extends React.Component {
                     name={FIELDS.goalAmount}
                     value={values[FIELDS.goalAmount]}
                     onChange={this.handleChange}
-                    type="number"
+                    error={Boolean(error[FIELDS.goalAmount])}
+                    helperText={error[FIELDS.goalAmount] || "masukkan target pengumpulan program donasi"}
+                    // type="number"
                     InputProps={{
+                      inputComponent: NumberFormatCustom,
                       startAdornment: (
                         <InputAdornment position="start">Rp</InputAdornment>
                       )
@@ -439,6 +486,10 @@ class Screen extends React.Component {
                     accept="application/pdf"
                     name={FIELDS.proposalUrl}
                     value={values[FIELDS.proposalUrl]}
+                    error={Boolean(error[FIELDS.proposalUrl])}
+                      helperText={
+                        error[FIELDS.proposalUrl] || "masukkan proposal pengajuan program donasi"
+                      }
                     onChange={this.handleFileSubmit}
                   />
                 </Grid>
@@ -458,36 +509,6 @@ class Screen extends React.Component {
             </form>
           </Paper>
         </Container>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Pengajuan Program Donasi Berhasil disimpan`}
-          />
-        </Snackbar>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={`Pengajuan Program Donasi gagal disimpan`}
-          />
-        </Snackbar>
       </React.Fragment>
     );
   }
