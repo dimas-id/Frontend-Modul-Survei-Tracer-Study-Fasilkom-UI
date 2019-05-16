@@ -35,6 +35,7 @@ import { makePathVariableUri } from "../../libs/navigation";
 import moment from "moment";
 import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
 import { humanizeError } from "../../libs/response";
+import NumberFormat from "react-number-format";
 
 const styles = theme => ({
   paper: {
@@ -132,6 +133,26 @@ const FIELDS = keyMirror({
   goalAmount: null,
   proposalUrl: null,
 });
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={values => {
+        onChange({
+          target: {
+            name: other.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  );
+}
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
@@ -153,7 +174,7 @@ class Screen extends React.Component {
       [FIELDS.description]: "",
       [FIELDS.startDate]: "",
       [FIELDS.endDate]: "",
-      [FIELDS.goalAmount]: 0,
+      [FIELDS.goalAmount]: "",
       [FIELDS.proposalUrl]: "",
     },
     donationProgram: null,
@@ -272,7 +293,7 @@ class Screen extends React.Component {
               Ajukan Program Donasi
             </Typography>
             <Typography className={classes.subtitle} component="p">
-              Program donasi yang Anda ajukan akan diproses oleh Admin untuk
+              Program donasi yang Anda ajukan akan diproses oleh Admin dan Manajemen ILUNI12 untuk
               dibuat
             </Typography>
             <form className={classes.form}>
@@ -425,7 +446,6 @@ class Screen extends React.Component {
                   <TextField
                     required
                     id="outlined-required"
-                    label="Jumlah Donasi"
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
@@ -433,11 +453,9 @@ class Screen extends React.Component {
                     value={values[FIELDS.goalAmount]}
                     onChange={this.handleChange}
                     error={Boolean(error[FIELDS.goalAmount])}
-                      helperText={
-                        error[FIELDS.goalAmount] || "masukkan target pengumpulan program donasi"
-                      }
-                    type="number"
+                    helperText={error[FIELDS.goalAmount] || "masukkan target pengumpulan program donasi"}
                     InputProps={{
+                      inputComponent: NumberFormatCustom,
                       startAdornment: (
                         <InputAdornment position="start">Rp</InputAdornment>
                       ),
