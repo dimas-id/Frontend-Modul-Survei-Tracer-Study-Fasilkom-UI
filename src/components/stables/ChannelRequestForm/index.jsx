@@ -40,6 +40,7 @@ function ChannelRequestForm({
   coverImgUrl,
   title,
   description,
+  error,
   onChangeCoverImgUrl,
   onChangeTitle,
   onChangeDescription,
@@ -76,6 +77,11 @@ function ChannelRequestForm({
                 onChange={onChangeCoverImgUrl}
                 value={coverImgUrl}
               />
+              {Boolean(error.coverImgUrl) ? (
+                <div style={{ color: "red", fontSize: 10 }}>
+                  Gambar wajib diunggah.
+                </div>
+              ) : null}
             </Grid>
           </Grid>
         </Grid>
@@ -96,12 +102,8 @@ function ChannelRequestForm({
             variant="outlined"
             onChange={onChangeTitle}
             value={title}
-            error={title.length > 64 ? true : false}
-            helperText={
-              title.length > 64
-                ? "Judul tidak boleh melebihi 64 karakter"
-                : false
-            }
+            error={Boolean(error.title)}
+            helperText={error.title}
             fullWidth
           />
         </Grid>
@@ -122,6 +124,8 @@ function ChannelRequestForm({
             variant="outlined"
             onChange={onChangeDescription}
             value={description}
+            error={Boolean(error.description)}
+            helperText={error.description}
             fullWidth
           />
         </Grid>
