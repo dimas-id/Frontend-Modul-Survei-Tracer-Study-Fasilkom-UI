@@ -254,6 +254,8 @@ function PositionForm({
               </Button>
             )}
             <Button
+              fullWidth
+              variant="contained"
               color="primary"
               disabled={isSubmitting}
               type="submit"

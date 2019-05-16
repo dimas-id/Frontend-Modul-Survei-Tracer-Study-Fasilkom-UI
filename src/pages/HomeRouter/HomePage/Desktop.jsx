@@ -8,16 +8,26 @@ import {
   getUser,
   selectCurrentUserGroups,
 } from "../../../modules/session/selectors";
+import {
+  updateUserProfile
+} from "../../../modules/session/thunks";
 
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import CameraEnhanceIcon from "@material-ui/icons/CameraEnhanceOutlined";
 import { Avatar, Chip } from "@material-ui/core";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+
+import FormDialog from "../../../components/FormDialog";
 import CategoryPaper from "./CategoryPaper";
 import config from "../../../config";
 import paths from "../../paths";
+import FileUploadInput from "../../../components/stables/FileUploadInput";
 import { METABASE_URL } from "../../../config/index.js"
 
 const styles = theme => ({
@@ -66,15 +76,29 @@ const styles = theme => ({
     display: "flex",
     alignItems: "center",
   },
-  profilePic: {
-    borderRadius: "50%",
-    width: "100px",
-    height: "100px",
+  photo: {
+    ...Guidelines.layouts.flexDirRow,
+    ...Guidelines.layouts.flexMiddle,
+    position: 'relative',
+    [theme.breakpoints.down("sm")]: {
+      ...Guidelines.layouts.flexDirCol,
+      ...Guidelines.layouts.mb16
+    },
   },
   bigAvatar: {
     margin: 10,
     width: 90,
     height: 90,
+  },
+  buttonUpload: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: "#00C7E5",
+  },
+  helperText:{
+    ...Guidelines.layouts.mt8,
+    fontSize: 12,
   },
   chip: {
     margin: 10,
@@ -83,16 +107,36 @@ const styles = theme => ({
 
 class HomePage extends React.Component {
   state = {
-    open: false,
+    openUpload: false,
+    profilePicUrl: "",
   };
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
+  handleProfilePicUrl({ data, status }) {
+    if (status === 201) {
+      this.setState({
+        profilePicUrl: data.fileUrl,
+      });
+    }
+  }
+
+  handleOpenUpload = () => {
+    this.setState({ openUpload: true });
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
+  handleCloseUpload = () => {
+    this.setState({ openUpload: false });
   };
+
+  handleSubmit = () => {
+    const { updatePhoto } = this.props;
+    const { profilePicUrl } = this.state;
+
+    this.setState({ profilePicUrl: '' })
+    updatePhoto(profilePicUrl).then(() => {
+      this.handleCloseUpload();
+
+    })
+  }
 
   openVerificationDialog = () => {
     window.alertDialog(
@@ -125,7 +169,7 @@ class HomePage extends React.Component {
     );
   }
 
-  render() {
+  renderBody() {
     const { classes, user } = this.props;
     if (!user) {
       return null;
@@ -136,11 +180,20 @@ class HomePage extends React.Component {
     return (
       <React.Fragment>
         <Paper className={classes.paper} elevation={1}>
-          <Avatar
-            alt="Profile Pic"
-            src={profile.profilePicUrl}
-            className={classes.bigAvatar}
-          />
+          <div className={classes.photo}>
+            <Avatar
+              src={profile.profilePicUrl}
+              alt="Profile Pic"
+              className={classes.bigAvatar}
+            />
+            <IconButton
+              className={classes.buttonUpload}
+              onClick={this.handleOpenUpload}
+            >
+              <CameraEnhanceIcon
+              />
+            </IconButton>
+          </div>
           <Typography className={classes.title} variant="h5" component="h3">
             Selamat datang, {user.firstName} 😊
           </Typography>
@@ -218,7 +271,7 @@ class HomePage extends React.Component {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <CategoryPaper
-                    title="Daftar Kontrak Pengguna"
+                    title="Daftar Kontak Pengguna"
                     description="Sarana untuk melihat semua kontak pengguna"
                     imageName="cloudContact"
                     path={paths.CRM_CONTACT}
@@ -229,7 +282,7 @@ class HomePage extends React.Component {
                     <CategoryPaper
                       title="Administrasi Atlas"
                       description="Sarana untuk melakukan administrasi data alumni dan pengguna"
-                      imageName="cloudContact"
+                      imageName="cloudAtlas"
                       pathUrl={`${config.ATLAS}/__admin__/`}
                     />
                   </Grid>
@@ -239,7 +292,7 @@ class HomePage extends React.Component {
                     <CategoryPaper
                       title="Administrasi Helios"
                       description="Sarana untuk melakukan administrasi channel dan donasi"
-                      imageName="cloudContact"
+                      imageName="cloudHelios"
                       pathUrl={`${config.HELIOS}/__admin__/`}
                     />
                   </Grid>
@@ -251,6 +304,44 @@ class HomePage extends React.Component {
       </React.Fragment>
     );
   }
+
+  render() {
+    const { classes, user } = this.props;
+    const { profile } = user;
+    return (
+      <React.Fragment>
+        <FormDialog
+          title="Ubah Foto Profil"
+          open={this.state.openUpload}
+          onClose={this.handleCloseUpload}
+        >
+          <DialogContent>
+            <FileUploadInput
+              accept="image/*"
+              onChange={this.handleProfilePicUrl.bind(this)}
+              value={profile.profilePicUrl}
+            />
+            <Typography className={classes.helperText} variant="p">
+              Upload file dengan format .jpg, .jpeg, atau .png
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              type="submit"
+              onClick={this.handleSubmit}
+              disabled={!Boolean(this.state.profilePicUrl)}
+            >
+              Simpan
+            </Button>
+          </DialogActions>
+        </FormDialog>
+        {this.renderBody()}
+      </React.Fragment>
+    );
+  }
 }
 
 function createContainer() {
@@ -259,7 +350,9 @@ function createContainer() {
     groups: selectCurrentUserGroups(state),
   });
 
-  const mapDispatchToProps = dispatch => ({});
+  const mapDispatchToProps = dispatch => ({
+    updatePhoto: (profilePicUrl) => dispatch(updateUserProfile({profile: { profilePicUrl }}))
+  });
 
   return withRouter(
     connect(
