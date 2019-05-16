@@ -57,21 +57,6 @@ const styles = theme => ({
   subtitle: {
     fontSize: 20,
   },
-  paperChild: {
-    ...Guidelines.layouts.mt32,
-    ...Guidelines.layouts.pt24,
-    ...Guidelines.layouts.pr24,
-    ...Guidelines.layouts.pl24,
-    ...Guidelines.layouts.pb24,
-  },
-  titleChild: {
-    ...Guidelines.fonts.bold,
-    fontSize: 28,
-  },
-  subtitleChild: {
-    ...Guidelines.layouts.mt16,
-    fontSize: 16,
-  },
   button: {
     display: "flex",
     alignItems: "center",
