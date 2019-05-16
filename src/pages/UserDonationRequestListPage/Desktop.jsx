@@ -52,7 +52,6 @@ const STATUS = {
   RJM: "Ditolak Manajemen, diproses Admin",
   // PRM: "Diproses Manajemen",
   ACM: "Program Donasi Diterima",
->>>>>>> 1ee29e26c1b8f3b6676e51e37d8fd06e75c4a5c6
 };
 
 class Screen extends React.Component {
