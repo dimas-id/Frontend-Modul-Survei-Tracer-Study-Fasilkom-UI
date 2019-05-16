@@ -1,6 +1,7 @@
 export const isDevelopment = process.env.NODE_ENV === "development";
 export const PUBLIC_URL = process.env.PUBLIC_URL;
-export const ROOT_URL = "http://165.22.244.180";
+export const ROOT_URL = "https://iluni12.id";
+export const METABASE_URL = "https://analytics.iluni12.id"
 
 window.deprecationWarning =
   process.env.NODE_ENV !== "production"

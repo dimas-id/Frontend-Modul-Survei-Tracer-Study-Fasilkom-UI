@@ -18,6 +18,7 @@ import { Avatar, Chip } from "@material-ui/core";
 import CategoryPaper from "./CategoryPaper";
 import config from "../../../config";
 import paths from "../../paths";
+import { METABASE_URL } from "../../../config/index.js"
 
 const styles = theme => ({
   avatar: {
@@ -204,7 +205,7 @@ class HomePage extends React.Component {
                     title="Dashboard"
                     description="Sarana untuk mengetahui perkembangan ILUNI12 sekarang"
                     imageName="cloudDashboard"
-                    pathUrl="http://localhost:3000/"
+                    pathUrl={METABASE_URL}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
