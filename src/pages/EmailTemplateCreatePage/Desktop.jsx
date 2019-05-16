@@ -16,6 +16,7 @@ import EmailTemplateVariableMenu from "../../components/stables/EmailTemplateTag
 import heliosV1 from "../../modules/api/helios/v1";
 
 import { humanizeError } from "../../libs/response";
+import paths from "../paths";
 
 const styles = theme => ({
   container: {
@@ -36,7 +37,7 @@ class Screen extends React.Component {
       body: "",
       description: "",
       subject: "",
-      errorMessage: ["","","",""],
+      errorMessage: ["", "", "", ""],
     };
 
     this.bodyInputRef = React.createRef();
@@ -90,19 +91,23 @@ class Screen extends React.Component {
         this.state.subject
       )
       .then(() => {
+        const { history } = this.props;
         window.notifySnackbar("Templat Email berhasil disimpan", {
           variant: "success",
         });
+        history.push(paths.CRM_EMAIL_TEMPLATE_LIST);
       })
       .catch(err => {
         const fields = ["title", "body", "description", "subject"];
         const humanizedErr = humanizeError(err.response.data, fields);
-        this.setState({errorMessage : [
-          humanizedErr.title,
-          humanizedErr.subject,
-          humanizedErr.description,
-          humanizedErr.body,
-        ]});
+        this.setState({
+          errorMessage: [
+            humanizedErr.title,
+            humanizedErr.subject,
+            humanizedErr.description,
+            humanizedErr.body,
+          ],
+        });
       });
   }
 
@@ -150,7 +155,7 @@ class Screen extends React.Component {
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
+  const mapStateToProps = null;
 
   const mapDispatchToProps = dispatch => ({});
 
