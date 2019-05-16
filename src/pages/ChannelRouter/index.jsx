@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 
 import {
   isLoggedIn as _isLoggedIn,
-  getUser
+  getUser,
 } from "../../modules/session/selectors";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -14,7 +14,10 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import GroupWorkIcon from "@material-ui/icons/GroupWorkOutlined";
 
 import { withAuth } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBackWithChannelRequest } from "../../components/stables/Navbar";
+import {
+  NavbarAuth,
+  NavbarBackWithChannelRequest,
+} from "../../components/stables/Navbar";
 import RouterWithMenu from "../../components/RouterWithMenu";
 import { Container } from "../../components/Container";
 import Particle from "../../components/Particle";
@@ -30,8 +33,8 @@ import heliosV1 from "../../modules/api/helios/v1";
 
 const styles = theme => ({
   container: {
-    ...layouts.mt32
-  }
+    ...layouts.mt32,
+  },
 });
 
 const ROUTES = [
@@ -39,66 +42,73 @@ const ROUTES = [
     title: "Daftar Channel",
     menu: {
       Icon: GroupWorkIcon,
-      path: "/channels"
+      path: "/channels",
     },
     route: {
       exact: true,
       path: "/",
-      component: ChannelComponent
-    }
+      component: ChannelComponent,
+    },
   },
   {
     title: "Timeline",
     menu: {
       Icon: AccessTimeIcon,
-      path: "/channels/timeline"
+      path: "/channels/timeline",
     },
     route: {
       path: "/timeline",
-      component: Timeline
-    }
+      component: Timeline,
+    },
   },
   {
     title: "Chant Pribadi",
     menu: {
       Icon: AccountCircleIcon,
-      path: "/channels/users/:username"
+      path: "/channels/users/:username",
     },
     route: {
       path: "/users/:username",
-      component: ProfileComponent
-    }
-  }
+      component: ProfileComponent,
+    },
+  },
 ];
 
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
 
   state = {
     numberOfChants: 0,
-    isLoading: true
-  }
+    isLoading: true,
+  };
 
-  componentDidMount(){
-    heliosV1.channel
-      .getNumberOfChantsUser()
-      .then(result => {
-        this.setState({ numberOfChants: result.data.numberOfChants, isLoading: false})
-      })
+  componentDidMount() {
+    heliosV1.channel.getNumberOfChantsUser().then(result => {
+      this.setState({
+        numberOfChants: result.data.numberOfChants,
+        isLoading: false,
+      });
+    });
   }
 
   renderHeader = () => {
     const { user } = this.props;
-    const { numberOfChants } = this.state
-    return <HeaderComponent firstName={user.firstName} lastName={user.lastName} 
-    profilePicUrl={user.profile.profilePicUrl} numberOfChants={numberOfChants}/>;
+    const { numberOfChants } = this.state;
+    return (
+      <HeaderComponent
+        firstName={user.firstName}
+        lastName={user.lastName}
+        profilePicUrl={user.profile.profilePicUrl}
+        numberOfChants={numberOfChants}
+      />
+    );
   };
 
   render() {
     const { classes } = this.props;
-    const { isLoading } = this.state; 
+    const { isLoading } = this.state;
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -106,12 +116,15 @@ class Screen extends React.Component {
         <Particle name="cloud2" left={0} top={160} />
         <Particle name="cloud1" right={0} bottom={160} />
         <Container className={classes.container}>
-        {isLoading ? "" : (<RouterWithMenu
-            paths={ROUTES}
-            MenuHeaderComponent={this.renderHeader}
-            />)}
-          
-            </Container>
+          {isLoading ? (
+            ""
+          ) : (
+            <RouterWithMenu
+              paths={ROUTES}
+              MenuHeaderComponent={this.renderHeader}
+            />
+          )}
+        </Container>
       </React.Fragment>
     );
   }
@@ -120,7 +133,7 @@ class Screen extends React.Component {
 function createContainer() {
   const mapStateToProps = state => ({
     isLoggedIn: _isLoggedIn(state),
-    user: getUser(state)
+    user: getUser(state),
   });
 
   const mapDispatchToProps = dispatch => ({});

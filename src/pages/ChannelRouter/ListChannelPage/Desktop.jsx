@@ -11,8 +11,6 @@ import Paper from "@material-ui/core/Paper";
 import { Guidelines } from "../../../styles";
 
 import heliosV1 from "../../../modules/api/helios/v1";
-
-import { Container } from "../../../components/Container";
 import { authorize, ROLES } from "../../../components/hocs/auth";
 import { LoadingFill } from "../../../components/Loading";
 

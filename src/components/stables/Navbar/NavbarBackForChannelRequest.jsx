@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
@@ -9,7 +8,6 @@ import Button from "@material-ui/core/Button";
 
 import NavbarBack from "./NavbarBack";
 import paths from "../../../pages/paths";
-import { makePathVariableUri } from "../../../libs/navigation";
 import { withAuth } from "../../hocs/auth";
 import { getUser } from "../../../modules/session/selectors";
 import { Grid } from "@material-ui/core";
@@ -18,7 +16,7 @@ const styles = theme => ({});
 
 class NavbarBackForChannelRequest extends React.Component {
   render() {
-    const { classes, user } = this.props;
+    const { classes } = this.props;
 
     return (
       <NavbarBack
@@ -26,14 +24,12 @@ class NavbarBackForChannelRequest extends React.Component {
           <Grid container spacing={24} justify="flex-end" alignItems="center">
             <Grid item>
               <Button
-                color="secondary"
-                component={Link}
+                variant="outlined"
+                color="primary"
+                href={paths.CHANNEL_REQUEST}
                 className={classes.button}
-                to={makePathVariableUri(paths.CHANNEL_REQUEST_LIST, {
-                  username: user.username
-                })}
               >
-                <b>Riwayat Pengajuan Channel</b>
+                <b>Ajukan Channel</b>
               </Button>
             </Grid>
           </Grid>

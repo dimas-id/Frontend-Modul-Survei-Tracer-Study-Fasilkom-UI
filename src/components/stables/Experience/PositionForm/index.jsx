@@ -13,8 +13,8 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import IconButton from "@material-ui/core/IconButton"
-import DeleteIcon from "@material-ui/icons/DeleteOutlined"
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 
@@ -41,19 +41,19 @@ const FIELDS = keymirror({
 
 const VALIDATOR = Validation.object().shape({
   [FIELDS.title]: Validation.string()
-    .required("Jabatan dibutuhkan.")
+    .required("Jabatan wajib diisi.")
     .max(64),
   [FIELDS.companyName]: Validation.string()
-    .required("Nama perusahaan dibutuhkan.")
+    .required("Nama perusahaan wajib diisi.")
     .max(64),
   [FIELDS.industryName]: Validation.string()
-    .required("Nama industri dibutuhkan.")
+    .required("Nama industri wajib diisi.")
     .max(64),
   [FIELDS.locationName]: Validation.string()
-    .required("Lokasi dibutuhkan.")
+    .required("Lokasi wajib diisi.")
     .max(64),
   [FIELDS.isCurrent]: Validation.bool().notRequired(),
-  [FIELDS.dateStarted]: Validation.date().required("Waktu mulai dibutuhkan."),
+  [FIELDS.dateStarted]: Validation.date().required("Waktu mulai wajib diisi."),
   [FIELDS.dateEnded]: Validation.date()
     .notRequired()
     .nullable(),
@@ -104,7 +104,7 @@ function PositionForm({
     const isCurrent = values[FIELDS.isCurrent];
     const errors = {};
     if (!isCurrent && !Boolean(dateEnded)) {
-      errors[FIELDS.dateEnded] = `${FIELDS.dateEnded} is a required field`;
+      errors[FIELDS.dateEnded] = `Tanggal selesai wajib diisi.`;
     }
 
     return errors;
@@ -272,10 +272,19 @@ function PositionForm({
           <DialogActions>
             {update && (
               <IconButton
-                style={{color: '#E24C4C'}}
-                onClick={() => deletePos(positionId).then(afterSubmit)}
+                style={{ color: "#E24C4C" }}
+                onClick={() => {
+                  window.alertDialog(
+                    "Menghapus posisi",
+                    "Apakah anda yakin ingin menghapus posisi?",
+                    function() {
+                      deletePos(positionId).then(afterSubmit);
+                    },
+                    () => {}
+                  );
+                }}
               >
-                <DeleteIcon/>
+                <DeleteIcon />
               </IconButton>
             )}
             <Button

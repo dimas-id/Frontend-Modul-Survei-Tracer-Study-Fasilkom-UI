@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { authorize, ROLES } from "../../components/hocs/auth";
 import {
   NavbarAuth,
-  NavbarBackForChannelRequest
+  NavbarBackWithChannelRequest
 } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
@@ -129,7 +129,7 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBackForChannelRequest />
+        <NavbarBackWithChannelRequest />
         <Particle name="cloud2" left={0} top={160} />
         <Container>
           <Paper className={classes.paper} elevation={1}>
