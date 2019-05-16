@@ -34,10 +34,6 @@ const FIELDS = keymirror({
 
 const VALIDATOR = Validation.object().shape({
   [FIELDS.phoneNumber]: Validation.string()
-    .matches(
-      /\+?([ -]?\d+)+|\(\d+\)([ -]\d+)/g,
-      "Nomor telepon tidak sesuai"
-    )
     .required("Nomor telepon diperlukan"),
   [FIELDS.websiteUrl]: Validation.string().notRequired(),
 });
