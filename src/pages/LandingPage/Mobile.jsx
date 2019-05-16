@@ -74,7 +74,7 @@ function LandingMobile({ classes }) {
       <Particle name="cloud2" left={0} top={140} />
       <Particle name="cloud1" right={0} top={400} />
       <Container>
-        <Grid container spacing={24} className={classes.contentContainer}>
+        <Grid container spacing={0} className={classes.contentContainer}>
           <Grid item md={12} />
           <Grid item sm={12} md={6}>
             <Typography component="h1" variant="h3" className={classes.title}>
