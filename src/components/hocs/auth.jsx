@@ -45,7 +45,7 @@ class Authenticated extends React.PureComponent {
        * yes, it will not use the latest but it is fast, maybe another refresh?
        */
       try {
-        this.props.load(user.id);
+        this.props.load(user.id, true);
       } finally {
         this.checkUserRole();
         this.checkVerified();

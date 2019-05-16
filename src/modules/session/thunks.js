@@ -1,25 +1,27 @@
 import get from "lodash/get";
 import pick from "lodash/pick";
-import {push} from "connected-react-router";
+import { push } from "connected-react-router";
 
-import {sessionActions} from "./index";
-import {getUserRefreshToken, getUserId} from "./selectors";
-import {setAuthToken} from "../../libs/http";
+import { sessionActions } from "./index";
+import { getUserRefreshToken, getUserId } from "./selectors";
+import { setAuthToken } from "../../libs/http";
 
-export const loadUser = userId => {
-  return async (dispatch, _, {API: {atlasV1}}) => {
+export const loadUser = (userId, silent = false) => {
+  return async (dispatch, _, { API: { atlasV1 } }) => {
     try {
       const resp = await atlasV1.session.getUserById(userId);
       await dispatch(sessionActions.setUser(resp.data));
       return resp;
     } catch (error) {
-      throw error;
+      if (!silent) {
+        throw error;
+      }
     }
   };
 };
 
 export const register = payload => {
-  return async (dispatch, _, {API: {atlasV1}, utility}) => {
+  return async (dispatch, _, { API: { atlasV1 }, utility }) => {
     try {
       const response = await atlasV1.session.register(payload);
       // set token to header
@@ -32,13 +34,13 @@ export const register = payload => {
       await dispatch(
         utility.enqueueSnackbar(
           "Registrasi Sukses! Verifikasi sedang berjalan",
-          {variant: "success"}
+          { variant: "success" }
         )
       );
       return response;
     } catch (error) {
       await dispatch(
-        utility.enqueueSnackbar("Gagal registrasi", {variant: "error"})
+        utility.enqueueSnackbar("Gagal registrasi", { variant: "error" })
       );
       throw error;
     }
@@ -46,7 +48,7 @@ export const register = payload => {
 };
 
 export const updateUserProfile = payload => {
-  return async (dispatch, getState, {API: {atlasV1}, utility}) => {
+  return async (dispatch, getState, { API: { atlasV1 }, utility }) => {
     const userProfile = pick(payload, [
       "residenceCity",
       "residenceCountry",
@@ -54,7 +56,7 @@ export const updateUserProfile = payload => {
       "residenceLat",
       "websiteUrl",
       "phoneNumber",
-      "profilePicUrl"
+      "profilePicUrl",
     ]);
 
     const userData = {
@@ -92,7 +94,7 @@ export const verifyUser = (
   latestCsuiProgram,
   uiSsoNpm
 ) => {
-  return async (dispatch, getState, {API: {atlasV1}, utility}) => {
+  return async (dispatch, getState, { API: { atlasV1 }, utility }) => {
     try {
       const response = await atlasV1.session.patchUserById(
         getUserId(getState()),
@@ -126,7 +128,7 @@ export const verifyUser = (
 };
 
 export const login = (email, password) => {
-  return async (dispatch, _, {API: {atlasV1}, utility}) => {
+  return async (dispatch, _, { API: { atlasV1 }, utility }) => {
     try {
       const resp = await atlasV1.session.login(email, password);
       // set token to header
@@ -137,7 +139,7 @@ export const login = (email, password) => {
       );
       await dispatch(sessionActions.setUser(get(resp, "data.user")));
       await dispatch(
-        utility.enqueueSnackbar("Berhasil masuk", {variant: "success"})
+        utility.enqueueSnackbar("Berhasil masuk", { variant: "success" })
       );
       return resp;
     } catch (error) {
@@ -147,9 +149,9 @@ export const login = (email, password) => {
 };
 
 export const logout = (force = false) => {
-  return async (dispatch, getState, {API: {atlasV1}, utility}) => {
+  return async (dispatch, getState, { API: { atlasV1 }, utility }) => {
     try {
-      if(!force) {
+      if (!force) {
         await atlasV1.session.refreshToken(getUserRefreshToken(getState())); // just change it
       }
     } finally {
@@ -157,7 +159,7 @@ export const logout = (force = false) => {
       await dispatch(push("/login"));
       await dispatch(sessionActions.clearSession());
       await dispatch(
-        utility.enqueueSnackbar("Berhasil keluar", {variant: "success"})
+        utility.enqueueSnackbar("Berhasil keluar", { variant: "success" })
       );
     }
   };
