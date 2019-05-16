@@ -39,15 +39,24 @@ const styles = theme => ({
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
     ...Guidelines.layouts.pb32
-  }
+  },
+  ditolak: {
+    color: "red",
+  },
+  diterima: {
+    color: "green",
+  },
+  Diproses:{
+    color: "blue",
+  },
 });
 
 const STATUS = {
   RJA: "Ditolak Admin",
   PRA: "Diproses Admin",
-  ACA: "Diterima Admin, Di,anjutkan ke Manajemen",
-  RJM: "Ditolak Manajemen",
-  PRM: "Diproses Manajemen",
+  ACA: "Diterima Admin, diproses ke Manajemen",
+  RJM: "Ditolak Manajemen, diproses Admin",
+  // PRM: "Diproses Manajemen",
   ACM: "Program Donasi Diterima"
 };
 
