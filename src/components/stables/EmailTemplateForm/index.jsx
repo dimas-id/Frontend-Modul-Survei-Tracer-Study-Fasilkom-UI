@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import {withStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 
 import TextField from "@material-ui/core/TextField";
@@ -44,6 +44,7 @@ function EmailTemplateForm({
   body,
   subject,
   description,
+  errorMessage,
   onChangeTitle,
   onChangeBody,
   onChangeSubject,
@@ -63,7 +64,11 @@ function EmailTemplateForm({
               onChange={onChangeTitle}
               margin="normal"
               variant="outlined"
+              required
+              autofocus
               value={title}
+              error={errorMessage[0]}
+              helperText={errorMessage[0]}
             />
           </Grid>
           <Grid item xs={12} sm={12}>
@@ -74,7 +79,11 @@ function EmailTemplateForm({
               onChange={onChangeSubject}
               margin="normal"
               variant="outlined"
+              required
+              autofocus
               value={subject}
+              error={errorMessage[1]}
+              helperText={errorMessage[1]}              
             />
           </Grid>
           <Grid item xs={12} sm={12}>
@@ -85,7 +94,11 @@ function EmailTemplateForm({
               onChange={onChangeDescription}
               margin="normal"
               variant="outlined"
+              required
+              autofocus
               value={description}
+              error={errorMessage[2]}
+              helperText={errorMessage[2]}
             />
           </Grid>
           <Grid item xs={12} sm={12}>
@@ -99,7 +112,11 @@ function EmailTemplateForm({
               onChange={onChangeBody}
               margin="normal"
               variant="outlined"
+              required
+              autofocus
               value={body}
+              error={errorMessage[3]}
+              helperText={errorMessage[3]}
             />
           </Grid>
         </Grid>

@@ -20,9 +20,8 @@ import { makePathVariableUri } from "../../libs/navigation";
 import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
 import Particle from "../../components/Particle";
 import { Divider } from "@material-ui/core";
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 import bni from "../../assets/BNI-logo.png";
 import mandiri from "../../assets/Bank_Mandiri_logo.svg.png";
 
@@ -34,42 +33,60 @@ const styles = theme => ({
     ...Guidelines.layouts.pl64,
     ...Guidelines.layouts.pb32,
     ...Guidelines.layouts.flexDirCol,
-    ...Guidelines.layouts.flexMiddle
+    ...Guidelines.layouts.flexMiddle,
   },
   paperNominal: {
     ...Guidelines.layouts.mt32,
     ...Guidelines.layouts.mb32,
     ...Guidelines.layouts.pt8,
-    ...Guidelines.layouts.pb32,
     ...Guidelines.layouts.w100,
     ...Guidelines.layouts.flexDirCol,
-    ...Guidelines.layouts.flexMiddle
+    ...Guidelines.layouts.flexMiddle,
   },
   gridPaper: {
-    ...Guidelines.layouts.flexMiddle
+    ...Guidelines.layouts.flexMiddle,
   },
   paymentDetail: {
     display: "flex",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   dividerFullWidth: {
-    margin: `10px 10px 10px ${theme.spacing.unit * 4}px`,
+    padding: 16,
   },
-  image:{
-    width:140,
-    height:50
+  notes: {
+    padding: 4,
+  },
+  image: {
+    width: 140,
+    height: "auto",
   },
   button: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
+  },
+  s1: {
+    width: "100%",
+  },
+  list: {
+    ...Guidelines.layouts.flexDirRow,
+    ...Guidelines.layouts.flexNowrap,
+    ...Guidelines.layouts.flexMiddleSpaceBetween,
+  },
+  btn: {
+    ...Guidelines.layouts.mt32,
+    width: "100%",
+    margin: "auto",
+  },
+  nameProgram: {
+    ...Guidelines.fonts.bold,
   },
 });
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
   state = {
     donationTransaction: null,
-    loading: true
+    loading: true,
   };
   componentDidMount() {
     const donationId = this.props.match.params.donationId;
@@ -78,9 +95,9 @@ class Screen extends React.Component {
       .then(result => {
         this.setState({ donationTransaction: result.data });
       })
-      .catch(error=> {
-        if(error.response.status === 404){
-          this.props.history.replace(paths.ERROR_404)
+      .catch(error => {
+        if (error.response.status === 404) {
+          this.props.history.replace(paths.ERROR_404);
         }
       })
       .finally(() => {
@@ -88,20 +105,18 @@ class Screen extends React.Component {
       });
   }
   bniDetector() {
-    
     const { bankNumberDest } = this.state.donationTransaction.paymentDetail;
-  
-    return bankNumberDest === '01020203123' ;
+
+    return bankNumberDest === "01020203123";
   }
   mandiriDetector() {
-    
     const { bankNumberDest } = this.state.donationTransaction.paymentDetail;
-  
-    return bankNumberDest === '3123123123' ;
+
+    return bankNumberDest === "3123123123";
   }
 
   render() {
-    const { classes , user } = this.props;
+    const { classes, user } = this.props;
     const { loading } = this.state;
     if (loading) {
       return LinesLoader;
@@ -111,7 +126,7 @@ class Screen extends React.Component {
       donationProgramEndDate,
       paymentDetail,
       amount,
-      uniqueCode
+      uniqueCode,
     } = this.state.donationTransaction;
     const isBni = this.bniDetector();
     const isMandiri = this.mandiriDetector();
@@ -119,74 +134,134 @@ class Screen extends React.Component {
     return (
       <ContainerFluid>
         <NavbarAuth title="Screen" />
-        <NavbarBackDonation/>
+        <NavbarBackDonation />
         <Particle name="cloud2" left={0} top={160} />
         <Particle name="cloud1" right={0} top={400} />
         <Container className={classes.container}>
           <Grid container spacing={24} className={classes.gridPaper}>
-            <Grid item xs={6} sm={6}>
-              <Paper className={classes.paper}>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Terima kasih telah berdonasi untuk
-                </Typography>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {donationProgramName}
-                </Typography>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Transfer tepat sesuai nominal berikut :
-                </Typography>
-                <Typography gutterBottom variant="h3" flexcomponent="h2">
-                    Rp {amount}
+            <Paper className={classes.paper}>
+              <Typography gutterBottom variant="h6" component="h2">
+                Terima kasih telah berdonasi untuk
+              </Typography>
+              <Typography
+                gutterBottom
+                variant="h5"
+                className={classes.nameProgram}
+                component="h2"
+              >
+                {donationProgramName}
+              </Typography>
+              <Typography gutterBottom variant="h6" component="h2">
+                Transfer tepat sesuai nominal berikut :
+              </Typography>
+              <Typography gutterBottom variant="h3" flexcomponent="h2">
+                {new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                }).format(amount)}
+              </Typography>
+              <Paper className={classes.paperNominal}>
+                <List className={classes.s1}>
+                  <li className={classes.list}>
+                    <Typography
+                      className={classes.dividerFullWidth}
+                      gutterBottom
+                      variant="h7"
+                      flexcomponent="h7"
+                    >
+                      ID Transaksi
+                    </Typography>
+                    <Typography
+                      className={classes.dividerFullWidth}
+                      gutterBottom
+                      variant="h7"
+                      flexcomponent="h7"
+                    >
+                      {paymentDetail.paymentNumber}
+                    </Typography>
+                  </li>
+
+                  <Divider component="li" />
+                  <li className={classes.list}>
+                    <Typography
+                      className={classes.dividerFullWidth}
+                      gutterBottom
+                      variant="h7"
+                      flexcomponent="h7"
+                    >
+                      Jumlah Donasi
+                    </Typography>
+                    <Typography
+                      className={classes.dividerFullWidth}
+                      gutterBottom
+                      variant="h7"
+                      flexcomponent="h7"
+                    >
+                      {" "}
+                      {new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      }).format(amount - uniqueCode)}
+                    </Typography>
+                  </li>
+                  <Divider component="li" />
+                  <li className={classes.list}>
+                    <Typography
+                      className={classes.dividerFullWidth}
+                      gutterBottom
+                      variant="h7"
+                      flexcomponent="h7"
+                    >
+                      Kode Unik *
+                    </Typography>
+                    <Typography
+                      className={classes.dividerFullWidth}
+                      gutterBottom
+                      variant="h7"
+                      flexcomponent="h7"
+                    >
+                      {uniqueCode}
+                    </Typography>
+                  </li>
+                  <Typography
+                    className={classes.notes}
+                    gutterBottom
+                    variant="caption"
+                    color="secondary"
+                  >
+                    * Nominal pada kode unik akan didonasikan
                   </Typography>
-                <Paper className={classes.paperNominal}>
-                  <List>
-                    <li>
-                      <Typography className={classes.dividerFullWidth} gutterBottom variant="h7" flexcomponent="h7">
-                      ID Transaksi : {paymentDetail.paymentNumber}
-                      </Typography>
-                    </li>
-                    <Divider component="li" />
-                    <li>
-                      <Typography className={classes.dividerFullWidth} gutterBottom variant="h7" flexcomponent="h7">
-                      Jumlah Donasi : Rp {amount - uniqueCode}
-                      </Typography>
-                    </li>
-                    <Divider component="li" />
-                    <li>
-                      <Typography className={classes.dividerFullWidth} gutterBottom variant="h7" flexcomponent="h7">
-                      Kode Unik : {uniqueCode}
-                      </Typography>
-                    </li>
-                  </List>
-                </Paper>
-                <Typography gutterBottom variant="h6" component="h2">
-                  Tansfer sebelum tanggal {donationProgramEndDate} ke :
-                </Typography>
-                <ListItem>
+                </List>
+              </Paper>
+              <Typography gutterBottom variant="h6" component="h2">
+                Tansfer sebelum tanggal {donationProgramEndDate} ke :
+              </Typography>
+              <ListItem
+                style={{ ...Guidelines.layouts.flexMiddle, width: "50%" }}
+              >
                 {isBni ? (
-                  <img alt="BNI" src= {bni} className = {classes.image} />
+                  <img alt="BNI" src={bni} className={classes.image} />
                 ) : null}
                 {isMandiri ? (
-                  <img alt="Mandiri" src= {mandiri} className = {classes.image} />
+                  <img alt="Mandiri" src={mandiri} className={classes.image} />
                 ) : null}
-                
-          
-                <ListItemText primary={paymentDetail.bankNumberDest} secondary="KCU Depok" />
-                        </ListItem>
-                <Button
-                  className={classes.button}
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  component={Link}
-                  to={makePathVariableUri(paths.USER_DONATION_LIST, {
-                    username: user.username
-                  })}
-                >
-                  Lihat Riwayat Donasi
-                </Button>
-              </Paper>
-            </Grid>
+                <ListItem />
+                {paymentDetail.bankNumberDest}
+                <br /> KCU Depok
+              </ListItem>
+              <Button
+                className={classes.btn}
+                variant="contained"
+                color="primary"
+                type="submit"
+                component={Link}
+                to={makePathVariableUri(paths.USER_DONATION_LIST, {
+                  username: user.username,
+                })}
+              >
+                Lihat Riwayat Donasi
+              </Button>
+            </Paper>
           </Grid>
         </Container>
       </ContainerFluid>
@@ -195,7 +270,7 @@ class Screen extends React.Component {
 }
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
   });
   const mapDispatchToProps = dispatch => ({});
 

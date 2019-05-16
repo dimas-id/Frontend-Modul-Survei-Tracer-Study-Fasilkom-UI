@@ -70,6 +70,11 @@ export function notFound(response) {
   return status === 404;
 }
 
+export function unauthorized(response) {
+  const status = getStatus(response);
+  return status === 401;
+}
+
 /**
  * return true if status code is between 400 and 500
  * @param {object} response response from axios

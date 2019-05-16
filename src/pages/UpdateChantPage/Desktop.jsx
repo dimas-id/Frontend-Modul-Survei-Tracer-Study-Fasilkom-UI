@@ -5,7 +5,6 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Snackbar from "@material-ui/core/Snackbar";
 
 import { withAuth } from "../../components/hocs/auth";
 import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
@@ -16,9 +15,13 @@ import Particle from "../../components/Particle";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
 
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
+import { makePathVariableUri } from "../../libs/navigation";
+import { humanizeError } from "../../libs/response";
 
 import { layouts } from "../../styles/guidelines";
+
+import paths from "../paths";
+
 
 const styles = theme => ({
   root: {
@@ -80,33 +83,36 @@ class Screen extends React.PureComponent {
         this.state.title,
         this.state.body
       )
-      .then(this.handleOpenSuccessMsg)
-      .catch(this.handleOpenErrorMsg)
+      .then(({ data }) => {
+        window.notifySnackbar(
+          `Chant '${data.title}' berhasil diubah`,
+          { variant: "success" }
+        );
+          this.props.history.push(
+            makePathVariableUri(paths.USER_CHANT, {
+              username: data.author
+            }),
+            {
+              userId: data.author
+            }
+          )
+      })
+      .catch(({ response }) => {
+        if(response) {
+          const err = humanizeError(response.data);
+          if (err.body) {
+            window.notifySnackbar("Field 'Deskripsi' tidak boleh kosong", {
+                  variant: "error"
+                });
+          }
+          else{
+            window.notifySnackbar("Sepertinya terjadi kesalahan", {
+              variant: "error"
+            });
+          }
+        }
+      });
   }
-
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = ( reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
-  };
-
-  handleCloseErrorMsg = ( reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
-  };
 
   render() {
     const { classes } = this.props;
@@ -114,7 +120,7 @@ class Screen extends React.PureComponent {
 
     return (
       <React.Fragment>
-        <NavbarAuth title="Screen" />
+        <NavbarAuth />
         <NavbarBack />
         <Container className={classes.container}>
         <Particle name="cloud2" left={0} />
@@ -132,37 +138,6 @@ class Screen extends React.PureComponent {
             />
           </Paper>
         </Container>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Chant berhasil diubah`}
-          />
-        </Snackbar>
-
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={`Chant gagal diubah`}
-          />
-        </Snackbar>
         </React.Fragment>
     );
   }

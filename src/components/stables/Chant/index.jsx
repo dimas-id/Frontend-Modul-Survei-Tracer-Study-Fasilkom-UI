@@ -36,7 +36,7 @@ import { makePathVariableUri } from "../../../libs/navigation";
 import { getDateFormatted } from "../../../libs/datetime";
 
 import paths from "../../../pages/paths";
-import { PUBLIC_URL } from "../../../config";
+import { ROOT_URL } from "../../../config";
 
 import { authorize } from "../../../components/hocs/auth";
 
@@ -217,7 +217,7 @@ class Screen extends React.Component {
     const { classes, margin, deleted, body } = this.props;
     const { overflow, max, anchorElShare } = this.state;
     const shareUrl =
-      PUBLIC_URL +
+      ROOT_URL +
       makePathVariableUri(paths.CHANNEL_CHANT_DETAIL, {
         channelId: this.props.channel,
         chantId: this.props.id,

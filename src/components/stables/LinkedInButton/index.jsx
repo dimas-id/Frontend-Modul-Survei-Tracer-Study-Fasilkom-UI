@@ -8,7 +8,6 @@ import { isLoggedIn } from "../../../modules/session/selectors";
 import env from "../../../config";
 import paths from "../../../pages/paths";
 import LinkedInLogo from "../../../assets/img/LinkedIn.png";
-import { isDevelopment } from "../../../config";
 
 const mapStateToProps = state => ({
   loggedIn: isLoggedIn(state)
@@ -19,24 +18,32 @@ export default withRouter(
     mapStateToProps,
     null
   )(function({ children, isLoggedIn, history, ...ButtonProps }) {
-    if (isLoggedIn) {
-      history.replace(paths.HOME);
+
+    let timer = null;
+
+    function handleClick() {
+      if (isLoggedIn) {
+        history.replace(paths.HOME);
+      }
+      window.notifySnackbar(
+        "Mengalihkan ke halaman masuk LinkedIn",
+        { variant: "info" }
+      );
+      timer = setTimeout(() => {
+        window.location.replace(`${env.ATLAS}/api/v1/external-auths/linkedin`)
+      }, 1200)
     }
 
-    const tempConfig = {};
-    if (isDevelopment) {
-      tempConfig.href = `${env.ATLAS}/api/v1/external-auths/linkedin`;
-    } else {
-      tempConfig.onClick = () => {
-        window.notifySnackbar(
-          "Sorry for inconvenience, LinkedIn only works on local for now :(",
-          { variant: "info" }
-        );
-      };
-    }
+    React.useEffect(() => {
+      return () => {
+        if (timer) {
+          clearTimeout(timer)
+        }
+      }
+    }, [])
 
     return (
-      <Button variant="outlined" {...ButtonProps} {...tempConfig}>
+      <Button variant="outlined" {...ButtonProps} onClick={handleClick}>
         <img
           src={LinkedInLogo}
           alt="LinkedIn"

@@ -8,10 +8,17 @@ const CLEAR_TEMPLATES = "crm/mailer/CLEAR_TEMPLATES";
 const SET_BATCH = "crm/mailer/SET_BATCH";
 const CLEAR_BATCH = "crm/mailer/CLEAR_BATCH";
 
+const SET_BATCHES = "crm/mailer/SET_BATCHES";
+const CLEAR_BATCHES = "crm/mailer/CLEAR_BATCHES";
+const SET_JOBS = "crm/mailer/SET_JOBS";
+const CLEAR_JOBS = "crm/mailer/CLEAR_JOBS";
+
 const INITIAL_STATE = {
   tags: {},
   templates: [],
   batch: {},
+  batches: [],
+  jobs: [],
 };
 
 export function mailerReducer(state, action) {
@@ -21,12 +28,12 @@ export function mailerReducer(state, action) {
         ...state,
         tags: action.payload,
       };
-
     case CLEAR_TEMPLATE_TAGS:
       return {
         ...state,
         tags: {},
       };
+
     case SET_TEMPLATES:
       return {
         ...state,
@@ -37,6 +44,7 @@ export function mailerReducer(state, action) {
         ...state,
         templates: [],
       };
+
     case SET_BATCH:
       return {
         ...state,
@@ -46,6 +54,28 @@ export function mailerReducer(state, action) {
       return {
         ...state,
         batch: {},
+      };
+
+    case SET_BATCHES:
+      return {
+        ...state,
+        batches: action.payload,
+      };
+    case CLEAR_BATCHES:
+      return {
+        ...state,
+        batches: [],
+      };
+
+    case SET_JOBS:
+      return {
+        ...state,
+        jobs: action.payload,
+      };
+    case CLEAR_JOBS:
+      return {
+        ...state,
+        jobs: [],
       };
     default:
       return state || INITIAL_STATE;
@@ -73,6 +103,20 @@ export const mailerAction = Object.freeze({
   }),
   clearBatch: () => ({
     type: CLEAR_BATCH,
+  }),
+  setBatches: batch => ({
+    type: SET_BATCHES,
+    payload: batch,
+  }),
+  clearBatches: () => ({
+    type: CLEAR_BATCHES,
+  }),
+  setJobs: batch => ({
+    type: SET_JOBS,
+    payload: batch,
+  }),
+  clearJobs: () => ({
+    type: CLEAR_JOBS,
   }),
 });
 

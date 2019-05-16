@@ -107,7 +107,6 @@ class Screen extends React.Component {
     heliosV1.donation
       .getDonationProgramRequestDetail(this.props.user.id, requestId)
       .then(result => {
-        console.log(result.data)
         this.setState({ DonationRequest: result.data });
       })
       .catch(error => {

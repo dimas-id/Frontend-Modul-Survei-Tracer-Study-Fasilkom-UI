@@ -65,8 +65,12 @@ class EmailBatchCreatePage extends React.Component {
         history.push(paths.CRM);
       })
       .catch(e => {
+        if (this.setLoading) {
+          this.setLoading(false);
+        }
+
         let title = "";
-        if (e.response) {
+        if (e.response && e.response.data) {
           const numUnknownContacts = e.response.data.filter(item =>
             Boolean(item.recipient)
           ).length;
@@ -78,7 +82,8 @@ class EmailBatchCreatePage extends React.Component {
         window.alertDialog(
           title,
           "Batch berhasil terbuat, namun gagal menambahkan kontak. Simpan ulang?",
-          this.runSubmitJobs
+          this.runSubmitJobs,
+          () => {}
         );
       });
   };
@@ -86,6 +91,7 @@ class EmailBatchCreatePage extends React.Component {
   handleSubmit = (values, actions) => {
     const { selectedContact, batchSuccessId } = this.state;
 
+    this.setLoading = actions.setSubmitting;
     // set false, runSubmit then set true
     actions.setSubmitting(false);
 
@@ -95,9 +101,15 @@ class EmailBatchCreatePage extends React.Component {
       const template = values[fields.template].id;
 
       actions.setSubmitting(true);
+
+      let subject = null;
+      if (values[fields.subject] && values[fields.subject].trim()) {
+        subject = values[fields.subject];
+      }
+
       create([
         values[fields.title],
-        values[fields.subject],
+        subject,
         template,
         values[fields.senderAddress],
       ])

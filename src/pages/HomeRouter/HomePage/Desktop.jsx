@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import { Guidelines } from "../../../styles";
-import { getUser } from "../../../modules/session/selectors";
+import { GROUPS } from "../../../modules/session";
+import {
+  getUser,
+  selectCurrentUserGroups,
+} from "../../../modules/session/selectors";
 
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -12,12 +16,14 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { Avatar, Chip } from "@material-ui/core";
 import CategoryPaper from "./CategoryPaper";
+import config from "../../../config";
 import paths from "../../paths";
+import { METABASE_URL } from "../../../config/index.js"
 
 const styles = theme => ({
   avatar: {
     width: 120,
-    height: 120
+    height: 120,
   },
   paper: {
     ...Guidelines.layouts.flexDirCol,
@@ -25,58 +31,59 @@ const styles = theme => ({
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
   roleInfo: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.flexMiddle,
     [theme.breakpoints.down("sm")]: {
-      ...Guidelines.layouts.flexDirCol
-    }
+      ...Guidelines.layouts.flexDirCol,
+    },
   },
   title: {
     ...Guidelines.fonts.medium,
-    fontSize: 32
+    fontSize: 32,
   },
   subtitle: {
-    fontSize: 20
+    fontSize: 20,
   },
   paperChild: {
     ...Guidelines.layouts.mt32,
     ...Guidelines.layouts.pt24,
     ...Guidelines.layouts.pr24,
     ...Guidelines.layouts.pl24,
-    ...Guidelines.layouts.pb24
+    ...Guidelines.layouts.pb24,
   },
   titleChild: {
     ...Guidelines.fonts.bold,
-    fontSize: 28
+    fontSize: 28,
   },
   subtitleChild: {
     ...Guidelines.layouts.mt16,
-    fontSize: 16
+    fontSize: 16,
   },
   button: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   profilePic: {
     borderRadius: "50%",
     width: "100px",
-    height: "100px"
+    height: "100px",
   },
   bigAvatar: {
     margin: 10,
     width: 90,
-    height: 90
+    height: 90,
   },
   chip: {
-    margin: 10
-  }
+    margin: 10,
+  },
 });
+
 class HomePage extends React.Component {
   state = {
-    open: false
+    open: false,
   };
 
   handleClickOpen = () => {
@@ -97,6 +104,26 @@ class HomePage extends React.Component {
       () => null
     );
   };
+
+  isHeliosAdmin() {
+    const { groups, user } = this.props;
+    return (
+      user.isSuperuser ||
+      groups.findIndex(
+        g =>
+          g === GROUPS.ADMIN_CHANNEL ||
+          g === GROUPS.ADMIN_DONATION ||
+          g === GROUPS.MANAGEMENT
+      ) > -1
+    );
+  }
+
+  isAtlasAdmin() {
+    const { groups, user } = this.props;
+    return (
+      user.isSuperuser || groups.findIndex(g => g === GROUPS.ADMIN_USER) > -1
+    );
+  }
 
   render() {
     const { classes, user } = this.props;
@@ -178,7 +205,7 @@ class HomePage extends React.Component {
                     title="Dashboard"
                     description="Sarana untuk mengetahui perkembangan ILUNI12 sekarang"
                     imageName="cloudDashboard"
-                    pathUrl="http://localhost:3000/"
+                    pathUrl={METABASE_URL}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -186,7 +213,7 @@ class HomePage extends React.Component {
                     title="Email Blaster"
                     description="Sarana untuk mengirimkan email secara personal ke pengguna"
                     imageName="cloudEmail"
-                    path={paths.CRM_EMAIL_TEMPLATE_LIST}
+                    path={paths.CRM_MAILER}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -197,6 +224,26 @@ class HomePage extends React.Component {
                     path={paths.CRM_CONTACT}
                   />
                 </Grid>
+                {this.isAtlasAdmin() && (
+                  <Grid item xs={12} md={6}>
+                    <CategoryPaper
+                      title="Administrasi Atlas"
+                      description="Sarana untuk melakukan administrasi data alumni dan pengguna"
+                      imageName="cloudContact"
+                      pathUrl={`${config.ATLAS}/__admin__/`}
+                    />
+                  </Grid>
+                )}
+                {this.isHeliosAdmin() && (
+                  <Grid item xs={12} md={6}>
+                    <CategoryPaper
+                      title="Administrasi Helios"
+                      description="Sarana untuk melakukan administrasi channel dan donasi"
+                      imageName="cloudContact"
+                      pathUrl={`${config.HELIOS}/__admin__/`}
+                    />
+                  </Grid>
+                )}
               </React.Fragment>
             )}
           </Grid>
@@ -208,7 +255,8 @@ class HomePage extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
+    groups: selectCurrentUserGroups(state),
   });
 
   const mapDispatchToProps = dispatch => ({});

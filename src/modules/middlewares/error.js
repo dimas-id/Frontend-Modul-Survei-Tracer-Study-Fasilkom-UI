@@ -1,5 +1,5 @@
-import { push } from "connected-react-router";
-import { getNonFieldError } from "../../libs/response";
+import { replace } from "connected-react-router";
+import { getNonFieldError, unauthorized } from "../../libs/response";
 import { utilityActions } from "../utility";
 import { logout } from "../session/thunks";
 
@@ -31,8 +31,11 @@ export default store => next => async action => {
 
       if (errorMsg === "Authentication credentials were not provided.") {
         // token is not set, redirect to login
-        store.dispatch(push("/login"));
-      } else if (Boolean(data.code) && data.code === "token_not_valid") {
+        store.dispatch(replace("/login"));
+      } else if (
+        (Boolean(data.code) && data.code === "token_not_valid") ||
+        unauthorized(e.response)
+      ) {
         // or token has expired, redirect to logout
         store.dispatch(logout());
       }

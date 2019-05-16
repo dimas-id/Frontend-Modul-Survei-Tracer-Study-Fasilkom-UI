@@ -1,25 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import get from "lodash/get";
 import pick from "lodash/pick";
 
-import {withStyles} from "@material-ui/styles";
+import { withStyles } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 
-import {authorize} from "../../components/hocs/auth";
-import {Form} from "../../components/hocs/form";
-import {LoadingFill} from "../../components/Loading";
+import { authorize } from "../../components/hocs/auth";
+import { Form } from "../../components/hocs/form";
+import { LoadingFill } from "../../components/Loading";
 import MailBatchForm from "../../components/stables/Mailer/MailBatchForm";
-import {NavbarAuth} from "../../components/stables/Navbar";
+import { NavbarAuth } from "../../components/stables/Navbar";
 import NavbarEmailBatch from "../../components/stables/Navbar/NavbarEmailBatch";
-import {Container} from "../../components/Container";
+import { Container } from "../../components/Container";
 
-import {humanizeError} from "../../libs/response";
-import {getBatchById, updateBatch} from "../../modules/crm/mailer/thunks";
-import {selectBatch, selectTemplateById} from "../../modules/crm/mailer/selectors";
-import {Guidelines} from "../../styles";
+import { humanizeError } from "../../libs/response";
+import { getBatchById, updateBatch } from "../../modules/crm/mailer/thunks";
+import {
+  selectBatch,
+  selectTemplateById,
+} from "../../modules/crm/mailer/selectors";
+import { Guidelines } from "../../styles";
 import paths from "../paths";
 
 const styles = theme => ({
@@ -49,28 +52,46 @@ class EmailBatchUpdatePage extends React.Component {
   };
 
   componentDidMount() {
-    this.props.get().finally(() => {
-      this.setState({loading: false});
-    });
+    this.props
+      .get()
+      .then(() => {
+        const { batch } = this.props;
+        if (batch.hasDispatched) {
+          window.notifySnackbar(
+            `Batch ${
+              batch.id
+            } telah nonaktif karena telah terkirim sebelumnya.`,
+            { variant: "warning", autoHideDuration: 10000 }
+          );
+        }
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
   }
 
   getInitialValues() {
-    const {fields} = MailBatchForm;
-    const {batch, template} = this.props;
+    const { fields } = MailBatchForm;
+    const { batch, template } = this.props;
     const values = pick(batch, Object.keys(fields));
-    return MailBatchForm.initializeValues({...values, template});
+    return MailBatchForm.initializeValues({ ...values, template });
   }
 
   handleSubmit = (values, actions) => {
-    const {update, history, batch} = this.props;
-    const {fields} = MailBatchForm;
+    const { update, history, batch } = this.props;
+    const { fields } = MailBatchForm;
 
     actions.setSubmitting(true);
+
+    let subject = null;
+    if (values[fields.subject] && values[fields.subject].trim()) {
+      subject = values[fields.subject];
+    }
 
     const template = values[fields.template].id;
     update(batch.id, [
       values[fields.title],
-      values[fields.subject],
+      subject,
       template,
       values[fields.senderAddress],
     ])
@@ -86,9 +107,9 @@ class EmailBatchUpdatePage extends React.Component {
       });
   };
 
-  renderForm = ({handleSubmit, isSubmitting}) => {
-    const {classes, batch} = this.props;
-    const {loading} = this.state;
+  renderForm = ({ handleSubmit, isSubmitting }) => {
+    const { classes, batch } = this.props;
+    const { loading } = this.state;
     return (
       <form
         onSubmit={e => {
@@ -114,7 +135,7 @@ class EmailBatchUpdatePage extends React.Component {
   };
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <React.Fragment>
         <NavbarAuth />

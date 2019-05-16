@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {Link, withRouter} from "react-router-dom";
+import {NavLink, withRouter} from "react-router-dom";
 
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -44,7 +44,7 @@ function Menu({classes, paths, location}) {
                 key={menu.path}
                 className={`${classes.menuItem} ${menu.path === currentPath &&
                   classes.activeItem}`}
-                component={Link}
+                component={NavLink}
                 to={menu.path}
               >
                 {menu.Icon && (

@@ -40,6 +40,18 @@ class Screen extends React.Component {
   };
 
   componentDidMount() {
+    this.loadChannelChantPage()
+    this.loadChant();
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.match.params.channelId !== this.props.match.params.channelId){
+      this.loadChannelChantPage()
+      this.loadChant()
+    }
+  }
+
+  loadChannelChantPage = () => {
     heliosV1.channel
       .getChannelDetail(this.props.match.params.channelId)
       .then(result => {
@@ -48,8 +60,6 @@ class Screen extends React.Component {
       .finally(() => {
         this.setState({ isLoadingChannel: false });
       });
-
-    this.loadChant();
   }
 
   loadChant = () => {
@@ -71,38 +81,19 @@ class Screen extends React.Component {
         heliosV1.channel
           .deleteChant(userId, chantId)
           .then(() => {
-            this.handleOpenSuccessMsg();
-            this.setState({ isLoadingChant: true }, this.loadChant);
+            this.loadChant();
+            window.notifySnackbar("Chant berhasil dihapus", {
+              variant: "success"
+            });
           })
-          .catch(this.handleOpenErrorMsg);
+          .catch(() => window.notifySnackbar("Chant tidak dapat dihapus", {
+            variant: "warning"
+          }));
       },
       () => null
     );
   };
 
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
-  };
 
   renderChannel() {
     const { channelDetail } = this.state;

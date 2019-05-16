@@ -1,6 +1,7 @@
 import React from "react";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {Helmet} from "react-helmet";
+
+import { Router, Route, Switch, Redirect } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 import LandingPage from "./LandingPage";
 import HomeRouter from "./HomeRouter";
@@ -11,6 +12,7 @@ import CreateChantPage from "./CreateChantPage";
 import RegisterExternalAuthPage from "./RegisterExternalAuthPage";
 import RegistrationRouter from "./RegistrationRouter";
 import ContactPage from "./ContactPage";
+import EmailBlasterPage from "./EmailBlasterPage";
 import EmailTemplateCreatePage from "./EmailTemplateCreatePage";
 import EmailTemplateUpdatePage from "./EmailTemplateUpdatePage";
 import EmailTemplateListPage from "./EmailTemplateListPage";
@@ -30,17 +32,20 @@ import UpdateChantPage from "./UpdateChantPage";
 import ChannelRouter from "./ChannelRouter";
 import ChannelChantDetailPage from "./ChannelChantDetailPage";
 import UserVerifyPage from "./UserVerifyPage";
-
-import paths from "./paths";
 import UserDonationRequestListPage from "./UserDonationRequestListPage";
 import DonationRequestDetailPage from "./DonationRequestDetailPage";
 import DonationRequestUpdatePage from "./DonationRequestUpdatePage";
 
+
+import { history } from '../modules';
+
+import paths from "./paths";
+
 export default function Pages() {
   return (
-    <BrowserRouter basename="/app">
+    <Router history={history}>
       <Switch>
-        {ROUTES.map(({title, route}) => (
+        {ROUTES.map(({ title, route }) => (
           <Route
             key={route.path}
             exact={route.exact}
@@ -55,8 +60,18 @@ export default function Pages() {
             )}
           />
         ))}
+        <Route
+            render={() => (
+              <React.Fragment>
+                <Helmet>
+                  <title>404</title>
+                </Helmet>
+                <Error404Page/>
+              </React.Fragment>
+            )}
+          />
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 }
 
@@ -147,20 +162,6 @@ const ROUTES = [
     },
   },
   {
-    title: "Create Chant",
-    route: {
-      path: paths.CHANNEL_CHANT_CREATE,
-      component: CreateChantPage,
-    },
-  },
-  {
-    title: "Update Chant",
-    route: {
-      path: paths.CHANNEL_CHANT_UPDATE,
-      component: UpdateChantPage,
-    },
-  },
-  {
     title: "Donasi",
     route: {
       exact: true,
@@ -193,7 +194,7 @@ const ROUTES = [
     },
   },
   {
-    title: "Form-Donasi",
+    title: "Form Donasi",
     route: {
       exact: true,
       path: paths.DONATION_FORM,
@@ -201,10 +202,26 @@ const ROUTES = [
     },
   },
   {
+    title: "CRM",
+    route: {
+      path: paths.CRM,
+      component: () => <Redirect to={paths.CRM_MAILER} />,
+      exact: true,
+    },
+  },
+  {
     title: "Contact",
     route: {
       path: paths.CRM_CONTACT,
       component: ContactPage,
+    },
+  },
+  {
+    title: "Email Blaster",
+    route: {
+      path: paths.CRM_MAILER,
+      component: EmailBlasterPage,
+      exact: true,
     },
   },
   {
@@ -281,6 +298,20 @@ const ROUTES = [
       exact: true,
       path: paths.CHANNEL,
       component: ChannelRouter,
+    },
+  },
+  {
+    title: "Create Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_CREATE,
+      component: CreateChantPage,
+    },
+  },
+  {
+    title: "Update Chant",
+    route: {
+      path: paths.CHANNEL_CHANT_UPDATE,
+      component: UpdateChantPage,
     },
   },
   {

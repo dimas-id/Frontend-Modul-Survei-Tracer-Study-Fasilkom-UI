@@ -22,6 +22,7 @@ exports.DONATION_FORM = `${exports.DONASI}/:idProgram`;
 exports.DONATION_REQUEST = `${exports.DONASI}/ajukan-program`;
 exports.DONATION_PAYMENT_DETAIL = `${exports.DONASI}/payment/:donationId`;
 exports.CRM = "/crm";
+exports.CRM_MAILER = `${exports.CRM}/mailer`;
 exports.CRM_CONTACT = `${exports.CRM}/contact`;
 exports.CRM_EMAIL_TEMPLATE_LIST = `${exports.CRM}/email-template/list`;
 exports.CRM_EMAIL_TEMPLATE_CREATE = `${exports.CRM}/email-template/create`;

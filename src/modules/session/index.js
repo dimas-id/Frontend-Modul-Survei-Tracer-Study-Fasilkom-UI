@@ -1,3 +1,20 @@
+import keymirror from "keymirror";
+
+export const ROLES = Object.freeze(
+  keymirror({
+    PUBLIC: null,
+    SUPERUSER: null,
+    STAFF: null,
+  }),
+);
+
+export const GROUPS = Object.freeze({
+  ADMIN_USER: 'admin_user',
+  ADMIN_DONATION: 'admin_donation',
+  ADMIN_CHANNEL: 'admin_channel',
+  MANAGEMENT: 'management'
+})
+
 /**
  * Reducer for session authentication
  */

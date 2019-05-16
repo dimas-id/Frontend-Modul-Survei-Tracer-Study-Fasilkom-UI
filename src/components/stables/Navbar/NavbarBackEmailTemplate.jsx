@@ -31,6 +31,8 @@ class NavbarBackEmailTemplate extends React.Component {
               color="secondary"
               size="small"
               style={{marginLeft: 8}}
+              to={paths.CRM_MAILER}
+              component={Link}
             >
               <EmailIcon />
               Email Blaster

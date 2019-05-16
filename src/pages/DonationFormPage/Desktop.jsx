@@ -1,21 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import moment from "moment";
 
-import {withStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import CardIcon from "@material-ui/icons/CreditCardOutlined";
 import Grid from "@material-ui/core/Grid";
 
-import {withAuth} from "../../components/hocs/auth";
-import {NavbarAuth} from "../../components/stables/Navbar";
+import { withAuth } from "../../components/hocs/auth";
+import { NavbarAuth } from "../../components/stables/Navbar";
 import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
-import {Container} from "../../components/Container";
-import {Guidelines} from "../../styles";
+import { Container } from "../../components/Container";
+import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
-import {Typography} from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -23,18 +23,19 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import MomentUtils from "@date-io/moment";
-import {MuiPickersUtilsProvider, InlineDatePicker} from "material-ui-pickers";
-import {getUser} from "../../modules/session/selectors";
+import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
+import { getUser } from "../../modules/session/selectors";
 import bundar from "../../assets/bundar.png";
 import heliosV1 from "../../modules/api/helios/v1";
-import {LinesLoader} from "../../components/Loading";
+import { LinesLoader } from "../../components/Loading";
 import keyMirror from "keymirror";
-import {getDateFormatted} from "../../libs/datetime";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
-import {Link} from "react-router-dom";
+import { getDateFormatted } from "../../libs/datetime";
+import { Link } from "react-router-dom";
 import paths from "../paths";
-import {makePathVariableUri} from "../../libs/navigation";
+import { makePathVariableUri } from "../../libs/navigation";
+import NumberFormat from "react-number-format";
+import { humanizeError } from "../../libs/response";
+import { Divider } from "@material-ui/core";
 
 const styles = theme => ({
   container: {
@@ -98,6 +99,31 @@ const FIELDS = keyMirror({
   bankNumberSource: null,
   estPaymentDate: null,
 });
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={values => {
+        onChange({
+          target: {
+            name: other.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  );
+}
+
+NumberFormatCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
@@ -105,12 +131,17 @@ class Screen extends React.Component {
 
   state = {
     values: {
-      [FIELDS.amount]: 0,
+      [FIELDS.amount]: "0",
       [FIELDS.bankNumberDest]: "",
       [FIELDS.bankNumberSource]: "",
       [FIELDS.estPaymentDate]: moment(),
     },
-    // estPaymentDate: null,
+    error:{
+      [FIELDS.amount]: "",
+      [FIELDS.bankNumberDest]: "",
+      [FIELDS.bankNumberSource]: "",
+      [FIELDS.estPaymentDate]: "",
+    },
     donationProgram: null,
     loading: true,
   };
@@ -120,10 +151,10 @@ class Screen extends React.Component {
     heliosV1.donation
       .getDonationProgramDetail(idProgram)
       .then(result => {
-        this.setState({donationProgram: result.data});
+        this.setState({ donationProgram: result.data });
       })
       .finally(() => {
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   }
 
@@ -146,8 +177,8 @@ class Screen extends React.Component {
   };
 
   handleSubmit = e => {
-    const {history} = this.props;
-    const {values} = this.state;
+    const { history } = this.props;
+    const { values } = this.state;
     const idProgram = this.props.match.params.idProgram;
 
     heliosV1.donation
@@ -158,49 +189,40 @@ class Screen extends React.Component {
         values[FIELDS.bankNumberSource],
         getDateFormatted(values[FIELDS.estPaymentDate], "YYYY-MM-DD")
       )
-      .then(({data}) => {
+      .then(({ data }) => {
         history.push(
           makePathVariableUri(paths.DONATION_PAYMENT_DETAIL, {
             donationId: data.id,
           })
         );
-        this.handleOpenSuccessMsg();
+        window.notifySnackbar("Donasi berhasil dibuat", {
+          variant: "success"
+        });
+        
       })
-      .catch(this.handleOpenErrorMsg);
-  };
-
-  handleOpenSuccessMsg = () => {
-    this.setState({openSuccessMsg: true});
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({openSuccessMsg: false});
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({openErrorMsg: true});
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({openErrorMsg: false});
+      .catch((error) => {
+          if(error.response) {
+            this.setState({
+              error: {
+                ...this.state.error,
+                ...humanizeError(error.response.data, Object.keys(FIELDS)),
+              }
+            })
+            window.notifySnackbar("Gagal membuat donasi", {
+              variant: "error"
+            })
+          }
+        
+      });
   };
 
   render() {
-    const {user, classes} = this.props;
-    const {loading, values} = this.state;
+    const { user, classes } = this.props;
+    const { loading, values, error } = this.state;
     if (loading) {
       return LinesLoader;
     }
-
-    const {title, description, proposalUrl} = this.state.donationProgram;
+    const { title, description, proposalUrl, startDate, endDate, percentageReached } = this.state.donationProgram;
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -212,10 +234,22 @@ class Screen extends React.Component {
               <Paper className={classes.paper}>
                 <CardMedia className={classes.media} image={bundar} />
                 <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {title}
-                  </Typography>
-                  <Typography component="p">{description}</Typography>
+                <Typography variant="h5" component="h2" className={classes.margin}>
+                Anda akan berdonasi untuk {title}
+
+                </Typography>
+                <Typography component="p" className={classes.margin}>
+                {description}
+                </Typography>
+                <Divider variant="middle" />
+                <Typography color="textSecondary" className={classes.margin}>
+                Estimasi tanggal pembayaran : {getDateFormatted(startDate, "DD MMMM YYYY")} hingga {getDateFormatted(endDate, "DD MMMM YYYY")}
+
+                </Typography>
+                <Typography color="textSecondary" className={classes.margin}>
+                Target tercapai : {percentageReached} %
+                </Typography>
+               
                 </CardContent>
                 <Grid item xs={12} sm={12} className={classes.btnProposal}>
                   <Button variant="outlined" color="inherit" href={proposalUrl}>
@@ -235,10 +269,9 @@ class Screen extends React.Component {
                     className={classes.textField}
                     variant="outlined"
                   />
-
                   <TextField
                     required
-                    id="outlined-required"
+                    id="formatted-numberformat-input"
                     label="Jumlah Donasi"
                     className={classes.textField}
                     margin="normal"
@@ -246,9 +279,10 @@ class Screen extends React.Component {
                     name={FIELDS.amount}
                     value={values[FIELDS.amount]}
                     onChange={this.handleChange}
-                    type="number"
-                    helperText="Jumlah donasi dalam kelipatan ribuan"
+                    error={Boolean(error[FIELDS.amount])}
+                    helperText={error[FIELDS.amount] || "masukkan jumlah pembayaran"}
                     InputProps={{
+                      inputComponent: NumberFormatCustom,
                       startAdornment: (
                         <InputAdornment position="start">Rp</InputAdornment>
                       ),
@@ -267,7 +301,8 @@ class Screen extends React.Component {
                         className: classes.menu,
                       },
                     }}
-                    helperText="Pilih bank tujuan pembayaran"
+                    error={Boolean(error[FIELDS.bankNumberDest])}
+                    helperText={error[FIELDS.bankNumberDest] || "Pilih bank tujuan pembayaran"}
                     margin="normal"
                     variant="outlined"
                   >
@@ -286,9 +321,10 @@ class Screen extends React.Component {
                     value={values[FIELDS.bankNumberSource]}
                     onChange={this.handleChange}
                     type="number"
+                    error={Boolean(error[FIELDS.bankNumberSource])}
+                    helperText={error[FIELDS.bankNumberSource] || "masukkan nomor rekening pengirim untuk validasi"}
                     margin="normal"
                     variant="outlined"
-                    helperText="Rekening untuk validasi"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -305,6 +341,8 @@ class Screen extends React.Component {
                       name={FIELDS.estPaymentDate}
                       value={values[FIELDS.estPaymentDate]}
                       onChange={this.handleDateChange(FIELDS.estPaymentDate)}
+                      error={Boolean(error[FIELDS.estPaymentDate])}
+                      helperText={error[FIELDS.estPaymentDate] || "masukkan tanggal estimasi pembayaran"}
                       variant="outlined"
                       margin="normal"
                       label="Estimasi Tanggal Pembayaran"
@@ -326,37 +364,6 @@ class Screen extends React.Component {
             </Grid>
           </Grid>
         </Container>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Donasi Berhasil disimpan`}
-          />
-        </Snackbar>
-
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={`Donasi gagal disimpan`}
-          />
-        </Snackbar>
       </React.Fragment>
     );
   }
