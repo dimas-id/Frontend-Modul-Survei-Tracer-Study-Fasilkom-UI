@@ -313,7 +313,6 @@ class Screen extends React.Component {
                         className: classes.menu,
                       },
                     }}
-                    helperText="Pilih Kategori Donasi"
                     margin="normal"
                     variant="outlined"
                   >
