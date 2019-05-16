@@ -21,7 +21,6 @@ import { Avatar, Chip } from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 
-import { LoadingScreen } from "../../../components/Loading"
 import FormDialog from "../../../components/FormDialog";
 import CategoryPaper from "./CategoryPaper";
 import config from "../../../config";

@@ -11,7 +11,6 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import AddIcon from "@material-ui/icons/Add";
-import EmailIcon from "@material-ui/icons/Email";
 
 import paths from "../../../pages/paths";
 
