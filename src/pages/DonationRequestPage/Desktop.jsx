@@ -42,86 +42,86 @@ const styles = theme => ({
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
   title: {
     ...Guidelines.fonts.medium,
-    fontSize: 32
+    fontSize: 32,
   },
   subtitle: {
-    fontSize: 16
+    fontSize: 16,
   },
   form: {
     ...Guidelines.layouts.flexDirCol,
     marginTop: 42,
-    width: 800
+    width: 800,
   },
   gridLabel: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   label: {
     fontSize: 16,
-    ...Guidelines.fonts.bold
+    ...Guidelines.fonts.bold,
   },
   textField: {
-    width: 800
+    width: 800,
   },
   gridBtn: {
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   btn: {
     ...Guidelines.layouts.mt64,
-    width: 120
-  }
+    width: 120,
+  },
 });
 
 const categories = [
   {
     value: "XXX",
-    label: "Pilih Kategori Donasi"
+    label: "Pilih Kategori Donasi",
   },
   {
     value: "INF",
-    label: "Sarana dan Infrastruktur"
+    label: "Sarana dan Infrastruktur",
   },
   {
     value: "MED",
-    label: "Bantuan Medis dan Kesehatan"
+    label: "Bantuan Medis dan Kesehatan",
   },
   {
     value: "BCN",
-    label: "Bencana Alam"
+    label: "Bencana Alam",
   },
   {
     value: "HAD",
-    label: "Hadiah dan Apresiasi"
+    label: "Hadiah dan Apresiasi",
   },
   {
     value: "SOS",
-    label: "Kegiatan Sosial"
+    label: "Kegiatan Sosial",
   },
   {
     value: "KEM",
-    label: "Kemanusiaan"
+    label: "Kemanusiaan",
   },
   {
     value: "LIN",
-    label: "Lingkungan"
+    label: "Lingkungan",
   },
   {
     value: "PTI",
-    label: "Panti Asuhan"
+    label: "Panti Asuhan",
   },
   {
     value: "RIB",
-    label: "Rumah Ibadah"
+    label: "Rumah Ibadah",
   },
   {
     value: "RFC",
-    label: "Run for Charity"
-  }
+    label: "Run for Charity",
+  },
 ];
 const FIELDS = keyMirror({
   categoryName: null,
@@ -130,11 +130,11 @@ const FIELDS = keyMirror({
   startDate: null,
   endDate: null,
   goalAmount: null,
-  proposalUrl: null
+  proposalUrl: null,
 });
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
 
   state = {
@@ -145,17 +145,26 @@ class Screen extends React.Component {
       [FIELDS.startDate]: moment(),
       [FIELDS.endDate]: moment(),
       [FIELDS.goalAmount]: 0,
-      [FIELDS.proposalUrl]: ""
+      [FIELDS.proposalUrl]: "",
     },
-    donationProgram: null
+    error: {
+      [FIELDS.categoryName]: "",
+      [FIELDS.title]: "",
+      [FIELDS.description]: "",
+      [FIELDS.startDate]: "",
+      [FIELDS.endDate]: "",
+      [FIELDS.goalAmount]: 0,
+      [FIELDS.proposalUrl]: "",
+    },
+    donationProgram: null,
   };
 
   handleChange = event => {
     this.setState({
       values: {
         ...this.state.values,
-        [event.target.name]: event.target.value
-      }
+        [event.target.name]: event.target.value,
+      },
     });
   };
 
@@ -163,8 +172,8 @@ class Screen extends React.Component {
     this.setState(prevState => ({
       values: {
         ...prevState.values,
-        [name]: value
-      }
+        [name]: value,
+      },
     }));
   };
   handleFileSubmit = ({ data, status }) => {
@@ -172,8 +181,8 @@ class Screen extends React.Component {
       this.setState({
         values: {
           ...this.state.values,
-          [FIELDS.proposalUrl]: data.fileUrl
-        }
+          [FIELDS.proposalUrl]: data.fileUrl,
+        },
       });
     }
   };
@@ -195,17 +204,30 @@ class Screen extends React.Component {
         values[FIELDS.proposalUrl]
       )
       .then(() => {
-        this.handleOpenSuccessMsg();
         setTimeout(() => {
           history.push(
             makePathVariableUri(paths.USER_DONATION_REQUEST_LIST, {
-              username: user.username
+              username: user.username,
             })
           );
+          window.notifySnackbar("Pengajuan Program Donasi Berhasil Dibuat", {
+            variant: "success",
+          });
         }, 1000);
       })
-      .catch(({ response }) => {
-        this.handleOpenErrorMsg(JSON.stringify(humanizeError(response.data)));
+
+      .catch(error => {
+        if (error.response) {
+          this.setState({
+            error: {
+              ...this.state.error,
+              ...humanizeError(error.response.data, Object.keys(FIELDS)),
+            },
+          });
+          window.notifySnackbar("Pengajuan Program Donasi Gagal Dibuat", {
+            variant: "error",
+          });
+        }
       });
   };
   handleOpenSuccessMsg = () => {
@@ -234,7 +256,7 @@ class Screen extends React.Component {
 
   render() {
     const { user, classes } = this.props;
-    const { loading, values } = this.state;
+    const { loading, values, error } = this.state;
     if (loading) {
       return <LinesLoader />;
     }
@@ -282,10 +304,14 @@ class Screen extends React.Component {
                     name={FIELDS.categoryName}
                     value={values[FIELDS.categoryName]}
                     onChange={this.handleChange}
+                    error={Boolean(error[FIELDS.categoryName])}
+                    helperText={
+                      error[FIELDS.categoryName] || "masukkan kategori donasi"
+                    }
                     SelectProps={{
                       MenuProps: {
-                        className: classes.menu
-                      }
+                        className: classes.menu,
+                      },
                     }}
                     helperText="Pilih Kategori Donasi"
                     margin="normal"
@@ -312,6 +338,10 @@ class Screen extends React.Component {
                     name={FIELDS.title}
                     value={values[FIELDS.title]}
                     onChange={this.handleChange}
+                    error={Boolean(error[FIELDS.title])}
+                    helperText={
+                      error[FIELDS.title] || "masukkan judul program donasi"
+                    }
                     autoComplete="judul"
                     margin="normal"
                     variant="outlined"
@@ -331,6 +361,11 @@ class Screen extends React.Component {
                     name={FIELDS.description}
                     value={values[FIELDS.description]}
                     onChange={this.handleChange}
+                    error={Boolean(error[FIELDS.description])}
+                    helperText={
+                      error[FIELDS.description] ||
+                      "masukkan deskripsi program donasi"
+                    }
                     autoComplete="judul"
                     margin="normal"
                     variant="outlined"
@@ -349,6 +384,10 @@ class Screen extends React.Component {
                       variant="outlined"
                       margin="normal"
                       format="YYYY-MM-DD"
+                      error={Boolean(error[FIELDS.startDate])}
+                      helperText={
+                        error[FIELDS.startDate] || "masukkan tanggal mulai program donasi"
+                      }
                       name={FIELDS.startDate}
                       value={values[FIELDS.startDate]}
                       onChange={this.handleDateChange(FIELDS.startDate)}
@@ -368,6 +407,10 @@ class Screen extends React.Component {
                       variant="outlined"
                       margin="normal"
                       format="YYYY-MM-DD"
+                      error={Boolean(error[FIELDS.endDate])}
+                      helperText={
+                        error[FIELDS.endDate] || "masukkan tanggal berakhir program donasi"
+                      }
                       name={FIELDS.endDate}
                       value={values[FIELDS.endDate]}
                       onChange={this.handleDateChange(FIELDS.endDate)}
@@ -390,11 +433,15 @@ class Screen extends React.Component {
                     name={FIELDS.goalAmount}
                     value={values[FIELDS.goalAmount]}
                     onChange={this.handleChange}
+                    error={Boolean(error[FIELDS.goalAmount])}
+                      helperText={
+                        error[FIELDS.goalAmount] || "masukkan target pengumpulan program donasi"
+                      }
                     type="number"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">Rp</InputAdornment>
-                      )
+                      ),
                     }}
                   />
                 </Grid>
@@ -408,6 +455,10 @@ class Screen extends React.Component {
                     accept="application/pdf"
                     name={FIELDS.proposalUrl}
                     value={values[FIELDS.proposalUrl]}
+                    error={Boolean(error[FIELDS.proposalUrl])}
+                      helperText={
+                        error[FIELDS.proposalUrl] || "masukkan proposal pengajuan program donasi"
+                      }
                     onChange={this.handleFileSubmit}
                   />
                 </Grid>
@@ -430,7 +481,7 @@ class Screen extends React.Component {
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "left"
+            horizontal: "left",
           }}
           open={this.state.openSuccessMsg}
           autoHideDuration={6000}
@@ -445,7 +496,7 @@ class Screen extends React.Component {
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "left"
+            horizontal: "left",
           }}
           open={Boolean(this.state.openErrorMsg)}
           autoHideDuration={6000}
@@ -466,7 +517,7 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
   });
 
   const mapDispatchToProps = dispatch => ({});
