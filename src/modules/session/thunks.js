@@ -154,8 +154,8 @@ export const logout = (force = false) => {
       }
     } finally {
       setAuthToken(undefined);
+      await dispatch(push("/login"));
       await dispatch(sessionActions.clearSession());
-      await dispatch(push("/"));
       await dispatch(
         utility.enqueueSnackbar("Berhasil keluar", {variant: "success"})
       );
