@@ -201,13 +201,13 @@ class HomePage extends React.Component {
           <div className={classes.roleInfo}>
             {user.isVerified ? (
               <Chip
-                label="Terverifikasi"
+                label="Terverifikasi ✔"
                 color="primary"
                 className={classes.chip}
               />
             ) : (
               <Chip
-                label="Belum Terverifikasi"
+                label="Belum Terverifikasi ❌"
                 color="secondary"
                 variant="outlined"
                 className={classes.chip}
