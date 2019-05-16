@@ -30,12 +30,12 @@ import heliosV1 from "../../modules/api/helios/v1";
 import { LinesLoader } from "../../components/Loading";
 import keyMirror from "keymirror";
 import { getDateFormatted } from "../../libs/datetime";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContentWrapper from "../../components/stables/SnackbarContentWrapper";
 import { Link } from "react-router-dom";
 import paths from "../paths";
 import { makePathVariableUri } from "../../libs/navigation";
 import NumberFormat from "react-number-format";
+import { humanizeError } from "../../libs/response";
+import { Divider } from "@material-ui/core";
 
 const styles = theme => ({
   container: {
@@ -136,6 +136,12 @@ class Screen extends React.Component {
       [FIELDS.bankNumberSource]: "",
       [FIELDS.estPaymentDate]: moment(),
     },
+    error:{
+      [FIELDS.amount]: "",
+      [FIELDS.bankNumberDest]: "",
+      [FIELDS.bankNumberSource]: "",
+      [FIELDS.estPaymentDate]: "",
+    },
     donationProgram: null,
     loading: true,
   };
@@ -189,44 +195,34 @@ class Screen extends React.Component {
             donationId: data.id,
           })
         );
-        this.handleOpenSuccessMsg();
+        window.notifySnackbar("Donasi berhasil dibuat", {
+          variant: "success"
+        });
+        
       })
-      .catch(this.handleOpenErrorMsg);
-  };
-
-  handleOpenSuccessMsg = () => {
-    this.setState({ openSuccessMsg: true });
-  };
-
-  handleCloseSuccessMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openSuccessMsg: false });
-  };
-
-  handleOpenErrorMsg = () => {
-    this.setState({ openErrorMsg: true });
-  };
-
-  handleCloseErrorMsg = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ openErrorMsg: false });
+      .catch((error) => {
+          if(error.response) {
+            this.setState({
+              error: {
+                ...this.state.error,
+                ...humanizeError(error.response.data, Object.keys(FIELDS)),
+              }
+            })
+            window.notifySnackbar("Gagal membuat donasi", {
+              variant: "error"
+            })
+          }
+        
+      });
   };
 
   render() {
     const { user, classes } = this.props;
-    const { loading, values } = this.state;
+    const { loading, values, error } = this.state;
     if (loading) {
       return LinesLoader;
     }
-    console.log(values[FIELDS.amount]);
-
-    const { title, description, proposalUrl } = this.state.donationProgram;
+    const { title, description, proposalUrl, startDate, endDate, percentageReached } = this.state.donationProgram;
     return (
       <React.Fragment>
         <NavbarAuth />
@@ -238,10 +234,22 @@ class Screen extends React.Component {
               <Paper className={classes.paper}>
                 <CardMedia className={classes.media} image={bundar} />
                 <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {title}
-                  </Typography>
-                  <Typography component="p">{description}</Typography>
+                <Typography variant="h5" component="h2" className={classes.margin}>
+                Anda akan berdonasi untuk {title}
+
+                </Typography>
+                <Typography component="p" className={classes.margin}>
+                {description}
+                </Typography>
+                <Divider variant="middle" />
+                <Typography color="textSecondary" className={classes.margin}>
+                Estimasi tanggal pembayaran : {getDateFormatted(startDate, "DD MMMM YYYY")} hingga {getDateFormatted(endDate, "DD MMMM YYYY")}
+
+                </Typography>
+                <Typography color="textSecondary" className={classes.margin}>
+                Target tercapai : {percentageReached} %
+                </Typography>
+               
                 </CardContent>
                 <Grid item xs={12} sm={12} className={classes.btnProposal}>
                   <Button variant="outlined" color="inherit" href={proposalUrl}>
@@ -271,7 +279,8 @@ class Screen extends React.Component {
                     name={FIELDS.amount}
                     value={values[FIELDS.amount]}
                     onChange={this.handleChange}
-                    // type="number"
+                    error={Boolean(error[FIELDS.amount])}
+                    helperText={error[FIELDS.amount] || "masukkan jumlah pembayaran"}
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                       startAdornment: (
@@ -292,7 +301,8 @@ class Screen extends React.Component {
                         className: classes.menu,
                       },
                     }}
-                    helperText="Pilih bank tujuan pembayaran"
+                    error={Boolean(error[FIELDS.bankNumberDest])}
+                    helperText={error[FIELDS.bankNumberDest] || "Pilih bank tujuan pembayaran"}
                     margin="normal"
                     variant="outlined"
                   >
@@ -311,9 +321,10 @@ class Screen extends React.Component {
                     value={values[FIELDS.bankNumberSource]}
                     onChange={this.handleChange}
                     type="number"
+                    error={Boolean(error[FIELDS.bankNumberSource])}
+                    helperText={error[FIELDS.bankNumberSource] || "masukkan nomor rekening pengirim untuk validasi"}
                     margin="normal"
                     variant="outlined"
-                    helperText="Rekening untuk validasi"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -330,6 +341,8 @@ class Screen extends React.Component {
                       name={FIELDS.estPaymentDate}
                       value={values[FIELDS.estPaymentDate]}
                       onChange={this.handleDateChange(FIELDS.estPaymentDate)}
+                      error={Boolean(error[FIELDS.estPaymentDate])}
+                      helperText={error[FIELDS.estPaymentDate] || "masukkan tanggal estimasi pembayaran"}
                       variant="outlined"
                       margin="normal"
                       label="Estimasi Tanggal Pembayaran"
@@ -351,37 +364,6 @@ class Screen extends React.Component {
             </Grid>
           </Grid>
         </Container>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          open={this.state.openSuccessMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSuccessMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseSuccessMsg}
-            variant="success"
-            message={`Donasi Berhasil disimpan`}
-          />
-        </Snackbar>
-
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          open={this.state.openErrorMsg}
-          autoHideDuration={6000}
-          onClose={this.handleCloseErrorMsg}
-        >
-          <SnackbarContentWrapper
-            onClose={this.handleCloseErrorMsg}
-            variant="error"
-            message={`Donasi gagal disimpan`}
-          />
-        </Snackbar>
       </React.Fragment>
     );
   }
