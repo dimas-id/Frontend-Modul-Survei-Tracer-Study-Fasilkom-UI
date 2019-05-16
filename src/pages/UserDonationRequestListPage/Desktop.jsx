@@ -13,7 +13,7 @@ import TableWithPaginate from "../../components/TableWithPaginate";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
-import { NavbarAuth} from "../../components/stables/Navbar";
+import { NavbarAuth } from "../../components/stables/Navbar";
 import heliosV1 from "../../modules/api/helios/v1";
 import { getUser } from "../../modules/session/selectors";
 import { LinesLoader } from "../../components/Loading";
@@ -22,45 +22,48 @@ import paths from "../paths";
 import { Link } from "react-router-dom";
 import { makePathVariableUri } from "../../libs/navigation";
 import NavbarBackDonation from "../../components/stables/Navbar/NavbarBackDonation";
-
+import Particle from "../../components/Particle";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
-  container: {
-    ...Guidelines.layouts.flexDirRow,
-    ...Guidelines.layouts.mt32,
-    ...Guidelines.layouts.mr32,
-    ...Guidelines.layouts.ml32,
-    ...Guidelines.layouts.pr32,
-    ...Guidelines.layouts.pl32,
-  },
   paper: {
     ...Guidelines.layouts.mt16,
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
-  }
+    ...Guidelines.layouts.pb32,
+  },
+  ditolak: {
+    color: "red",
+  },
+  diterima: {
+    color: "green",
+  },
+  button: {
+    color: "blue",
+  },
 });
 
 const STATUS = {
   RJA: "Ditolak Admin",
   PRA: "Diproses Admin",
-  ACA: "Diterima Admin, Di,anjutkan ke Manajemen",
-  RJM: "Ditolak Manajemen",
-  PRM: "Diproses Manajemen",
-  ACM: "Program Donasi Diterima"
+  PRM: "Diterima Admin, diproses ke Manajemen",
+  RJM: "Ditolak Manajemen, diproses Admin",
+  // PRM: "Diproses Manajemen",
+  ACM: "Program Donasi Diterima",
 };
 
 class Screen extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
 
   state = {
     page: 0,
     rowsPerPage: 5,
     userDonationRequestList: null,
-    loading: true
+    loading: true,
   };
   componentDidMount() {
     heliosV1.donation
@@ -91,51 +94,96 @@ class Screen extends React.Component {
       <React.Fragment>
         <NavbarAuth />
         <NavbarBackDonation title="Daftar Permohonan Program Donasi" />
+        <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
-          <Grid container spacing={24}>
-            <Grid item xs={12} sm={12}>
-              <TableWithPaginate
-                columns={[
-                  { name: "No." },
-                  { name: "Program Donasi" },
-                  { name: "Tanggal Pengajuan" },
-                  { name: "Status" },
-                  { name: "Detail" }
-                ]}
-                rows={userDonationRequestList}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                renderRow={(row, index) => (
-                  <TableRow key={row.id}>
-                    <TableCell component="th" scope="row" align="center">
-                      {index + 1}
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.title}
-                    </TableCell>
-                    <TableCell align="center">
-                      {getDateFormatted(row.dateCreated, "DD MMMM YYYY")}
-                    </TableCell>
-                    <TableCell align="center">
-                      {STATUS[row.verificationStatus]}
-                    </TableCell>
-                    <TableCell align="center">
-                      <Button
-                        component={Link}
-                      to={makePathVariableUri(paths.DONATION_REQUEST_DETAIL , {
-                        requestId: row.id,  username: user.username
-                      })}
-                        className={classes.button}
-
-                      >
-                        Lihat
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                )}
-              />
+          <Paper className={classes.paper} elevation={1}>
+            <Typography className={classes.title} variant="h5" component="h3">
+              Daftar Pengajuan Donasi
+            </Typography>
+            <Grid container spacing={24}>
+              <Grid item xs={12} sm={12}>
+                <TableWithPaginate
+                  columns={[
+                    { name: "No." },
+                    { name: "Program Donasi" },
+                    { name: "Tanggal Pengajuan" },
+                    { name: "Status" },
+                    { name: "Detail" },
+                  ]}
+                  rows={userDonationRequestList}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  renderRow={(row, index) => (
+                    <TableRow key={row.id}>
+                      <TableCell component="th" scope="row" align="center">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {row.title}
+                      </TableCell>
+                      <TableCell align="center">
+                        {getDateFormatted(row.dateCreated, "DD MMMM YYYY")}
+                      </TableCell>
+                      <TableCell align="center">
+                        {/* {STATUS[row.verificationStatus]} */}
+                        { row.verificationStatus === 'ACM' && (
+                          <Typography
+                          component="p"
+                          className={classes.diterima}
+                        >
+                          {STATUS[row.verificationStatus]}
+                        </Typography>
+                        )}
+                        { row.verificationStatus === 'RJA' && (
+                          <Typography
+                          component="p"
+                          className={classes.ditolak}
+                        >
+                          {STATUS[row.verificationStatus]}
+                        </Typography>
+                        )}
+                        { row.verificationStatus === 'PRA' && (
+                          <Typography
+                          component="p"
+                        >
+                          {STATUS[row.verificationStatus]}
+                        </Typography>
+                        )}
+                        { row.verificationStatus === 'PRM' && (
+                          <Typography
+                          component="p"
+                        >
+                          {STATUS[row.verificationStatus]}
+                        </Typography>
+                        )}
+                        { row.verificationStatus === 'RJM' && (
+                          <Typography
+                          component="p">
+                          {STATUS[row.verificationStatus]}
+                        </Typography>
+                        )}
+                      </TableCell>
+                      <TableCell align="center">
+                        <Button
+                          component={Link}
+                          to={makePathVariableUri(
+                            paths.DONATION_REQUEST_DETAIL,
+                            {
+                              requestId: row.id,
+                              username: user.username,
+                            }
+                          )}
+                          className={classes.button}
+                        >
+                          Lihat
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                />
+              </Grid>
             </Grid>
-          </Grid>
+          </Paper>
         </Container>
       </React.Fragment>
     );
@@ -144,7 +192,7 @@ class Screen extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
   });
 
   const mapDispatchToProps = dispatch => ({});
