@@ -112,12 +112,52 @@ function Preference({ userId }) {
       });
   }
 
+  function handleChangeAll({ target }) {
+    const allValue = isSelectedAll()
+    atlasV1.session
+      .patchPreference(userId, {
+        [FIELDS.couldContactMe]: !allValue,
+        [FIELDS.shouldSendEvent]: !allValue,
+        [FIELDS.shouldSendUpdate]: !allValue,
+        [FIELDS.shouldSendVacancy]: !allValue,
+        [FIELDS.shouldSendDonationInfo]: !allValue,
+        [FIELDS.shouldSendNewsletter]: !allValue
+      })
+      .then(result => {
+        setPreference(getResult(result));
+        setSnackbar("Berhasil disimpan");
+      })
+      .catch(() => {
+        setSnackbar("Gagal disimpan");
+      });
+  }
+
+  function isSelectedAll() {
+    let isAll = true
+    for(let key in preference){
+      if(!preference[key]) {
+        isAll = false;
+        break
+      }
+    }
+    return isAll;
+  }
+
+  const selectedAll = isSelectedAll();
+
   return (
     <React.Fragment>
       {loading ? (
-        Array.apply(null, Array(5)).map(index => <Head loading key={index} />)
+        Array.apply(null, Array(7)).map(index => <Head loading key={index} />)
       ) : (
         <React.Fragment>
+          <Head
+            name="all"
+            onChange={handleChangeAll}
+            checked={selectedAll}
+          >
+            {selectedAll ? 'Matikan' : 'Pilih'} Semua
+          </Head>
           <Head
             name={FIELDS.shouldSendNewsletter}
             onChange={handleChange}
@@ -152,6 +192,13 @@ function Preference({ userId }) {
             checked={preference[FIELDS.shouldSendUpdate]}
           >
             Informasi lainnya mengenai ILUNI12
+          </Head>
+          <Head
+            name={FIELDS.couldContactMe}
+            onChange={handleChange}
+            checked={preference[FIELDS.couldContactMe]}
+          >
+            Boleh dihubungi
           </Head>
         </React.Fragment>
       )}
