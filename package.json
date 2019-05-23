@@ -59,6 +59,7 @@
     "react-content-loader": "^4.2.1",
     "react-device-detect": "^1.6.2",
     "react-dom": "^16.8.5",
+    "react-ga": "^2.5.7",
     "react-helmet": "^5.2.0",
     "react-number-format": "^4.0.8",
     "react-places-autocomplete": "^7.2.1",

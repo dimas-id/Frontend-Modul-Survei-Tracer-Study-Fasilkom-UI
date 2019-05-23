@@ -1,18 +1,19 @@
 // redux and storage
-import {createStore, applyMiddleware, combineReducers, compose} from "redux";
-import {persistStore, persistReducer} from "redux-persist";
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
+import ReactGA from "react-ga";
 
 // routing
-import {connectRouter, routerMiddleware} from "connected-react-router";
-import {createBrowserHistory} from "history";
+import { connectRouter, routerMiddleware } from "connected-react-router";
+import { createBrowserHistory } from "history";
 
 // reducer
-import {sessionReducer} from "./session";
-import {experienceReducer} from "./experience";
-import {utilityReducer, utilityActions} from "./utility";
-import {crmReducer} from "./crm";
+import { sessionReducer } from "./session";
+import { experienceReducer } from "./experience";
+import { utilityReducer, utilityActions } from "./utility";
+import { crmReducer } from "./crm";
 
 // middleware
 import loggerMiddleware from "./middlewares/logger";
@@ -21,18 +22,25 @@ import atlasAPIv1 from "./api/atlas/v1";
 import heliosAPIv1 from "./api/helios/v1";
 
 // config
-import {isDevelopment} from "../config";
+import { isDevelopment } from "../config";
 
 const composeEnhancers =
   (isDevelopment && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
 export const history = createBrowserHistory({
-  basename: process.env.PUBLIC_URL
+  basename: process.env.PUBLIC_URL,
 });
+
+if (!isDevelopment) {
+  history.listen(function(location) {
+    ReactGA.pageview(location.pathname + location.search);
+  });
+}
+
 const rootReducer = combineReducers({
-  session: persistReducer({key: "session", storage}, sessionReducer),
-  experience: persistReducer({key: "experience", storage}, experienceReducer),
-  crm: persistReducer({key: "crm", storage}, crmReducer),
+  session: persistReducer({ key: "session", storage }, sessionReducer),
+  experience: persistReducer({ key: "experience", storage }, experienceReducer),
+  crm: persistReducer({ key: "crm", storage }, crmReducer),
   utility: utilityReducer,
   router: connectRouter(history),
 });
