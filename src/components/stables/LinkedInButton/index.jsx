@@ -26,12 +26,12 @@ export default withRouter(
         history.replace(paths.HOME);
       }
       window.notifySnackbar(
-        "Mengalihkan ke halaman masuk LinkedIn",
+        "(21 Mei 2019) Oh tidak! Fitur sedang dimatikan karena migrasi ke versi LinkedIn terbaru 😞",
         { variant: "info" }
       );
-      timer = setTimeout(() => {
-        window.location.replace(`${env.ATLAS}/api/v1/external-auths/linkedin`)
-      }, 1200)
+      // timer = setTimeout(() => {
+      //   window.location.replace(`${env.ATLAS}/api/v1/external-auths/linkedin`)
+      // }, 1200)
     }
 
     React.useEffect(() => {
