@@ -229,6 +229,7 @@ class Screen extends React.Component {
       startDate,
       endDate,
       percentageReached,
+      goalAmount,
     } = this.state.donationProgram;
     return (
       <React.Fragment>
@@ -252,6 +253,12 @@ class Screen extends React.Component {
                     {description}
                   </Typography>
                   <Divider variant="fullWidth" />
+                  <Typography component="p" className={classes.margin}>
+                    Target Donasi : {new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(goalAmount)}
+                  </Typography>
                   <Typography color="textSecondary" className={classes.margin}>
                     Estimasi tanggal pembayaran :{" "}
                     {getDateFormatted(startDate, "DD MMMM YYYY")} hingga{" "}

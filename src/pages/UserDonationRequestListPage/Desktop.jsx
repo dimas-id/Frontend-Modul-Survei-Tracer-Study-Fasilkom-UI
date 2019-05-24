@@ -107,6 +107,8 @@ class Screen extends React.Component {
                     { name: "No." },
                     { name: "Program Donasi" },
                     { name: "Tanggal Pengajuan" },
+                    { name: "Tanggal Mulai Donasi" },
+                    { name: "Target Donasi" },
                     { name: "Status" },
                     { name: "Detail" },
                   ]}
@@ -124,43 +126,45 @@ class Screen extends React.Component {
                       <TableCell align="center">
                         {getDateFormatted(row.dateCreated, "DD MMMM YYYY")}
                       </TableCell>
+                     
+                      <TableCell align="center">
+                        {getDateFormatted(row.startDate, "DD MMMM YYYY")}
+                      </TableCell>
+                      <TableCell align="center">
+                        {new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                        }).format(row.goalAmount)}
+                      </TableCell>
                       <TableCell align="center">
                         {/* {STATUS[row.verificationStatus]} */}
-                        { row.verificationStatus === 'ACM' && (
+                        {row.verificationStatus === "ACM" && (
                           <Typography
-                          component="p"
-                          className={classes.diterima}
-                        >
-                          {STATUS[row.verificationStatus]}
-                        </Typography>
+                            component="p"
+                            className={classes.diterima}
+                          >
+                            {STATUS[row.verificationStatus]}
+                          </Typography>
                         )}
-                        { row.verificationStatus === 'RJA' && (
-                          <Typography
-                          component="p"
-                          className={classes.ditolak}
-                        >
-                          {STATUS[row.verificationStatus]}
-                        </Typography>
+                        {row.verificationStatus === "RJA" && (
+                          <Typography component="p" className={classes.ditolak}>
+                            {STATUS[row.verificationStatus]}
+                          </Typography>
                         )}
-                        { row.verificationStatus === 'PRA' && (
-                          <Typography
-                          component="p"
-                        >
-                          {STATUS[row.verificationStatus]}
-                        </Typography>
+                        {row.verificationStatus === "PRA" && (
+                          <Typography component="p">
+                            {STATUS[row.verificationStatus]}
+                          </Typography>
                         )}
-                        { row.verificationStatus === 'PRM' && (
-                          <Typography
-                          component="p"
-                        >
-                          {STATUS[row.verificationStatus]}
-                        </Typography>
+                        {row.verificationStatus === "PRM" && (
+                          <Typography component="p">
+                            {STATUS[row.verificationStatus]}
+                          </Typography>
                         )}
-                        { row.verificationStatus === 'RJM' && (
-                          <Typography
-                          component="p">
-                          {STATUS[row.verificationStatus]}
-                        </Typography>
+                        {row.verificationStatus === "RJM" && (
+                          <Typography component="p">
+                            {STATUS[row.verificationStatus]}
+                          </Typography>
                         )}
                       </TableCell>
                       <TableCell align="center">
