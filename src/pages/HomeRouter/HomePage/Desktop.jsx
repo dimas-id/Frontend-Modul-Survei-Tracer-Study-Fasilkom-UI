@@ -153,7 +153,7 @@ class HomePage extends React.Component {
 
   renderBody() {
     const { classes, user } = this.props;
-    if (!user) {
+    if (!user || !user.profile) {
       return null;
     }
 
