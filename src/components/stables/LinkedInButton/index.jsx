@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 
 import { isLoggedIn } from "../../../modules/session/selectors";
-import env from "../../../config";
 import paths from "../../../pages/paths";
 import LinkedInLogo from "../../../assets/img/LinkedIn.png";
 
