@@ -14,6 +14,7 @@ import { makePathVariableUri } from "../../../libs/navigation";
 import { Divider } from "@material-ui/core";
 import paths from "../../../pages/paths";
 
+
 const styles = theme => ({
   layout: {
     width: "auto",
@@ -57,6 +58,7 @@ function Donation(props) {
     endDate,
     percentageReached,
   } = props;
+  
 
   return (
     <React.Fragment>
