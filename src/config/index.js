@@ -1,7 +1,7 @@
 export const isDevelopment = process.env.NODE_ENV === "development";
 export const PUBLIC_URL = process.env.PUBLIC_URL;
-export const ROOT_URL = "https://iluni12.id";
-export const METABASE_URL = "https://analytics.iluni12.id"
+export const ROOT_URL = "http://18.139.200.39";
+export const METABASE_URL = "http://18.139.200.39:3000"
 
 window.deprecationWarning =
   process.env.NODE_ENV !== "production"
@@ -21,8 +21,8 @@ const developmentConstants = () => {
 };
 
 const productionConstants = () => ({
-  ATLAS: "https://atlas.iluni12.id",
-  HELIOS: "https://helios.iluni12.id"
+  ATLAS: "http://18.139.200.39:8000",
+  HELIOS: "http://18.139.200.39:8004"
 });
 
 const constants = () => {
