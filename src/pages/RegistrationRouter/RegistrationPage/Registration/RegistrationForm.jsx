@@ -154,6 +154,7 @@ function SelectPrograms(props) {
         value={props.value}
         onChange={props.onChange}
         required
+        error={props.error}
         input={
           <OutlinedInput
             id="LatestCsuiProgram"
