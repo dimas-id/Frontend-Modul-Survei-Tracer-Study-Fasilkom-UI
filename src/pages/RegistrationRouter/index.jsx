@@ -8,6 +8,7 @@ import Particle from "../../components/Particle";
 import RouterWrapper from "../../components/RouterWrapper";
 import StepProgress from "../../components/StepProgress";
 import RegistrationPage from "./RegistrationPage";
+import EducationPage from "./EducationPage";
 import WorkPositionPage from "./WorkPositionPage";
 import PreferencePage from "./PreferencePage";
 
@@ -17,23 +18,30 @@ const ROUTES = [
     route: {
       exact: true,
       path: paths.LANDING,
-      component: RegistrationPage
-    }
+      component: RegistrationPage,
+    },
+  },
+  {
+    title: "Edukasi",
+    route: {
+      path: paths.EDUCATION,
+      component: EducationPage,
+    },
   },
   {
     title: "Pekerjaan",
     route: {
       path: paths.WORK_POSITION,
-      component: WorkPositionPage
-    }
+      component: WorkPositionPage,
+    },
   },
   {
     title: "Preferensi",
     route: {
       path: paths.PREFERENCE,
-      component: PreferencePage
-    }
-  }
+      component: PreferencePage,
+    },
+  },
 ];
 
 const MAX_STEP = ROUTES.length;
@@ -57,14 +65,22 @@ export default withRouter(function RegistrationRouter({ history, location }) {
 
   React.useEffect(() => {
     const targetPath = getRoutePath(currentStep + 1);
+    console.log(`target path : ${targetPath}`);
+    console.log(`current step : ${currentStep}`);
+    console.log(`max step : ${MAX_STEP}`);
+    console.log(location.pathname);
+    console.log(paths.EDUCATION);
     if (currentStep === MAX_STEP) {
+      console.log("push to home");
       // finally, redirect to user dashboard
       history.push(paths.HOME);
     } else if (
-      (location.pathname.includes(paths.WORK_POSITION) ||
+      (location.pathname.includes(paths.EDUCATION) ||
+        location.pathname.includes(paths.WORK_POSITION) ||
         location.pathname.includes(paths.PREFERENCE)) &&
       targetPath !== location.pathname
     ) {
+      console.log("push to targetPath");
       // target path after next/back
       history.push(targetPath);
     }
@@ -83,7 +99,8 @@ export default withRouter(function RegistrationRouter({ history, location }) {
       <Particle name="cloud2" top={120} left={0} />
       <RouterWrapper paths={ROUTES} />
       {currentStep > 0 &&
-        (location.pathname.includes(paths.WORK_POSITION) ||
+        (location.pathname.includes(paths.EDUCATION) ||
+          location.pathname.includes(paths.WORK_POSITION) ||
           location.pathname.includes(paths.PREFERENCE)) && (
           <StepProgress
             start={1}
