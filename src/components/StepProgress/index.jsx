@@ -9,17 +9,18 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 const styles = {
   root: {
     width: "100%",
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 };
 
 function StepProgress({
+  isLoading,
   start = 0,
   steps,
   onNext,
   onBack,
   activeStep,
-  position
+  position,
 }) {
   const classes = makeStyles(styles);
   return (
@@ -30,10 +31,14 @@ function StepProgress({
       activeStep={activeStep}
       className={classes.root}
       nextButton={
-        <Button size="small" onClick={onNext} disabled={activeStep >= steps}>
-          Next
-          <KeyboardArrowRight />
-        </Button>
+        isLoading ? (
+          <p>loading...</p>
+        ) : (
+          <Button size="small" onClick={onNext} disabled={activeStep >= steps}>
+            Next
+            <KeyboardArrowRight />
+          </Button>
+        )
       }
       backButton={
         <Button size="small" onClick={onBack} disabled={activeStep === start}>

@@ -43,13 +43,13 @@ RouterWrapper.propTypes = {
       route: PropTypes.shape({
         path: PropTypes.string.isRequired,
         component: PropTypes.any.isRequired,
-        exact: PropTypes.boolean
-      })
+        exact: PropTypes.boolean,
+      }),
     })
   ),
-  titleSuffix: PropTypes.string
+  titleSuffix: PropTypes.string,
 };
 
 RouterWrapper.defaultProps = {
-  titleSuffix: " - ILUNI12"
+  titleSuffix: " - ILUNI12",
 };

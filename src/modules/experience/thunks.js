@@ -67,7 +67,7 @@ export const deleteWorkPositionById = positionId => {
       await dispatch(loadPositions(userId));
       await dispatch(
         utility.enqueueSnackbar("Berhasil menghapus riwayat posisi pekerjaan", {
-          variant: "success"
+          variant: "success",
         })
       );
       return resp;
@@ -80,9 +80,31 @@ export const deleteWorkPositionById = positionId => {
 export const loadEducations = userId => {
   return async (dispatch, _, { API: { atlasV1 } }) => {
     try {
-      // assuming that user wont have > 100 work position in their lifetime
-      const resp = await atlasV1.experience.getEducations(userId, 0, 100);
+      // assuming that user wont have > 3 educations in Fasilkom UI (S1, S2, S3)
+      const resp = await atlasV1.experience.getEducations(userId, 0, 3);
       await dispatch(experienceActions.setEducations(resp.data));
+      return resp;
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+
+export const createEducations = educations => {
+  return async (dispatch, getState, { API: { atlasV1 }, utility }) => {
+    try {
+      const userId = getUserId(getState());
+      const resp = await atlasV1.experience.createEducations(
+        userId,
+        educations
+      );
+      await dispatch(loadEducations(userId));
+      await dispatch(
+        utility.enqueueSnackbar(
+          "Berhasil menambah riwayat pendidikan di Fasilkom UI",
+          { variant: "success" }
+        )
+      );
       return resp;
     } catch (error) {
       throw error;

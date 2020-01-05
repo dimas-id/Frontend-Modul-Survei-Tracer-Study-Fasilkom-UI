@@ -62,16 +62,12 @@ export default withRouter(function RegistrationRouter({ history, location }) {
   const [currentStep, setCurrentStep] = React.useState(
     tempStep === -1 ? 1 : tempStep
   );
+  const [loading, setLoading] = React.useState(false);
+  const [disabled, setDisabled] = React.useState(false);
 
   React.useEffect(() => {
     const targetPath = getRoutePath(currentStep + 1);
-    console.log(`target path : ${targetPath}`);
-    console.log(`current step : ${currentStep}`);
-    console.log(`max step : ${MAX_STEP}`);
-    console.log(location.pathname);
-    console.log(paths.EDUCATION);
     if (currentStep === MAX_STEP) {
-      console.log("push to home");
       // finally, redirect to user dashboard
       history.push(paths.HOME);
     } else if (
@@ -80,18 +76,33 @@ export default withRouter(function RegistrationRouter({ history, location }) {
         location.pathname.includes(paths.PREFERENCE)) &&
       targetPath !== location.pathname
     ) {
-      console.log("push to targetPath");
       // target path after next/back
       history.push(targetPath);
     }
   }, [currentStep]);
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function submitEducation(values) {
+    setLoading(true);
+    await sleep(5000);
+    setLoading(false);
+  }
 
   function handleBack() {
     setCurrentStep(prevStep => prevStep - 1);
   }
 
   function handleNext() {
-    setCurrentStep(prevStep => prevStep + 1);
+    if (location.pathname.includes(paths.EDUCATION)) {
+      submitEducation().then(e => {
+        setCurrentStep(prevStep => prevStep + 1);
+      });
+    } else {
+      setCurrentStep(prevStep => prevStep + 1);
+    }
   }
 
   return (
@@ -103,6 +114,7 @@ export default withRouter(function RegistrationRouter({ history, location }) {
           location.pathname.includes(paths.WORK_POSITION) ||
           location.pathname.includes(paths.PREFERENCE)) && (
           <StepProgress
+            isLoading={loading}
             start={1}
             steps={MAX_STEP}
             activeStep={currentStep}
