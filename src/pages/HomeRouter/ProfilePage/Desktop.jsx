@@ -203,7 +203,7 @@ class ProfilePage extends React.Component {
           <Field label="Email" value={user.email} />
           <Field label="Nomor Telepon" value={user.profile.phoneNumber} />
           <Field label="Lokasi" value={location} />
-          <Field label="Website" value={user.profile.websiteUrl} />
+          <Field label="Profil LinkedIn" value={user.profile.linkedinUrl} />
         </Paper>
         <Paper className={classes.paper} elevation={1}>
           <Head>Kata Sandi</Head>
