@@ -64,12 +64,12 @@ export const deleteWorkPositionById = positionId => {
     try {
       const userId = getUserId(getState());
       const resp = await atlasV1.experience.deletePosition(userId, positionId);
-      await dispatch(loadPositions(userId));
       await dispatch(
         utility.enqueueSnackbar("Berhasil menghapus riwayat posisi pekerjaan", {
           variant: "success",
         })
       );
+      await dispatch(loadPositions(userId));
       return resp;
     } catch (error) {
       throw error;
@@ -98,13 +98,13 @@ export const createEducations = educations => {
         userId,
         educations
       );
-      await dispatch(loadEducations(userId));
       await dispatch(
         utility.enqueueSnackbar(
           "Berhasil menambah riwayat pendidikan di Fasilkom UI",
           { variant: "success" }
         )
       );
+      await dispatch(loadEducations(userId));
       return resp;
     } catch (error) {
       throw error;
