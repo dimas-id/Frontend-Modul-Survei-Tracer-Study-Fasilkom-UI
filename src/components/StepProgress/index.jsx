@@ -14,7 +14,6 @@ const styles = {
 };
 
 function StepProgress({
-  isLoading,
   start = 0,
   steps,
   onNext,
@@ -31,14 +30,10 @@ function StepProgress({
       activeStep={activeStep}
       className={classes.root}
       nextButton={
-        isLoading ? (
-          <p>loading...</p>
-        ) : (
-          <Button size="small" onClick={onNext} disabled={activeStep >= steps}>
-            Next
-            <KeyboardArrowRight />
-          </Button>
-        )
+        <Button size="small" onClick={onNext} disabled={activeStep >= steps}>
+          Next
+          <KeyboardArrowRight />
+        </Button>
       }
       backButton={
         <Button size="small" onClick={onBack} disabled={activeStep === start}>
