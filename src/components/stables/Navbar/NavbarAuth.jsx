@@ -338,7 +338,7 @@ class NavbarAuth extends React.Component {
         <Toolbar>
           <Button
             component={Link}
-            to={isLoggedIn ? paths.USER_PROFILE : paths.LANDING}
+            to={isLoggedIn ? paths.HOME : paths.LANDING}
             disableRipple
             className={classes.menuButton}
             aria-label="Menu"
