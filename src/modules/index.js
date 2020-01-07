@@ -18,8 +18,9 @@ import { crmReducer } from "./crm";
 // middleware
 import loggerMiddleware from "./middlewares/logger";
 import errorMiddleware from "./middlewares/error";
-import atlasAPIv1 from "./api/atlas/v1";
-import heliosAPIv1 from "./api/helios/v1";
+import atlasV1 from "./api/atlas/v1";
+import atlasV2 from "./api/atlas/v2";
+import heliosV1 from "./api/helios/v1";
 
 // config
 import { isDevelopment } from "../config";
@@ -50,8 +51,9 @@ const middlewares = [
   thunk.withExtraArgument({
     // add extra argument from others
     API: {
-      atlasV1: atlasAPIv1,
-      heliosV1: heliosAPIv1,
+      atlasV1,
+      atlasV2,
+      heliosV1,
     },
     utility: utilityActions,
   }),

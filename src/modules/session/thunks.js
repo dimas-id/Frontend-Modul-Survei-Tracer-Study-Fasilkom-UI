@@ -21,9 +21,9 @@ export const loadUser = (userId, silent = false) => {
 };
 
 export const register = payload => {
-  return async (dispatch, _, { API: { atlasV1 }, utility }) => {
+  return async (dispatch, _, { API: { atlasV2 }, utility }) => {
     try {
-      const response = await atlasV1.session.register(payload);
+      const response = await atlasV2.session.register(payload);
       // set token to header
       setAuthToken(get(response, "data.access"));
       // save token & user  to redux
@@ -54,7 +54,7 @@ export const updateUserProfile = payload => {
       "residenceCountry",
       "residenceLng",
       "residenceLat",
-      "websiteUrl",
+      "linkedinUrl",
       "phoneNumber",
       "profilePicUrl",
     ]);
