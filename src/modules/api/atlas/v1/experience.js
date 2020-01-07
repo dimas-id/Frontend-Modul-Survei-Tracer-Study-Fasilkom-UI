@@ -8,18 +8,20 @@ export default Object.freeze({
     http.get(`${API_V1_URL}/users/${userId}/positions`, {
       params: {
         limit,
-        offset
-      }
+        offset,
+      },
     }),
   updatePosition: (userId, positionId, payload) =>
     http.put(`${API_V1_URL}/users/${userId}/positions/${positionId}`, payload),
   deletePosition: (userId, positionId) =>
     http.delete(`${API_V1_URL}/users/${userId}/positions/${positionId}`),
+  createEducations: (userId, payload) =>
+    http.post(`${API_V1_URL}/users/${userId}/educations`, payload),
   getEducations: (userId, offset, limit) =>
     http.get(`${API_V1_URL}/users/${userId}/educations`, {
       params: {
         limit,
-        offset
-      }
-    })
+        offset,
+      },
+    }),
 });

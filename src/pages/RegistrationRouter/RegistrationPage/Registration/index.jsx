@@ -54,7 +54,7 @@ class Registration extends React.Component {
 
   redirectToNextPage = () => {
     const { history } = this.props;
-    history.push(paths.REGISTER_WORK_POSITION);
+    history.push(paths.REGISTER_EDUCATION);
   };
 
   handleRegistration = (values, actions) => {
