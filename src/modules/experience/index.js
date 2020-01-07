@@ -6,7 +6,7 @@ const SET_EDUCATIONS = "experience/SET_EDUCATIONS";
 
 const INITIAL_STATE = {
   workPositions: undefined,
-  educations: undefined
+  educations: undefined,
 };
 
 export function experienceReducer(state, action) {
@@ -14,12 +14,12 @@ export function experienceReducer(state, action) {
     case SET_WORK_POSITIONS:
       return {
         ...state,
-        workPositions: action.payload
+        workPositions: action.payload,
       };
     case SET_EDUCATIONS:
       return {
         ...state,
-        workPositions: action.payload
+        educations: action.payload,
       };
     default:
       return state || INITIAL_STATE;
@@ -29,15 +29,15 @@ export function experienceReducer(state, action) {
 export const experienceActions = Object.freeze({
   setWorkPositions: workPositions => ({
     type: SET_WORK_POSITIONS,
-    payload: workPositions
+    payload: workPositions,
   }),
   setEducations: educations => ({
     type: SET_EDUCATIONS,
-    payload: educations
-  })
+    payload: educations,
+  }),
 });
 
 export default {
   experienceActions,
-  experienceReducer
-}
+  experienceReducer,
+};

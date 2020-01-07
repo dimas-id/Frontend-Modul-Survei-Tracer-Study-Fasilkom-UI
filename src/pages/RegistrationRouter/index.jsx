@@ -8,6 +8,7 @@ import Particle from "../../components/Particle";
 import RouterWrapper from "../../components/RouterWrapper";
 import StepProgress from "../../components/StepProgress";
 import RegistrationPage from "./RegistrationPage";
+import EducationPage from "./EducationPage";
 import WorkPositionPage from "./WorkPositionPage";
 import PreferencePage from "./PreferencePage";
 
@@ -17,23 +18,30 @@ const ROUTES = [
     route: {
       exact: true,
       path: paths.LANDING,
-      component: RegistrationPage
-    }
+      component: RegistrationPage,
+    },
+  },
+  {
+    title: "Edukasi",
+    route: {
+      path: paths.EDUCATION,
+      component: EducationPage,
+    },
   },
   {
     title: "Pekerjaan",
     route: {
       path: paths.WORK_POSITION,
-      component: WorkPositionPage
-    }
+      component: WorkPositionPage,
+    },
   },
   {
     title: "Preferensi",
     route: {
       path: paths.PREFERENCE,
-      component: PreferencePage
-    }
-  }
+      component: PreferencePage,
+    },
+  },
 ];
 
 const MAX_STEP = ROUTES.length;
@@ -61,7 +69,8 @@ export default withRouter(function RegistrationRouter({ history, location }) {
       // finally, redirect to user dashboard
       history.push(paths.HOME);
     } else if (
-      (location.pathname.includes(paths.WORK_POSITION) ||
+      (location.pathname.includes(paths.EDUCATION) ||
+        location.pathname.includes(paths.WORK_POSITION) ||
         location.pathname.includes(paths.PREFERENCE)) &&
       targetPath !== location.pathname
     ) {
@@ -83,7 +92,8 @@ export default withRouter(function RegistrationRouter({ history, location }) {
       <Particle name="cloud2" top={120} left={0} />
       <RouterWrapper paths={ROUTES} />
       {currentStep > 0 &&
-        (location.pathname.includes(paths.WORK_POSITION) ||
+        (location.pathname.includes(paths.EDUCATION) ||
+          location.pathname.includes(paths.WORK_POSITION) ||
           location.pathname.includes(paths.PREFERENCE)) && (
           <StepProgress
             start={1}

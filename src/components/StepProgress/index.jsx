@@ -9,8 +9,8 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 const styles = {
   root: {
     width: "100%",
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 };
 
 function StepProgress({
@@ -19,7 +19,7 @@ function StepProgress({
   onNext,
   onBack,
   activeStep,
-  position
+  position,
 }) {
   const classes = makeStyles(styles);
   return (
