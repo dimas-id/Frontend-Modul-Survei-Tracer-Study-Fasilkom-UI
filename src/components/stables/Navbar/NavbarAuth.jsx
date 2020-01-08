@@ -253,14 +253,6 @@ class NavbarAuth extends React.Component {
             <img src={icons.akun} alt="Account Icon" />
             <Typography>Akun</Typography>
           </MenuItem>
-          <MenuItem
-            className={classes.appMenuItem}
-            component={Link}
-            to={paths.DONASI}
-          >
-            <img src={icons.donasi} alt="Channel Icon" />
-            <Typography>Donasi</Typography>
-          </MenuItem>
 
           <MenuItem
             className={classes.appMenuItem}

@@ -217,14 +217,6 @@ class HomePage extends React.Component {
           <Grid container spacing={24}>
             <Grid item xs={12} md={6}>
               <CategoryPaper
-                title="Donasi"
-                description="Sarana untuk menyalurkan salah satu bentuk kepedulian sosial Anda"
-                imageName="cloudDonation"
-                path={paths.DONASI}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CategoryPaper
                 title="Channel"
                 description="Sarana bertukar informasi antar pengguna yang disajikan dengan berbagai kategori"
                 imageName="cloudChannel"
