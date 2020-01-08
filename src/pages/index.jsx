@@ -18,11 +18,6 @@ import EmailTemplateUpdatePage from "./EmailTemplateUpdatePage";
 import EmailTemplateListPage from "./EmailTemplateListPage";
 import EmailBatchCreatePage from "./EmailBatchCreatePage";
 import EmailBatchUpdatePage from "./EmailBatchUpdatePage";
-import DonationFormPage from "./DonationFormPage";
-import DonationPage from "./DonationPage";
-import DonationRequestPage from "./DonationRequestPage";
-import PaymentPage from "./PaymentPage";
-import UserDonationListPage from "./UserDonationListPage";
 import ChannelRequestPage from "./ChannelRequestPage";
 import ChannelRequestListPage from "./ChannelRequestListPage";
 import ChannelRequestDetailPage from "./ChannelRequestDetailPage";
@@ -32,10 +27,6 @@ import UpdateChantPage from "./UpdateChantPage";
 import ChannelRouter from "./ChannelRouter";
 import ChannelChantDetailPage from "./ChannelChantDetailPage";
 import UserVerifyPage from "./UserVerifyPage";
-import UserDonationRequestListPage from "./UserDonationRequestListPage";
-import DonationRequestDetailPage from "./DonationRequestDetailPage";
-import DonationRequestUpdatePage from "./DonationRequestUpdatePage";
-
 
 import { history } from '../modules';
 
@@ -117,88 +108,6 @@ const ROUTES = [
     route: {
       path: paths.REGISTER_EXTERNAL,
       component: RegisterExternalAuthPage,
-    },
-  },
-  {
-    title: "Donation Request",
-    route: {
-      path: paths.DONATION_REQUEST,
-      component: DonationRequestPage,
-    },
-  },
-  {
-    title: "Donation Request Update",
-    route: {
-      path: paths.DONATION_REQUEST_UPDATE,
-      component: DonationRequestUpdatePage,
-    },
-  },
-  {
-    title: "Donation Request Detail",
-    route: {
-      path: paths.DONATION_REQUEST_DETAIL,
-      component: DonationRequestDetailPage,
-    },
-  },
-  {
-    title: "Donation Request List",
-    route: {
-      path: paths.USER_DONATION_REQUEST_LIST,
-      component: UserDonationRequestListPage,
-    },
-  },
-  {
-    title: "Riwayat Donasi",
-    route: {
-      path: paths.USER_DONATION_LIST,
-      component: UserDonationListPage,
-    },
-  },
-  {
-    title: "Detail Pembayaran",
-    route: {
-      path: paths.DONATION_PAYMENT_DETAIL,
-      component: PaymentPage,
-    },
-  },
-  {
-    title: "Donasi",
-    route: {
-      exact: true,
-      path: paths.DONASI,
-      component: DonationPage,
-    },
-  },
-  {
-    title: "Donation Request",
-    route: {
-      exact: true,
-      path: paths.DONATION_REQUEST,
-      component: DonationRequestPage,
-    },
-  },
-  {
-    title: "Riwayat Donasi",
-    route: {
-      exact: true,
-      path: paths.USER_DONATION_LIST,
-      component: UserDonationListPage,
-    },
-  },
-  {
-    title: "Detail Pembayaran",
-    route: {
-      exact: true,
-      path: paths.DONATION_PAYMENT_DETAIL,
-      component: PaymentPage,
-    },
-  },
-  {
-    title: "Form Donasi",
-    route: {
-      exact: true,
-      path: paths.DONATION_FORM,
-      component: DonationFormPage,
     },
   },
   {
