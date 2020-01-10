@@ -1,16 +1,17 @@
-version: '3'
+version: "3"
 
 services:
-    frontend:
-        build:
-            context: ./
-            dockerfile: ./Dockerfile.prod
-        volumes:
-            - ./nginx:/etc/nginx/conf.d
-        restart: unless-stopped
-        ports:
-            - "80:80"
-        environment:
-            - NODE_ENV=production
-            - HTTP_PROXY=http://proxy.cs.ui.ac.id:8080 # running in internal server of Fasilkom UI
-            - HTTPS_PROXY=http://proxy.cs.ui.ac.id:8080
+  frontend:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.prod
+      args: 
+        - http_proxy=http://proxy.cs.ui.ac.id:8080
+        - https_proxy=http://proxy.cs.ui.ac.id:8080
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production

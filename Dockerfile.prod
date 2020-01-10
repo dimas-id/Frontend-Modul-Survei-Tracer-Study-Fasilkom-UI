@@ -1,10 +1,6 @@
 # build environment
 FROM node:12.13.1-alpine as build
 
-# running in internal server of Fasilkom UI
-ENV http_proxy=http://proxy.cs.ui.ac.id:8080
-ENV https_proxy=http://proxy.cs.ui.ac.id:8080
-
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
