@@ -9,13 +9,10 @@ COPY package.json /app/package.json
 COPY yarn.lock /app/yarn.lock
 
 RUN npm install yarn -g --silent
-RUN npm install -g react-scripts --silent
-RUN npm install -g increase-memory-limit
 RUN yarn --silent --prod
 
 # build
 COPY . /app
-RUN increase-memory-limit
 RUN yarn build:js
 
 # production environment
