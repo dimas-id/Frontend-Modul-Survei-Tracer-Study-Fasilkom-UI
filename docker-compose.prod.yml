@@ -12,3 +12,5 @@ services:
             - "80:80"
         environment:
             - NODE_ENV=production
+            - HTTP_PROXY=http://proxy.cs.ui.ac.id:8080 # running in internal server of Fasilkom UI
+            - HTTPS_PROXY=http://proxy.cs.ui.ac.id:8080
