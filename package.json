@@ -9,7 +9,7 @@
     "build": "cross-env npm-run-all build:js",
     "build:js": "react-scripts build",
     "clean": "rm -rf ./node_modules",
-    "deploy": "bash ./deploy.sh",
+    "deploy": "bash ./scripts/deploy.sh",
     "lint": "cross-env npm-run-all lint:eslint",
     "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern node_modules/",
     "lint:prettier": "prettier \"*.{js,jsx}\" --print-width 80 --trailing-comma es5 --write",
