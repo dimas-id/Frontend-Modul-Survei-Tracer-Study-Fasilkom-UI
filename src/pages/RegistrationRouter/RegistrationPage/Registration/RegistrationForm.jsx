@@ -1,7 +1,5 @@
 import React from "react";
 import keymirror from "keymirror";
-import ReactDOM from "react-dom";
-
 import moment from "moment";
 import { Formik } from "formik";
 import { withStyles } from "@material-ui/core/styles";
@@ -12,12 +10,6 @@ import Grid from "@material-ui/core/Grid";
 import Fade from "@material-ui/core/Fade";
 
 import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import FormHelperText from "@material-ui/core/FormHelperText";
 
 import MomentUtils from "@date-io/moment";
 
@@ -59,9 +51,7 @@ const FIELDS = keymirror({
   firstName: null,
   lastName: null,
   birthdate: null,
-  latestCsuiClassYear: null,
-  latestCsuiProgram: null,
-  uiSsoNpm: null,
+  linkedinUrl: null,
   email: null,
   password: null,
   repassword: null,
@@ -71,9 +61,9 @@ const VALIDATOR = Validation.object().shape({
   [FIELDS.firstName]: Validation.string().required("Wajib diisi"),
   [FIELDS.lastName]: Validation.string().required("Wajib diisi"),
   [FIELDS.birthdate]: Validation.date().required("Wajib diisi"),
-  [FIELDS.latestCsuiClassYear]: Validation.date().required("Wajib diisi"),
-  [FIELDS.latestCsuiProgram]: Validation.string().required("Wajib diisi"),
-  [FIELDS.uiSsoNpm]: Validation.number().notRequired(),
+  [FIELDS.linkedinUrl]: Validation.string()
+    .url()
+    .notRequired(),
   [FIELDS.email]: Validation.string()
     .email("Email tidak valid")
     .required("Wajib diisi"),
@@ -121,63 +111,6 @@ function getInitialValues() {
   };
 }
 
-function SelectPrograms(props) {
-  const inputLabelRef = React.useRef(null);
-
-  const [state, setState] = React.useState({
-    labelWidth: 0,
-  });
-  React.useEffect(() => {
-    setState({
-      ...state,
-      labelWidth: ReactDOM.findDOMNode(inputLabelRef.current).offsetWidth,
-    });
-  }, []);
-
-  return (
-    <FormControl
-      variant="outlined"
-      className={`${props.classes.field} ${props.classes.select}`}
-    >
-      <InputLabel ref={inputLabelRef} htmlFor="LatestCsuiProgram" required>
-        Gelar dan Program Studi Terakhir
-      </InputLabel>
-      <Select
-        value={props.value}
-        onChange={props.onChange}
-        required
-        error={props.error}
-        input={
-          <OutlinedInput
-            id="LatestCsuiProgram"
-            labelWidth={state.labelWidth}
-            name={FIELDS.latestCsuiProgram}
-            required
-          />
-        }
-      >
-        {PROGRAMS.map(item => (
-          <MenuItem
-            key={item.value}
-            value={item.value}
-            selected={props.value === item.value}
-          >
-            {item.label}
-          </MenuItem>
-        ))}
-      </Select>
-      <FormHelperText
-        variant="outlined"
-        error={props.error}
-        required
-        margin="dense"
-      >
-        {props.helperText}
-      </FormHelperText>
-    </FormControl>
-  );
-}
-
 const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
   return (
     <Formik
@@ -210,6 +143,7 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   margin="normal"
                   variant="outlined"
                   required
+                  name={values[FIELDS.firstName]}
                   value={values[FIELDS.firstName]}
                   error={
                     touched[FIELDS.firstName] && !!errors[FIELDS.firstName]
@@ -228,6 +162,7 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   margin="normal"
                   variant="outlined"
                   required
+                  name={values[FIELDS.lastName]}
                   value={values[FIELDS.lastName]}
                   error={touched[FIELDS.lastName] && !!errors[FIELDS.lastName]}
                   helperText={errors[FIELDS.lastName]}
@@ -244,6 +179,7 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   margin="normal"
                   variant="outlined"
                   required
+                  name={values[FIELDS.email]}
                   value={values[FIELDS.email]}
                   error={touched[FIELDS.email] && !!errors[FIELDS.email]}
                   helperText={errors[FIELDS.email]}
@@ -257,11 +193,13 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                 <MuiPickersUtilsProvider utils={MomentUtils}>
                   <InlineDatePicker
                     className={classes.field}
+                    keyboard
                     clearable
                     variant="outlined"
                     margin="normal"
                     label="Tanggal Lahir"
                     required
+                    name={values[FIELDS.birthdate]}
                     value={values[FIELDS.birthdate]}
                     error={
                       touched[FIELDS.birthdate] && !!errors[FIELDS.birthdate]
@@ -282,6 +220,7 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   margin="normal"
                   variant="outlined"
                   required
+                  name={values[FIELDS.password]}
                   value={values[FIELDS.password]}
                   inputProps={{
                     type: "password",
@@ -303,6 +242,7 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   margin="normal"
                   variant="outlined"
                   required
+                  name={values[FIELDS.repassword]}
                   value={values[FIELDS.repassword]}
                   inputProps={{
                     type: "password",
@@ -318,62 +258,28 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                  <InlineDatePicker
-                    label="Angkatan"
-                    className={classes.field}
-                    value={values[FIELDS.latestCsuiClassYear]}
-                    required
-                    onChange={date =>
-                      setFieldValue(FIELDS.latestCsuiClassYear, date)
-                    }
-                    error={
-                      touched[FIELDS.latestCsuiClassYear] &&
-                      !!errors[FIELDS.latestCsuiClassYear]
-                    }
-                    helperText={errors[FIELDS.latestCsuiClassYear]}
-                    margin="normal"
-                    variant="outlined"
-                    format="YYYY"
-                    views={["year"]}
-                    clearable
-                  />
-                </MuiPickersUtilsProvider>
-              </Grid>
-              <Grid item xs={12} md={6}>
                 <TextField
-                  id="NPM"
-                  label="NPM"
+                  id="LinkedinUrl"
                   className={classes.field}
                   margin="normal"
                   variant="outlined"
-                  value={values[FIELDS.uiSsoNpm]}
-                  error={touched[FIELDS.uiSsoNpm] && !!errors[FIELDS.uiSsoNpm]}
-                  helperText={errors[FIELDS.uiSsoNpm]}
-                  onChange={t => setFieldValue(FIELDS.uiSsoNpm, t.target.value)}
+                  label="URL LinkedIn Pribadi (opsional)"
+                  name={FIELDS.linkedinUrl}
+                  placeholder="https://linkedin.com/in/<username>"
+                  value={values[FIELDS.linkedinUrl]}
+                  error={
+                    touched[FIELDS.linkedinUrl] && !!errors[FIELDS.linkedinUrl]
+                  }
+                  helperText={errors[FIELDS.linkedinUrl]}
+                  onChange={t =>
+                    setFieldValue(FIELDS.linkedinUrl, t.target.value)
+                  }
                   inputProps={{
-                    type: "number",
-                    maxLength: 10,
+                    type: "url",
                   }}
                 />
               </Grid>
 
-              <Grid item xs={12} md={6}>
-                <SelectPrograms
-                  classes={classes}
-                  value={values[FIELDS.latestCsuiProgram]}
-                  required
-                  onChange={e =>
-                    setFieldValue(FIELDS.latestCsuiProgram, e.target.value)
-                  }
-                  error={
-                    touched[FIELDS.latestCsuiProgram] &&
-                    !!errors[FIELDS.latestCsuiProgram]
-                  }
-                  helperText={errors[FIELDS.latestCsuiProgram]}
-                />
-              </Grid>
-              <Grid item xs={12} md={6} />
               <Grid item xs={12}>
                 <Button
                   className={classes.btn}

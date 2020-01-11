@@ -18,45 +18,45 @@ import { Container } from "../../../components/Container";
 
 const styles = theme => ({
   table: {
-    fontFamily: theme.typography.fontFamily
+    fontFamily: theme.typography.fontFamily,
   },
   flexContainer: {
     display: "flex",
     alignItems: "center",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   },
   tableRow: {
-    cursor: "pointer"
+    cursor: "pointer",
   },
   tableRowHover: {
     "&:hover": {
-      backgroundColor: theme.palette.grey[200]
-    }
+      backgroundColor: theme.palette.grey[200],
+    },
   },
   tableCell: {
-    flex: 1
+    flex: 1,
   },
   noClick: {
-    cursor: "initial"
+    cursor: "initial",
   },
   modalPaper: {
-    ...Guidelines.layouts.flexMiddle
+    ...Guidelines.layouts.flexMiddle,
   },
   modalBody: {
     [theme.breakpoints.down("sm")]: {
       ...Guidelines.layouts.w100,
-      ...Guidelines.layouts.h100
+      ...Guidelines.layouts.h100,
     },
     width: theme.spacing.unit * 50,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
-    outline: "none"
+    outline: "none",
   },
   profilePic: {
     borderRadius: "50%",
     width: "50px",
-    height: "50px"
+    height: "50px",
   },
   container: {
     ...Guidelines.layouts.flexMiddle,
@@ -66,16 +66,16 @@ const styles = theme => ({
   },
   emptyImg: {
     [theme.breakpoints.down("xs")]: {
-      maxWidth: "35%"
+      maxWidth: "35%",
     },
     [theme.breakpoints.up("sm")]: {
-      maxWidth: "50%"
-    }
+      maxWidth: "50%",
+    },
   },
   desc: {
     fontSize: 20,
-    maxWidth: 500
-  }
+    maxWidth: 500,
+  },
 });
 
 class ContactList extends React.Component {
@@ -83,7 +83,7 @@ class ContactList extends React.Component {
     openModal: false,
     currentContact: null,
     contactList: null,
-    loading: true
+    loading: true,
   };
 
   componentDidMount() {
@@ -152,24 +152,24 @@ class ContactList extends React.Component {
                       width: 180,
                       flexGrow: 1.0,
                       label: "Nama",
-                      dataKey: "name"
+                      dataKey: "name",
                     },
                     {
                       width: 120,
                       label: "Angkatan",
                       dataKey: "latestCsuiClassYear",
-                      numeric: true
+                      numeric: true,
                     },
                     {
                       width: 190,
                       label: "Email",
-                      dataKey: "email"
+                      dataKey: "email",
                     },
                     {
                       width: 160,
                       label: "Nomor Telepon",
-                      dataKey: "phoneNumber"
-                    }
+                      dataKey: "phoneNumber",
+                    },
                   ]}
                 />
               ) : (
@@ -269,7 +269,15 @@ class ContactList extends React.Component {
                     <b>Website</b>
                   </Grid>
                   <Grid item xs={7}>
-                    {currentContact.websiteUrl || "-"}
+                    {(
+                      <a
+                        href={currentContact.linkedinUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {currentContact.linkedinUrl}
+                      </a>
+                    ) || "-"}
                   </Grid>
                 </Grid>
               </div>
@@ -281,7 +289,7 @@ class ContactList extends React.Component {
   }
 }
 ContactList.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 const MapStateToProps = state => ({});
 export default connect(MapStateToProps)(withStyles(styles)(ContactList));

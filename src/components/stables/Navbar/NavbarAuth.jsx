@@ -253,14 +253,6 @@ class NavbarAuth extends React.Component {
             <img src={icons.akun} alt="Account Icon" />
             <Typography>Akun</Typography>
           </MenuItem>
-          <MenuItem
-            className={classes.appMenuItem}
-            component={Link}
-            to={paths.DONASI}
-          >
-            <img src={icons.donasi} alt="Channel Icon" />
-            <Typography>Donasi</Typography>
-          </MenuItem>
 
           <MenuItem
             className={classes.appMenuItem}
@@ -338,7 +330,7 @@ class NavbarAuth extends React.Component {
         <Toolbar>
           <Button
             component={Link}
-            to={isLoggedIn ? paths.USER_PROFILE : paths.LANDING}
+            to={isLoggedIn ? paths.HOME : paths.LANDING}
             disableRipple
             className={classes.menuButton}
             aria-label="Menu"

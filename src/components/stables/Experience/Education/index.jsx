@@ -41,7 +41,7 @@ function Education({ load, educations, userId }) {
       )}
       {isLoading && (
         <Grid className={classes.gridContainer} container spacing={24}>
-          {Array.apply(null, Array(4)).map((item, index) => (
+          {Array.apply(null, Array(4)).map((_, index) => (
             <Grid item xs={12} key={index}>
               <ExperienceItem loading />
             </Grid>
@@ -55,7 +55,7 @@ function Education({ load, educations, userId }) {
               <ExperienceItem
                 key={edu.id}
                 title={edu.schoolName}
-                subtitle={`${edu.degreeName} - ${edu.fieldOfStudy}`}
+                subtitle={`${edu.degreeName} - ${edu.fieldOfStudy} - ${edu.uiSsoNpm}`}
                 time={`${getDateFormatted(
                   edu.dateStarted,
                   "YYYY"

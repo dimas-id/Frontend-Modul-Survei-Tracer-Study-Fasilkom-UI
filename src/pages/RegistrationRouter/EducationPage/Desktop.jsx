@@ -1,50 +1,35 @@
-import React from "react";
-import keymirror from "keymirror";
-import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-
-import { authorize } from "../../../components/hocs/auth";
-import { NavbarAuth } from "../../../components/stables/Navbar";
-import { Container } from "../../../components/Container";
-import FormDialog from "../../../components/FormDialog";
-
-import Title from "../../../components/stables/Experience/Title";
-import WorkPosition from "../../../components/stables/Experience/WorkPosition";
-import PositionForm from "../../../components/stables/Experience/PositionForm";
-
-import moment from "moment";
-import { Formik, FieldArray } from "formik";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import MomentUtils from "@date-io/moment";
 import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Grid from "@material-ui/core/Grid";
-import Fade from "@material-ui/core/Fade";
 import Divider from "@material-ui/core/Divider";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import DeleteIcon from "@material-ui/icons/Delete";
-
-import Typography from "@material-ui/core/Typography";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
-import FormHelperText from "@material-ui/core/FormHelperText";
-
-import MomentUtils from "@date-io/moment";
-
-import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
-
-import { Guidelines } from "../../../styles";
+import Select from "@material-ui/core/Select";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { FieldArray, Formik } from "formik";
+import keymirror from "keymirror";
+import { InlineDatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
+import moment from "moment";
+import React from "react";
+import ReactDOM from "react-dom";
+import { connect } from "react-redux";
+import { Container } from "../../../components/Container";
+import { authorize } from "../../../components/hocs/auth";
 import { Validation } from "../../../components/hocs/form";
+import { NavbarAuth } from "../../../components/stables/Navbar";
 import { getDateFormatted } from "../../../libs/datetime";
-
 import PROGRAMS from "../../../libs/studyProgram";
 import { createEducations } from "../../../modules/experience/thunks";
+import { Guidelines } from "../../../styles";
 
-const styles = theme => ({
+const styles = () => ({
   title: {
     ...Guidelines.fonts.medium,
     fontSize: 32,
@@ -206,14 +191,7 @@ const EducationPage = ({ classes, createEducations }) => {
           validationSchema={VALIDATOR}
           validateOnChange={false}
         >
-          {({
-            isSubmitting,
-            handleSubmit,
-            values,
-            errors,
-            setFieldValue,
-            touched,
-          }) => (
+          {({ handleSubmit, values, errors, setFieldValue, touched }) => (
             <form className={classes.form}>
               <FieldArray
                 name={FIELDS.degreeAndStudyPrograms}

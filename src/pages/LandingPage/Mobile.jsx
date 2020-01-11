@@ -17,7 +17,6 @@ import LinkedInButton from "../../components/stables/LinkedInButton";
 
 import { Guidelines } from "../../styles";
 import paths from "../paths";
-import Carousel from "./Carousel";
 
 
 const styles = theme => ({
@@ -125,23 +124,6 @@ function LandingMobile({ classes, isLoggedIn, history }) {
           </Grid>
         </Grid>
       </Container>
-      <div style={{ position: "relative" }}>
-        <Particle
-          name="bgLanding"
-          top={-500}
-          style={{ ...Guidelines.layouts.w100, zIndex: -11 }}
-        />
-        <Container className={classes.contentContainer}>
-          <Typography component="h1" variant="h2" className={classes.title}>
-            Donasi
-          </Typography>
-          <Typography component="p" paragraph className={classes.subtitle}>
-            Sarana untuk menyalurkan kepedulian sosial Anda terhadap masa depan
-            bangsa
-          </Typography>
-          <Carousel />
-        </Container>
-      </div>
       <Container className={classes.contentContainer}>
         <div className={classes.heroTextContainer}>
           <Typography component="h1" variant="h2" className={classes.title}>

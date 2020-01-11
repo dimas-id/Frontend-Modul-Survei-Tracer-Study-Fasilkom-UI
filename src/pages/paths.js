@@ -1,6 +1,6 @@
 exports.ERROR_404 = "/404";
 exports.ERROR = "/err";
-exports.HOME = "/users";
+exports.HOME = "/u";
 exports.PROFILE = "/profil";
 exports.VERIFY = "/verify";
 exports.PREFERENCE = "/preferensi";

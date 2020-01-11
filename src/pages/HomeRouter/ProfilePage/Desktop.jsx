@@ -13,6 +13,7 @@ import { Guidelines } from "../../../styles";
 import FormDialog from "../../../components/FormDialog";
 import EditProfileForm from "./EditProfileForm";
 import WorkPosition from "../../../components/stables/Experience/WorkPosition";
+import Education from "../../../components/stables/Experience/Education";
 import PositionForm from "../../../components/stables/Experience/PositionForm";
 
 import { getUser } from "../../../modules/session/selectors";
@@ -202,11 +203,17 @@ class ProfilePage extends React.Component {
           <Field label="Email" value={user.email} />
           <Field label="Nomor Telepon" value={user.profile.phoneNumber} />
           <Field label="Lokasi" value={location} />
-          <Field label="Website" value={user.profile.websiteUrl} />
+          <Field label="Profil LinkedIn" value={user.profile.linkedinUrl} />
         </Paper>
         <Paper className={classes.paper} elevation={1}>
           <Head>Kata Sandi</Head>
           <Field label="Kata Sandi" value="*******" />
+        </Paper>
+        <Paper className={classes.paper} elevation={1}>
+          <Head>
+            Riwayat Pendidikan Fasilkom UI
+          </Head>
+          <Education />
         </Paper>
         <Paper className={classes.paper} elevation={1}>
           <Head Icon={AddBoxIcon} onClick={this.handleOpenPositionNew}>

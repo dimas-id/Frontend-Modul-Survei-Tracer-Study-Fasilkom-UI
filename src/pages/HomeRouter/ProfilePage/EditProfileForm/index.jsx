@@ -27,7 +27,7 @@ const FIELDS = keymirror({
   birthdate: null,
   email: null,
   phoneNumber: null,
-  websiteUrl: null,
+  linkedinUrl: null,
   residenceCity: null,
   residenceCountry: null,
 });
@@ -35,7 +35,7 @@ const FIELDS = keymirror({
 const VALIDATOR = Validation.object().shape({
   [FIELDS.phoneNumber]: Validation.string()
     .required("Nomor telepon diperlukan"),
-  [FIELDS.websiteUrl]: Validation.string().notRequired(),
+  [FIELDS.linkedinUrl]: Validation.string().required("Alamat halaman profil LinkedIn diperlukan"),
 });
 
 function EditProfileForm({ classes, update, user, onSuccess }) {
@@ -47,7 +47,7 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
       .catch(({ response }) => {
         const errMessages = humanizeError(response.data.profile, [
           FIELDS.phoneNumber,
-          FIELDS.websiteUrl,
+          FIELDS.linkedinUrl,
         ]);
         errMessages && actions.setErrors(errMessages);
       })
@@ -64,7 +64,7 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
       [FIELDS.residenceCity]: user.profile[FIELDS.residenceCity] || "",
       [FIELDS.residenceCountry]: user.profile[FIELDS.residenceCountry] || "",
       [FIELDS.phoneNumber]: user.profile[FIELDS.phoneNumber] || "",
-      [FIELDS.websiteUrl]: user.profile[FIELDS.websiteUrl] || "",
+      [FIELDS.linkedinUrl]: user.profile[FIELDS.linkedinUrl] || "",
     };
   }
 
@@ -161,6 +161,7 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
                         value={values[FIELDS.phoneNumber]}
                         error={errors[FIELDS.phoneNumber]}
                         helperText={errors[FIELDS.phoneNumber]}
+                        placeholder="+6281xxxxxxxxx"
                         onChange={handleChange}
                         required
                       />
@@ -172,12 +173,14 @@ function EditProfileForm({ classes, update, user, onSuccess }) {
                         margin="normal"
                         variant="outlined"
                         type="url"
-                        label="URL Website Pribadi"
-                        name={FIELDS.websiteUrl}
-                        value={values[FIELDS.websiteUrl]}
-                        error={errors[FIELDS.websiteUrl]}
-                        helperText={errors[FIELDS.websiteUrl]}
+                        label="URL LinkedIn Pribadi"
+                        name={FIELDS.linkedinUrl}
+                        placeholder="https://linkedin.com/in/<username>"
+                        value={values[FIELDS.linkedinUrl]}
+                        error={errors[FIELDS.linkedinUrl]}
+                        helperText={errors[FIELDS.linkedinUrl]}
                         onChange={handleChange}
+                        required
                       />
                     </Grid>
                   </Grid>
