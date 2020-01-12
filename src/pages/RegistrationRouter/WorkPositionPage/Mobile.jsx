@@ -11,34 +11,37 @@ import Title from "../../../components/stables/Experience/Title";
 import WorkPosition from "../../../components/stables/Experience/WorkPosition";
 import PositionForm from "../../../components/stables/Experience/PositionForm";
 
+import StepContext from "../StepContext";
+import StepProgress from "../../../components/StepProgress";
+
 class WorkPositionPage extends React.Component {
   static propTypes = {
-    classes: PropTypes.shape().isRequired
+    classes: PropTypes.shape().isRequired,
   };
 
   state = {
-    showModal: false
+    showModal: false,
   };
 
   handleShowModalNew = () =>
     this.setState({
       showModal: true,
       positionId: null,
-      isNewPosition: true
+      isNewPosition: true,
     });
 
   handleShowModalUpdate = positionId =>
     this.setState({
       positionId,
       showModal: true,
-      isNewPosition: false
+      isNewPosition: false,
     });
 
   __handleCloseModal__ = () =>
     this.setState({
       showModal: false,
       positionId: null,
-      isNewPosition: false
+      isNewPosition: false,
     });
 
   handleCloseModal = () => {
@@ -82,31 +85,43 @@ class WorkPositionPage extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <NavbarAuth />
-        <Container>
-          <Title
-            ButtonProps={{
-              onClick: this.handleShowModalNew,
-              hidden: false
-            }}
-          >
-            Riwayat Pekerjaan
-          </Title>
-          <WorkPosition
-            onEdit={this.handleShowModalUpdate}
-            onAdd={this.handleShowModalNew}
-          />
-        </Container>
-        {this.renderDialogWithForm()}
-      </React.Fragment>
+      <StepContext.Consumer>
+        {({ steps, activeStep, handleBack, handleNext }) => (
+          <React.Fragment>
+            <NavbarAuth />
+            <Container>
+              <Title
+                ButtonProps={{
+                  onClick: this.handleShowModalNew,
+                  hidden: false,
+                }}
+              >
+                Riwayat Pekerjaan
+              </Title>
+              <WorkPosition
+                onEdit={this.handleShowModalUpdate}
+                onAdd={this.handleShowModalNew}
+              />
+            </Container>
+            {this.renderDialogWithForm()}
+            <StepProgress
+              start={1}
+              steps={steps}
+              activeStep={activeStep}
+              onBack={handleBack}
+              onNext={handleNext}
+              position="bottom"
+            />
+          </React.Fragment>
+        )}
+      </StepContext.Consumer>
     );
   }
 }
 
 function createContainer() {
   return authorize({
-    mustVerified: false
+    mustVerified: false,
   })(connect(state => ({}))(WorkPositionPage));
 }
 

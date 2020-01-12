@@ -12,6 +12,8 @@ import EducationPage from "./EducationPage";
 import WorkPositionPage from "./WorkPositionPage";
 import PreferencePage from "./PreferencePage";
 
+import StepContext from "./StepContext";
+
 const ROUTES = [
   {
     title: "Registrasi",
@@ -88,22 +90,22 @@ export default withRouter(function RegistrationRouter({ history, location }) {
   }
 
   return (
-    <React.Fragment>
-      <Particle name="cloud2" top={120} left={0} />
-      <RouterWrapper paths={ROUTES} />
-      {currentStep > 0 &&
-        (location.pathname.includes(paths.EDUCATION) ||
-          location.pathname.includes(paths.WORK_POSITION) ||
-          location.pathname.includes(paths.PREFERENCE)) && (
-          <StepProgress
-            start={1}
-            steps={MAX_STEP}
-            activeStep={currentStep}
-            onBack={handleBack}
-            onNext={handleNext}
-            position="bottom"
-          />
-        )}
-    </React.Fragment>
+    <StepContext.Provider
+      value={{
+        steps: MAX_STEP,
+        activeStep: currentStep,
+        handleBack: handleBack,
+        handleNext: handleNext,
+      }}
+    >
+      <React.Fragment>
+        <Particle name="cloud2" top={120} left={0} />
+        <RouterWrapper
+          paths={ROUTES}
+          steps={MAX_STEP}
+          activeStep={currentStep}
+        />
+      </React.Fragment>
+    </StepContext.Provider>
   );
 });
