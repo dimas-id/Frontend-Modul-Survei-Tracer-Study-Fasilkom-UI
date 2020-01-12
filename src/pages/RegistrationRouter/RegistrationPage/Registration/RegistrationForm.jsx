@@ -19,6 +19,8 @@ import { Guidelines } from "../../../../styles";
 import { Validation } from "../../../../components/hocs/form";
 import LinkedInButton from "../../../../components/stables/LinkedInButton";
 
+import PROGRAMS from "../../../../libs/studyProgram";
+
 const styles = theme => ({
   form: {
     ...Guidelines.layouts.flexDirCol,
@@ -59,7 +61,9 @@ const VALIDATOR = Validation.object().shape({
   [FIELDS.firstName]: Validation.string().required("Wajib diisi"),
   [FIELDS.lastName]: Validation.string().required("Wajib diisi"),
   [FIELDS.birthdate]: Validation.date().required("Wajib diisi"),
-  [FIELDS.linkedinUrl]: Validation.string().url().notRequired(),
+  [FIELDS.linkedinUrl]: Validation.string()
+    .url()
+    .notRequired(),
   [FIELDS.email]: Validation.string()
     .email("Email tidak valid")
     .required("Wajib diisi"),
@@ -87,9 +91,7 @@ function getInitialValues() {
     firstName,
     lastName,
     birthdate,
-    latestCsuiClassYear,
-    latestCsuiProgram,
-    uiSsoNpm,
+    linkedinUrl,
     email,
     password,
     repassword,
@@ -98,9 +100,7 @@ function getInitialValues() {
     [firstName]: "",
     [lastName]: "",
     [birthdate]: moment("1970-01-01"),
-    [latestCsuiClassYear]: moment("1986-01-01"),
-    [latestCsuiProgram]: "",
-    [uiSsoNpm]: "",
+    [linkedinUrl]: "",
     [password]: "",
     [repassword]: "",
     [email]: "",
@@ -263,9 +263,13 @@ const RegistrationForm = withStyles(styles)(function({ classes, onSubmit }) {
                   name={FIELDS.linkedinUrl}
                   placeholder="https://linkedin.com/in/<username>"
                   value={values[FIELDS.linkedinUrl]}
-                  error={touched[FIELDS.linkedinUrl] && !!errors[FIELDS.linkedinUrl]}
+                  error={
+                    touched[FIELDS.linkedinUrl] && !!errors[FIELDS.linkedinUrl]
+                  }
                   helperText={errors[FIELDS.linkedinUrl]}
-                  onChange={t => setFieldValue(FIELDS.linkedinUrl, t.target.value)}
+                  onChange={t =>
+                    setFieldValue(FIELDS.linkedinUrl, t.target.value)
+                  }
                   inputProps={{
                     type: "url",
                   }}

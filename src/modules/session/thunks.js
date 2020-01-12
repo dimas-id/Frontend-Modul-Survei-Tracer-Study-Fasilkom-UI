@@ -86,14 +86,7 @@ export const updateUserProfile = payload => {
   };
 };
 
-export const verifyUser = (
-  firstName,
-  lastName,
-  birthdate,
-  latestCsuiClassYear,
-  latestCsuiProgram,
-  uiSsoNpm
-) => {
+export const verifyUser = (firstName, lastName, birthdate) => {
   return async (dispatch, getState, { API: { atlasV1 }, utility }) => {
     try {
       const response = await atlasV1.session.patchUserById(
@@ -101,11 +94,8 @@ export const verifyUser = (
         {
           firstName,
           lastName,
-          uiSsoNpm,
           profile: {
             birthdate,
-            latestCsuiClassYear,
-            latestCsuiProgram,
           },
         }
       );

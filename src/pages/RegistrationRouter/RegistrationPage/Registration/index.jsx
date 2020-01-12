@@ -19,26 +19,26 @@ const styles = theme => ({
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.flexMiddle,
     ...Guidelines.layouts.w100,
-    ...Guidelines.layouts.borderBox
+    ...Guidelines.layouts.borderBox,
   },
   title: {
     ...Guidelines.layouts.w100,
     ...Guidelines.fonts.bold,
     "&:nth-child(even)": {
-      ...Guidelines.layouts.mb48
-    }
-  }
+      ...Guidelines.layouts.mb48,
+    },
+  },
 });
 
 class Registration extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
     history: PropTypes.shape().isRequired,
-    location: PropTypes.shape().isRequired
+    location: PropTypes.shape().isRequired,
   };
 
   state = {
-    errorMessage: null
+    errorMessage: null,
   };
 
   componentDidMount() {
@@ -54,7 +54,7 @@ class Registration extends React.Component {
 
   redirectToNextPage = () => {
     const { history } = this.props;
-    history.push(paths.REGISTER_EDUCATION);
+    history.replace(paths.REGISTER_EDUCATION);
   };
 
   handleRegistration = (values, actions) => {
@@ -64,20 +64,14 @@ class Registration extends React.Component {
       firstName,
       lastName,
       birthdate,
-      latestCsuiClassYear,
-      latestCsuiProgram,
-      uiSsoNpm,
+      linkedinUrl,
       email,
       password,
-      repassword
+      repassword,
     } = RegistrationForm.fields;
 
     const currentValues = { ...values };
     currentValues[birthdate] = getDateFormatted(currentValues[birthdate]);
-    currentValues[latestCsuiClassYear] = getDateFormatted(
-      currentValues[latestCsuiClassYear],
-      "YYYY"
-    );
 
     this.props
       .register(currentValues)
@@ -86,12 +80,10 @@ class Registration extends React.Component {
           firstName,
           lastName,
           birthdate,
-          latestCsuiClassYear,
-          latestCsuiProgram,
-          uiSsoNpm,
+          linkedinUrl,
           email,
           password,
-          repassword
+          repassword,
         ];
 
         actions.setSubmitting(false);
@@ -143,11 +135,11 @@ class Registration extends React.Component {
 
 function createContainer() {
   const mapStateToProps = state => ({
-    isLoggedIn: isLoggedIn(state)
+    isLoggedIn: isLoggedIn(state),
   });
 
   const mapDispatchToProps = dispatch => ({
-    register: payload => dispatch(register(payload))
+    register: payload => dispatch(register(payload)),
   });
 
   return withRouter(

@@ -191,13 +191,7 @@ const EducationPage = ({ classes, createEducations }) => {
           validationSchema={VALIDATOR}
           validateOnChange={false}
         >
-          {({
-            handleSubmit,
-            values,
-            errors,
-            setFieldValue,
-            touched,
-          }) => (
+          {({ handleSubmit, values, errors, setFieldValue, touched }) => (
             <form className={classes.form}>
               <FieldArray
                 name={FIELDS.degreeAndStudyPrograms}
