@@ -64,7 +64,7 @@ class InComlete extends React.Component {
 
   redirectToNextPage = () => {
     const { history } = this.props;
-    history.replace(paths.REGISTER_WORK_POSITION);
+    history.replace(paths.HOME);
   };
 
   getInitialValue() {
@@ -148,12 +148,12 @@ class InComlete extends React.Component {
       i++
     ) {
       eduPayload.push({
-        ui_sso_npm: currentValues[degreeAndStudyPrograms][i][uiSsoNpm],
-        csui_class_year: getDateFormatted(
+        uiSsoNpm: currentValues[degreeAndStudyPrograms][i][uiSsoNpm],
+        csuiClassYear: getDateFormatted(
           currentValues[degreeAndStudyPrograms][i][csuiClassYear],
           "YYYY"
         ),
-        csui_program: currentValues[degreeAndStudyPrograms][i][csuiProgram],
+        csuiProgram: currentValues[degreeAndStudyPrograms][i][csuiProgram],
       });
     }
 
