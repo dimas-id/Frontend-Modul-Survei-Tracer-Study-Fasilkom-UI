@@ -150,7 +150,7 @@ class NavbarAuth extends React.Component {
             GROUPS.ADMIN_DONATION
         ) > -1) && (
         <React.Fragment>
-          <a href={config.HELIOS+"/__admin__/"} target="_blank" rel="noopener noreferrer">
+          <a href={config.HELIOS+"/id/__admin__/"} target="_blank" rel="noopener noreferrer">
           <MenuItem
             className={classes.appMenuItem}
           >
@@ -169,7 +169,7 @@ class NavbarAuth extends React.Component {
       (user.isSuperuser ||
         groups.findIndex(g => g === GROUPS.ADMIN_USER) > -1) && (
         <React.Fragment>
-          <a href={config.ATLAS+"/__admin__/"} target="_blank" rel="noopener noreferrer">
+          <a href={config.ATLAS+"/id/__admin__/"} target="_blank" rel="noopener noreferrer">
           <MenuItem
             className={classes.appMenuItem}
           >
