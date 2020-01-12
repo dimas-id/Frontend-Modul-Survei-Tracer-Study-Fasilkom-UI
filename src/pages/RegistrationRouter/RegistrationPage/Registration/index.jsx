@@ -94,13 +94,13 @@ class Registration extends React.Component {
           repassword
         ];
 
+        actions.setSubmitting(false);
         const humanizedErr = humanizeError(err.response.data, fields);
         if (typeof humanizedError === "string") {
           this.setErrorMessage(humanizedErr);
         } else {
           actions.setErrors(humanizedErr);
         }
-        actions.setSubmitting(false);
         return err;
       })
       .then(resp => isStatusOK(resp) && this.redirectToNextPage());
