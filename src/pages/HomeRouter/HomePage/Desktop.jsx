@@ -256,7 +256,7 @@ class HomePage extends React.Component {
                       title="Administrasi Atlas"
                       description="Sarana untuk melakukan administrasi data alumni dan pengguna"
                       imageName="cloudAtlas"
-                      pathUrl={`${config.ATLAS}/__admin__/`}
+                      pathUrl={`${config.ATLAS}/id/__admin__/`}
                     />
                   </Grid>
                 )}
@@ -266,7 +266,7 @@ class HomePage extends React.Component {
                       title="Administrasi Helios"
                       description="Sarana untuk melakukan administrasi channel dan donasi"
                       imageName="cloudHelios"
-                      pathUrl={`${config.HELIOS}/__admin__/`}
+                      pathUrl={`${config.HELIOS}/id/__admin__/`}
                     />
                   </Grid>
                 )}
