@@ -29,6 +29,9 @@ import PROGRAMS from "../../../libs/studyProgram";
 import { createEducations } from "../../../modules/experience/thunks";
 import { Guidelines } from "../../../styles";
 
+import { withStepConsumer } from "../../../components/hocs/stepConsumer";
+import StepProgress from "../../../components/StepProgress";
+
 const styles = () => ({
   title: {
     ...Guidelines.fonts.medium,
@@ -157,21 +160,33 @@ function SelectPrograms(props) {
   );
 }
 
-const EducationPage = ({ classes, createEducations }) => {
-  const onSubmit = values => {
+const EducationPage = ({
+  classes,
+  createEducations,
+  activeStep,
+  handleBack,
+  handleNext,
+  steps,
+}) => {
+  const [loading, setLoading] = React.useState(false);
+
+  const onSubmitAndNext = values => {
     const currentValues = { ...values[FIELDS.degreeAndStudyPrograms] };
     let payload = [];
     for (let i = 0; i < Object.keys(currentValues).length; i++) {
       payload.push({
-        ui_sso_npm: currentValues[i][FIELDS.uiSsoNpm],
-        csui_class_year: getDateFormatted(
+        uiSsoNpm: currentValues[i][FIELDS.uiSsoNpm],
+        csuiClassYear: getDateFormatted(
           currentValues[i][FIELDS.csuiClassYear],
           "YYYY"
         ),
-        csui_program: currentValues[i][FIELDS.csuiProgram],
+        csuiProgram: currentValues[i][FIELDS.csuiProgram],
       });
     }
-    createEducations(payload);
+    setLoading(true);
+    createEducations(payload)
+      .then(handleNext)
+      .catch(() => setLoading(false));
   };
 
   return (
@@ -187,7 +202,7 @@ const EducationPage = ({ classes, createEducations }) => {
         </Typography>
         <Formik
           initialValues={getInitialValues()}
-          onSubmit={onSubmit}
+          onSubmit={onSubmitAndNext}
           validationSchema={VALIDATOR}
           validateOnChange={false}
         >
@@ -374,7 +389,15 @@ const EducationPage = ({ classes, createEducations }) => {
                   </section>
                 )}
               />
-              <button onClick={handleSubmit}>submit aja</button>
+              <StepProgress
+                start={1}
+                steps={steps}
+                activeStep={activeStep}
+                onBack={handleBack}
+                onNext={handleSubmit}
+                loadingNext={loading}
+                position="bottom"
+              />
             </form>
           )}
         </Formik>
@@ -389,8 +412,10 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default authorize({ mustVerified: false })(
-  connect(
-    null,
-    mapDispatchToProps
-  )(withStyles(styles)(EducationPage))
+  withStepConsumer(
+    connect(
+      null,
+      mapDispatchToProps
+    )(withStyles(styles)(EducationPage))
+  )
 );

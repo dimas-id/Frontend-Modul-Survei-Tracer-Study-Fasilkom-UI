@@ -8,18 +8,21 @@ import Preference from "../../../components/stables/Preference";
 import { Guidelines } from "../../../styles";
 import { authorize } from "../../../components/hocs/auth";
 
+import { withStepConsumer } from "../../../components/hocs/stepConsumer";
+import StepProgress from "../../../components/StepProgress";
+
 const styles = makeStyles(theme => ({
   title: {
     ...Guidelines.fonts.medium,
-    fontSize: 32
+    fontSize: 32,
   },
   subtitle: {
     ...Guidelines.layouts.mb48,
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 }));
 
-function PreferencePage() {
+const PreferencePage = ({ activeStep, handleBack, handleNext, steps }) => {
   const classes = styles();
   return (
     <React.Fragment>
@@ -34,8 +37,18 @@ function PreferencePage() {
         </Typography>
         <Preference />
       </Container>
+      <StepProgress
+        start={1}
+        steps={steps}
+        activeStep={activeStep}
+        onBack={handleBack}
+        onNext={handleNext}
+        position="bottom"
+      />
     </React.Fragment>
   );
-}
+};
 
-export default authorize({ mustVerified: false })(PreferencePage);
+export default authorize({ mustVerified: false })(
+  withStepConsumer(PreferencePage)
+);
