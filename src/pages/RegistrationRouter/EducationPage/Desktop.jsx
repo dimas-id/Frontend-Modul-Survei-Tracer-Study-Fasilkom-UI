@@ -30,6 +30,7 @@ import { createEducations } from "../../../modules/experience/thunks";
 import { Guidelines } from "../../../styles";
 
 import StepContext from "../StepContext";
+import { withStepConsumer } from "../../../components/hocs/stepConsumer";
 import StepProgress from "../../../components/StepProgress";
 
 const styles = () => ({
@@ -160,8 +161,19 @@ function SelectPrograms(props) {
   );
 }
 
-const EducationPage = ({ classes, createEducations }) => {
-  const onSubmit = values => {
+const EducationPage = ({
+  classes,
+  createEducations,
+  activeStep,
+  handleBack,
+  handleNext,
+  steps,
+}) => {
+  const [loading, setLoading] = React.useState(false);
+
+  const formRef = React.useRef();
+
+  const onSubmitAndNext = values => {
     const currentValues = { ...values[FIELDS.degreeAndStudyPrograms] };
     let payload = [];
     for (let i = 0; i < Object.keys(currentValues).length; i++) {
@@ -174,234 +186,230 @@ const EducationPage = ({ classes, createEducations }) => {
         csui_program: currentValues[i][FIELDS.csuiProgram],
       });
     }
-    createEducations(payload);
+    setLoading(true);
+    createEducations(payload)
+      .then(() => handleNext())
+      .finally(() => setLoading(false));
   };
 
   return (
-    <StepContext.Consumer>
-      {({ steps, activeStep, handleBack, handleNext }) => (
-        <React.Fragment>
-          <NavbarAuth />
-          <Container>
-            <Typography className={classes.title} variant="h5" component="h3">
-              Riwayat Pendidikan di Fasilkom UI
-            </Typography>
-            <Typography className={classes.subtitle} component="p">
-              Formulir informasi terkait riwayat pendidikan Anda selama di
-              Fasilkom UI
-            </Typography>
-            <Formik
-              initialValues={getInitialValues()}
-              onSubmit={onSubmit}
-              validationSchema={VALIDATOR}
-              validateOnChange={false}
-            >
-              {({ handleSubmit, values, errors, setFieldValue, touched }) => (
-                <form className={classes.form}>
-                  <FieldArray
-                    name={FIELDS.degreeAndStudyPrograms}
-                    render={arrayHelpers => (
-                      <section style={{ width: "100%" }}>
-                        {values[FIELDS.degreeAndStudyPrograms].map((d, i) => (
-                          <Grid
-                            container
-                            spacing={24}
-                            style={{ marginTop: "1rem" }}
+    <React.Fragment>
+      <NavbarAuth />
+      <Container>
+        <Typography className={classes.title} variant="h5" component="h3">
+          Riwayat Pendidikan di Fasilkom UI
+        </Typography>
+        <Typography className={classes.subtitle} component="p">
+          Formulir informasi terkait riwayat pendidikan Anda selama di Fasilkom
+          UI
+        </Typography>
+        <Formik
+          initialValues={getInitialValues()}
+          onSubmit={onSubmitAndNext}
+          validationSchema={VALIDATOR}
+          validateOnChange={false}
+          ref={formRef}
+        >
+          {({ handleSubmit, values, errors, setFieldValue, touched }) => (
+            <form className={classes.form}>
+              <FieldArray
+                name={FIELDS.degreeAndStudyPrograms}
+                render={arrayHelpers => (
+                  <section style={{ width: "100%" }}>
+                    {values[FIELDS.degreeAndStudyPrograms].map((d, i) => (
+                      <Grid
+                        container
+                        spacing={24}
+                        style={{ marginTop: "1rem" }}
+                      >
+                        <Grid item xs={6} md={6}>
+                          <Typography
+                            variant="h6"
+                            align="left"
+                            component="h6"
+                            style={{ fontWeight: "bold" }}
                           >
-                            <Grid item xs={6} md={6}>
-                              <Typography
-                                variant="h6"
-                                align="left"
-                                component="h6"
-                                style={{ fontWeight: "bold" }}
-                              >
-                                Riwayat Pendidikan {i + 1}
-                              </Typography>
-                            </Grid>
-                            <Grid
-                              item
-                              xs={6}
-                              md={6}
-                              style={{ textAlign: "end" }}
+                            Riwayat Pendidikan {i + 1}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6} md={6} style={{ textAlign: "end" }}>
+                          {i > 0 ? (
+                            <Button
+                              color="primary"
+                              onClick={() => {
+                                arrayHelpers.remove(i);
+                              }}
                             >
-                              {i > 0 ? (
-                                <Button
-                                  color="primary"
-                                  onClick={() => {
-                                    arrayHelpers.remove(i);
-                                  }}
-                                >
-                                  <DeleteIcon
-                                    color="primary"
-                                    style={{ marginRight: "4px" }}
-                                  />
-                                  Hapus
-                                </Button>
-                              ) : null}
-                            </Grid>
-                            <Grid item xs={12} md={12}>
-                              <Divider />
-                            </Grid>
-                            <Grid item xs={12} md={4}>
-                              <MuiPickersUtilsProvider utils={MomentUtils}>
-                                <InlineDatePicker
-                                  label={`Angkatan`}
-                                  className={classes.field}
-                                  value={d[FIELDS.csuiClassYear]}
-                                  onChange={date =>
-                                    setFieldValue(
-                                      `${FIELDS.degreeAndStudyPrograms}[${i}]${
-                                        FIELDS.csuiClassYear
-                                      }`,
-                                      date
-                                    )
-                                  }
-                                  error={
-                                    touched[d[FIELDS.csuiClassYear]] &&
-                                    !!errors[d[FIELDS.csuiClassYear]]
-                                  }
-                                  helperText={errors[d[FIELDS.csuiClassYear]]}
-                                  margin="normal"
-                                  variant="outlined"
-                                  format="YYYY"
-                                  views={["year"]}
-                                  clearable
-                                />
-                              </MuiPickersUtilsProvider>
-                            </Grid>
-                            <Grid item xs={12} md={4}>
-                              <TextField
-                                id={`NPM${i}`}
-                                label={`NPM (opsional)`}
-                                className={classes.field}
-                                margin="normal"
-                                variant="outlined"
-                                value={d[FIELDS.uiSsoNpm]}
-                                error={
-                                  touched[FIELDS.degreeAndStudyPrograms] &&
-                                  touched[FIELDS.degreeAndStudyPrograms][i] &&
-                                  touched[FIELDS.degreeAndStudyPrograms][i][
-                                    FIELDS.uiSsoNpm
-                                  ] &&
-                                  !!errors[FIELDS.degreeAndStudyPrograms] &&
-                                  !!errors[FIELDS.degreeAndStudyPrograms][i] &&
-                                  !!errors[FIELDS.degreeAndStudyPrograms][i][
-                                    FIELDS.uiSsoNpm
-                                  ]
-                                }
-                                helperText={
-                                  errors[FIELDS.degreeAndStudyPrograms] &&
-                                  errors[FIELDS.degreeAndStudyPrograms][i]
-                                    ? errors[FIELDS.degreeAndStudyPrograms][i]
-                                        .uiSsoNpm
-                                    : undefined
-                                }
-                                onChange={t =>
-                                  setFieldValue(
-                                    `${FIELDS.degreeAndStudyPrograms}[${i}]${
-                                      FIELDS.uiSsoNpm
-                                    }`,
-                                    t.target.value
-                                  )
-                                }
-                                inputProps={{
-                                  maxLength: 10,
-                                }}
-                              />
-                            </Grid>
-                            <Grid item xs={12} md={4}>
-                              <SelectPrograms
-                                index={i}
-                                classes={classes}
-                                value={d[FIELDS.csuiProgram]}
-                                onChange={e =>
-                                  setFieldValue(
-                                    `${FIELDS.degreeAndStudyPrograms}[${i}]${
-                                      FIELDS.csuiProgram
-                                    }`,
-                                    e.target.value
-                                  )
-                                }
-                                error={
-                                  touched[FIELDS.degreeAndStudyPrograms] &&
-                                  touched[FIELDS.degreeAndStudyPrograms][i] &&
-                                  touched[FIELDS.degreeAndStudyPrograms][i][
-                                    FIELDS.csuiProgram
-                                  ] &&
-                                  !!errors[FIELDS.degreeAndStudyPrograms] &&
-                                  !!errors[FIELDS.degreeAndStudyPrograms][i] &&
-                                  !!errors[FIELDS.degreeAndStudyPrograms][i][
-                                    FIELDS.csuiProgram
-                                  ]
-                                }
-                                helperText={
-                                  errors[FIELDS.degreeAndStudyPrograms] &&
-                                  errors[FIELDS.degreeAndStudyPrograms][i]
-                                    ? errors[FIELDS.degreeAndStudyPrograms][i]
-                                        .csuiProgram
-                                    : undefined
-                                }
-                              />
-                            </Grid>
-                          </Grid>
-                        ))}
-                        <Grid item xs={12}>
-                          <Button
-                            style={{ marginTop: "24px" }}
-                            className={classes.btn}
-                            variant={
-                              values[FIELDS.degreeAndStudyPrograms].length >= 3
-                                ? "contained"
-                                : "outlined"
-                            }
-                            color="primary"
-                            disabled={
-                              values[FIELDS.degreeAndStudyPrograms].length >= 3
-                            }
-                            size="large"
-                            onClick={() =>
-                              arrayHelpers.push({
-                                [FIELDS.csuiClassYear]: moment("1986-01-01"),
-                                [FIELDS.csuiProgram]: "",
-                                [FIELDS.uiSsoNpm]: "",
-                              })
-                            }
-                          >
-                            {values[FIELDS.degreeAndStudyPrograms].length >=
-                            3 ? (
-                              <AddCircleIcon
-                                color="grey"
-                                style={{ marginRight: "4px" }}
-                              />
-                            ) : (
-                              <AddCircleIcon
+                              <DeleteIcon
                                 color="primary"
                                 style={{ marginRight: "4px" }}
                               />
-                            )}
-                            Tambah Riwayat
-                          </Button>
+                              Hapus
+                            </Button>
+                          ) : null}
                         </Grid>
-                      </section>
-                    )}
-                  />
-                  <button onClick={handleSubmit}>submit aja</button>
-                </form>
-              )}
-            </Formik>
-            <div style={{ paddingBottom: "4rem" }} />
-          </Container>
-          <StepProgress
-            start={1}
-            steps={steps}
-            activeStep={activeStep}
-            onBack={handleBack}
-            onNext={handleNext}
-            position="bottom"
-          />
-        </React.Fragment>
-      )}
-    </StepContext.Consumer>
+                        <Grid item xs={12} md={12}>
+                          <Divider />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                          <MuiPickersUtilsProvider utils={MomentUtils}>
+                            <InlineDatePicker
+                              label={`Angkatan`}
+                              className={classes.field}
+                              value={d[FIELDS.csuiClassYear]}
+                              onChange={date =>
+                                setFieldValue(
+                                  `${FIELDS.degreeAndStudyPrograms}[${i}]${
+                                    FIELDS.csuiClassYear
+                                  }`,
+                                  date
+                                )
+                              }
+                              error={
+                                touched[d[FIELDS.csuiClassYear]] &&
+                                !!errors[d[FIELDS.csuiClassYear]]
+                              }
+                              helperText={errors[d[FIELDS.csuiClassYear]]}
+                              margin="normal"
+                              variant="outlined"
+                              format="YYYY"
+                              views={["year"]}
+                              clearable
+                            />
+                          </MuiPickersUtilsProvider>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                          <TextField
+                            id={`NPM${i}`}
+                            label={`NPM (opsional)`}
+                            className={classes.field}
+                            margin="normal"
+                            variant="outlined"
+                            value={d[FIELDS.uiSsoNpm]}
+                            error={
+                              touched[FIELDS.degreeAndStudyPrograms] &&
+                              touched[FIELDS.degreeAndStudyPrograms][i] &&
+                              touched[FIELDS.degreeAndStudyPrograms][i][
+                                FIELDS.uiSsoNpm
+                              ] &&
+                              !!errors[FIELDS.degreeAndStudyPrograms] &&
+                              !!errors[FIELDS.degreeAndStudyPrograms][i] &&
+                              !!errors[FIELDS.degreeAndStudyPrograms][i][
+                                FIELDS.uiSsoNpm
+                              ]
+                            }
+                            helperText={
+                              errors[FIELDS.degreeAndStudyPrograms] &&
+                              errors[FIELDS.degreeAndStudyPrograms][i]
+                                ? errors[FIELDS.degreeAndStudyPrograms][i]
+                                    .uiSsoNpm
+                                : undefined
+                            }
+                            onChange={t =>
+                              setFieldValue(
+                                `${FIELDS.degreeAndStudyPrograms}[${i}]${
+                                  FIELDS.uiSsoNpm
+                                }`,
+                                t.target.value
+                              )
+                            }
+                            inputProps={{
+                              maxLength: 10,
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                          <SelectPrograms
+                            index={i}
+                            classes={classes}
+                            value={d[FIELDS.csuiProgram]}
+                            onChange={e =>
+                              setFieldValue(
+                                `${FIELDS.degreeAndStudyPrograms}[${i}]${
+                                  FIELDS.csuiProgram
+                                }`,
+                                e.target.value
+                              )
+                            }
+                            error={
+                              touched[FIELDS.degreeAndStudyPrograms] &&
+                              touched[FIELDS.degreeAndStudyPrograms][i] &&
+                              touched[FIELDS.degreeAndStudyPrograms][i][
+                                FIELDS.csuiProgram
+                              ] &&
+                              !!errors[FIELDS.degreeAndStudyPrograms] &&
+                              !!errors[FIELDS.degreeAndStudyPrograms][i] &&
+                              !!errors[FIELDS.degreeAndStudyPrograms][i][
+                                FIELDS.csuiProgram
+                              ]
+                            }
+                            helperText={
+                              errors[FIELDS.degreeAndStudyPrograms] &&
+                              errors[FIELDS.degreeAndStudyPrograms][i]
+                                ? errors[FIELDS.degreeAndStudyPrograms][i]
+                                    .csuiProgram
+                                : undefined
+                            }
+                          />
+                        </Grid>
+                      </Grid>
+                    ))}
+                    <Grid item xs={12}>
+                      <Button
+                        style={{ marginTop: "24px" }}
+                        className={classes.btn}
+                        variant={
+                          values[FIELDS.degreeAndStudyPrograms].length >= 3
+                            ? "contained"
+                            : "outlined"
+                        }
+                        color="primary"
+                        disabled={
+                          values[FIELDS.degreeAndStudyPrograms].length >= 3
+                        }
+                        size="large"
+                        onClick={() =>
+                          arrayHelpers.push({
+                            [FIELDS.csuiClassYear]: moment("1986-01-01"),
+                            [FIELDS.csuiProgram]: "",
+                            [FIELDS.uiSsoNpm]: "",
+                          })
+                        }
+                      >
+                        {values[FIELDS.degreeAndStudyPrograms].length >= 3 ? (
+                          <AddCircleIcon
+                            color="grey"
+                            style={{ marginRight: "4px" }}
+                          />
+                        ) : (
+                          <AddCircleIcon
+                            color="primary"
+                            style={{ marginRight: "4px" }}
+                          />
+                        )}
+                        Tambah Riwayat
+                      </Button>
+                    </Grid>
+                  </section>
+                )}
+              />
+            </form>
+          )}
+        </Formik>
+        <div style={{ paddingBottom: "4rem" }} />
+      </Container>
+      <StepProgress
+        start={1}
+        steps={steps}
+        activeStep={activeStep}
+        onBack={handleBack}
+        onNext={() => {
+          formRef.current.handleSubmit();
+        }}
+        loadingNext={loading}
+        position="bottom"
+      />
+    </React.Fragment>
   );
 };
 
@@ -410,8 +418,10 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default authorize({ mustVerified: false })(
-  connect(
-    null,
-    mapDispatchToProps
-  )(withStyles(styles)(EducationPage))
+  withStepConsumer(
+    connect(
+      null,
+      mapDispatchToProps
+    )(withStyles(styles)(EducationPage))
+  )
 );

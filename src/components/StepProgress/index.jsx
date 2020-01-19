@@ -5,6 +5,8 @@ import MobileStepper from "@material-ui/core/MobileStepper";
 import Button from "@material-ui/core/Button";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Fade from "@material-ui/core/Fade";
 
 const styles = {
   root: {
@@ -20,6 +22,7 @@ function StepProgress({
   onBack,
   activeStep,
   position,
+  loadingNext,
 }) {
   const classes = makeStyles(styles);
   return (
@@ -30,10 +33,16 @@ function StepProgress({
       activeStep={activeStep}
       className={classes.root}
       nextButton={
-        <Button size="small" onClick={onNext} disabled={activeStep >= steps}>
-          Next
-          <KeyboardArrowRight />
-        </Button>
+        loadingNext ? (
+          <Fade in>
+            <CircularProgress size={18} />
+          </Fade>
+        ) : (
+          <Button size="small" onClick={onNext} disabled={activeStep >= steps}>
+            Next
+            <KeyboardArrowRight />
+          </Button>
+        )
       }
       backButton={
         <Button size="small" onClick={onBack} disabled={activeStep === start}>
