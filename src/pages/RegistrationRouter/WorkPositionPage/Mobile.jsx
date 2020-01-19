@@ -11,10 +11,14 @@ import Title from "../../../components/stables/Experience/Title";
 import WorkPosition from "../../../components/stables/Experience/WorkPosition";
 import PositionForm from "../../../components/stables/Experience/PositionForm";
 
-import StepContext from "../StepContext";
+import { withStepConsumer } from "../../../components/hocs/stepConsumer";
 import StepProgress from "../../../components/StepProgress";
 
 class WorkPositionPage extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   static propTypes = {
     classes: PropTypes.shape().isRequired,
   };
@@ -84,37 +88,34 @@ class WorkPositionPage extends React.Component {
   }
 
   render() {
+    const { activeStep, handleBack, handleNext, steps } = this.props;
     return (
-      <StepContext.Consumer>
-        {({ steps, activeStep, handleBack, handleNext }) => (
-          <React.Fragment>
-            <NavbarAuth />
-            <Container>
-              <Title
-                ButtonProps={{
-                  onClick: this.handleShowModalNew,
-                  hidden: false,
-                }}
-              >
-                Riwayat Pekerjaan
-              </Title>
-              <WorkPosition
-                onEdit={this.handleShowModalUpdate}
-                onAdd={this.handleShowModalNew}
-              />
-            </Container>
-            {this.renderDialogWithForm()}
-            <StepProgress
-              start={1}
-              steps={steps}
-              activeStep={activeStep}
-              onBack={handleBack}
-              onNext={handleNext}
-              position="bottom"
-            />
-          </React.Fragment>
-        )}
-      </StepContext.Consumer>
+      <React.Fragment>
+        <NavbarAuth />
+        <Container>
+          <Title
+            ButtonProps={{
+              onClick: this.handleShowModalNew,
+              hidden: false,
+            }}
+          >
+            Riwayat Pekerjaan
+          </Title>
+          <WorkPosition
+            onEdit={this.handleShowModalUpdate}
+            onAdd={this.handleShowModalNew}
+          />
+        </Container>
+        {this.renderDialogWithForm()}
+        <StepProgress
+          start={1}
+          steps={steps}
+          activeStep={activeStep}
+          onBack={handleBack}
+          onNext={handleNext}
+          position="bottom"
+        />
+      </React.Fragment>
     );
   }
 }
@@ -122,7 +123,7 @@ class WorkPositionPage extends React.Component {
 function createContainer() {
   return authorize({
     mustVerified: false,
-  })(connect(state => ({}))(WorkPositionPage));
+  })(withStepConsumer(connect(state => ({}))(WorkPositionPage)));
 }
 
 export default createContainer();

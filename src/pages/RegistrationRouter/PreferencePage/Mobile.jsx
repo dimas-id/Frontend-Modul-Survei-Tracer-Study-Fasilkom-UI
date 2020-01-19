@@ -8,7 +8,7 @@ import Preference from "../../../components/stables/Preference";
 import { Guidelines } from "../../../styles";
 import { authorize } from "../../../components/hocs/auth";
 
-import StepContext from "../StepContext";
+import { withStepConsumer } from "../../../components/hocs/stepConsumer";
 import StepProgress from "../../../components/StepProgress";
 
 const styles = makeStyles(theme => ({
@@ -22,35 +22,33 @@ const styles = makeStyles(theme => ({
   },
 }));
 
-function PreferencePage() {
+const PreferencePage = ({ activeStep, handleBack, handleNext, steps }) => {
   const classes = styles();
   return (
-    <StepContext.Consumer>
-      {({ steps, activeStep, handleBack, handleNext }) => (
-        <React.Fragment>
-          <NavbarAuth />
-          <Container>
-            <Typography className={classes.title} variant="h5" component="h3">
-              Preferensi
-            </Typography>
-            <Typography className={classes.subtitle} component="p">
-              Preferensi Anda yang membantu membuat layanan ILUNI12 Channel
-              lebih berguna bagi Anda
-            </Typography>
-            <Preference />
-          </Container>
-          <StepProgress
-            start={1}
-            steps={steps}
-            activeStep={activeStep}
-            onBack={handleBack}
-            onNext={handleNext}
-            position="bottom"
-          />
-        </React.Fragment>
-      )}
-    </StepContext.Consumer>
+    <React.Fragment>
+      <NavbarAuth />
+      <Container>
+        <Typography className={classes.title} variant="h5" component="h3">
+          Preferensi
+        </Typography>
+        <Typography className={classes.subtitle} component="p">
+          Preferensi Anda yang membantu membuat layanan ILUNI12 Channel lebih
+          berguna bagi Anda
+        </Typography>
+        <Preference />
+      </Container>
+      <StepProgress
+        start={1}
+        steps={steps}
+        activeStep={activeStep}
+        onBack={handleBack}
+        onNext={handleNext}
+        position="bottom"
+      />
+    </React.Fragment>
   );
-}
+};
 
-export default authorize({ mustVerified: false })(PreferencePage);
+export default authorize({ mustVerified: false })(
+  withStepConsumer(PreferencePage)
+);

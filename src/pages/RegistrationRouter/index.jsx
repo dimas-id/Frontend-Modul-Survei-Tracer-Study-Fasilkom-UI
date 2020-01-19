@@ -98,14 +98,8 @@ export default withRouter(function RegistrationRouter({ history, location }) {
         handleNext: handleNext,
       }}
     >
-      <React.Fragment>
-        <Particle name="cloud2" top={120} left={0} />
-        <RouterWrapper
-          paths={ROUTES}
-          steps={MAX_STEP}
-          activeStep={currentStep}
-        />
-      </React.Fragment>
+      <Particle name="cloud2" top={120} left={0} />
+      <RouterWrapper paths={ROUTES} steps={MAX_STEP} activeStep={currentStep} />
     </StepContext.Provider>
   );
 });

@@ -29,7 +29,6 @@ import PROGRAMS from "../../../libs/studyProgram";
 import { createEducations } from "../../../modules/experience/thunks";
 import { Guidelines } from "../../../styles";
 
-import StepContext from "../StepContext";
 import { withStepConsumer } from "../../../components/hocs/stepConsumer";
 import StepProgress from "../../../components/StepProgress";
 
