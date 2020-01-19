@@ -22,7 +22,7 @@ function StepProgress({
   onBack,
   activeStep,
   position,
-  loadingNext,
+  loadingNext = false,
 }) {
   const classes = makeStyles(styles);
   return (
@@ -33,16 +33,16 @@ function StepProgress({
       activeStep={activeStep}
       className={classes.root}
       nextButton={
-        loadingNext ? (
-          <Fade in>
-            <CircularProgress size={18} />
-          </Fade>
-        ) : (
-          <Button size="small" onClick={onNext} disabled={activeStep >= steps}>
-            Next
+        <Button size="small" onClick={onNext} disabled={activeStep >= steps}>
+          Next
+          {loadingNext ? (
+            <Fade in>
+              <CircularProgress size={18} />
+            </Fade>
+          ) : (
             <KeyboardArrowRight />
-          </Button>
-        )
+          )}
+        </Button>
       }
       backButton={
         <Button size="small" onClick={onBack} disabled={activeStep === start}>

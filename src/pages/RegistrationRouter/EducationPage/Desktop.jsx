@@ -171,25 +171,23 @@ const EducationPage = ({
 }) => {
   const [loading, setLoading] = React.useState(false);
 
-  const formRef = React.useRef();
-
   const onSubmitAndNext = values => {
     const currentValues = { ...values[FIELDS.degreeAndStudyPrograms] };
     let payload = [];
     for (let i = 0; i < Object.keys(currentValues).length; i++) {
       payload.push({
-        ui_sso_npm: currentValues[i][FIELDS.uiSsoNpm],
-        csui_class_year: getDateFormatted(
+        uiSsoNpm: currentValues[i][FIELDS.uiSsoNpm],
+        csuiClassYear: getDateFormatted(
           currentValues[i][FIELDS.csuiClassYear],
           "YYYY"
         ),
-        csui_program: currentValues[i][FIELDS.csuiProgram],
+        csuiProgram: currentValues[i][FIELDS.csuiProgram],
       });
     }
     setLoading(true);
     createEducations(payload)
-      .then(() => handleNext())
-      .finally(() => setLoading(false));
+      .then(handleNext)
+      .catch(() => setLoading(false));
   };
 
   return (
@@ -208,7 +206,6 @@ const EducationPage = ({
           onSubmit={onSubmitAndNext}
           validationSchema={VALIDATOR}
           validateOnChange={false}
-          ref={formRef}
         >
           {({ handleSubmit, values, errors, setFieldValue, touched }) => (
             <form className={classes.form}>
@@ -393,22 +390,20 @@ const EducationPage = ({
                   </section>
                 )}
               />
+              <StepProgress
+                start={1}
+                steps={steps}
+                activeStep={activeStep}
+                onBack={handleBack}
+                onNext={handleSubmit}
+                loadingNext={loading}
+                position="bottom"
+              />
             </form>
           )}
         </Formik>
         <div style={{ paddingBottom: "4rem" }} />
       </Container>
-      <StepProgress
-        start={1}
-        steps={steps}
-        activeStep={activeStep}
-        onBack={handleBack}
-        onNext={() => {
-          formRef.current.handleSubmit();
-        }}
-        loadingNext={loading}
-        position="bottom"
-      />
     </React.Fragment>
   );
 };
