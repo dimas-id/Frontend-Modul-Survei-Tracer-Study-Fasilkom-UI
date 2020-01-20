@@ -8,6 +8,7 @@ import EmptyState from "../EmptyState";
 import ExperienceItem from "../ExperienceItem";
 import EmptyEducationImg from "../../../../assets/states/EmptyEducation.svg";
 import { getDateFormatted } from "../../../../libs/datetime";
+import { prettifyStudyProgram } from "../../../../libs/studyProgram";
 
 import { loadEducations } from "../../../../modules/experience/thunks";
 import { getEducations } from "../../../../modules/experience/selectors";
@@ -26,7 +27,7 @@ function Education({ load, educations, userId }) {
   const [isLoading, setLoading] = React.useState(true);
   React.useEffect(() => {
     load(userId).finally(() => setLoading(false));
-  }, []);
+  }, [load, userId]);
 
   return (
     <React.Fragment>
@@ -54,12 +55,9 @@ function Education({ load, educations, userId }) {
             <Grid item xs={12} key={edu.id}>
               <ExperienceItem
                 key={edu.id}
-                title={edu.schoolName}
-                subtitle={`${edu.degreeName} - ${edu.fieldOfStudy} - ${edu.uiSsoNpm}`}
-                time={`${getDateFormatted(
-                  edu.dateStarted,
-                  "YYYY"
-                )} - ${getDateFormatted(edu.dateEnded, "YYYY")}`}
+                title={prettifyStudyProgram(edu.csuiProgramm)}
+                subtitle={`${edu.uiSsoNpm} - ${edu.isVerified ? "Verified" : "Not Verified"}`}
+                time={`Class of ${edu.csuiClassYear}`}
               />
             </Grid>
           ))}
