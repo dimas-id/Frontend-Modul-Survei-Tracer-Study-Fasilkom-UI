@@ -107,15 +107,10 @@ function SelectPrograms(props) {
 
   const index = props.index;
 
-  const [state, setState] = React.useState({
-    labelWidth: 0,
-  });
+  const [currentLabelWidth, setLabelWidth] = React.useState(0);
   React.useEffect(() => {
-    setState({
-      ...state,
-      labelWidth: ReactDOM.findDOMNode(inputLabelRef.current).offsetWidth,
-    });
-  }, [state]);
+    setLabelWidth(ReactDOM.findDOMNode(inputLabelRef.current).offsetWidth);
+  }, [currentLabelWidth]);
 
   return (
     <FormControl
@@ -132,7 +127,7 @@ function SelectPrograms(props) {
         input={
           <OutlinedInput
             id={`csuiProgram${index}`}
-            labelWidth={state.labelWidth}
+            labelWidth={currentLabelWidth}
             name={FIELDS.csuiProgram}
             required
           />

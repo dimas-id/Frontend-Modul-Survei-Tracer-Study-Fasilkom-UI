@@ -1,6 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import { authorize } from "../../components/hocs/auth";
@@ -9,10 +7,6 @@ import { Container } from "../../components/Container";
 import InComplete from "./InComplete";
 
 class UserVerifyPage extends React.PureComponent {
-  static propTypes = {
-    classes: PropTypes.shape().isRequired
-  };
-
   render() {
     return (
       <React.Fragment>
@@ -26,17 +20,8 @@ class UserVerifyPage extends React.PureComponent {
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
-
-  const mapDispatchToProps = dispatch => ({});
-
   return authorize({ mustVerified: false })(
-    withRouter(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(UserVerifyPage)
-    )
+    withRouter(UserVerifyPage)
   );
 }
 
