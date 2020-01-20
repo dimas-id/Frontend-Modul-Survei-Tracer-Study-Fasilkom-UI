@@ -18,22 +18,29 @@ const styles = {
     ...Guidelines.layouts.pt16,
     ...Guidelines.layouts.pb16,
     ...Guidelines.layouts.pr16,
-    ...Guidelines.layouts.pl16
+    ...Guidelines.layouts.pl16,
   },
   title: {
-    ...Guidelines.fonts.bold
+    ...Guidelines.fonts.bold,
   },
   text: {
-    fontSize: 20
+    fontSize: 20,
   },
   btnContainer: {
     display: "flex",
     alignItems: "flex-start",
-    justifyContent: "flex-end"
-  }
+    justifyContent: "flex-end",
+  },
 };
 
-function ExperienceItem({ classes, title, subtitle, time, onClick, loading }) {
+function ExperienceItem({
+  classes,
+  title,
+  subtitle,
+  time,
+  onClick,
+  loading,
+}) {
   return (
     <Paper className={classes.experience} elevation={1}>
       <Grid container spacing={24}>
@@ -51,11 +58,13 @@ function ExperienceItem({ classes, title, subtitle, time, onClick, loading }) {
               <Typography className={classes.text}>{subtitle}</Typography>
               <Typography className={classes.text}>{time}</Typography>
             </Grid>
-            <Grid item xs={1} className={classes.btnContainer}>
-              <IconButton onClick={onClick}>
-                <EditIcon />
-              </IconButton>
-            </Grid>
+            {onClick && (
+              <Grid item xs={1} className={classes.btnContainer}>
+                <IconButton onClick={onClick}>
+                  <EditIcon />
+                </IconButton>
+              </Grid>
+            )}
           </React.Fragment>
         )}
       </Grid>
@@ -64,7 +73,7 @@ function ExperienceItem({ classes, title, subtitle, time, onClick, loading }) {
 }
 
 ExperienceItem.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(ExperienceItem);
