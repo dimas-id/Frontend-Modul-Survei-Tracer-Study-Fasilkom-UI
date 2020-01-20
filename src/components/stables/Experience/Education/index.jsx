@@ -54,7 +54,7 @@ function Education({ load, educations, userId }) {
             <Grid item xs={12} key={edu.id}>
               <ExperienceItem
                 key={edu.id}
-                title={prettifyStudyProgram(edu.csuiProgramm)}
+                title={prettifyStudyProgram(edu.csuiProgram)}
                 subtitle={`${edu.uiSsoNpm} - ${edu.isVerified ? "Verified" : "Not Verified"}`}
                 time={`Class of ${edu.csuiClassYear}`}
               />
