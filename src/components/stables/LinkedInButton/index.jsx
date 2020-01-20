@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 
 import { isLoggedIn } from "../../../modules/session/selectors";
-import env from "../../../config";
 import LinkedInLogo from "../../../assets/img/LinkedIn.png";
 import { utilityActions } from "../../../modules/utility";
 
@@ -46,7 +45,7 @@ export default withRouter(
           clearTimeout(timer);
         }
       };
-    }, []);
+    }, [timer]);
 
     return (
       <Button variant="outlined" {...ButtonProps} onClick={handleClick}>

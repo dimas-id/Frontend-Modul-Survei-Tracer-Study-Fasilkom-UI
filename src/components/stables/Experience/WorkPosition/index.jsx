@@ -25,7 +25,7 @@ function WorkPosition({ onAdd, onEdit, load, positions, userId }) {
   const [isLoading, setLoading] = React.useState(true);
   React.useEffect(() => {
     load(userId).finally(() => setLoading(false));
-  }, []);
+  }, [load, userId]);
 
   return (
     <React.Fragment>

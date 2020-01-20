@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import isEmpty from "lodash/isEmpty";
@@ -165,7 +165,7 @@ function EmailBlasterPage({
     };
   }
 
-  function handleLoadJob() {
+  const handleLoadJob = useCallback(() => {
     setLoadingJobs(true);
     loadJobs(selectedBatch.id)
       .then(({ data }) => {
@@ -174,7 +174,7 @@ function EmailBlasterPage({
       .finally(() => {
         setLoadingJobs(false);
       });
-  }
+  }, [loadJobs, selectedBatch.id, state]);
 
   function handleDelete() {
     const func = withProcessing(deleteBatch);
@@ -209,13 +209,13 @@ function EmailBlasterPage({
       setState(Object.assign(state, { batchCount: data.count }));
       setLoadingBatches(false);
     });
-  }, []);
+  }, [clearJobs, loadBatches, state]);
 
   React.useEffect(() => {
     if (selectedBatch) {
       handleLoadJob();
     }
-  }, [selectedBatch]);
+  }, [handleLoadJob, selectedBatch]);
 
   return (
     <React.Fragment>

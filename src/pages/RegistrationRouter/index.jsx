@@ -6,7 +6,6 @@ import paths from "../paths";
 
 import Particle from "../../components/Particle";
 import RouterWrapper from "../../components/RouterWrapper";
-import StepProgress from "../../components/StepProgress";
 import RegistrationPage from "./RegistrationPage";
 import EducationPage from "./EducationPage";
 import WorkPositionPage from "./WorkPositionPage";
@@ -79,7 +78,7 @@ export default withRouter(function RegistrationRouter({ history, location }) {
       // target path after next/back
       history.push(targetPath);
     }
-  }, [currentStep]);
+  }, [currentStep, history, location.pathname]);
 
   function handleBack() {
     setCurrentStep(prevStep => prevStep - 1);

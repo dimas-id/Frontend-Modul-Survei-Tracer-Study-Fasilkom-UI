@@ -19,8 +19,6 @@ import { Guidelines } from "../../../../styles";
 import { Validation } from "../../../../components/hocs/form";
 import LinkedInButton from "../../../../components/stables/LinkedInButton";
 
-import PROGRAMS from "../../../../libs/studyProgram";
-
 const styles = theme => ({
   form: {
     ...Guidelines.layouts.flexDirCol,

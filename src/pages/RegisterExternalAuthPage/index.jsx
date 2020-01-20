@@ -57,7 +57,7 @@ function Desktop({ setToken, load, clearSession, isLoggedIn, history }) {
     } else {
       checkUserCredential();
     }
-  }, []);
+  }, [clearSession, history, isLoggedIn, load, setToken]);
 
   return state.loading ? <LoadingScreen /> : <Redirect to={state.nextPage} />;
 }

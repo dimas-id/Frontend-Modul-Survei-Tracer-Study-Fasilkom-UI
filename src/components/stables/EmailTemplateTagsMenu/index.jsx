@@ -32,7 +32,7 @@ function EmailTemplateTagsMenu({ classes, loadTags, html, variables, onPick }) {
       .catch(() => {
         setLoading(false);
       });
-  }, []);
+  }, [loadTags]);
 
   return (
     <div className={classes.root}>

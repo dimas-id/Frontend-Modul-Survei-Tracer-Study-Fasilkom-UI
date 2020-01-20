@@ -15,9 +15,6 @@ import { withStepConsumer } from "../../../components/hocs/stepConsumer";
 import StepProgress from "../../../components/StepProgress";
 
 class WorkPositionPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   static propTypes = {
     classes: PropTypes.shape().isRequired,

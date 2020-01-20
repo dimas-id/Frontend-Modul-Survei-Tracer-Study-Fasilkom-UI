@@ -7,7 +7,6 @@ import Grid from "@material-ui/core/Grid";
 import EmptyState from "../EmptyState";
 import ExperienceItem from "../ExperienceItem";
 import EmptyEducationImg from "../../../../assets/states/EmptyEducation.svg";
-import { getDateFormatted } from "../../../../libs/datetime";
 import { prettifyStudyProgram } from "../../../../libs/studyProgram";
 
 import { loadEducations } from "../../../../modules/experience/thunks";

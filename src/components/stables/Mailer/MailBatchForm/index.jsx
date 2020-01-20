@@ -77,7 +77,7 @@ function Form({templates, disabled, children, ...otherProps}) {
     otherProps.dispatch(getTemplates()).finally(() => {
       setLoadingTemplate(false);
     });
-  }, []);
+  }, [otherProps]);
 
   const classes = useStyle();
 

@@ -94,7 +94,7 @@ function Preference({ userId }) {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [userId]);
 
   function handleChange({ target }) {
     // set first, think later

@@ -115,7 +115,7 @@ function SelectPrograms(props) {
       ...state,
       labelWidth: ReactDOM.findDOMNode(inputLabelRef.current).offsetWidth,
     });
-  }, []);
+  }, [state]);
 
   return (
     <FormControl

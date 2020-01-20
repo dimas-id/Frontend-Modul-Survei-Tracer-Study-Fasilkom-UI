@@ -75,7 +75,7 @@ function LandingMobile({ classes, isLoggedIn, history }) {
     if (isLoggedIn) {
       history.replace(paths.HOME)
     }
-  }, []);
+  }, [history, isLoggedIn]);
 
   return (
     <React.Fragment>
