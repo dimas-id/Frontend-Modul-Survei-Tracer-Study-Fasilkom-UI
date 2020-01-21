@@ -87,6 +87,8 @@ class Registration extends React.Component {
         ];
 
         actions.setSubmitting(false);
+        if (!err.response) return;
+
         const humanizedErr = humanizeError(err.response.data, fields);
         if (typeof humanizedError === "string") {
           this.setErrorMessage(humanizedErr);

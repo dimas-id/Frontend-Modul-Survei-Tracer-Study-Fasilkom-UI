@@ -1,6 +1,6 @@
 import get from "lodash/get";
 import pick from "lodash/pick";
-import omit from "lodash/omit";
+import omitBy from "lodash/omitBy";
 import { push } from "connected-react-router";
 
 import { sessionActions } from "./index";
@@ -25,7 +25,7 @@ export const register = payload => {
   return async (dispatch, _, { API: { atlasV2 }, utility }) => {
     try {
       const response = await atlasV2.session.register(
-        omit(payload, value => !value)
+        omitBy(payload, value => !value)
       );
       // set token to header
       setAuthToken(get(response, "data.access"));
