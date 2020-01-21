@@ -25,7 +25,7 @@ export const register = payload => {
   return async (dispatch, _, { API: { atlasV2 }, utility }) => {
     try {
       const response = await atlasV2.session.register(
-        omit(payload, value => !!value)
+        omit(payload, value => !value)
       );
       // set token to header
       setAuthToken(get(response, "data.access"));
