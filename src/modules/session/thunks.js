@@ -1,5 +1,6 @@
 import get from "lodash/get";
 import pick from "lodash/pick";
+import omit from "lodash/omit";
 import { push } from "connected-react-router";
 
 import { sessionActions } from "./index";
@@ -23,7 +24,9 @@ export const loadUser = (userId, silent = false) => {
 export const register = payload => {
   return async (dispatch, _, { API: { atlasV2 }, utility }) => {
     try {
-      const response = await atlasV2.session.register(payload);
+      const response = await atlasV2.session.register(
+        omit(payload, value => !!value)
+      );
       // set token to header
       setAuthToken(get(response, "data.access"));
       // save token & user  to redux
