@@ -12,7 +12,8 @@ import { getUser } from "../../../modules/session/selectors";
 import { loadUser, verifyUser } from "../../../modules/session/thunks";
 import { Guidelines } from "../../../styles";
 import moment from "moment";
-
+import Typography from "@material-ui/core/Typography";
+import amber from "@material-ui/core/colors/amber";
 import paths from "../../paths";
 import InCompleteForm from "./InCompleteForm";
 import {
@@ -30,7 +31,19 @@ const styles = theme => ({
     ...Guidelines.layouts.flexMiddle,
     ...Guidelines.layouts.w100,
     ...Guidelines.layouts.borderBox,
-    ...Guidelines.layouts.pt64,
+    ...Guidelines.layouts.pt32,
+    ...Guidelines.layouts.pb32,
+  },
+  verifyContainer: {
+    backgroundColor: amber[100],
+    flexWrap: "wrap",
+    ...Guidelines.layouts.w100,
+    ...Guidelines.layouts.flexMiddleSpaceBetween,
+    ...Guidelines.layouts.pt24,
+    ...Guidelines.layouts.pr24,
+    ...Guidelines.layouts.pl24,
+    ...Guidelines.layouts.pb24,
+    ...Guidelines.layouts.mb24,
   },
 });
 
@@ -192,6 +205,12 @@ class InComlete extends React.Component {
         <NavbarBack title={title} />
         <Container>
           <div className={classes.container}>
+            <div className={classes.verifyContainer}>
+                <Typography variant="body1">
+                    Pastikan informasi yang Anda berikan sesuai dengan data Anda selama
+                    berkuliah di Fasilkom UI.
+                </Typography>
+            </div>
             <InCompleteForm
               enableReinitialize
               onSubmit={this.handleInComplete}

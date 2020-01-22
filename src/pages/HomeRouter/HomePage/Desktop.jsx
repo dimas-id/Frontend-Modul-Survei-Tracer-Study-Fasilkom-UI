@@ -20,6 +20,7 @@ import CameraEnhanceIcon from "@material-ui/icons/CameraEnhanceOutlined";
 import { Avatar, Chip } from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import amber from "@material-ui/core/colors/amber";
 
 import FormDialog from "../../../components/FormDialog";
 import CategoryPaper from "./CategoryPaper";
@@ -44,6 +45,7 @@ const styles = theme => ({
   roleInfo: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.flexMiddle,
+    ...Guidelines.layouts.mb24,
     [theme.breakpoints.down("sm")]: {
       ...Guidelines.layouts.flexDirCol,
     },
@@ -58,6 +60,8 @@ const styles = theme => ({
   button: {
     display: "flex",
     alignItems: "center",
+    flexGrow: 1,
+    flex: 1,
   },
   photo: {
     ...Guidelines.layouts.flexDirRow,
@@ -85,6 +89,16 @@ const styles = theme => ({
   },
   chip: {
     margin: 10,
+  },
+  verifyContainer: {
+    backgroundColor: amber[100],
+    flex: 1,
+    ...Guidelines.layouts.flexMiddleSpaceBetween,
+    flexWrap: "wrap",
+    ...Guidelines.layouts.pt24,
+    ...Guidelines.layouts.pr24,
+    ...Guidelines.layouts.pl24,
+    ...Guidelines.layouts.pb24,
   },
 });
 
@@ -211,18 +225,28 @@ class HomePage extends React.Component {
             ) : (
               ""
             )}
-            {!user.isVerified && (
-              <Button
-                color="primary"
-                className={classes.button}
-                onClick={() => this.openVerificationDialog(user.isComplete)}
-              >
-                {!user.isComplete ? "Lengkapi Sekarang" : "Verifikasi Sekarang"}
-              </Button>
-            )}
           </div>
 
-          <Grid container spacing={24}>
+          <Grid container spacing={12}>
+            {!user.isVerified && (
+              <Grid item xs={12}>
+                <div className={classes.verifyContainer}>
+                  <Typography variant="body1" style={{ flexGrow: 1, marginBottom: 12 }}>
+                    Verifikasi sedang berjalan di belakang. Lakukan
+                    verifikasi ulang jika sistem gagal melakukan verifikasi
+                    setelah jangka waktu tertentu status Anda tidak berubah. Klik
+                    "Verifikasi Sekarang" untuk memulai verifikasi ulang.
+                  </Typography>
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.openVerificationDialog}
+                  >
+                    Verifikasi Sekarang
+                  </Button>
+                </div>
+              </Grid>
+            )}
             <Grid item xs={12} md={6}>
               <CategoryPaper
                 title="Channel"
