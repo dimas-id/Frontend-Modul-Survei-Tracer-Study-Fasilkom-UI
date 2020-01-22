@@ -120,10 +120,14 @@ class HomePage extends React.Component {
     });
   };
 
-  openVerificationDialog = () => {
+  openVerificationDialog = isUserDataComplete => {
+    const title = !isUserDataComplete ? "Lengkapi Akun" : "Verifikasi Akun";
+    const description = !isUserDataComplete
+      ? "Apakah anda ingin lengkapi akun anda sekarang?"
+      : "Apakah anda ingin verifikasi akun anda sekarang?";
     window.alertDialog(
-      "Verfikasi Akun",
-      "Apakah anda ingin verifikasi akun anda sekarang?",
+      title,
+      description,
       () => {
         this.props.history.push(paths.USER_VERIFY);
       },
@@ -188,7 +192,11 @@ class HomePage extends React.Component {
               />
             ) : (
               <Chip
-                label="Belum Terverifikasi ❌"
+                label={
+                  !user.isComplete
+                    ? "Belum Lengkap ❌"
+                    : "Belum Terverifikasi ❌"
+                }
                 color="secondary"
                 variant="outlined"
                 className={classes.chip}
@@ -207,9 +215,9 @@ class HomePage extends React.Component {
               <Button
                 color="primary"
                 className={classes.button}
-                onClick={this.openVerificationDialog}
+                onClick={() => this.openVerificationDialog(user.isComplete)}
               >
-                Verifikasi Sekarang
+                {!user.isComplete ? "Lengkapi Sekarang" : "Verifikasi Sekarang"}
               </Button>
             )}
           </div>
@@ -282,7 +290,7 @@ class HomePage extends React.Component {
     const { classes, user } = this.props;
 
     if (!user) {
-      return null
+      return null;
     }
 
     const { profile } = user;

@@ -21,6 +21,8 @@ import {
 } from "../../../modules/experience/thunks";
 import { getEducations } from "../../../modules/experience/selectors";
 import isEmpty from "lodash/isEmpty";
+import { NavbarBack } from "../../../components/stables/Navbar";
+import { Container } from "../../../components/Container";
 
 const styles = theme => ({
   container: {
@@ -183,16 +185,21 @@ class InComlete extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-
+    const { classes, user } = this.props;
+    const title = !user.isComplete ? "Lengapi Akun" : "Verifikasi Akun";
     return (
-      <div className={classes.container}>
-        <InCompleteForm
-          enableReinitialize
-          onSubmit={this.handleInComplete}
-          initialValues={this.getInitialValue()}
-        />
-      </div>
+      <React.Fragment>
+        <NavbarBack title={title} />
+        <Container>
+          <div className={classes.container}>
+            <InCompleteForm
+              enableReinitialize
+              onSubmit={this.handleInComplete}
+              initialValues={this.getInitialValue()}
+            />
+          </div>
+        </Container>
+      </React.Fragment>
     );
   }
 }
