@@ -192,7 +192,7 @@ const EducationPage = ({
           Riwayat Pendidikan di Fasilkom UI
         </Typography>
         <Typography className={classes.subtitle} component="p">
-          Formulir informasi terkait riwayat pendidikan Anda selama di Fasilkom
+          Formulir informasi terkait riwayat pendidikan Anda hanya selama di Fasilkom
           UI
         </Typography>
         <Formik

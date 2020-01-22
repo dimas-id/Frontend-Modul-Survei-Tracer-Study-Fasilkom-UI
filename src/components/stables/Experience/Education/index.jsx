@@ -15,8 +15,8 @@ import { getUserId } from "../../../../modules/session/selectors";
 
 const useStyles = makeStyles({
   gridContainer: {
-    paddingTop: 24
-  }
+    paddingTop: 24,
+  },
 });
 
 function Education({ load, educations, userId }) {
@@ -35,7 +35,7 @@ function Education({ load, educations, userId }) {
           imgSrc={EmptyEducationImg}
           description="Belum berhasil mendapatkan data pendidikan anda di Fasilkom UI"
           ButtonProps={{
-            hidden: true
+            hidden: true,
           }}
         />
       )}
@@ -55,8 +55,14 @@ function Education({ load, educations, userId }) {
               <ExperienceItem
                 key={edu.id}
                 title={prettifyStudyProgram(edu.csuiProgram)}
-                subtitle={`${edu.isVerified ? "Verified" : "Not Verified"}`}
-                time={`${edu.uiSsoNpm} - Angkatan ${edu.csuiClassYear}`}
+                subtitle={`${
+                  edu.isVerified ? "Terverifikasi" : "Belum Terverifikasi"
+                }`}
+                time={`${edu.uiSsoNpm || "Belum ada NPM"} - Angkatan ${
+                  edu.csuiClassYear
+                } ${edu.csui_graduation_status
+                  ? ` - ${edu.csui_graduation_status}`
+                  : ""}`}
               />
             </Grid>
           ))}
@@ -69,11 +75,11 @@ function Education({ load, educations, userId }) {
 function createContainer() {
   const mapStateToProps = state => ({
     educations: getEducations(state),
-    userId: getUserId(state)
+    userId: getUserId(state),
   });
 
   const mapDispatchToProps = dispatch => ({
-    load: userId => dispatch(loadEducations(userId))
+    load: userId => dispatch(loadEducations(userId)),
   });
   return connect(
     mapStateToProps,
