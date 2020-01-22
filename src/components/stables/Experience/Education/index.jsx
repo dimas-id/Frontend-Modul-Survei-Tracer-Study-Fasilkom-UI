@@ -60,8 +60,8 @@ function Education({ load, educations, userId }) {
                 }`}
                 time={`${edu.uiSsoNpm || "Belum ada NPM"} - Angkatan ${
                   edu.csuiClassYear
-                } ${edu.csui_graduation_status
-                  ? ` - ${edu.csui_graduation_status}`
+                } ${edu.csuiGraduationStatus
+                  ? ` - ${edu.csuiGraduationStatus}`
                   : ""}`}
               />
             </Grid>
