@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-
+import { Link } from "react-router-dom"
 import { Guidelines } from "../../../styles";
 import { GROUPS } from "../../../modules/session";
 import {
@@ -95,10 +95,10 @@ const styles = theme => ({
     flex: 1,
     ...Guidelines.layouts.flexMiddleSpaceBetween,
     flexWrap: "wrap",
-    ...Guidelines.layouts.pt24,
+    ...Guidelines.layouts.pt16,
     ...Guidelines.layouts.pr24,
     ...Guidelines.layouts.pl24,
-    ...Guidelines.layouts.pb24,
+    ...Guidelines.layouts.pb16,
   },
 });
 
@@ -228,14 +228,30 @@ class HomePage extends React.Component {
           </div>
 
           <Grid container spacing={12}>
+            {!user.isCompleted && (
+              <Grid item xs={12} style={{ marginBottom: 12 }}>
+                <div className={classes.verifyContainer}>
+                  <Typography
+                    variant="body1"
+                    style={{ flexGrow: 1, marginBottom: 12 }}
+                  >
+                    Data diri Anda belum lengkap. Lakukan verifikasi segera dan
+                    lengkapi data di halaman <Link to={paths.USER_PROFILE}>Info Pribadi</Link>.
+                  </Typography>
+                </div>
+              </Grid>
+            )}
             {!user.isVerified && (
               <Grid item xs={12}>
                 <div className={classes.verifyContainer}>
-                  <Typography variant="body1" style={{ flexGrow: 1, marginBottom: 12 }}>
-                    Verifikasi sedang berjalan di belakang. Lakukan
-                    verifikasi ulang jika sistem gagal melakukan verifikasi
-                    setelah jangka waktu tertentu status Anda tidak berubah. Klik
-                    "Verifikasi Sekarang" untuk memulai verifikasi ulang.
+                  <Typography
+                    variant="body1"
+                    style={{ flexGrow: 1, marginBottom: 12 }}
+                  >
+                    Verifikasi sedang berjalan di belakang. Lakukan verifikasi
+                    ulang jika sistem gagal melakukan verifikasi setelah jangka
+                    waktu tertentu status Anda tidak berubah. Klik "Verifikasi
+                    Sekarang" untuk memulai verifikasi ulang.
                   </Typography>
                   <Button
                     color="primary"
