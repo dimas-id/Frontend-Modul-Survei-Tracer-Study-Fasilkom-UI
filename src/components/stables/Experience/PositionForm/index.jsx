@@ -18,6 +18,7 @@ import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 
+import { humanizeError } from "../../../../libs/response";
 import Select from "../../../Select";
 
 import { getDateFormatted } from "../../../../libs/datetime";
@@ -80,7 +81,7 @@ function PositionForm({
   updatePos,
   deletePos,
 }) {
-  function submit(values, { setSubmitting }) {
+  function submit(values, { setSubmitting, setErrors }) {
     const payload = { ...omit(values, [FIELDS.isCurrent]) };
     payload[FIELDS.dateStarted] = getDateFormatted(values[FIELDS.dateStarted]);
     if (!values[FIELDS.isCurrent]) {
@@ -93,7 +94,12 @@ function PositionForm({
     const params = update ? [positionId, payload] : [payload];
     submitAction(...params)
       .then(afterSubmit)
-      .catch(e => e)
+      .catch(e => {
+        if (e.response) {
+          const readable = humanizeError(e.response.data, Object.keys(FIELDS));
+          setErrors(readable);
+        }
+      })
       .finally(() => {
         setSubmitting(false);
       });

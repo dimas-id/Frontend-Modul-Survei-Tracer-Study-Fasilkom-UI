@@ -31,6 +31,12 @@ export const createPositions = positionData => {
       );
       return resp;
     } catch (error) {
+      await dispatch(
+        utility.enqueueSnackbar(
+          "Gagal membuat riwayat posisi pekerjaan baru",
+          { variant: "error" }
+        )
+      );
       throw error;
     }
   };
@@ -54,6 +60,12 @@ export const updateWorkPositionById = (positionId, positionData) => {
       );
       return resp;
     } catch (error) {
+      await dispatch(
+        utility.enqueueSnackbar(
+          "Gagal memperbarui riwayat posisi pekerjaan baru",
+          { variant: "error" }
+        )
+      );
       throw error;
     }
   };
@@ -72,6 +84,12 @@ export const deleteWorkPositionById = positionId => {
       await dispatch(loadPositions(userId));
       return resp;
     } catch (error) {
+      await dispatch(
+        utility.enqueueSnackbar(
+          "Gagal menghapus riwayat posisi pekerjaan baru",
+          { variant: "error" }
+        )
+      );
       throw error;
     }
   };
