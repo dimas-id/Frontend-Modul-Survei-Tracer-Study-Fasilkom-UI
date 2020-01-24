@@ -327,7 +327,7 @@ class NavbarAuth extends React.Component {
     const { classes, title, position, isLoggedIn } = this.props;
     return (
       <AppBar position={position} className={classes.appbar}>
-        <Toolbar>
+        <Toolbar disableGutters>
           <Button
             component={Link}
             to={isLoggedIn ? paths.HOME : paths.LANDING}

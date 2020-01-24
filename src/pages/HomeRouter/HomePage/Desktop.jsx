@@ -38,8 +38,8 @@ const styles = theme => ({
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.flexMiddle,
     ...Guidelines.layouts.pt32,
-    ...Guidelines.layouts.pr32,
-    ...Guidelines.layouts.pl32,
+    ...Guidelines.layouts.pr24,
+    ...Guidelines.layouts.pl24,
     ...Guidelines.layouts.pb32,
   },
   roleInfo: {

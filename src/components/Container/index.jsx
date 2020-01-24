@@ -23,7 +23,7 @@ const containerStyles = theme => ({
     position: "relative",
     padding: "0px 32px",
     [theme.breakpoints.down("sm")]: {
-      padding: "0px 20px",
+      padding: "0px 16px",
       overflowX: "hidden"
     },
   }

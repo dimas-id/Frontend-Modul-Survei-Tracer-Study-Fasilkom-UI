@@ -69,7 +69,7 @@ function Field(props) {
           </Typography>
         </Grid>
         <Grid item xs={9} sm={9}>
-          <Typography className={classes.value} component="p">
+          <Typography className={classes.value} component="p" noWrap>
             {props.value || "-"}
           </Typography>
         </Grid>
