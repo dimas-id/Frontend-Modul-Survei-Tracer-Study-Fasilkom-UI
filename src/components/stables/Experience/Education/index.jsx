@@ -4,7 +4,7 @@ import isEmpty from "lodash/isEmpty";
 import { makeStyles } from "@material-ui/styles";
 import Grid from "@material-ui/core/Grid";
 
-import EmptyState from "../EmptyState";
+import EmptyState from "../../../EmptyState";
 import ExperienceItem from "../ExperienceItem";
 import EmptyEducationImg from "../../../../assets/states/EmptyEducation.svg";
 import { prettifyStudyProgram } from "../../../../libs/studyProgram";

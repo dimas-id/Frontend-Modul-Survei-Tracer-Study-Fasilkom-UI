@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -13,10 +12,11 @@ import { Guidelines } from "../../../styles";
 import heliosV1 from "../../../modules/api/helios/v1";
 import { authorize, ROLES } from "../../../components/hocs/auth";
 import { LoadingFill } from "../../../components/Loading";
-
+import EmptyState from "../../../components/EmptyState";
 import { makePathVariableUri } from "../../../libs/navigation";
 import paths from "../../../pages/paths";
 
+import EmptyChannelImg from "../../../assets/states/EmptyChannel.svg";
 import ChannelCard from "./ChannelCard";
 
 const styles = theme => ({
@@ -58,30 +58,6 @@ class Screen extends React.Component {
     isLoading: true,
   };
 
-  renderListChannel() {
-    const { listChannel } = this.state;
-
-    return (
-      <React.Fragment>
-        {listChannel.map(channel => (
-          <Grid item xs={4}>
-            <Link
-              to={makePathVariableUri(paths.CHANNEL_CHANT, {
-                channelId: channel.id,
-              })}
-            >
-              <ChannelCard
-                key={channel.id}
-                title={channel.title}
-                coverImgUrl={channel.coverImgUrl}
-              />
-            </Link>
-          </Grid>
-        ))}
-      </React.Fragment>
-    );
-  }
-
   componentDidMount() {
     heliosV1.channel
       .getListChannel()
@@ -93,6 +69,38 @@ class Screen extends React.Component {
       });
   }
 
+  renderListChannel() {
+    const { listChannel } = this.state;
+
+    return (
+      <React.Fragment>
+        {listChannel &&
+          listChannel.map(channel => (
+            <Grid item xs={4}>
+              <Link
+                to={makePathVariableUri(paths.CHANNEL_CHANT, {
+                  channelId: channel.id,
+                })}
+              >
+                <ChannelCard
+                  key={channel.id}
+                  title={channel.title}
+                  coverImgUrl={channel.coverImgUrl}
+                />
+              </Link>
+            </Grid>
+          ))}
+        {(!listChannel || listChannel.length < 1) && (
+          <EmptyState
+            imgSrc={EmptyChannelImg}
+            description="Belum ada channel yang tersedia. Silahkan ajukan pembuatan channel baru"
+            ButtonProps={{ href: paths.CHANNEL_REQUEST }}
+          />
+        )}
+      </React.Fragment>
+    );
+  }
+
   render() {
     const { classes } = this.props;
     const { isLoading } = this.state;
@@ -102,26 +110,15 @@ class Screen extends React.Component {
         <Typography className={classes.title} variant="h5" component="h3">
           Daftar Channel
         </Typography>
-        <Grid container spacing={12}>
-          {isLoading ? <LoadingFill /> : this.renderListChannel()}
-        </Grid>
+        {isLoading ? <LoadingFill /> : this.renderListChannel()}
       </Paper>
     );
   }
 }
 
 function createContainer() {
-  const mapStateToProps = state => ({});
-
-  const mapDispatchToProps = dispatch => ({});
-
   return authorize({ mustVerified: true, roles: [ROLES.PUBLIC] })(
-    withRouter(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(withStyles(styles)(Screen))
-    )
+    withRouter(withStyles(styles)(Screen))
   );
 }
 

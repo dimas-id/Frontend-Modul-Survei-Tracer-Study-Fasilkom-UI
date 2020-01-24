@@ -5,15 +5,19 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 
 import { withAuth } from "../../../components/hocs/auth";
-import { Container } from "../../../components/Container";
 import ChantCard from "../../../components/stables/Chant";
 import EndCard from "../../../components/stables/EndCard";
 import { LoadingFill } from "../../../components/Loading";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 
+import EmptyState from "../../../components/EmptyState";
+import paths from "../../../pages/paths";
 import { Guidelines } from "../../../styles";
 
 import { getUser } from "../../../modules/session/selectors";
 import heliosV1 from "../../../modules/api/helios/v1";
+import EmptyChannelImg from "../../../assets/states/EmptyChannel.svg";
 
 const styles = theme => ({
   card: {
@@ -55,7 +59,7 @@ class Screen extends React.Component {
       });
   };
 
-  handleDelete = (userId, chantId, channelId) => {
+  handleDelete = (userId, chantId) => {
     window.alertDialog(
       "Konfirmasi Penghapusan", //title
       "Apakah anda yakin Chant ini?",
@@ -65,13 +69,14 @@ class Screen extends React.Component {
           .then(() => {
             this.loadChant();
             window.notifySnackbar("Chant berhasil dihapus", {
-              variant: "success"
+              variant: "success",
             });
           })
-          .catch(() => window.notifySnackbar("Chant tidak dapat dihapus", {
-            variant: "warning"
-          })
-          )
+          .catch(() =>
+            window.notifySnackbar("Chant tidak dapat dihapus", {
+              variant: "warning",
+            })
+          );
       },
       () => null
     );
@@ -81,48 +86,49 @@ class Screen extends React.Component {
     const { listChantUser } = this.state;
     const { classes } = this.props;
 
+    const isNotEmpty = listChantUser && listChantUser.length > 0;
     return (
       <React.Fragment>
-        {listChantUser.map(chant => (
-          <div className={classes.card}>
-            <ChantCard
-              key={chant.id}
-              dateCreated={chant.dateCreated}
-              numberLikes={chant.numberLikes}
-              title={chant.title}
-              body={chant.body}
-              channel={chant.channel}
-              id={chant.id}
-              author={chant.author}
-              overflow="hidden"
-              max="64px"
-              deleted={Boolean(chant.dateDeleted)}
-              numberChildrens={chant.numberChildrens}
-              onDelete={this.handleDelete}
-              hasLiked={chant.hasLikedByCurrentUser}
-            />
-          </div>
-        ))}
+        {isNotEmpty &&
+          listChantUser.map(chant => (
+            <div className={classes.card}>
+              <ChantCard
+                key={chant.id}
+                dateCreated={chant.dateCreated}
+                numberLikes={chant.numberLikes}
+                title={chant.title}
+                body={chant.body}
+                channel={chant.channel}
+                id={chant.id}
+                author={chant.author}
+                overflow="hidden"
+                max="64px"
+                deleted={Boolean(chant.dateDeleted)}
+                numberChildrens={chant.numberChildrens}
+                onDelete={this.handleDelete}
+                hasLiked={chant.hasLikedByCurrentUser}
+              />
+            </div>
+          ))}
+        {isNotEmpty && <EndCard marginLeft="64" />}
+        {!isNotEmpty && (
+          <Card>
+            <CardContent>
+              <EmptyState
+                imgSrc={EmptyChannelImg}
+                description="Anda belum membuat chant. Buat chant baru?"
+                ButtonProps={{ href: paths.CHANNEL_CHANT_CREATE }}
+              />
+            </CardContent>
+          </Card>
+        )}
       </React.Fragment>
     );
   }
 
   render() {
-    const { classes } = this.props;
     const { isLoading } = this.state;
-
-    return (
-      <Container className={classes.root}>
-        {isLoading ? (
-          <LoadingFill />
-        ) : (
-          <React.Fragment>
-            {this.renderChantUser()}
-            <EndCard marginLeft="64" />
-          </React.Fragment>
-        )}
-      </Container>
-    );
+    return isLoading ? <LoadingFill /> : this.renderChantUser();
   }
 }
 
@@ -130,16 +136,8 @@ function createContainer() {
   const mapStateToProps = state => ({
     user: getUser(state),
   });
-
-  const mapDispatchToProps = dispatch => ({});
-
   return withAuth(
-    withRouter(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(withStyles(styles)(Screen))
-    )
+    withRouter(connect(mapStateToProps)(withStyles(styles)(Screen)))
   );
 }
 

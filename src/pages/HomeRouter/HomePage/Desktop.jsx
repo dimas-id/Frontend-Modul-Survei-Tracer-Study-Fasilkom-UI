@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import { Guidelines } from "../../../styles";
 import { GROUPS } from "../../../modules/session";
 import {
@@ -236,7 +236,9 @@ class HomePage extends React.Component {
                     style={{ flexGrow: 1, marginBottom: 12 }}
                   >
                     Data diri Anda belum lengkap. Lakukan verifikasi segera dan
-                    lengkapi data di halaman <Link to={paths.USER_PROFILE}>Info Pribadi</Link>.
+                    lengkapi data di halaman{" "}
+                    <Link to={paths.USER_PROFILE}>Info Pribadi</Link> untuk
+                    menggunakan fitur-fitur di ILUNI12 Channel.
                   </Typography>
                 </div>
               </Grid>
