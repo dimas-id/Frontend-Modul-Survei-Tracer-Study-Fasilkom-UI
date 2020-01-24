@@ -28,8 +28,10 @@ import ChannelComponent from "./ListChannelPage";
 import Timeline from "./Timeline";
 
 import { layouts } from "../../styles/guidelines";
-
+import { makePathVariableUri } from "../../libs/navigation";
 import heliosV1 from "../../modules/api/helios/v1";
+import { LoadingFill } from "../../components/Loading";
+import paths from "../../pages/paths";
 
 const styles = theme => ({
   container: {
@@ -74,6 +76,32 @@ const ROUTES = [
   },
 ];
 
+function getRoutes(user) {
+  return ROUTES.map(r => {
+    if (r.route.path.includes(":username")) {
+      const route = {
+        ...r.route,
+      };
+      route.path = makePathVariableUri(route.path, {
+        username: user.username,
+      });
+      const menu = {
+        ...r.menu,
+      };
+      menu.path = makePathVariableUri(menu.path, {
+        username: user.username,
+      });
+
+      return {
+        ...r,
+        route,
+        menu,
+      };
+    }
+    return r;
+  });
+}
+
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
@@ -98,8 +126,7 @@ class Screen extends React.Component {
     const { numberOfChants } = this.state;
     return (
       <HeaderComponent
-        firstName={user.firstName}
-        lastName={user.lastName}
+        title={user.name}
         profilePicUrl={user.profile.profilePicUrl}
         numberOfChants={numberOfChants}
       />
@@ -107,20 +134,20 @@ class Screen extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { user, classes } = this.props;
     const { isLoading } = this.state;
     return (
       <React.Fragment>
         <NavbarAuth />
-        <NavbarBackWithChannelRequest />
+        <NavbarBackWithChannelRequest ButtonProps={{ href: paths.HOME }} />
         <Particle name="cloud2" left={0} top={160} />
         <Particle name="cloud1" right={0} bottom={160} />
         <Container className={classes.container}>
           {isLoading ? (
-            ""
+            <LoadingFill />
           ) : (
             <RouterWithMenu
-              paths={ROUTES}
+              paths={getRoutes(user)}
               MenuHeaderComponent={this.renderHeader}
             />
           )}
@@ -136,15 +163,8 @@ function createContainer() {
     user: getUser(state),
   });
 
-  const mapDispatchToProps = dispatch => ({});
-
   return withAuth(
-    withRouter(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(withStyles(styles)(Screen))
-    )
+    withRouter(connect(mapStateToProps)(withStyles(styles)(Screen)))
   );
 }
 

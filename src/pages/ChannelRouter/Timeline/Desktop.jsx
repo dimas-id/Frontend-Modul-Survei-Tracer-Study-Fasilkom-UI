@@ -5,58 +5,61 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 
 import { withAuth } from "../../../components/hocs/auth";
-import { Container } from "../../../components/Container";
 import ChantCard from "../../../components/stables/Chant";
 import EndCard from "../../../components/stables/EndCard";
 import { LoadingFill } from "../../../components/Loading";
+
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 
 import { Guidelines } from "../../../styles";
 
 import { getUser } from "../../../modules/session/selectors";
 import heliosV1 from "../../../modules/api/helios/v1";
-
+import EmptyState from "../../../components/EmptyState";
+import paths from "../../../pages/paths";
+import EmptyChannelImg from "../../../assets/states/EmptyChannel.svg";
 
 const styles = theme => ({
   card: {
     ...Guidelines.layouts.ml64,
-    ...Guidelines.layouts.mb8
+    ...Guidelines.layouts.mb8,
   },
   chantWrapper: {
     maxHeight: 64,
     lineHeight: 64,
     overflow: "hidden",
-    textOverflow: "ellipsis"
+    textOverflow: "ellipsis",
   },
   actions: {
     display: "flex",
     ...Guidelines.layouts.flexDirCol,
-    alignItems: "flex-start"
-  }
+    alignItems: "flex-start",
+  },
 });
 
 class Screen extends React.Component {
   state = {
     listChant: null,
-    isLoading: true
-  }
+    isLoading: true,
+  };
 
   componentDidMount() {
-    this.loadChant()
+    this.loadChant();
   }
 
   loadChant = () => {
     heliosV1.channel
       .getTimeline()
       .then(result => {
-        this.setState({ listChant: result.data.results })
+        this.setState({ listChant: result.data.results });
       })
       .finally(() => {
-        this.setState({ isLoading: false })
-      }
-    )
+        this.setState({ isLoading: false });
+      });
   };
 
-  handleDelete = (userId, chantId, channelId) => {
+  handleDelete = (userId, chantId) => {
     window.alertDialog(
       "Konfirmasi Penghapusan", //title
       "Apakah anda yakin Chant ini?",
@@ -66,81 +69,74 @@ class Screen extends React.Component {
           .then(() => {
             this.loadChant();
             window.notifySnackbar("Chant berhasil dihapus", {
-              variant: "success"
+              variant: "success",
             });
           })
-          .catch(() => window.notifySnackbar("Chant tidak dapat dihapus", {
-            variant: "warning"
-          })
+          .catch(() =>
+            window.notifySnackbar("Chant tidak dapat dihapus", {
+              variant: "warning",
+            })
           );
       },
       () => null
     );
   };
-  
+
   renderChantTimeline() {
     const { listChant } = this.state;
     const { classes } = this.props;
-
-    return(
+    const isNotEmpty = listChant && listChant.length > 0;
+    return (
       <React.Fragment>
-        {listChant.map(chant => (
-        <div className={classes.card}>
-          <ChantCard
-            key={chant.id}
-            dateCreated={chant.dateCreated}
-            numberLikes={chant.numberLikes}
-            title={chant.title}
-            body={chant.body}
-            channel={chant.channel}
-            id={chant.id}
-            author={chant.author}
-            overflow="hidden"
-            max="64px"
-            deleted={Boolean(chant.dateDeleted)}
-            numberChildrens={chant.numberChildrens}
-            hasLiked={chant.hasLikedByCurrentUser}
-            onDelete={this.handleDelete}
-          />
-        </div>
-      ))}
+        {isNotEmpty &&
+          listChant.map(chant => (
+            <div className={classes.card}>
+              <ChantCard
+                key={chant.id}
+                dateCreated={chant.dateCreated}
+                numberLikes={chant.numberLikes}
+                title={chant.title}
+                body={chant.body}
+                channel={chant.channel}
+                id={chant.id}
+                author={chant.author}
+                overflow="hidden"
+                max="64px"
+                deleted={Boolean(chant.dateDeleted)}
+                numberChildrens={chant.numberChildrens}
+                hasLiked={chant.hasLikedByCurrentUser}
+                onDelete={this.handleDelete}
+              />
+            </div>
+          ))}
+        {isNotEmpty && <EndCard marginLeft="64" />}
+        {!isNotEmpty && (
+          <Card>
+            <CardContent>
+              <EmptyState
+                imgSrc={EmptyChannelImg}
+                description="Belum ditemukan chant dari channel yang telah di-subscribe. Buat chant baru?"
+                ButtonProps={{ href: paths.CHANNEL_CHANT_CREATE }}
+              />
+            </CardContent>
+          </Card>
+        )}
       </React.Fragment>
     );
   }
 
   render() {
-    const { classes } = this.props;
     const { isLoading } = this.state;
-
-  return (
-    <Container className={classes.root}>
-      {isLoading ? (
-          <LoadingFill />
-        ) : (
-          <React.Fragment>
-            {this.renderChantTimeline()}
-            <EndCard marginLeft="64" />
-          </React.Fragment>
-        )}
-    </Container>
-  );
+    return isLoading ? <LoadingFill /> : this.renderChantTimeline();
   }
 }
 
 function createContainer() {
   const mapStateToProps = state => ({
-    user: getUser(state)
+    user: getUser(state),
   });
-
-  const mapDispatchToProps = dispatch => ({});
-
   return withAuth(
-    withRouter(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(withStyles(styles)(Screen))
-    )
+    withRouter(connect(mapStateToProps)(withStyles(styles)(Screen)))
   );
 }
 

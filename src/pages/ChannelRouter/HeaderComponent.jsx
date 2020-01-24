@@ -4,30 +4,14 @@ import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
-
+import Typography from "@material-ui/core/Typography";
 import { Guidelines } from "../../styles";
-
 
 const styles = theme => ({
   card: {
     ...Guidelines.layouts.mb8,
-    ...Guidelines.layouts.pr24,
-    ...Guidelines.layouts.pl24,
-    ...Guidelines.layouts.pt24,
-    ...Guidelines.layouts.pb24,
-    ...Guidelines.layouts.borderBox
+    ...Guidelines.layouts.borderBox,
   },
-  chantWrapper: {
-    maxHeight: 64,
-    lineHeight: 64,
-    overflow: "hidden",
-    textOverflow: "ellipsis"
-  },
-  actions: {
-      display: "flex",
-      ...Guidelines.layouts.flexDirCol,
-      alignItems: "flex-start"
-  }
 });
 
 export default withStyles(styles)(function(props) {
@@ -36,10 +20,14 @@ export default withStyles(styles)(function(props) {
     <Card className={classes.card}>
       <CardHeader
         avatar={
-          <Avatar alt={props.name} src={props.profilePicUrl} className={classes.avatar} />
+          <Avatar
+            alt={props.title}
+            src={props.profilePicUrl}
+            className={classes.avatar}
+          />
         }
-        title={props.firstName +" "+ props.lastName}
-        subheader={ props.numberOfChants ? (props.numberOfChants + " Chants" ): props.dateCreated}
+        title={<Typography variant="h6">{props.title}</Typography>}
+        subheader={props.numberOfChants + " Chants"}
       />
     </Card>
   );
