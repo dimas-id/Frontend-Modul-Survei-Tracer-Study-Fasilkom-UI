@@ -9,7 +9,7 @@ services:
             - './:/app'
             - '/app/node_modules'
         ports:
-            - '3000:3000'
+            - '3113:3113'
         restart: unless-stopped
         environment:
             - NODE_ENV=development
