@@ -23,11 +23,11 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  // "husky": {
-  //   "hooks": {
-  //     "pre-commit": "yarn lint"
-  //   }
-  // },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
