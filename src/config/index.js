@@ -12,7 +12,7 @@ window.deprecationWarning =
 
 const developmentConstants = () => {
   const env = {
-    ATLAS: "http://localhost:8000",
+    ATLAS: "https://atlas-iluni12.cs.ui.ac.id",
     HELIOS: "http://localhost:8004"
   };
   console.log("--- b3: development environment ---");

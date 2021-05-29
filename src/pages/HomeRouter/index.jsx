@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import HomeOutlined from "@material-ui/icons/HomeOutlined";
 import ContactMail from "@material-ui/icons/ContactMailOutlined";
 import ToggleOff from "@material-ui/icons/ToggleOffOutlined";
+import HowToVoteIcon from '@material-ui/icons/HowToVote';
 
 import { authorize } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
@@ -18,6 +19,7 @@ import paths from "../paths";
 import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
 import PreferencePage from "./PreferencePage";
+import IframePage from "./IframePage";
 
 const styles = theme => ({
   container: {
@@ -41,6 +43,18 @@ const ROUTES = [
       exact: true,
       path: paths.LANDING,
       component: HomePage
+    }
+  },
+  {
+    title: "Voting Menu Title",
+    menu: {
+      Icon: HowToVoteIcon,
+      path: paths.USER_VOTING
+    },
+    route: {
+      exact: true,
+      path: paths.VOTING,
+      component: IframePage
     }
   },
   {
