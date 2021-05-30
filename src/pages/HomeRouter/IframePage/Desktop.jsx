@@ -66,38 +66,20 @@ openVerificationDialog = isUserDataComplete => {
   
 render() {
   const { classes, user, userAccessToken, educations } = this.props;
-  if (educations && user && user.isVerified ) {
-    const URL = `https://form.jotform.com/211491957699070?email=${user.email}&name=${user.name}&npm=${educations[0].uiSsoNpm}&token=${userAccessToken}`
+  const URL = `https://form.jotform.com/211491957699070?email=${user.email}&name=${user.name}&npm=${educations[0].uiSsoNpm}&token=${userAccessToken}`
+  if (educations && user && user.isVerified) {
     return (
-      
       <React.Fragment>
           <Typography className={classes.title} variant="h5" component="h3">
             Voting Bakal Calon Ketua Iluni12
           </Typography>      
-          {/* <Typography className={classes.subtitle} component="p">
-            Voting Page Subtitle
-          </Typography> */}
-      <JotformEmbed src={URL} />
-      </React.Fragment>
+
+      <JotformEmbed src={URL} /> 
+      </React.Fragment> 
   );
   }
-      return (
+  return (
       <React.Fragment>
-            {!user.isCompleted && (
-              <Grid item xs={12} style={{ marginBottom: 12 }}>
-                <div className={classes.verifyContainer}>
-                  <Typography
-                    variant="body1"
-                    style={{ flexGrow: 1, marginBottom: 12 }}
-                  >
-                    Data diri Anda belum lengkap. Lakukan verifikasi segera dan
-                    lengkapi data di halaman{" "}
-                    <Link to={paths.USER_PROFILE}>Info Pribadi</Link> untuk
-                    menggunakan fitur-fitur di ILUNI12 Channel.
-                  </Typography>
-                </div>
-              </Grid>
-            )}
             {!user.isVerified && (
               <Grid item xs={12}>
                 <div className={classes.verifyContainer}>
@@ -105,7 +87,8 @@ render() {
                     variant="body1"
                     style={{ flexGrow: 1, marginBottom: 12 }}
                   >
-                    Verifikasi sedang berjalan di belakang. Lakukan verifikasi
+                    Anda belum terverifikasi. Pastikan data diri anda lengkap di halaman {" "}
+                    <Link to={paths.USER_PROFILE}>Info Pribadi</Link>. Lakukan verifikasi
                     ulang jika sistem gagal melakukan verifikasi setelah jangka
                     waktu tertentu status Anda tidak berubah. Klik "Verifikasi
                     Sekarang" untuk memulai verifikasi ulang.
