@@ -27,8 +27,8 @@ export const loadVotingResult = () => {
   return async (dispatch, _) => {
     try {
       const client = new GoogleSheetsClient();
-      console.log(client)
-      let data = await client.get('719906430')
+      console.log("masuk sokin broooo")
+      let data = await client.get(0)
       await dispatch(sessionActions.setVotingResult(data))
       return data
     } catch(err) {

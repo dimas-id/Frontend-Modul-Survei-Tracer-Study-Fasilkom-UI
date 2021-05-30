@@ -46,27 +46,29 @@ class IframePage extends React.Component {
     // let data = await client.get('0')
     // console.log(data)
     const { classes, chartData } = this.props;
+    console.log("chartData", chartData)
     return (
     <React.Fragment>
       <Typography className={classes.title} variant="h5" component="h3">
         Hasil Voting Kandidat Ketua Iluni
       </Typography>
+      {chartData && 
+        <Paper className={classes.paper} elevation={1}>
+          
+          <Chart
+            data={chartData}
+          >
+            <ArgumentAxis />
+            <ValueAxis max={7} />
 
-      <Paper className={classes.paper} elevation={1}>
-        
-        <Chart
-          data={chartData}
-        >
-          <ArgumentAxis />
-          <ValueAxis max={7} />
-
-          <BarSeries
-            valueField="population"
-            argumentField="year"
-          />
-          <Animation />
-        </Chart>
-      </Paper>
+            <BarSeries
+              valueField="population"
+              argumentField="year"
+            />
+            <Animation />
+          </Chart>
+        </Paper>
+      }
     </React.Fragment>
     );
   }

@@ -27,12 +27,7 @@ export function selectCurrentUserGroups(state) {
 }
 
 export function getVotingResult(state) {
-  // console.log(state)
-  return [
-    {
-      id: 1000,
-      year: 3
-    }
-  ]
-  // return get(state, "sheets")
+  // return ["aasdasdass"]
+  console.log(state)
+  return get(state, "session.votingResult")
 }

@@ -60,6 +60,7 @@ export function sessionReducer(state, action) {
       };
     case SET_VOTING_RESULT:
       return {
+        ...state,
         votingResult: action.payload
       }
     default:

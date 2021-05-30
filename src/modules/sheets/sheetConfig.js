@@ -17,7 +17,25 @@ export default class GoogleSheetsClient {
       });
       await this.client.loadInfo();
       const sheet = this.client.sheetsById[sheet_id];
-      return await sheet.getRows();
+      const data = await sheet.getRows();
+      const result = []  
+      data.forEach(element => {
+        result.push({
+          year: element["Nama"],
+          population: Number.parseInt(element["Jumlah Pemilih"])
+        })
+      })
+      // const result = [
+      //   { year: '1950', population: 2.525 },
+      //   { year: '1960', population: 3.018 },
+      //   { year: '1970', population: 3.682 },
+      //   { year: '1980', population: 4.440 },
+      //   { year: '1990', population: 5.310 },
+      //   { year: '2000', population: 6.127 },
+      //   { year: '2010', population: 6.930 },
+      // ]
+      console.log("asdasdasdas", result)
+      return result
     } catch (e) {
       console.error("Error: ", e);
     }
