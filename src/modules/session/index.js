@@ -23,10 +23,12 @@ const CLEAR_TOKEN = "session/CLEAR_TOKEN";
 const SET_USER = "session/SET_USER";
 const CLEAR_USER = "session/CLEAR_USER";
 const CLEAR_SESSION = "session/CLEAR_SESSION";
+const SET_VOTING_RESULT = "sheets/SET_VOTING_RESULT"
 
 const INITIAL_STATE = {
   token: undefined,
-  user: undefined
+  user: undefined,
+  votingResult: undefined
 };
 
 export function sessionReducer(state, action) {
@@ -56,6 +58,10 @@ export function sessionReducer(state, action) {
         token: null,
         user: null
       };
+    case SET_VOTING_RESULT:
+      return {
+        votingResult: action.payload
+      }
     default:
       return state || INITIAL_STATE;
   }
@@ -82,6 +88,11 @@ export const sessionActions = Object.freeze({
 
   clearSession: () => ({
     type: CLEAR_SESSION
+  }),
+
+  setVotingResult: votingResult => ({
+    type: SET_VOTING_RESULT,
+    payload: votingResult
   })
 });
 

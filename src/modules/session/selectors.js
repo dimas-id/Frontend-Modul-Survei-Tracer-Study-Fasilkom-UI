@@ -25,3 +25,14 @@ export function isLoggedIn(state) {
 export function selectCurrentUserGroups(state) {
   return get(getUser(state), "groups");
 }
+
+export function getVotingResult(state) {
+  // console.log(state)
+  return [
+    {
+      id: 1000,
+      year: 3
+    }
+  ]
+  // return get(state, "sheets")
+}

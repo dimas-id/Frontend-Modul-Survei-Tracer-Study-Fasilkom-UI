@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Guidelines } from "../../../styles";
 import JotformEmbed from 'react-jotform-embed';
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
-import { loadEducations } from "../../../modules/experience/thunks";
-import GoogleSheetsClient from "../../../modules/api/sheets";
-import { getEducations } from "../../../modules/experience/selectors";
 import {
   getUser
 } from "../../../modules/session/selectors";
@@ -19,6 +16,8 @@ import {
   ValueAxis,
 } from '@devexpress/dx-react-chart-material-ui';
 import { Animation } from '@devexpress/dx-react-chart';
+import { getVotingResult } from '../../../modules/session/selectors'
+import { loadVotingResult } from '../../../modules/session/thunks'
 
 const styles = () => ({
   paper: {
@@ -74,24 +73,20 @@ class IframePage extends React.Component {
 }
 
 function createContainer() {
+
   const mapStateToProps = state => ({
-    chartData: [
-      { year: '1950', population: 2.525 },
-      { year: '1960', population: 3.018 },
-      { year: '1970', population: 3.682 },
-      { year: '1980', population: 4.440 },
-      { year: '1990', population: 5.310 },
-      { year: '2000', population: 6.127 },
-      { year: '2010', population: 6.930 },
-    ],
+    chartData: getVotingResult(state)
   });
 
+  console.log("aknsvdajknsvdjkasvkbdjvakshjdvajk")
   const mapDispatchToProps = dispatch => ({
-    load: data => dispatch(loadEducations(user.id)),
+    load: dispatch(loadVotingResult()),
   });
+  console.log("kmbkbkbkmbkbkjbk")
 
   return connect(
     mapStateToProps,
+    mapDispatchToProps,
     )(withStyles(styles)(IframePage));
 }
 
