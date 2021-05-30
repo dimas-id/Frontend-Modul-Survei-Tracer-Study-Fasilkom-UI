@@ -46,7 +46,7 @@ const ROUTES = [
     }
   },
   {
-    title: "Voting Menu Title",
+    title: "Voting Alumni",
     menu: {
       Icon: HowToVoteIcon,
       path: paths.USER_VOTING

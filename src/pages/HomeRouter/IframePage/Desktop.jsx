@@ -40,11 +40,11 @@ render() {
       
       <React.Fragment>
           <Typography className={classes.title} variant="h5" component="h3">
-            Voting Page Title 
+            Voting Bakal Calon Ketua Iluni12
           </Typography>      
-          <Typography className={classes.subtitle} component="p">
+          {/* <Typography className={classes.subtitle} component="p">
             Voting Page Subtitle
-          </Typography>
+          </Typography> */}
       <JotformEmbed src={URL} />
       </React.Fragment>
   );
@@ -52,8 +52,9 @@ render() {
       return (
       <React.Fragment>
           <Typography className={classes.title} variant="h5" component="h3">
-            User Not Verified
+            Anda belum terverifikasi
           </Typography>      
+          {/* TODO: Copy component informasi belum terverifikasi */}
       </React.Fragment>
   );
 }
