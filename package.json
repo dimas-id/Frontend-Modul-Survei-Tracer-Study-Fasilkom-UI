@@ -50,6 +50,7 @@
     "classnames": "^2.2.6",
     "connected-react-router": "^6.3.2",
     "formik": "^1.5.1",
+    "google-spreadsheet": "^3.1.15",
     "history": "^4.9.0",
     "js-cookie": "^2.2.0",
     "keymirror": "^0.1.1",

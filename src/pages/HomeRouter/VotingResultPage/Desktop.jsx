@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Guidelines } from "../../../styles";
 import JotformEmbed from 'react-jotform-embed';
@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { loadEducations } from "../../../modules/experience/thunks";
+import GoogleSheetsClient from "../../../modules/api/sheets";
 import { getEducations } from "../../../modules/experience/selectors";
 import {
   getUser
@@ -42,7 +43,9 @@ const styles = () => ({
 class IframePage extends React.Component {
   
   render() {
-
+    // const client = new GoogleSheetsClient();
+    // let data = await client.get('719906430')
+    // console.log(data)
     const { classes, chartData } = this.props;
     return (
     <React.Fragment>
@@ -81,6 +84,10 @@ function createContainer() {
       { year: '2000', population: 6.127 },
       { year: '2010', population: 6.930 },
     ],
+  });
+
+  const mapDispatchToProps = dispatch => ({
+    load: data => dispatch(loadEducations(user.id)),
   });
 
   return connect(

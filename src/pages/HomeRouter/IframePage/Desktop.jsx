@@ -8,8 +8,14 @@ import { withStyles } from "@material-ui/core/styles";
 import { loadEducations } from "../../../modules/experience/thunks";
 import { getEducations } from "../../../modules/experience/selectors";
 import {
-  getUser
+  getUser,
+  getUserAccessToken
 } from "../../../modules/session/selectors";
+import amber from "@material-ui/core/colors/amber";
+import paths from "../../paths";
+import { Link } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
 const styles = () => ({
   paper: {
@@ -28,14 +34,40 @@ const styles = () => ({
     ...Guidelines.layouts.mb48,
     fontSize: 20
   },
+  verifyContainer: {
+    backgroundColor: amber[100],
+    flex: 1,
+    ...Guidelines.layouts.flexMiddleSpaceBetween,
+    flexWrap: "wrap",
+    ...Guidelines.layouts.pt16,
+    ...Guidelines.layouts.pr24,
+    ...Guidelines.layouts.pl24,
+    ...Guidelines.layouts.pb16,
+  },
 });
 
 class IframePage extends React.Component {
+
+openVerificationDialog = isUserDataComplete => {
+    const title = !isUserDataComplete ? "Lengkapi Akun" : "Verifikasi Akun";
+    const description = !isUserDataComplete
+      ? "Apakah anda ingin lengkapi akun anda sekarang?"
+      : "Apakah anda ingin verifikasi akun anda sekarang?";
+    window.alertDialog(
+      title,
+      description,
+      () => {
+        this.props.history.push(paths.USER_VERIFY);
+      },
+      () => null
+    );
+  };
+
   
 render() {
-  const { classes, user, educations } = this.props;
+  const { classes, user, userAccessToken, educations } = this.props;
   if (educations && user && user.isVerified ) {
-    const URL = `https://form.jotform.com/211483360465050?email=${user.email}&name=${user.name}&npm=${educations[0].uiSsoNpm}`
+    const URL = `https://form.jotform.com/211491957699070?email=${user.email}&name=${user.name}&npm=${educations[0].uiSsoNpm}&token=${userAccessToken}`
     return (
       
       <React.Fragment>
@@ -51,11 +83,44 @@ render() {
   }
       return (
       <React.Fragment>
-          <Typography className={classes.title} variant="h5" component="h3">
-            Anda belum terverifikasi
-          </Typography>      
-          {/* TODO: Copy component informasi belum terverifikasi */}
-      </React.Fragment>
+            {!user.isCompleted && (
+              <Grid item xs={12} style={{ marginBottom: 12 }}>
+                <div className={classes.verifyContainer}>
+                  <Typography
+                    variant="body1"
+                    style={{ flexGrow: 1, marginBottom: 12 }}
+                  >
+                    Data diri Anda belum lengkap. Lakukan verifikasi segera dan
+                    lengkapi data di halaman{" "}
+                    <Link to={paths.USER_PROFILE}>Info Pribadi</Link> untuk
+                    menggunakan fitur-fitur di ILUNI12 Channel.
+                  </Typography>
+                </div>
+              </Grid>
+            )}
+            {!user.isVerified && (
+              <Grid item xs={12}>
+                <div className={classes.verifyContainer}>
+                  <Typography
+                    variant="body1"
+                    style={{ flexGrow: 1, marginBottom: 12 }}
+                  >
+                    Verifikasi sedang berjalan di belakang. Lakukan verifikasi
+                    ulang jika sistem gagal melakukan verifikasi setelah jangka
+                    waktu tertentu status Anda tidak berubah. Klik "Verifikasi
+                    Sekarang" untuk memulai verifikasi ulang.
+                  </Typography>
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.openVerificationDialog}
+                  >
+                    Verifikasi Sekarang
+                  </Button>
+                </div>
+              </Grid>
+            )}
+        </React.Fragment>
   );
 }
 }
@@ -64,6 +129,7 @@ function createContainer() {
   const mapStateToProps = state => ({
     educations: getEducations(state),
     user: getUser(state),
+    userAccessToken: getUserAccessToken(state)
   });
 
   const mapDispatchToProps = dispatch => ({
