@@ -44,7 +44,7 @@ class IframePage extends React.Component {
   
   render() {
     // const client = new GoogleSheetsClient();
-    // let data = await client.get('719906430')
+    // let data = await client.get('0')
     // console.log(data)
     const { classes, chartData } = this.props;
     return (
@@ -87,7 +87,7 @@ function createContainer() {
   });
 
   const mapDispatchToProps = dispatch => ({
-    load: data => dispatch(loadEducations(user.id)),
+    load: data => dispatch(loadEducations()),
   });
 
   return connect(
