@@ -43,7 +43,7 @@ class IframePage extends React.Component {
   
   render() {
     // const client = new GoogleSheetsClient();
-    // let data = await client.get('719906430')
+    // let data = await client.get('0')
     // console.log(data)
     const { classes, chartData } = this.props;
     return (
