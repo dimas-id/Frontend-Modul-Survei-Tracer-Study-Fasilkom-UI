@@ -66,8 +66,8 @@ openVerificationDialog = isUserDataComplete => {
   
 render() {
   const { classes, user, userAccessToken, educations } = this.props;
-  const URL = `https://form.jotform.com/211491957699070?email=${user.email}&name=${user.name}&npm=${educations[0].uiSsoNpm}&token=${userAccessToken}`
   if (educations && user && user.isVerified) {
+    const URL = `https://form.jotform.com/211491957699070?email=${user.email}&name=${user.name}&npm=${educations[0].uiSsoNpm}&token=${userAccessToken}`
     return (
       <React.Fragment>
           <Typography className={classes.title} variant="h5" component="h3">
