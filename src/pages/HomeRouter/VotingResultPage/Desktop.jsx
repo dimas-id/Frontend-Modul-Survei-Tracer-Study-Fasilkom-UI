@@ -42,11 +42,7 @@ const styles = () => ({
 class IframePage extends React.Component {
   
   render() {
-    // const client = new GoogleSheetsClient();
-    // let data = await client.get('0')
-    // console.log(data)
     const { classes, chartData } = this.props;
-    console.log("chartData", chartData)
     return (
     <React.Fragment>
       <Typography className={classes.title} variant="h5" component="h3">
@@ -80,11 +76,9 @@ function createContainer() {
     chartData: getVotingResult(state)
   });
 
-  console.log("aknsvdajknsvdjkasvkbdjvakshjdvajk")
   const mapDispatchToProps = dispatch => ({
     load: dispatch(loadVotingResult()),
   });
-  console.log("kmbkbkbkmbkbkjbk")
 
   return connect(
     mapStateToProps,

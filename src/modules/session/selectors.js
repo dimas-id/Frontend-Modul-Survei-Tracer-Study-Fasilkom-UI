@@ -27,7 +27,5 @@ export function selectCurrentUserGroups(state) {
 }
 
 export function getVotingResult(state) {
-  // return ["aasdasdass"]
-  console.log(state)
   return get(state, "session.votingResult")
 }

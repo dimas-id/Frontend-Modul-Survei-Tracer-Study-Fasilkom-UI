@@ -34,7 +34,6 @@ export default class GoogleSheetsClient {
       //   { year: '2000', population: 6.127 },
       //   { year: '2010', population: 6.930 },
       // ]
-      console.log("asdasdasdas", result)
       return result
     } catch (e) {
       console.error("Error: ", e);
