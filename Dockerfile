@@ -8,14 +8,14 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json /app/package.json
-COPY yarn.lock /app/yarn.lock
+COPY package.json ./
+COPY yarn.lock ./
 
 RUN npm install yarn -g --silent
 RUN yarn install
 
 # Bundle app source
-COPY . /app
+COPY . ./
 
 # start app
 CMD ["yarn", "start"]
