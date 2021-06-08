@@ -50,7 +50,9 @@ const styles = () => ({
 class IframePage extends React.Component {
 
   componentDidMount() {
-    this.props.load(this.props.user.id)
+    if (this.props.user.id) {
+      this.props.load(this.props.user)
+    }
   }
 
   openVerificationDialog = isUserDataComplete => {
