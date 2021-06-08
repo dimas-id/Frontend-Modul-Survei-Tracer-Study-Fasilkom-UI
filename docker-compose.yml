@@ -13,4 +13,3 @@ services:
         restart: unless-stopped
         environment:
             - NODE_ENV=development
-            

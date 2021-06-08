@@ -25,3 +25,7 @@ export function isLoggedIn(state) {
 export function selectCurrentUserGroups(state) {
   return get(getUser(state), "groups");
 }
+
+export function getVotingResult(state) {
+  return get(state, "session.votingResult")
+}
