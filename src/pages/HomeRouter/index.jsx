@@ -59,18 +59,18 @@ const ROUTES = [
       component: IframePage
     }
   },
-  {
-    title: "Hasil Voting Alumni",
-    menu: {
-      Icon: ShowChart,
-      path: paths.USER_VOTING_RESULT
-    },
-    route: {
-      exact: true,
-      path: paths.VOTING_RESULT,
-      component: VotingResultPage
-    }
-  },
+  // {
+  //   title: "Hasil Voting Alumni",
+  //   menu: {
+  //     Icon: ShowChart,
+  //     path: paths.USER_VOTING_RESULT
+  //   },
+  //   route: {
+  //     exact: true,
+  //     path: paths.VOTING_RESULT,
+  //     component: VotingResultPage
+  //   }
+  // },
   {
     title: "Info Pribadi",
     menu: {

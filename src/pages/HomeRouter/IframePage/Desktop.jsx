@@ -16,6 +16,7 @@ import paths from "../../paths";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import { JOTFORM_ID_CANDIDATES_VOTING_FORM } from "../../../config";
 
 const styles = () => ({
   paper: {
@@ -71,7 +72,7 @@ class IframePage extends React.Component {
 render() {
   const { classes, user, userAccessToken, educations } = this.props;
   if (educations && user && user.isVerified) {
-    const URL = `https://form.jotform.com/211491957699070?email=${user.email}&name=${user.name}&npm=${educations[0].uiSsoNpm}&token=${userAccessToken}`
+    const URL = `${JOTFORM_ID_CANDIDATES_VOTING_FORM}?email=${user.email}&name=${user.name}&npm=${educations[0].uiSsoNpm}&token=${userAccessToken}`
     return (
       <React.Fragment>
           <Typography className={classes.title} variant="h5" component="h3">
