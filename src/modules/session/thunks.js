@@ -6,6 +6,7 @@ import { push } from "connected-react-router";
 import { sessionActions } from "./index";
 import { getUserRefreshToken, getUserId } from "./selectors";
 import { setAuthToken } from "../../libs/http";
+import GoogleSheetsClient from "../sheets/sheetConfig"
 
 export const loadUser = (userId, silent = false) => {
   return async (dispatch, _, { API: { atlasV1 } }) => {
@@ -20,6 +21,19 @@ export const loadUser = (userId, silent = false) => {
     }
   };
 };
+
+export const loadVotingResult = () => {
+  return async (dispatch, _) => {
+    try {
+      const client = new GoogleSheetsClient();
+      let data = await client.get(0)
+      await dispatch(sessionActions.setVotingResult(data))
+      return data
+    } catch(err) {
+      console.log("Error: ", err)
+    }
+  }
+}
 
 export const register = payload => {
   return async (dispatch, _, { API: { atlasV2 }, utility }) => {

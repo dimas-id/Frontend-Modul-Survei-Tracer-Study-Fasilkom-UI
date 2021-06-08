@@ -258,5 +258,5 @@ const ROUTES = [
       path: paths.ERROR_404,
       component: Error404Page,
     },
-  },
+  }
 ];

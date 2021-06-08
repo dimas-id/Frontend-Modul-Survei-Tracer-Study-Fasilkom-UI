@@ -5,6 +5,8 @@ import { withStyles } from "@material-ui/core/styles";
 import HomeOutlined from "@material-ui/icons/HomeOutlined";
 import ContactMail from "@material-ui/icons/ContactMailOutlined";
 import ToggleOff from "@material-ui/icons/ToggleOffOutlined";
+import HowToVoteIcon from '@material-ui/icons/HowToVote';
+import ShowChart from '@material-ui/icons/ShowChart';
 
 import { authorize } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
@@ -18,6 +20,8 @@ import paths from "../paths";
 import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
 import PreferencePage from "./PreferencePage";
+import IframePage from "./IframePage";
+import VotingResultPage from "./VotingResultPage"
 
 const styles = theme => ({
   container: {
@@ -43,6 +47,30 @@ const ROUTES = [
       component: HomePage
     }
   },
+  {
+    title: "Usulan Voting Alumni",
+    menu: {
+      Icon: HowToVoteIcon,
+      path: paths.USER_VOTING
+    },
+    route: {
+      exact: true,
+      path: paths.VOTING,
+      component: IframePage
+    }
+  },
+  // {
+  //   title: "Hasil Voting Alumni",
+  //   menu: {
+  //     Icon: ShowChart,
+  //     path: paths.USER_VOTING_RESULT
+  //   },
+  //   route: {
+  //     exact: true,
+  //     path: paths.VOTING_RESULT,
+  //     component: VotingResultPage
+  //   }
+  // },
   {
     title: "Info Pribadi",
     menu: {
