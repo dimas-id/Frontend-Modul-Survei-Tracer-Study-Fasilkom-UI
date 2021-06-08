@@ -48,7 +48,11 @@ const styles = () => ({
 
 class IframePage extends React.Component {
 
-openVerificationDialog = isUserDataComplete => {
+  componentDidMount() {
+    this.props.load(this.props.user.id)
+  }
+
+  openVerificationDialog = isUserDataComplete => {
     const title = !isUserDataComplete ? "Lengkapi Akun" : "Verifikasi Akun";
     const description = !isUserDataComplete
       ? "Apakah anda ingin lengkapi akun anda sekarang?"
