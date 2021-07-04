@@ -47,18 +47,18 @@ const ROUTES = [
       component: HomePage
     }
   },
-  {
-    title: "Usulan Voting Alumni",
-    menu: {
-      Icon: HowToVoteIcon,
-      path: paths.USER_VOTING
-    },
-    route: {
-      exact: true,
-      path: paths.VOTING,
-      component: IframePage
-    }
-  },
+  // {
+  //   title: "Usulan Voting Alumni",
+  //   menu: {
+  //     Icon: HowToVoteIcon,
+  //     path: paths.USER_VOTING
+  //   },
+  //   route: {
+  //     exact: true,
+  //     path: paths.VOTING,
+  //     component: IframePage
+  //   }
+  // },
   // {
   //   title: "Hasil Voting Alumni",
   //   menu: {
