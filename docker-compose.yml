@@ -11,5 +11,3 @@ services:
         ports:
             - '3113:3113'
         restart: unless-stopped
-        environment:
-            - NODE_ENV=development
