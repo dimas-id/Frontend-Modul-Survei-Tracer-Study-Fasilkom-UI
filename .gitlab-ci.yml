@@ -4,7 +4,8 @@ stages:
 
 variables:
   SERVICE_DIRECTORY: /home/admin/${CI_PROJECT_NAME}
-  DOCKER_COMPOSE_COMMAND: docker-compose  -f docker-compose.prod.yml up -d --build
+  DOCKER_COMPOSE_COMMAND_PRODUCTION: NODE_ENV=production docker-compose  -f docker-compose.prod.yml up -d --build
+  DOCKER_COMPOSE_COMMAND_STAGING: NODE_ENV=staging docker-compose  -f docker-compose.prod.yml up -d --build
   VM_USER: admin
   ENV_FILE_NAME: .env
 
@@ -18,7 +19,7 @@ deploy_staging:
   script:
     - echo "==UPDATE ENV FILE=="
     - sshpass -p $STAGING_VM_PASSWORD scp -o StrictHostKeyChecking=no $STAGING_ENV $VM_USER@$STAGING_VM_IP:$SERVICE_DIRECTORY/$ENV_FILE_NAME
-    - sshpass -p $STAGING_VM_PASSWORD ssh -o StrictHostKeyChecking=no $VM_USER@$STAGING_VM_IP "cd $SERVICE_DIRECTORY ; echo "==PULLING LATEST MASTER==" ; git checkout master ; git pull origin master ; echo "==REBUILDING DOCKER IMAGE==" ; $DOCKER_COMPOSE_COMMAND"
+    - sshpass -p $STAGING_VM_PASSWORD ssh -o StrictHostKeyChecking=no $VM_USER@$STAGING_VM_IP "cd $SERVICE_DIRECTORY ; echo "==PULLING LATEST MASTER==" ; git checkout master ; git pull origin master ; echo "==REBUILDING DOCKER IMAGE==" ; $DOCKER_COMPOSE_COMMAND_STAGING"
   only:
     - master
 
@@ -27,7 +28,7 @@ deploy_production:
   script:
     - echo "==UPDATE ENV FILE=="
     - sshpass -p $PRODUCTION_VM_PASSWORD scp -o StrictHostKeyChecking=no $PRODUCTION_ENV $VM_USER@$PRODUCTION_VM_IP:$SERVICE_DIRECTORY/$ENV_FILE_NAME
-    - sshpass -p $PRODUCTION_VM_PASSWORD ssh -o StrictHostKeyChecking=no $VM_USER@$PRODUCTION_VM_IP "cd $SERVICE_DIRECTORY ; echo "==PULLING LATEST MASTER==" ; git checkout master ; git pull origin master ; echo "==REBUILDING DOCKER IMAGE==" ; $DOCKER_COMPOSE_COMMAND"
+    - sshpass -p $PRODUCTION_VM_PASSWORD ssh -o StrictHostKeyChecking=no $VM_USER@$PRODUCTION_VM_IP "cd $SERVICE_DIRECTORY ; echo "==PULLING LATEST MASTER==" ; git checkout master ; git pull origin master ; echo "==REBUILDING DOCKER IMAGE==" ; $DOCKER_COMPOSE_COMMAND_PRODUCTION"
   only:
     - master
   when: manual
