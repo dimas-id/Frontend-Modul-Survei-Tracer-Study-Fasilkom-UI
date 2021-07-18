@@ -17,10 +17,21 @@ window.deprecationWarning =
 
 const developmentConstants = () => {
   const env = {
-    ATLAS: "https://atlas-iluni12.cs.ui.ac.id",
+    ATLAS: "http://localhost:8000",
     HELIOS: "http://localhost:8004"    
   };
+  console.log(process.env.NODE_ENV)
   console.log("--- b3: development environment ---");
+  console.log(`--- ${JSON.stringify(env, null, 2)}  ---`);
+  return env;
+};
+
+const stagingConstants = () => {
+  const env = {
+    ATLAS: "https://atlas-iluni12-dev.cs.ui.ac.id",
+    HELIOS: "https://helios-iluni12-dev.cs.ui.ac.id"    
+  };
+  console.log("--- b3: staging environment ---");
   console.log(`--- ${JSON.stringify(env, null, 2)}  ---`);
   return env;
 };
@@ -31,8 +42,14 @@ const productionConstants = () => ({
 });
 
 const constants = () => {
-  if (isDevelopment) return developmentConstants();
-  return productionConstants();
+  switch (process.env.NODE_ENV)  {
+    case "production":
+      return productionConstants();
+    case "staging":
+      return stagingConstants();
+    case "development":
+      return developmentConstants();
+  }
 };
 
 export default constants();
