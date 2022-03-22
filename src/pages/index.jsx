@@ -27,6 +27,7 @@ import UpdateChantPage from "./UpdateChantPage";
 import ChannelRouter from "./ChannelRouter";
 import ChannelChantDetailPage from "./ChannelChantDetailPage";
 import UserVerifyPage from "./UserVerifyPage";
+import CariAlumniPage from "./CariAlumniPage";
 
 import { history } from '../modules';
 
@@ -243,6 +244,22 @@ const ROUTES = [
     route: {
       path: paths.CHANNEL,
       component: ChannelRouter,
+    },
+  },
+  {
+    title: "Alumni",
+    route: {
+      path: paths.ALUMNI,
+      component: () => <Redirect to={paths.ALUMNI_SEARCH} />,
+      exact: true,
+    },
+  },
+  {
+    title: "Pencarian Alumni",
+    route: {
+      path: paths.ALUMNI_SEARCH,
+      component: CariAlumniPage,
+      exact: true,
     },
   },
   {
