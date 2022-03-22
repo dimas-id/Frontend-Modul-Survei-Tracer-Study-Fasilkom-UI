@@ -59,3 +59,5 @@ exports.DONATION_REQUEST_DETAIL = `${
 exports.DONATION_REQUEST_UPDATE = `${
   exports.DONASI
 }/users/:username/pengajuan-donasi/:requestId/update`;
+exports.ALUMNI = "/alumni"
+exports.ALUMNI_SEARCH = `${exports.ALUMNI}/search`;

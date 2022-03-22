@@ -322,6 +322,17 @@ class HomePage extends React.Component {
                 )}
               </React.Fragment>
             )}
+
+            {(user.isStaff || user.isSuperUser || user.isVerified) && (
+            <Grid item xs={12} md={6}>
+              <CategoryPaper
+                title="Pencarian Alumni"
+                description="Sarana untuk melakukan pencarian alumni sesuai preferensi"
+                imageName="cloudChannel" //TODO: ganti image
+                path={paths.ALUMNI_SEARCH}
+              />
+            </Grid>
+            )}
           </Grid>
         </Paper>
       </React.Fragment>

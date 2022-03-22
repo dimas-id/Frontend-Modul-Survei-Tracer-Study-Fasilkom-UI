@@ -133,11 +133,11 @@ const styles = theme => ({
     width: "100%"
   },
   paper: {
-    ...Guidelines.layouts.mt32,
-    ...Guidelines.layouts.pt32,
-    ...Guidelines.layouts.mr64,
-    ...Guidelines.layouts.ml64,
-    ...Guidelines.layouts.mb32,
+    // ...Guidelines.layouts.mt32,
+    // ...Guidelines.layouts.pt32,
+    // ...Guidelines.layouts.mr64,
+    // ...Guidelines.layouts.ml64,
+    // ...Guidelines.layouts.mb32,
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.flexMiddle
   }
@@ -146,7 +146,7 @@ const styles = theme => ({
 class CustomPaginationActionsTable extends React.Component {
   state = {
     page: 0,
-    rowsPerPage: 5
+    rowsPerPage: 10
   };
 
   handleChangePage = (event, page) => {
@@ -188,7 +188,7 @@ class CustomPaginationActionsTable extends React.Component {
               <TableFooter>
                 <TableRow>
                   <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[]}
                     colSpan={3}
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
