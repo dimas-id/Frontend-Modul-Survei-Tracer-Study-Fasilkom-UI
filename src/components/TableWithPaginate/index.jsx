@@ -171,7 +171,7 @@ class CustomPaginationActionsTable extends React.Component {
               <TableHead>
                 <TableRow>
                     {columns.map((col) => (
-                        <TableCell key={col.name} align="center">{col.name}</TableCell>
+                      <TableCell key={col.name} width={col.width} align="left">{col.name}</TableCell>
                     ))}
                 </TableRow>
               </TableHead>
@@ -189,7 +189,7 @@ class CustomPaginationActionsTable extends React.Component {
                 <TableRow>
                   <TablePagination
                     rowsPerPageOptions={[]}
-                    colSpan={3}
+                    colSpan={5}
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
                     page={page}

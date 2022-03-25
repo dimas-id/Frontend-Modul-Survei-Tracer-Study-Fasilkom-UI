@@ -61,3 +61,4 @@ exports.DONATION_REQUEST_UPDATE = `${
 }/users/:username/pengajuan-donasi/:requestId/update`;
 exports.ALUMNI = "/alumni"
 exports.ALUMNI_SEARCH = `${exports.ALUMNI}/search`;
+exports.ALUMNI_DETAIL = `${exports.ALUMNI}/detail/:idAlumni`;

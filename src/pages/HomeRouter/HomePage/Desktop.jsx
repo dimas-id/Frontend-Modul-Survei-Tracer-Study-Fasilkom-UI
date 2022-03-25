@@ -328,7 +328,7 @@ class HomePage extends React.Component {
               <CategoryPaper
                 title="Pencarian Alumni"
                 description="Sarana untuk melakukan pencarian alumni sesuai preferensi"
-                imageName="cloudChannel" //TODO: ganti image
+                imageName="cloudSearch"
                 path={paths.ALUMNI_SEARCH}
               />
             </Grid>

@@ -5,6 +5,7 @@ import cloudDonation from "./cloud-donation.svg";
 import cloudEmail from "./cloud-email.svg";
 import cloudAtlas from "./cloud-atlas.svg";
 import cloudHelios from "./cloud-helios.svg";
+import cloudSearch from "./cloud-search.svg";
 
 export default {
   cloudChannel,
@@ -14,4 +15,5 @@ export default {
   cloudEmail,
   cloudAtlas,
   cloudHelios,
+  cloudSearch,
 };
