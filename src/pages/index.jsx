@@ -28,6 +28,7 @@ import ChannelRouter from "./ChannelRouter";
 import ChannelChantDetailPage from "./ChannelChantDetailPage";
 import UserVerifyPage from "./UserVerifyPage";
 import CariAlumniPage from "./CariAlumniPage";
+import DetailAlumniPage from "./DetailAlumniPage/Desktop";
 
 import { history } from '../modules';
 
@@ -263,6 +264,14 @@ const ROUTES = [
     },
   },
   {
+    title: "Detail Alumni",
+    route: {
+      path: paths.ALUMNI_DETAIL,
+      component: DetailAlumniPage,
+      exact: true,
+    },
+  },
+  {
     title: "Err...",
     route: {
       path: paths.ERROR,
@@ -275,5 +284,5 @@ const ROUTES = [
       path: paths.ERROR_404,
       component: Error404Page,
     },
-  }
+  },
 ];

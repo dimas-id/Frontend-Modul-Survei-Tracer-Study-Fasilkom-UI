@@ -3,12 +3,15 @@ import { makeQueryUri } from "../../../../libs/navigation";
 import { API_V2_URL } from "../config";
 
 export default Object.freeze({
-  //TODO: sesuaiin dengan BE
   getAlumniList: (
     name,
     gender,
     residence_country,
     csui_class_year,
+    start_csui_graduation_term,
+    start_csui_graduation_year,
+    end_csui_graduation_term,
+    end_csui_graduation_year,
     csui_program,
     title,
     industry_name,
@@ -23,6 +26,10 @@ export default Object.freeze({
           gender,
           residence_country,
           csui_class_year,
+          start_csui_graduation_term,
+          start_csui_graduation_year,
+          end_csui_graduation_term,
+          end_csui_graduation_year,
           csui_program,
           title,
           industry_name,

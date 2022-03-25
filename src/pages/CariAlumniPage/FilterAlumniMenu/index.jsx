@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import PROGRAMS from "../../../libs/studyProgram";
+import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
+import { getUser } from "../../../modules/session/selectors";
+import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
@@ -10,8 +13,6 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
-import MomentUtils from "@date-io/moment";
 
 const styles = theme => ({
   root: {
@@ -34,31 +35,15 @@ function SelectGender(props) {
         input={<OutlinedInput />}
       >
         <MenuItem value="" selected={props.value === ""} />
-        <MenuItem value={"M"} selected={props.value === "L"}>
+        <MenuItem value={"M"} selected={props.value === "M"}>
           Laki-Laki
         </MenuItem>
-        <MenuItem value={"F"} selected={props.value === "P"}>
+        <MenuItem value={"F"} selected={props.value === "F"}>
           Perempuan
         </MenuItem>
       </Select>
     </FormControl>
   );
-}
-
-function SelectAngkatan(props) {
-  <MuiPickersUtilsProvider utils={MomentUtils}>
-    <InlineDatePicker
-      id="angkatan"
-      label={`Angkatan`}
-      value={props.value}
-      onChange={props.onChange}
-      margin="normal"
-      variant="outlined"
-      format="YYYY"
-      views={["year"]}
-      clearable
-    />
-  </MuiPickersUtilsProvider>;
 }
 
 function SelectProgram(props) {
@@ -122,20 +107,132 @@ function SelectIndustri(props) {
   );
 }
 
+function TahunLulus(props) {
+  return (
+    <div>
+      <div style={{ marginTop: "10px" }}>
+        <InputLabel>Periode Lulus (dari)</InputLabel>
+        <Grid container justify="space-between">
+          <Grid item xs>
+            <FormControl variant="outlined" margin="normal" fullWidth>
+              <InputLabel id="from-semester-label">Semester</InputLabel>
+              <Select
+                name="from-semester"
+                labelid="from-semester-label"
+                value={props.fromSemester}
+                onChange={props.onChange}
+                variant="outlined"
+                input={<OutlinedInput />}
+              >
+                <MenuItem value="" selected={props.fromSemester === ""} />
+                <MenuItem value={"2"} selected={props.fromSemester === "2"}>
+                  Ganjil
+                </MenuItem>
+                <MenuItem value={"1"} selected={props.fromSemester === "1"}>
+                  Genap
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs>
+            <TextField
+              fullWidth
+              id="from-tahun"
+              label="Tahun (YYYY)"
+              margin="normal"
+              variant="outlined"
+              inputProps={{ minLength: 4, maxLength: 4, pattern: "[0-9]" }}
+              error={props.fromTahun !== "" && props.fromTahun.length < 4}
+              helperText={
+                props.fromTahun !== "" && props.fromTahun.length < 4
+                  ? "Masukkan tahun lulus dengan format YYYY"
+                  : ""
+              }
+              value={props.fromTahun}
+              onChange={props.onChange}
+            />
+          </Grid>
+        </Grid>
+      </div>
+
+      <div style={{ marginTop: "10px" }}>
+        <InputLabel>Periode Lulus (sampai)</InputLabel>
+        <Grid container justify="space-between">
+          <Grid item xs>
+            <FormControl variant="outlined" margin="normal" fullWidth>
+              <InputLabel id="to-semester-label">Semester</InputLabel>
+              <Select
+                disabled={props.fromSemester === "" || props.fromTahun === ""}
+                name="to-semester"
+                labelid="to-semester-label"
+                value={
+                  props.fromSemester === "" || props.fromTahun === ""
+                    ? ""
+                    : props.toSemester
+                }
+                onChange={props.onChange}
+                variant="outlined"
+                input={<OutlinedInput />}
+              >
+                <MenuItem value="" selected={props.toSemester === ""} />
+                <MenuItem value={"2"} selected={props.toSemester === "2"}>
+                  Ganjil
+                </MenuItem>
+                <MenuItem value={"1"} selected={props.toSemester === "1"}>
+                  Genap
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs>
+            <TextField
+              fullWidth
+              disabled={props.fromSemester === "" || props.fromTahun === ""}
+              id="to-tahun"
+              label="Tahun (YYYY)"
+              margin="normal"
+              variant="outlined"
+              inputProps={{ minLength: 4, maxLength: 4, pattern: "[0-9]" }}
+              error={props.toTahun !== "" && props.toTahun.length < 4}
+              helperText={
+                props.toTahun !== "" && props.toTahun.length < 4
+                  ? "Masukkan tahun lulus dengan format YYYY"
+                  : ""
+              }
+              value={
+                props.fromSemester === "" || props.fromTahun === ""
+                  ? ""
+                  : props.toTahun
+              }
+              onChange={props.onChange}
+            />
+          </Grid>
+        </Grid>
+      </div>
+    </div>
+  );
+}
+
 class FilterAlumniMenu extends React.PureComponent {
   render() {
     const {
       classes,
+      user,
       nama,
       gender,
       domisili,
       angkatan,
+      fromSemester,
+      fromTahun,
+      toSemester,
+      toTahun,
       gelar,
       posisi,
       industri,
       perusahaan,
       handleChange,
       handleSearch,
+      handleReset,
     } = this.props;
 
     return (
@@ -154,23 +251,20 @@ class FilterAlumniMenu extends React.PureComponent {
           value={nama}
           onChange={handleChange}
         />
-        <SelectGender //TODO: bikin keliatan cuma buat admin
-          value={gender}
-          onChange={handleChange}
-        />
-        <TextField //TODO: bikin keliatan cuma buat admin
-          fullWidth
-          id="domisili"
-          label="Domisili"
-          margin="normal"
-          variant="outlined"
-          value={domisili}
-          onChange={handleChange}
-        />
-        {/* <SelectAngkatan //FIXME: target ga kebaca jadi error di handleChange
-          value={angkatan}
-          onChange={handleChange}
-        /> */}
+        {(user.isStaff || user.isSuperUser) && (
+          <div>
+            <SelectGender value={gender} onChange={handleChange} />
+            <TextField
+              fullWidth
+              id="domisili"
+              label="Domisili"
+              margin="normal"
+              variant="outlined"
+              value={domisili}
+              onChange={handleChange}
+            />
+          </div>
+        )}
         <TextField
           fullWidth
           id="angkatan"
@@ -187,6 +281,15 @@ class FilterAlumniMenu extends React.PureComponent {
           value={angkatan}
           onChange={handleChange}
         />
+        {(user.isStaff || user.isSuperUser) && (
+          <TahunLulus
+            fromSemester={fromSemester}
+            fromTahun={fromTahun}
+            toSemester={toSemester}
+            toTahun={toTahun}
+            onChange={handleChange}
+          />
+        )}
         <SelectProgram value={gelar} onChange={handleChange} />
         <TextField
           fullWidth
@@ -210,16 +313,28 @@ class FilterAlumniMenu extends React.PureComponent {
 
         <br />
         <br />
-        <center>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ width: "50%" }}
-            onClick={handleSearch}
-          >
-            Cari
-          </Button>
-        </center>
+        <Grid container justify="space-between">
+          <Grid item xs={5}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={handleSearch}
+            >
+              Cari
+            </Button>
+          </Grid>
+          <Grid item xs={5}>
+            <Button
+              variant="outlined"
+              color="info"
+              fullWidth
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
+          </Grid>
+        </Grid>
       </Paper>
     );
   }
@@ -228,5 +343,8 @@ class FilterAlumniMenu extends React.PureComponent {
 FilterAlumniMenu.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+const MapStateToProps = state => ({
+  user: getUser(state),
+});
 
-export default withStyles(styles)(FilterAlumniMenu);
+export default connect(MapStateToProps)(withStyles(styles)(FilterAlumniMenu));

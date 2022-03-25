@@ -28,6 +28,10 @@ class Screen extends React.Component {
     gender: "",
     domisili: "",
     angkatan: "",
+    fromSemester: "",
+    fromTahun: "",
+    toSemester: "",
+    toTahun: "",
     gelar: "",
     posisi: "",
     industri: "",
@@ -36,6 +40,8 @@ class Screen extends React.Component {
   };
 
   handleChange = ({ target }) => {
+    const re = /^[0-9]+$/;
+
     switch (target.id || target.name) {
       case "nama":
         this.setState({
@@ -56,10 +62,37 @@ class Screen extends React.Component {
         break;
 
       case "angkatan":
-        const re = /^[0-9]+$/;
         if (target.value === "" || re.test(target.value)) {
           this.setState({
             angkatan: target.value,
+          });
+        }
+        break;
+
+      case "from-semester":
+        this.setState({
+          fromSemester: target.value,
+        });
+        break;
+
+      case "from-tahun":
+        if (target.value === "" || re.test(target.value)) {
+          this.setState({
+            fromTahun: target.value,
+          });
+        }
+        break;
+
+      case "to-semester":
+        this.setState({
+          toSemester: target.value,
+        });
+        break;
+
+      case "to-tahun":
+        if (target.value === "" || re.test(target.value)) {
+          this.setState({
+            toTahun: target.value,
           });
         }
         break;
@@ -98,6 +131,23 @@ class Screen extends React.Component {
     });
   };
 
+  handleReset = () => {
+    this.setState({
+      nama: "",
+      gender: "",
+      domisili: "",
+      angkatan: "",
+      fromSemester: "",
+      fromTahun: "",
+      toSemester: "",
+      toTahun: "",
+      gelar: "",
+      posisi: "",
+      industri: "",
+      perusahaan: "",
+    });
+  };
+
   render() {
     const { classes } = this.props;
     const {
@@ -105,6 +155,10 @@ class Screen extends React.Component {
       gender,
       domisili,
       angkatan,
+      fromSemester,
+      fromTahun,
+      toSemester,
+      toTahun,
       gelar,
       posisi,
       industri,
@@ -125,12 +179,17 @@ class Screen extends React.Component {
                 gender={gender}
                 domisili={domisili}
                 angkatan={angkatan}
+                fromSemester={fromSemester}
+                fromTahun={fromTahun}
+                toSemester={toSemester}
+                toTahun={toTahun}
                 gelar={gelar}
                 posisi={posisi}
                 industri={industri}
                 perusahaan={perusahaan}
                 handleChange={this.handleChange}
                 handleSearch={this.handleSearch}
+                handleReset={this.handleReset}
               />
             </Grid>
 
