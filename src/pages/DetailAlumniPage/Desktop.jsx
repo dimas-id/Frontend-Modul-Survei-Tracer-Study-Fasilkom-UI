@@ -26,13 +26,16 @@ const styles = theme => ({
     ...Guidelines.layouts.pl40,
   },
   menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
+    marginTop: -8,
+    marginLeft: -56,
   },
 });
 
 class Screen extends React.Component {
   static propTypes = {
+    history: PropTypes.shape({
+      goBack: PropTypes.func.isRequired,
+    }).isRequired,
     classes: PropTypes.shape().isRequired,
   };
 
@@ -49,31 +52,31 @@ class Screen extends React.Component {
         this.setState({ alumni: result.data });
       })
       .finally(() => {
-          this.setState({ loading: false });
-        })
+        this.setState({ loading: false });
+      });
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
     const { loading, alumni } = this.state;
-    console.log(alumni) //TODO: hapus kalau udah ga perlu
+    console.log(alumni); //TODO: hapus kalau udah ga perlu
 
     return (
       <React.Fragment>
         <NavbarAuth title="Detail Alumni" />
         <Particle name="cloud2" left={0} top={160} />
         <Container className={classes.container}>
+          <IconButton
+            className={classes.menuButton}
+            aria-label="Menu"
+            onClick={history.goBack}
+            style={{ position: "fixed" }}
+          >
+            <ArrowBack />
+          </IconButton>
+
           <Grid container>
             <Grid item xs>
-              <IconButton
-                className={classes.menuButton}
-                aria-label="Menu"
-                component={Link}
-                to={paths.ALUMNI_SEARCH}
-                style={{position: "fixed"}}
-              >
-                <ArrowBack />
-              </IconButton>
               {loading && (
                 <React.Fragment>
                   <LoadingFill />
