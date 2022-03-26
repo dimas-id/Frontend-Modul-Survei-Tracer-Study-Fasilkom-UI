@@ -195,8 +195,14 @@ function RiwayatFasilkom(props) {
                       <Value value={item.csuiClassYear} />
                     </Grid>
                     <Grid item xs={3}>
-                      {/* TODO: ganti csuiGradYear sesuai dari BE */}
-                      <Value value={item.csuiGradYear} />
+                      <Value value={
+                        item.csuiGraduationTerm && item.csuiGraduationYear
+                          ? (i ? ", " : "") +
+                            (item.csuiGraduationTerm === 1
+                              ? "Genap " + (item.csuiGraduationYear + 1)
+                              : "Ganjil " + item.csuiGraduationYear)
+                          : ""}
+                      />
                     </Grid>
                     <Grid item xs={3}>
                       <Value value={MAP_PROGRAM_CODE[item.csuiProgram]} />
@@ -208,8 +214,14 @@ function RiwayatFasilkom(props) {
                       <Value value={item.csuiClassYear} />
                     </Grid>
                     <Grid item xs={4}>
-                      {/* TODO: ganti csuiGradYear sesuai dari BE */}
-                      <Value value={item.csuiGradYear} />
+                      <Value value={
+                        item.csuiGraduationTerm && item.csuiGraduationYear
+                          ? (i ? ", " : "") +
+                            (item.csuiGraduationTerm === 1
+                              ? "Genap " + (item.csuiGraduationYear + 1)
+                              : "Ganjil " + item.csuiGraduationYear)
+                          : ""} 
+                      />
                     </Grid>
                     <Grid item xs={4}>
                       <Value value={MAP_PROGRAM_CODE[item.csuiProgram]} />

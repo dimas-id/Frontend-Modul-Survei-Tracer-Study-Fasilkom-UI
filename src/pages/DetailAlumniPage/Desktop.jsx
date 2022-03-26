@@ -12,8 +12,6 @@ import Particle from "../../components/Particle";
 import { withStyles } from "@material-ui/styles";
 import atlasV1 from "../../modules/api/atlas/v1";
 import AlumniCard from "./AlumniCard";
-import paths from "../../pages/paths";
-import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 
@@ -59,7 +57,6 @@ class Screen extends React.Component {
   render() {
     const { classes, history } = this.props;
     const { loading, alumni } = this.state;
-    console.log(alumni); //TODO: hapus kalau udah ga perlu
 
     return (
       <React.Fragment>

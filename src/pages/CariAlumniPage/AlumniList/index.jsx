@@ -112,7 +112,7 @@ class AlumniList extends React.Component {
   handleLoad() {
     const { query } = this.props;
     const params = [];
-    console.log(this.state.alumniList)  //TODO: hapus kalau udah ga perlu
+
     if (query) {
       params.push(query.nama);
       params.push(query.gender);
@@ -191,7 +191,14 @@ class AlumniList extends React.Component {
                             alumni.educations.map(
                               (edu, i) => (i ? ", " : "") + edu.csuiClassYear
                             ),
-                            alumni.graduateYear, //TODO: ganti graduateYear sesuai dari BE
+                            alumni.educations.map((edu, i) =>
+                              edu.csuiGraduationTerm && edu.csuiGraduationYear
+                                ? (i ? ", " : "") +
+                                  (edu.csuiGraduationTerm === 1
+                                    ? "Genap " + (edu.csuiGraduationYear + 1)
+                                    : "Ganjil " + edu.csuiGraduationYear)
+                                : ""
+                            ),
                             alumni.educations.map(
                               (edu, i) => (i ? ", " : "") + edu.csuiProgram
                             ),
@@ -216,7 +223,12 @@ class AlumniList extends React.Component {
                                   ({ isCurrent }) => isCurrent
                                 ).title
                               : "",
-                            alumni.companyName, //TODO: ganti companyName sesuai dari BE
+                            alumni.positions.length !== 0 &&
+                            alumni.positions.find(({ isCurrent }) => isCurrent)
+                              ? alumni.positions.find(
+                                  ({ isCurrent }) => isCurrent
+                                ).companyName
+                              : "",
                           ]
                     }
                     path={paths.ALUMNI_DETAIL}
