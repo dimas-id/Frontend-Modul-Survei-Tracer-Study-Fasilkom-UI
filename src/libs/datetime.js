@@ -9,3 +9,9 @@ export function getDurationHourFromNow(isoDatetime) {
 export function getDateFormatted(date, format = "YYYY-MM-DD") {
   return moment(date).format(format);
 }
+
+export function getYearFormatted(year, format = "YYYY") {
+  if (typeof year === "number")
+    year = year.toString();
+  return parseInt(moment(year).format(format));
+}

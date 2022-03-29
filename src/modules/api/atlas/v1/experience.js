@@ -24,4 +24,17 @@ export default Object.freeze({
         offset,
       },
     }),
+  createOtherEdu: (userId, payload) =>
+    http.post(`${API_V1_URL}/users/${userId}/other_educations`, payload),
+  getOtherEdus: (userId, offset, limit) =>
+    http.get(`${API_V1_URL}/users/${userId}/other_educations`, {
+      params: {
+        limit,
+        offset,
+      },
+    }),
+  updateOtherEdu: (userId, otherEduId, payload) =>
+    http.put(`${API_V1_URL}/users/${userId}/other_educations/${otherEduId}`, payload),
+  deleteOtherEdu: (userId, otherEduId) =>
+    http.delete(`${API_V1_URL}/users/${userId}/other_educations/${otherEduId}`),
 });

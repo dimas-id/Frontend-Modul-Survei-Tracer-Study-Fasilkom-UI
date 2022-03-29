@@ -129,3 +129,96 @@ export const createEducations = educations => {
     }
   };
 };
+
+export const loadOtherEdus = userId => {
+  return async (dispatch, _, { API: { atlasV1 } }) => {
+    try {
+      // assuming that user wont have > 3 other educations
+      const resp = await atlasV1.experience.getOtherEdus(userId, 0, 3);
+      await dispatch(experienceActions.setOtherEdus(resp.data));
+      return resp;
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+
+export const createOtherEdus = otherEduData => {
+  return async (dispatch, getState, { API: { atlasV1 }, utility }) => {
+    try {
+      const userId = getUserId(getState());
+      const resp = await atlasV1.experience.createOtherEdu(
+        userId,
+        otherEduData
+      );
+      await dispatch(loadOtherEdus(userId));
+      await dispatch(
+        utility.enqueueSnackbar(
+          "Berhasil membuat riwayat pendidikan baru",
+          { variant: "success" }
+        )
+      );
+      return resp;
+    } catch (error) {
+      await dispatch(
+        utility.enqueueSnackbar("Gagal membuat riwayat pendidikan baru", {
+          variant: "error",
+        })
+      );
+      throw error;
+    }
+  };
+};
+
+export const updateOtherEduById = (otherEduId, otherEduData) => {
+  return async (dispatch, getState, { API: { atlasV1 }, utility }) => {
+    try {
+      const userId = getUserId(getState());
+      const resp = await atlasV1.experience.updateOtherEdu(
+        userId,
+        otherEduId,
+        otherEduData
+      );
+      await dispatch(loadOtherEdus(userId));
+      await dispatch(
+        utility.enqueueSnackbar(
+          "Berhasil memperbarui riwayat pendidikan",
+          { variant: "success" }
+        )
+      );
+      return resp;
+    } catch (error) {
+      await dispatch(
+        utility.enqueueSnackbar(
+          "Gagal memperbarui riwayat pendidikan",
+          { variant: "error" }
+        )
+      );
+      throw error;
+    }
+  };
+};
+
+export const deleteOtherEduById = otherEduId => {
+  return async (dispatch, getState, { API: { atlasV1 }, utility }) => {
+    try {
+      const userId = getUserId(getState());
+      const resp = await atlasV1.experience.deleteOtherEdu(userId, otherEduId);
+      await dispatch(
+        utility.enqueueSnackbar("Berhasil menghapus riwayat pendidikan", {
+          variant: "success",
+        })
+      );
+      await dispatch(loadOtherEdus(userId));
+      return resp;
+    } catch (error) {
+      await dispatch(
+        utility.enqueueSnackbar(
+          "Gagal menghapus riwayat pendidikan",
+          { variant: "error" }
+        )
+      );
+      throw error;
+    }
+  };
+};

@@ -15,6 +15,8 @@ import EditProfileForm from "./EditProfileForm";
 import WorkPosition from "../../../components/stables/Experience/WorkPosition";
 import Education from "../../../components/stables/Experience/Education";
 import PositionForm from "../../../components/stables/Experience/PositionForm";
+import OtherEdu from "../../../components/stables/Experience/OtherEdu";
+import OtherEduForm from "../../../components/stables/Experience/OtherEduForm";
 
 import { getUser } from "../../../modules/session/selectors";
 import { getDateFormatted } from "../../../libs/datetime";
@@ -108,6 +110,9 @@ class ProfilePage extends React.Component {
     openPosition: false,
     positionId: null,
     isNewPosition: false,
+    openOtherEdu: false,
+    otherEduId: null,
+    isNewOtherEdu: false,
   };
 
   closePosition = () =>
@@ -176,6 +181,64 @@ class ProfilePage extends React.Component {
     );
   }
 
+  closeOtherEdu = () =>
+    this.setState({
+      openOtherEdu: false,
+      otherEduId: null,
+      isNewOtherEdu: false,
+    });
+
+  handleOpenOtherEduNew = () =>
+    this.setState({
+      openOtherEdu: true,
+      otherEduId: null,
+      isNewOtherEdu: true,
+    });
+
+  handleOpenOtherEduUpdate = otherEduId =>
+    this.setState({
+      otherEduId,
+      openOtherEdu: true,
+      isNewOtherEdu: false,
+    });
+
+  handleCloseOtherEdu = () => {
+    if (this.state.isNewOtherEdu) {
+      window.alertDialog(
+        "Apakah anda yakin?",
+        "Jika anda tutup, maka pernyataan anda akan hilang.",
+        this.closeOtherEdu,
+        () => null
+      );
+    } else {
+      this.closeOtherEdu();
+    }
+  };
+
+  handleAfterSubmitOtherEdu = res => {
+    if (!res.error) {
+      this.closeOtherEdu();
+    }
+  };
+
+  renderOtherEduForm() {
+    const { openOtherEdu, otherEduId, isNewOtherEdu } = this.state;
+    const title = isNewOtherEdu ? "Tambah Pendidikan" : "Ubah Pendidikan";
+    return (
+      <FormDialog
+        title={title}
+        open={openOtherEdu}
+        onClose={this.handleCloseOtherEdu}
+      >
+        <OtherEduForm
+          update={!isNewOtherEdu}
+          otherEduId={otherEduId}
+          afterSubmit={this.handleAfterSubmitOtherEdu}
+        />
+      </FormDialog>
+    );
+  }
+
   renderBody() {
     const { classes, user } = this.props;
     let location = user.profile.residenceCity || "";
@@ -216,6 +279,15 @@ class ProfilePage extends React.Component {
           <Education />
         </Paper>
         <Paper className={classes.paper} elevation={1}>
+          <Head Icon={AddBoxIcon} onClick={this.handleOpenOtherEduNew}>
+            Riwayat Pendidikan di Luar Fasilkom UI
+          </Head>
+          <OtherEdu
+            onEdit={this.handleOpenOtherEduUpdate}
+            onAdd={this.handleOpenOtherEduNew}
+          />
+        </Paper>
+        <Paper className={classes.paper} elevation={1}>
           <Head Icon={AddBoxIcon} onClick={this.handleOpenPositionNew}>
             Posisi Pekerjaan
           </Head>
@@ -238,6 +310,7 @@ class ProfilePage extends React.Component {
         >
           <EditProfileForm onSuccess={this.handleCloseProfile} />
         </FormDialog>
+        {this.renderOtherEduForm()}
         {this.renderPositionForm()}
         {this.renderBody()}
       </React.Fragment>

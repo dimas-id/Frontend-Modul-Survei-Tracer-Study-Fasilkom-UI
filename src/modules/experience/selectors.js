@@ -17,3 +17,12 @@ export function getWorkPositionById(state, positionId) {
   const positions = getWorkPositions(state);
   return find(positions, pos => pos.id === positionId);
 }
+
+export function getOtherEdus(state) {
+  return get(getExperience(state), "otherEdus.results");
+}
+
+export function getOtherEduById(state, otherEduId) {
+  const otherEdus = getOtherEdus(state);
+  return find(otherEdus, edu => edu.id === otherEduId);
+}
