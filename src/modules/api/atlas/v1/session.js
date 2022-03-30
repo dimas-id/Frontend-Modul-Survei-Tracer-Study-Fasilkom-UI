@@ -31,5 +31,10 @@ export default Object.freeze({
   patchPreference: (userId, payload) =>
     http.patch(`${API_V1_URL}/users/${userId}/preference`, {
       preference: payload
-    })
+    }),
+  getSkills: userId => http.get(`${API_V1_URL}/users/${userId}/skills`),
+  patchSkills: (userId, payload) =>
+    http.patch(`${API_V1_URL}/users/${userId}/skills`, {
+      topSkills: payload
+    }),
 });

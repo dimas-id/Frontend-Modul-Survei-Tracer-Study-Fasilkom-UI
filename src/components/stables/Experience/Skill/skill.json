@@ -1,0 +1,22 @@
+{
+  "java": "Java", 
+  "python": "Python",
+  "go": "Go",
+  "flutter": "Flutter",
+  "kotlin": "Kotlin",
+  "js": "Javascript",
+  "css": "Cascading Style Sheet (CSS)",
+  "html": "HTML",
+  "sql": "SQL",
+  "erp": "Enterprise Resource Planning (ERP)",
+  "ui": "User Interface Design (UI)",
+  "ux": "User Experience Design (UX)",
+  "pm": "Product Management",
+  "consulting": "Consulting",
+  "dbAdmin": "Database Administrator",
+  "ds": "Data Science",
+  "ml": "Machine Learning",
+  "sa": "System Analysis",
+  "cp": "Competitive Programming",
+  "cs": "Cyber Security"
+}
