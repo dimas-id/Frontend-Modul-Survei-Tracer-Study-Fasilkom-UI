@@ -20,6 +20,9 @@ import OtherEduForm from "../../../components/stables/Experience/OtherEduForm";
 
 import { getUser } from "../../../modules/session/selectors";
 import { getDateFormatted } from "../../../libs/datetime";
+import Skill from "../../../components/stables/Experience/Skill";
+import atlasV1 from "../../../modules/api/atlas/v1";
+import SkillList from "../../../components/stables/Experience/SkillList";
 
 const useStyles = makeStyles({
   head: {
@@ -113,6 +116,10 @@ class ProfilePage extends React.Component {
     openOtherEdu: false,
     otherEduId: null,
     isNewOtherEdu: false,
+    openSkill: false,
+    isSkillUpdated: false,
+    isSkillLoading: true,
+    skillList: [],
   };
 
   closePosition = () =>
@@ -239,6 +246,52 @@ class ProfilePage extends React.Component {
     );
   }
 
+  handleOpenSkill = () => {
+    this.setState({ openSkill: true });
+  };
+
+  handleUpdateSkill = value => {
+    this.setState({ isSkillUpdated: value });
+  };
+
+  handleCloseSkill = () => {
+    if (this.state.isSkillUpdated) {
+      window.alertDialog(
+        "Apakah anda yakin?",
+        "Jika anda tutup, maka pernyataan anda akan hilang.",
+        this.closeSkill,
+        () => null
+      );
+    } else {
+      this.closeSkill();
+    }
+  };
+
+  closeSkill = () => {
+    this.setState({
+      openSkill: false,
+      isSkillUpdated: false,
+    });
+  };
+
+  getUserSkills = () => {
+    atlasV1.session
+      .getSkills(this.props.user.id)
+      .then(result => {
+        let userSkills = result.data.topSkills;
+        this.setState({
+          skillList: Object.keys(userSkills).filter(
+            key => userSkills[key] === true
+          ),
+        });
+      })
+      .finally(() => this.setState({ isSkillLoading: false }));
+  };
+
+  componentDidMount() {
+    this.getUserSkills();
+  }
+
   renderBody() {
     const { classes, user } = this.props;
     let location = user.profile.residenceCity || "";
@@ -273,9 +326,7 @@ class ProfilePage extends React.Component {
           <Field label="Kata Sandi" value="*******" />
         </Paper>
         <Paper className={classes.paper} elevation={1}>
-          <Head>
-            Riwayat Pendidikan Fasilkom UI
-          </Head>
+          <Head>Riwayat Pendidikan Fasilkom UI</Head>
           <Education />
         </Paper>
         <Paper className={classes.paper} elevation={1}>
@@ -296,6 +347,19 @@ class ProfilePage extends React.Component {
             onAdd={this.handleOpenPositionNew}
           />
         </Paper>
+        <Paper className={classes.paper} elevation={1}>
+          <Head
+            Icon={this.state.skillList.length === 0 ? AddBoxIcon : EditIcon}
+            onClick={this.handleOpenSkill}
+          >
+            Skill
+          </Head>
+          <SkillList
+            isLoading={this.state.isSkillLoading}
+            skills={this.state.skillList}
+            onAdd={this.handleOpenSkill}
+          />
+        </Paper>
       </React.Fragment>
     );
   }
@@ -309,6 +373,19 @@ class ProfilePage extends React.Component {
           onClose={this.handleCloseProfile}
         >
           <EditProfileForm onSuccess={this.handleCloseProfile} />
+        </FormDialog>
+        <FormDialog
+          title={
+            this.state.skillList.length === 0 ? "Tambah Skill" : "Ubah Skill"
+          }
+          open={this.state.openSkill}
+          onClose={this.handleCloseSkill}
+        >
+          <Skill
+            onUpdate={this.handleUpdateSkill}
+            onSave={this.handleCloseSkill}
+            getUserSkills={this.getUserSkills}
+          />
         </FormDialog>
         {this.renderOtherEduForm()}
         {this.renderPositionForm()}
