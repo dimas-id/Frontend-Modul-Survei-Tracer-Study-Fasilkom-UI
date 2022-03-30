@@ -2,7 +2,6 @@ import React from "react";
 import keymirror from "keymirror";
 import moment from "moment";
 import omit from "lodash/omit";
-import http from "../../../../libs/http";
 import { connect } from "react-redux";
 import { Validation } from "../../../hocs/form";
 import { humanizeError } from "../../../../libs/response";
@@ -27,6 +26,7 @@ import {
   updateOtherEduById,
   deleteOtherEduById,
 } from "../../../../modules/experience/thunks";
+import univData from "./university.json";
 
 const FIELDS = keymirror({
   country: null,
@@ -124,28 +124,14 @@ function OtherEduForm({
   function getUnivListByCountry(country = "") {
     setUniversities([]);
     setIsLoading(true);
-    let univList = [];
-    const url = "http://universities.hipolabs.com/search?country=" + country;
-    const fetch = async () => {
-      try {
-        await http
-          .get(url)
-          .then(res => {
-            for (let i in res.data) {
-              univList.push(res.data[i].name);
-            };
-            setUniversities([...new Set(univList)].sort());
-          })
-          .finally(() =>
-            setIsLoading(false)
-          );
-        
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    let univDataFiltered = univData.filter(item => item.country === country);
 
-    fetch();
+    let univList = []
+    for (let i in univDataFiltered) {
+      univList.push(univDataFiltered[i].name)
+    }
+    setUniversities([...new Set(univList)].sort());
+    setIsLoading(false);
   }
 
   React.useEffect(() => {
