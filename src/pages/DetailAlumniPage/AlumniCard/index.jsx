@@ -10,7 +10,10 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { getDateFormatted } from "../../../libs/datetime";
 import { MAP_PROGRAM_CODE } from "../../../libs/studyProgram";
-
+import Chip from "@material-ui/core/Chip";
+import skillDict from "../../../components/stables/Experience/Skill/skill.json";
+import atlasV1 from "../../../modules/api/atlas/v1";
+import { LoadingFill } from "../../../components/Loading";
 
 const styles = theme => ({
   container: {
@@ -54,6 +57,9 @@ const useStyles = makeStyles({
     borderRadius: "50%",
     maxWidth: "50%",
     margin: "5px 25px 5px 5px",
+  },
+  chip: {
+    margin: "2px",
   },
 });
 
@@ -157,17 +163,17 @@ function RiwayatFasilkom(props) {
           <>
             {props.user.isStaff || props.user.isSuperUser ? (
               <>
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                   <Label label="NPM" />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={4}>
+                  <Label label="Gelar dan Program Studi" />
+                </Grid>
+                <Grid item xs={2}>
                   <Label label="Angkatan" />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={2}>
                   <Label label="Tahun Lulus" />
-                </Grid>
-                <Grid item xs={3}>
-                  <Label label="Gelar dan Program Studi" />
                 </Grid>
               </>
             ) : (
@@ -176,10 +182,10 @@ function RiwayatFasilkom(props) {
                   <Label label="Angkatan" />
                 </Grid>
                 <Grid item xs={4}>
-                  <Label label="Tahun Lulus" />
+                  <Label label="Gelar dan Program Studi" />
                 </Grid>
                 <Grid item xs={4}>
-                  <Label label="Gelar dan Program Studi" />
+                  <Label label="Tahun Lulus" />
                 </Grid>
               </>
             )}
@@ -188,24 +194,26 @@ function RiwayatFasilkom(props) {
               <>
                 {props.user.isStaff || props.user.isSuperUser ? (
                   <>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                       <Value value={item.uiSsoNpm} />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
+                      <Value value={MAP_PROGRAM_CODE[item.csuiProgram]} />
+                    </Grid>
+                    <Grid item xs={2}>
                       <Value value={item.csuiClassYear} />
                     </Grid>
-                    <Grid item xs={3}>
-                      <Value value={
-                        item.csuiGraduationTerm && item.csuiGraduationYear
-                          ? (i ? ", " : "") +
-                            (item.csuiGraduationTerm === 1
-                              ? "Genap " + (item.csuiGraduationYear + 1)
-                              : "Ganjil " + item.csuiGraduationYear)
-                          : ""}
+                    <Grid item xs={2}>
+                      <Value
+                        value={
+                          item.csuiGraduationTerm && item.csuiGraduationYear
+                            ? (i ? ", " : "") +
+                              (item.csuiGraduationTerm === 1
+                                ? "Genap " + (item.csuiGraduationYear + 1)
+                                : "Ganjil " + item.csuiGraduationYear)
+                            : ""
+                        }
                       />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Value value={MAP_PROGRAM_CODE[item.csuiProgram]} />
                     </Grid>
                   </>
                 ) : (
@@ -214,13 +222,15 @@ function RiwayatFasilkom(props) {
                       <Value value={item.csuiClassYear} />
                     </Grid>
                     <Grid item xs={4}>
-                      <Value value={
-                        item.csuiGraduationTerm && item.csuiGraduationYear
-                          ? (i ? ", " : "") +
-                            (item.csuiGraduationTerm === 1
-                              ? "Genap " + (item.csuiGraduationYear + 1)
-                              : "Ganjil " + item.csuiGraduationYear)
-                          : ""} 
+                      <Value
+                        value={
+                          item.csuiGraduationTerm && item.csuiGraduationYear
+                            ? (i ? ", " : "") +
+                              (item.csuiGraduationTerm === 1
+                                ? "Genap " + (item.csuiGraduationYear + 1)
+                                : "Ganjil " + item.csuiGraduationYear)
+                            : ""
+                        }
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -228,6 +238,51 @@ function RiwayatFasilkom(props) {
                     </Grid>
                   </>
                 )}
+              </>
+            ))}
+          </>
+        ) : (
+          <Value value="-" />
+        )}
+      </Grid>
+    </div>
+  );
+}
+
+function RiwayatPendLain(props) {
+  const classes = useStyles();
+  return (
+    <div className={classes.container}>
+      <Grid container>
+        <Head>Riwayat Pendidikan di Luar Fasilkom UI</Head>
+        {props.data.length > 0 ? (
+          <>
+            <Grid item xs={4}>
+              <Label label="Universitas" />
+            </Grid>
+            <Grid item xs={4}>
+              <Label label="Gelar dan Program Studi" />
+            </Grid>
+            <Grid item xs={2}>
+              <Label label="Tahun Masuk" />
+            </Grid>
+            <Grid item xs={2}>
+              <Label label="Tahun Lulus" />
+            </Grid>
+            {props.data.map((item, i) => (
+              <>
+                <Grid item xs={4}>
+                  <Value value={item.university} />
+                </Grid>
+                <Grid item xs={4}>
+                  <Value value={item.degree + " - " + item.program} />
+                </Grid>
+                <Grid item xs={2}>
+                  <Value value={item.classYear} />
+                </Grid>
+                <Grid item xs={2}>
+                  <Value value={item.isGraduated ? item.graduationYear : ""} />
+                </Grid>
               </>
             ))}
           </>
@@ -276,13 +331,48 @@ function RiwayatKerja(props) {
   );
 }
 
+function Skills(props) {
+  const classes = useStyles();
+  return (
+    <div className={classes.container}>
+      <Grid container>
+        <Head>Skill</Head>
+        {props.data.length > 0 ? (
+          props.data.map(skill => (
+            <Chip className={classes.chip} label={skillDict[skill]} />
+          ))
+        ) : (
+          <Value value="-" />
+        )}
+      </Grid>
+    </div>
+  );
+}
+
 class AlumniCard extends React.PureComponent {
+  state = {
+    skillLoading: true,
+    userSkills: [],
+  };
+
+  getSkillList = () => {
+    atlasV1.session
+      .getSkills(this.props.user.id)
+      .then(result => {
+        let skills = result.data.topSkills;
+        this.setState({
+          userSkills: Object.keys(skills).filter(key => skills[key] === true),
+        });
+      })
+      .finally(() => this.setState({ skillLoading: false }));
+  };
+
+  componentDidMount() {
+    this.getSkillList();
+  }
+
   render() {
-    const {
-      classes,
-      alumni,
-      user,
-    } = this.props;
+    const { classes, alumni, user } = this.props;
 
     return (
       <Paper
@@ -304,12 +394,17 @@ class AlumniCard extends React.PureComponent {
           linkedin={alumni.profile.linkedinUrl}
         />
         <Divider variant="middle" />
-        <RiwayatFasilkom
-          user={user}
-          data={alumni.educations}
-        />
+        <RiwayatFasilkom user={user} data={alumni.educations} />
+        <Divider variant="middle" />
+        <RiwayatPendLain data={alumni.otherEducations} />
         <Divider variant="middle" />
         <RiwayatKerja data={alumni.positions} />
+        <Divider variant="middle" />
+        {this.state.skillLoading ? (
+          <LoadingFill />
+        ) : (
+          <Skills data={this.state.userSkills} />
+        )}
       </Paper>
     );
   }
@@ -323,4 +418,3 @@ const MapStateToProps = state => ({
 });
 
 export default connect(MapStateToProps)(withStyles(styles)(AlumniCard));
-
