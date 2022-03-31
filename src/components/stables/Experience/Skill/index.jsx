@@ -14,6 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { LoadingFill } from "../../../Loading";
+import Divider from "@material-ui/core/Divider";
 
 const styles = makeStyles(theme => ({
   checkbox: {
@@ -181,7 +182,7 @@ function Skill({ userId, onUpdate, onSave, getUserSkills }) {
               </Grid>
             </form>
             <br />
-            <hr />
+            <Divider variant="middle" />
             <p>
               {pickedSkill.length + " "}
               Skill Dipilih
