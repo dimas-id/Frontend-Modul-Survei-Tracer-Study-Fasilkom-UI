@@ -73,6 +73,14 @@ class Screen extends React.Component {
         this.setState({
           fromSemester: target.value,
         });
+        
+        if (target.value === "") {
+          this.setState({
+            fromTahun: target.value,
+            toSemester: target.value,
+            toTahun: target.value,
+          });
+        }
         break;
 
       case "from-tahun":

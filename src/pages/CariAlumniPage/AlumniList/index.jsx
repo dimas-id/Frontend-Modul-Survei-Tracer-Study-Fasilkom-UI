@@ -68,7 +68,7 @@ function DataRow(props) {
   let urlProps = { href: props.pathUrl };
   if (props.path) {
     urlProps = {
-      to: makePathVariableUri(props.path, {idAlumni: props.idAlumni}),
+      to: makePathVariableUri(props.path, { idAlumni: props.idAlumni }),
       component: Link,
     };
   }
@@ -120,16 +120,8 @@ class AlumniList extends React.Component {
       params.push(query.angkatan);
       params.push(query.fromSemester);
       params.push(query.fromTahun);
-      params.push(
-        query.fromSemester === "" || query.fromTahun === ""
-          ? ""
-          : query.toSemester
-      );
-      params.push(
-        query.fromSemester === "" || query.fromTahun === ""
-          ? ""
-          : query.toTahun
-      );
+      params.push(query.toSemester);
+      params.push(query.toTahun);
       params.push(query.gelar);
       params.push(query.posisi);
       params.push(query.industri);
@@ -195,7 +187,7 @@ class AlumniList extends React.Component {
                               edu.csuiGraduationTerm && edu.csuiGraduationYear
                                 ? (i ? ", " : "") +
                                   (edu.csuiGraduationTerm === 1
-                                    ? "Genap " + (edu.csuiGraduationYear + 1)
+                                    ? "Genap " + (edu.csuiGraduationYear - 1)
                                     : "Ganjil " + edu.csuiGraduationYear)
                                 : ""
                             ),
