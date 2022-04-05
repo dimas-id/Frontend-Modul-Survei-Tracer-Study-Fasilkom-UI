@@ -12,6 +12,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import InputLabel from "@material-ui/core/InputLabel";
 
 const styles = theme => ({
@@ -80,7 +81,7 @@ function SelectIndustri(props) {
   ).then(val => {
     setIndustries(val.default);
   });
-  
+
   return (
     <FormControl variant="outlined" margin="normal" fullWidth>
       <InputLabel id="industri-label">Industri Pekerjaan</InputLabel>
@@ -94,11 +95,7 @@ function SelectIndustri(props) {
       >
         <MenuItem value="" selected={props.value === ""} />
         {industries.map(item => (
-          <MenuItem
-            key={item}
-            value={item}
-            selected={props.value === item}
-          >
+          <MenuItem key={item} value={item} selected={props.value === item}>
             {item}
           </MenuItem>
         ))}
@@ -137,16 +134,24 @@ function TahunLulus(props) {
           <Grid item xs>
             <TextField
               fullWidth
+              disabled={props.fromSemester === ""}
               id="from-tahun"
               label="Tahun (YYYY)"
               margin="normal"
               variant="outlined"
               inputProps={{ minLength: 4, maxLength: 4, pattern: "[0-9]" }}
-              error={props.fromTahun !== "" && props.fromTahun.length < 4}
+              required={props.fromSemester !== ""}
+              error={
+                (props.fromTahun === "" && props.fromSemester !== "") ||
+                (props.fromTahun !== "" && props.fromTahun.length < 4)
+              }
               helperText={
-                props.fromTahun !== "" && props.fromTahun.length < 4
+                (props.fromTahun === "" && props.fromSemester !== ""
+                  ? "Required"
+                  : "") ||
+                (props.fromTahun !== "" && props.fromTahun.length < 4
                   ? "Masukkan tahun lulus dengan format YYYY"
-                  : ""
+                  : "")
               }
               value={props.fromTahun}
               onChange={props.onChange}
@@ -159,17 +164,24 @@ function TahunLulus(props) {
         <InputLabel>Periode Lulus (sampai)</InputLabel>
         <Grid container justify="space-between">
           <Grid item xs>
-            <FormControl variant="outlined" margin="normal" fullWidth>
+            <FormControl
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              required={props.fromSemester !== ""}
+              error={props.toSemester === "" && props.fromSemester !== ""}
+            >
               <InputLabel id="to-semester-label">Semester</InputLabel>
               <Select
-                disabled={props.fromSemester === "" || props.fromTahun === ""}
+                disabled={props.fromSemester === ""}
                 name="to-semester"
                 labelid="to-semester-label"
-                value={
-                  props.fromSemester === "" || props.fromTahun === ""
-                    ? ""
-                    : props.toSemester
+                helperText={
+                  props.toSemester === "" && props.fromSemester !== ""
+                    ? "Required"
+                    : ""
                 }
+                value={props.toSemester}
                 onChange={props.onChange}
                 variant="outlined"
                 input={<OutlinedInput />}
@@ -182,28 +194,36 @@ function TahunLulus(props) {
                   Genap
                 </MenuItem>
               </Select>
+              {props.toSemester === "" && props.fromSemester !== "" ? (
+                <FormHelperText>Required</FormHelperText>
+              ) : (
+                ""
+              )}
             </FormControl>
           </Grid>
           <Grid item xs>
             <TextField
               fullWidth
-              disabled={props.fromSemester === "" || props.fromTahun === ""}
+              disabled={props.fromSemester === ""}
               id="to-tahun"
               label="Tahun (YYYY)"
               margin="normal"
               variant="outlined"
               inputProps={{ minLength: 4, maxLength: 4, pattern: "[0-9]" }}
-              error={props.toTahun !== "" && props.toTahun.length < 4}
+              required={props.fromSemester !== ""}
+              error={
+                (props.toTahun === "" && props.fromSemester !== "") ||
+                (props.toTahun !== "" && props.toTahun.length < 4)
+              }
               helperText={
-                props.toTahun !== "" && props.toTahun.length < 4
+                (props.toTahun === "" && props.fromSemester !== ""
+                  ? "Required"
+                  : "") ||
+                (props.toTahun !== "" && props.toTahun.length < 4
                   ? "Masukkan tahun lulus dengan format YYYY"
-                  : ""
+                  : "")
               }
-              value={
-                props.fromSemester === "" || props.fromTahun === ""
-                  ? ""
-                  : props.toTahun
-              }
+              value={props.toTahun}
               onChange={props.onChange}
             />
           </Grid>
@@ -320,6 +340,14 @@ class FilterAlumniMenu extends React.PureComponent {
               color="primary"
               fullWidth
               onClick={handleSearch}
+              disabled={
+                fromSemester !== "" &&
+                (fromTahun === "" ||
+                  toSemester === "" ||
+                  toTahun === "" ||
+                  fromTahun.length < 4 ||
+                  toTahun.length < 4)
+              }
             >
               Cari
             </Button>
