@@ -28,6 +28,7 @@ import config from "../../../config";
 import paths from "../../paths";
 import FileUploadInput from "../../../components/stables/FileUploadInput";
 import { METABASE_URL } from "../../../config/index.js";
+import AlumniSearchBar from "./AlumniSearchBar";
 
 const styles = theme => ({
   avatar: {
@@ -265,6 +266,14 @@ class HomePage extends React.Component {
                 </div>
               </Grid>
             )}
+
+            {(user.isStaff || user.isSuperUser || user.isVerified) && (
+              <Grid item xs={12} md={12}>
+                <br />
+                <AlumniSearchBar path={paths.ALUMNI_SEARCH} />
+              </Grid>
+            )}
+
             <Grid item xs={12} md={6}>
               <CategoryPaper
                 title="Channel"
@@ -273,6 +282,17 @@ class HomePage extends React.Component {
                 path={paths.CHANNEL}
               />
             </Grid>
+
+            {(user.isStaff || user.isSuperUser || user.isVerified) && (
+              <Grid item xs={12} md={6}>
+                <CategoryPaper
+                  title="Pencarian Alumni"
+                  description="Sarana untuk melakukan pencarian alumni sesuai preferensi"
+                  imageName="cloudSearch"
+                  path={paths.ALUMNI_SEARCH}
+                />
+              </Grid>
+            )}
 
             {(user.isStaff || user.isSuperUser) && (
               <React.Fragment>
@@ -321,17 +341,6 @@ class HomePage extends React.Component {
                   </Grid>
                 )}
               </React.Fragment>
-            )}
-
-            {(user.isStaff || user.isSuperUser || user.isVerified) && (
-            <Grid item xs={12} md={6}>
-              <CategoryPaper
-                title="Pencarian Alumni"
-                description="Sarana untuk melakukan pencarian alumni sesuai preferensi"
-                imageName="cloudSearch"
-                path={paths.ALUMNI_SEARCH}
-              />
-            </Grid>
             )}
           </Grid>
         </Paper>
@@ -395,10 +404,7 @@ function createContainer() {
   });
 
   return withRouter(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(withStyles(styles)(HomePage))
+    connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(HomePage))
   );
 }
 

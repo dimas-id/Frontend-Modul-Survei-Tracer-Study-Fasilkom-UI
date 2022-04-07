@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { getUser } from "../../../modules/session/selectors";
 import Typography from "@material-ui/core/Typography";
@@ -100,7 +101,14 @@ class AlumniList extends React.Component {
   };
 
   componentDidMount() {
-    this.handleLoad();
+    if (this.props.location.state === undefined) {
+      this.handleLoad();
+    } else if (
+      this.props.location.state &&
+      this.props.location.state.value === ""
+    ) {
+      this.handleLoad();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -163,13 +171,13 @@ class AlumniList extends React.Component {
                         { name: "Angkatan", width: "15%" },
                         { name: "Tahun Lulus", width: "15%" },
                         { name: "Gelar dan Program Studi", width: "20%" },
-                        { name: "Posisi Pekerjaan", width: "25%" },
+                        { name: "Posisi Saat Ini", width: "25%" },
                       ]
                     : [
                         { name: "Nama", width: "25%" },
                         { name: "Angkatan", width: "15%" },
                         { name: "Gelar dan Program Studi", width: "20%" },
-                        { name: "Posisi Pekerjaan", width: "20%" },
+                        { name: "Posisi Saat Ini", width: "20%" },
                         { name: "Perusahaan", width: "20%" },
                       ]
                 }
@@ -252,8 +260,11 @@ class AlumniList extends React.Component {
 }
 AlumniList.propTypes = {
   classes: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 const MapStateToProps = state => ({
   user: getUser(state),
 });
-export default connect(MapStateToProps)(withStyles(styles)(AlumniList));
+export default connect(MapStateToProps)(
+  withRouter(withStyles(styles)(AlumniList))
+);
