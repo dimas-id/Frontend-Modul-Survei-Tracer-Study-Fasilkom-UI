@@ -368,7 +368,8 @@ class AlumniCard extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.getSkillList();
+    // TODO: skill direvisi
+    // this.getSkillList();
   }
 
   render() {
@@ -399,12 +400,13 @@ class AlumniCard extends React.PureComponent {
         <RiwayatPendLain data={alumni.otherEducations} />
         <Divider variant="middle" />
         <RiwayatKerja data={alumni.positions} />
-        <Divider variant="middle" />
+        {/* TODO: skill direvisi */}
+        {/* <Divider variant="middle" />
         {this.state.skillLoading ? (
           <LoadingFill />
         ) : (
           <Skills data={this.state.userSkills} />
-        )}
+        )} */}
       </Paper>
     );
   }

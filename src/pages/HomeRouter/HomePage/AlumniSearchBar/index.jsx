@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Guidelines } from "../../../../styles";
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import Paper from "@material-ui/core/Paper";
@@ -21,6 +22,7 @@ const styles = theme => ({
 
 function AlumniSearchBar({ classes, path, pathUrl }) {
   const [value, setValue] = React.useState("");
+  const history = useHistory();
 
   let urlProps = { href: pathUrl };
   if (path) {
@@ -28,6 +30,12 @@ function AlumniSearchBar({ classes, path, pathUrl }) {
       to: { pathname: path, state: { value: value } },
       component: Link,
     };
+  }
+
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      history.push(path, { value: value });
+    }
   }
 
   return (
@@ -46,28 +54,12 @@ function AlumniSearchBar({ classes, path, pathUrl }) {
             placeholder="Cari alumni"
             value={value}
             onChange={({ target }) => setValue(target.value)}
+            onKeyPress={e => handleEnter(e)}
           />
         </Grid>
       </Grid>
     </Paper>
   );
 }
-
-// function AlumniSearchBar({ path, pathUrl, value }) {
-//   let urlProps = { href: pathUrl };
-//   if (path) {
-//     urlProps = {
-//       to: path,
-//       component: Link,
-//       state: {value: value},
-//     };
-//   }
-
-//   return (
-//     <Paper>
-//       <InputBase placeholder="Cari Alumni" />
-//     </Paper>
-//   );
-// }
 
 export default withStyles(styles)(AlumniSearchBar);
