@@ -265,7 +265,7 @@ class FilterAlumniMenu extends React.PureComponent {
           autoFocus
           fullWidth
           id="nama"
-          label="Nama Lengkap Alumni"
+          label="Nama Alumni"
           margin="normal"
           variant="outlined"
           value={nama}

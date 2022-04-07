@@ -1,4 +1,5 @@
 import React from "react";
+import {withRouter} from "react-router-dom"
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -21,6 +22,7 @@ const styles = theme => ({
 class Screen extends React.Component {
   static propTypes = {
     classes: PropTypes.shape().isRequired,
+    location: PropTypes.object.isRequired,
   };
 
   state = {
@@ -73,7 +75,7 @@ class Screen extends React.Component {
         this.setState({
           fromSemester: target.value,
         });
-        
+
         if (target.value === "") {
           this.setState({
             fromTahun: target.value,
@@ -154,7 +156,16 @@ class Screen extends React.Component {
       industri: "",
       perusahaan: "",
     });
+
+    this.handleSearch()
   };
+
+  componentDidMount() {
+    if (this.props.location.state && this.props.location.state.value) {
+      this.setState({ nama: this.props.location.state.value });
+      this.handleSearch()
+    }
+  }
 
   render() {
     const { classes } = this.props;
@@ -215,7 +226,7 @@ function createContainer() {
   return authorize({
     mustVerified: true,
     roles: [ROLES.STAFF, ROLES.PUBLIC],
-  })(withStyles(styles)(Screen));
+  })(withRouter(withStyles(styles)(Screen)));
 }
 
 export default createContainer();

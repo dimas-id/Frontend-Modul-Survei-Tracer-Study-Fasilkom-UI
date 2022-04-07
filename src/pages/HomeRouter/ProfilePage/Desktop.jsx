@@ -289,7 +289,8 @@ class ProfilePage extends React.Component {
   };
 
   componentDidMount() {
-    this.getUserSkills();
+    // TODO: skill direvisi
+    // this.getUserSkills();
   }
 
   renderBody() {
@@ -347,7 +348,8 @@ class ProfilePage extends React.Component {
             onAdd={this.handleOpenPositionNew}
           />
         </Paper>
-        <Paper className={classes.paper} elevation={1}>
+        {/* TODO: skill direvisi */}
+        {/* <Paper className={classes.paper} elevation={1}>
           <Head
             Icon={this.state.skillList.length === 0 ? AddBoxIcon : EditIcon}
             onClick={this.handleOpenSkill}
@@ -359,7 +361,7 @@ class ProfilePage extends React.Component {
             skills={this.state.skillList}
             onAdd={this.handleOpenSkill}
           />
-        </Paper>
+        </Paper> */}
       </React.Fragment>
     );
   }
@@ -374,7 +376,8 @@ class ProfilePage extends React.Component {
         >
           <EditProfileForm onSuccess={this.handleCloseProfile} />
         </FormDialog>
-        <FormDialog
+        {/* TODO: skill direvisi */}
+        {/* <FormDialog
           title={
             this.state.skillList.length === 0 ? "Tambah Skill" : "Ubah Skill"
           }
@@ -386,7 +389,7 @@ class ProfilePage extends React.Component {
             onSave={this.handleCloseSkill}
             getUserSkills={this.getUserSkills}
           />
-        </FormDialog>
+        </FormDialog> */}
         {this.renderOtherEduForm()}
         {this.renderPositionForm()}
         {this.renderBody()}
