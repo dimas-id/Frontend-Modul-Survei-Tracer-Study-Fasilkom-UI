@@ -124,7 +124,7 @@ class AlumniList extends React.Component {
     if (query) {
       params.push(query.nama);
       params.push(query.gender);
-      params.push(query.domisili);
+      params.push(query.lokasi);
       params.push(query.angkatan);
       params.push(query.fromSemester);
       params.push(query.fromTahun);

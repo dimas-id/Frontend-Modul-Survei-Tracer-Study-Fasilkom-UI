@@ -144,7 +144,7 @@ function DataDiri(props) {
                 label="Tanggal Lahir"
                 value={getDateFormatted(props.lahir, "DD MMMM YYYY")}
               />
-              <Field label="Domisili" value={props.domisili} />
+              <Field label="Lokasi" value={props.lokasi} />
             </>
           )}
         </Grid>
@@ -318,7 +318,10 @@ function RiwayatKerja(props) {
                   />
                 </Grid>
                 <Grid item xs={8}>
-                  <Field label={item.title} value={item.companyName} />
+                  <Field
+                    label={item.title}
+                    value={item.companyName + " - " + item.industryName}
+                  />
                 </Grid>
               </>
             ))}
@@ -368,8 +371,7 @@ class AlumniCard extends React.PureComponent {
   };
 
   componentDidMount() {
-    // TODO: skill direvisi
-    // this.getSkillList();
+    this.getSkillList();
   }
 
   render() {
@@ -391,7 +393,7 @@ class AlumniCard extends React.PureComponent {
           nama={alumni.name}
           lahir={alumni.profile.birthdate}
           gender={alumni.profile.gender}
-          domisili={alumni.profile.residenceCity}
+          lokasi={alumni.profile.residenceCity}
           linkedin={alumni.profile.linkedinUrl}
         />
         <Divider variant="middle" />
@@ -400,13 +402,12 @@ class AlumniCard extends React.PureComponent {
         <RiwayatPendLain data={alumni.otherEducations} />
         <Divider variant="middle" />
         <RiwayatKerja data={alumni.positions} />
-        {/* TODO: skill direvisi */}
-        {/* <Divider variant="middle" />
+        <Divider variant="middle" />
         {this.state.skillLoading ? (
           <LoadingFill />
         ) : (
           <Skills data={this.state.userSkills} />
-        )} */}
+        )}
       </Paper>
     );
   }

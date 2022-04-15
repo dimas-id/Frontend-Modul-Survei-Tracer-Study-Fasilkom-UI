@@ -240,7 +240,7 @@ class FilterAlumniMenu extends React.PureComponent {
       user,
       nama,
       gender,
-      domisili,
+      lokasi,
       angkatan,
       fromSemester,
       fromTahun,
@@ -276,11 +276,11 @@ class FilterAlumniMenu extends React.PureComponent {
             <SelectGender value={gender} onChange={handleChange} />
             <TextField
               fullWidth
-              id="domisili"
-              label="Domisili"
+              id="lokasi"
+              label="Lokasi"
               margin="normal"
               variant="outlined"
-              value={domisili}
+              value={lokasi}
               onChange={handleChange}
             />
           </div>

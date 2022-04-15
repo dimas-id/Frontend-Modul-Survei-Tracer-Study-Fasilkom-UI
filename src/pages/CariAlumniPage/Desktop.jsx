@@ -28,7 +28,7 @@ class Screen extends React.Component {
   state = {
     nama: "",
     gender: "",
-    domisili: "",
+    lokasi: "",
     angkatan: "",
     fromSemester: "",
     fromTahun: "",
@@ -57,9 +57,9 @@ class Screen extends React.Component {
         });
         break;
 
-      case "domisili":
+      case "lokasi":
         this.setState({
-          domisili: target.value,
+          lokasi: target.value,
         });
         break;
 
@@ -145,7 +145,7 @@ class Screen extends React.Component {
     this.setState({
       nama: "",
       gender: "",
-      domisili: "",
+      lokasi: "",
       angkatan: "",
       fromSemester: "",
       fromTahun: "",
@@ -172,7 +172,7 @@ class Screen extends React.Component {
     const {
       nama,
       gender,
-      domisili,
+      lokasi,
       angkatan,
       fromSemester,
       fromTahun,
@@ -196,7 +196,7 @@ class Screen extends React.Component {
               <FilterAlumniMenu
                 nama={nama}
                 gender={gender}
-                domisili={domisili}
+                lokasi={lokasi}
                 angkatan={angkatan}
                 fromSemester={fromSemester}
                 fromTahun={fromTahun}
