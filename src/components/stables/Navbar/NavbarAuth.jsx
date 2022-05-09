@@ -212,6 +212,24 @@ class NavbarAuth extends React.Component {
     ) : null;
   }
 
+  renderPencarianAlumniMenu() {
+    const { classes, user } = this.props;
+    return (
+      (user.isStaff || user.isSuperuser || user.isVerified) && (
+        <React.Fragment>
+          <MenuItem
+            className={classes.appMenuItem}
+            component={Link}
+            to={paths.ALUMNI_SEARCH}
+          >
+            <img src={icons.search} alt="Account Icon" />
+            <Typography>Pencarian Alumni</Typography>
+          </MenuItem>
+        </React.Fragment>
+      )
+    );
+  }
+
   renderAppMenu() {
     const { isLoggedIn, classes } = this.props;
     const { anchorElAppMenu } = this.state;
@@ -263,6 +281,7 @@ class NavbarAuth extends React.Component {
             <Typography>Channel</Typography>
           </MenuItem>
 
+          {this.renderPencarianAlumniMenu()}
           {this.renderAdminAppMenuItems()}
           {this.renderAppMenuAtlasMenu()}
           {this.renderAppMenuHeliosMenu()}
