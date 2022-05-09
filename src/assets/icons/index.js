@@ -6,6 +6,7 @@ import dashboard from "./dashboard.svg"
 import donasi from "./donasi.svg";
 import emailBlast from "./emailBlast.svg";
 import kontak from "./kontak.svg";
+import search from "./search.svg";
 
 export default {
   akun,
@@ -16,4 +17,5 @@ export default {
   donasi,
   emailBlast,
   kontak,
+  search,
 };
