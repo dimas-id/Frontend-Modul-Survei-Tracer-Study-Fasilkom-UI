@@ -25,6 +25,7 @@ const styles = {
   },
   text: {
     fontSize: 20,
+    whiteSpace: "pre-line",
   },
   btnContainer: {
     display: "flex",

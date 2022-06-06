@@ -38,6 +38,7 @@ const FIELDS = keymirror({
   isCurrent: null,
   dateStarted: null,
   dateEnded: null,
+  salaryRange: null,
 });
 
 const VALIDATOR = Validation.object().shape({
@@ -58,6 +59,7 @@ const VALIDATOR = Validation.object().shape({
   [FIELDS.dateEnded]: Validation.date()
     .notRequired()
     .nullable(),
+  [FIELDS.salaryRange]: Validation.string().required("Rentang Gaji wajib diisi."),
 });
 
 function getBlankValues() {
@@ -69,6 +71,7 @@ function getBlankValues() {
     [FIELDS.isCurrent]: false,
     [FIELDS.dateStarted]: moment(),
     [FIELDS.dateEnded]: null,
+    [FIELDS.salaryRange]: "",
   };
 }
 
@@ -119,6 +122,11 @@ function PositionForm({
   const [industries, setIndustries] = React.useState([]);
   import("./industry.json").then(val => {
     setIndustries(val.default);
+  });
+
+  const [salaryRange, setSalaryRange] = React.useState([]);
+  import("./salary.json").then(val => {
+    setSalaryRange(val.default);
   });
 
   return (
@@ -197,6 +205,35 @@ function PositionForm({
                       key={item}
                       value={item}
                       selected={item === values[FIELDS.industryName]}
+                    >
+                      {item}
+                    </Select.Item>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid item xs={12}>
+                <Select
+                  name={FIELDS.salaryRange}
+                  id="outlined-template"
+                  margin="dense"
+                  variant="outlined"
+                  label="Rentang Gaji"
+                  fullWidth
+                  helperText="Pilih rentang gaji."
+                  disabled={salaryRange.length <= 0}
+                  loading={salaryRange.length <= 0}
+                  required
+                  value={values[FIELDS.salaryRange]}
+                  onChange={handleChange}
+                  error={
+                    errors[FIELDS.salaryRange] && touched[FIELDS.salaryRange]
+                  }
+                >
+                  {salaryRange.map((item, index) => (
+                    <Select.Item
+                      key={index}
+                      value={(index + 1).toString()}
+                      selected={(index + 1) === parseInt(values[FIELDS.salaryRange])}
                     >
                       {item}
                     </Select.Item>
