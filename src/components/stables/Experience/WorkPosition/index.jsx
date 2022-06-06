@@ -23,6 +23,10 @@ function WorkPosition({ onAdd, onEdit, load, positions, userId }) {
   const classes = useStyles();
   const isPositionsEmpty = isEmpty(positions);
   const [isLoading, setLoading] = React.useState(true);
+  const [salaryRange, setSalaryRange] = React.useState([]);
+  import("../PositionForm/salary.json").then(val => {
+    setSalaryRange(val.default);
+  });
   React.useEffect(() => {
     load(userId).finally(() => setLoading(false));
   }, [load, userId]);
@@ -46,7 +50,7 @@ function WorkPosition({ onAdd, onEdit, load, positions, userId }) {
                 onClick={() => onEdit(pos.id)}
                 key={pos.id}
                 title={pos.title}
-                subtitle={`${pos.companyName} - ${pos.industryName}`}
+                subtitle={`${pos.companyName} - ${pos.industryName}\n${salaryRange[parseInt(pos.salaryRange) - 1]}`}
                 time={`${getDateFormatted(pos.dateStarted, "MMM YYYY")} - ${
                   pos.dateEnded
                     ? getDateFormatted(pos.dateEnded, "MMM YYYY")
