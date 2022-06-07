@@ -25,7 +25,7 @@ const styles = theme => ({
   },
   menuButton: {
     marginTop: -8,
-    marginLeft: -56,
+    marginLeft: -28,
   },
 });
 

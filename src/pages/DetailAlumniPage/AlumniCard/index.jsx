@@ -222,6 +222,9 @@ function RiwayatFasilkom(props) {
                       <Value value={item.csuiClassYear} />
                     </Grid>
                     <Grid item xs={4}>
+                      <Value value={MAP_PROGRAM_CODE[item.csuiProgram]} />
+                    </Grid>
+                    <Grid item xs={4}>
                       <Value
                         value={
                           item.csuiGraduationTerm && item.csuiGraduationYear
@@ -232,9 +235,6 @@ function RiwayatFasilkom(props) {
                             : ""
                         }
                       />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Value value={MAP_PROGRAM_CODE[item.csuiProgram]} />
                     </Grid>
                   </>
                 )}
@@ -393,7 +393,7 @@ class AlumniCard extends React.PureComponent {
           nama={alumni.name}
           lahir={alumni.profile.birthdate}
           gender={alumni.profile.gender}
-          lokasi={alumni.profile.residenceCity}
+          lokasi={alumni.profile.residenceCountry}
           linkedin={alumni.profile.linkedinUrl}
         />
         <Divider variant="middle" />
