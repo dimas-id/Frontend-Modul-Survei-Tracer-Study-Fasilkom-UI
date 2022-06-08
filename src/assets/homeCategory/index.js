@@ -6,6 +6,7 @@ import cloudEmail from "./cloud-email.svg";
 import cloudAtlas from "./cloud-atlas.svg";
 import cloudHelios from "./cloud-helios.svg";
 import cloudSearch from "./cloud-search.svg";
+import cloudGenerate from "./cloud-generate.svg";
 
 export default {
   cloudChannel,
@@ -16,4 +17,5 @@ export default {
   cloudAtlas,
   cloudHelios,
   cloudSearch,
+  cloudGenerate,
 };

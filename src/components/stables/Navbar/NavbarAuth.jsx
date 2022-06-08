@@ -186,6 +186,20 @@ class NavbarAuth extends React.Component {
     const { classes, user } = this.props;
     return user.isStaff || user.isSuperuser ? (
       <React.Fragment>
+        <a href={METABASE_URL} target="_blank" rel="noopener noreferrer">
+          <MenuItem className={classes.appMenuItem}>
+            <img src={icons.dashboard} alt="Account Icon" />
+            <Typography>Dashboard</Typography>
+          </MenuItem>
+        </a>
+        <MenuItem
+          className={classes.appMenuItem}
+          component={Link}
+          to={paths.GENERATE_USER}
+        >
+          <img src={icons.generateUser} alt="Account Icon" />
+          <Typography>Generate User</Typography>
+        </MenuItem>
         <MenuItem
           className={classes.appMenuItem}
           component={Link}
@@ -202,12 +216,6 @@ class NavbarAuth extends React.Component {
           <img src={icons.kontak} alt="Account Icon" />
           <Typography>Kontak</Typography>
         </MenuItem>
-        <a href={METABASE_URL} target="_blank" rel="noopener noreferrer">
-          <MenuItem className={classes.appMenuItem}>
-            <img src={icons.dashboard} alt="Account Icon" />
-            <Typography>Dashboard</Typography>
-          </MenuItem>
-        </a>
       </React.Fragment>
     ) : null;
   }

@@ -62,3 +62,4 @@ exports.DONATION_REQUEST_UPDATE = `${
 exports.ALUMNI = "/alumni"
 exports.ALUMNI_SEARCH = `${exports.ALUMNI}/search`;
 exports.ALUMNI_DETAIL = `${exports.ALUMNI}/detail/:idAlumni`;
+exports.GENERATE_USER = `/generate-user`;
