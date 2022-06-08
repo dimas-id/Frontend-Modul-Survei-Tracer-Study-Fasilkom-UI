@@ -29,6 +29,7 @@ import ChannelChantDetailPage from "./ChannelChantDetailPage";
 import UserVerifyPage from "./UserVerifyPage";
 import CariAlumniPage from "./CariAlumniPage";
 import DetailAlumniPage from "./DetailAlumniPage/Desktop";
+import GenerateUserPage from "./GenerateUserPage";
 
 import { history } from '../modules';
 
@@ -268,6 +269,14 @@ const ROUTES = [
     route: {
       path: paths.ALUMNI_DETAIL,
       component: DetailAlumniPage,
+      exact: true,
+    },
+  },
+  {
+    title: "Generate User",
+    route: {
+      path: paths.GENERATE_USER,
+      component: GenerateUserPage,
       exact: true,
     },
   },

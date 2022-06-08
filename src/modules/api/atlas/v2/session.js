@@ -15,4 +15,5 @@ export default Object.freeze({
         "linkedinUrl",
       ])
     ),
+  bulkCreateUser: () => http.post(`${API_V2_URL}/register-v2`),
 });

@@ -306,6 +306,14 @@ class HomePage extends React.Component {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <CategoryPaper
+                    title="Generate User"
+                    description="Sarana untuk mengambil data mahasiswa dari website SiSidang"
+                    imageName="cloudGenerate"
+                    path={paths.GENERATE_USER}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <CategoryPaper
                     title="Email Blaster"
                     description="Sarana untuk mengirimkan email secara personal ke pengguna"
                     imageName="cloudEmail"
