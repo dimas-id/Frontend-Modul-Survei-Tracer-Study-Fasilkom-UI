@@ -295,23 +295,24 @@ class AlumniList extends React.Component {
                   )}
                 />
 
-                {loadingCsv ? (
-                  <LoadingFill />
-                ) : (
-                  <a
-                    href={`data:text/csv;charset=utf-8,${escape(dataInCsv)}`}
-                    download="students-export.csv"
-                    style={{ color: "black", textDecoration: "none" }}
-                  >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      style={{ marginTop: 24 }}
+                {(user.isStaff || user.isSuperUser) &&
+                  (loadingCsv ? (
+                    <LoadingFill />
+                  ) : (
+                    <a
+                      href={`data:text/csv;charset=utf-8,${escape(dataInCsv)}`}
+                      download="students-export.csv"
+                      style={{ color: "black", textDecoration: "none" }}
                     >
-                      Export Sebagai CSV
-                    </Button>
-                  </a>
-                )}
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginTop: 24 }}
+                      >
+                        Export Sebagai CSV
+                      </Button>
+                    </a>
+                  ))}
               </>
             ) : (
               <Container className={classes.container}>
