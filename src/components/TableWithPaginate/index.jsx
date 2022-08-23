@@ -16,12 +16,11 @@ import LastPageIcon from "@material-ui/icons/LastPage";
 import TableHead from "@material-ui/core/TableHead";
 import { Guidelines } from "../../styles";
 
-
 const actionsStyles = theme => ({
   root: {
     flexShrink: 0,
     color: theme.palette.text.secondary,
-    marginLeft: theme.spacing.unit * 2.5
+    marginLeft: theme.spacing.unit * 2.5,
   },
   paper: {
     ...Guidelines.layouts.mt32,
@@ -31,7 +30,7 @@ const actionsStyles = theme => ({
     ...Guidelines.layouts.pb32,
     ...Guidelines.layouts.flexDirCol,
     ...Guidelines.layouts.flexMiddle,
-    width: 90
+    width: 90,
   },
   button: {
     margin: theme.spacing.unit,
@@ -110,11 +109,11 @@ TablePaginationActions.propTypes = {
   onChangePage: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
 };
 
 const TablePaginationActionsWrapped = withStyles(actionsStyles, {
-  withTheme: true
+  withTheme: true,
 })(TablePaginationActions);
 
 ////////////////////////////////////////////////////////////////////////////
@@ -123,14 +122,14 @@ const TablePaginationActionsWrapped = withStyles(actionsStyles, {
 const styles = theme => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 3
+    marginTop: theme.spacing.unit * 3,
   },
   table: {
-    minWidth: 500
+    minWidth: 500,
   },
   tableWrapper: {
     overflowX: "auto",
-    width: "100%"
+    width: "100%",
   },
   paper: {
     // ...Guidelines.layouts.mt32,
@@ -139,14 +138,14 @@ const styles = theme => ({
     // ...Guidelines.layouts.ml64,
     // ...Guidelines.layouts.mb32,
     ...Guidelines.layouts.flexDirCol,
-    ...Guidelines.layouts.flexMiddle
-  }
+    ...Guidelines.layouts.flexMiddle,
+  },
 });
 
 class CustomPaginationActionsTable extends React.Component {
   state = {
     page: 0,
-    rowsPerPage: 10
+    rowsPerPage: 8,
   };
 
   handleChangePage = (event, page) => {
@@ -167,7 +166,7 @@ class CustomPaginationActionsTable extends React.Component {
     } else {
       emptyRows =
         rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-    }  
+    }
 
     return (
       <React.Fragment>
@@ -176,9 +175,11 @@ class CustomPaginationActionsTable extends React.Component {
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                    {columns.map((col) => (
-                      <TableCell key={col.name} width={col.width} align="left">{col.name}</TableCell>
-                    ))}
+                  {columns.map(col => (
+                    <TableCell key={col.name} width={col.width} align="left">
+                      {col.name}
+                    </TableCell>
+                  ))}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -195,12 +196,12 @@ class CustomPaginationActionsTable extends React.Component {
                 <TableRow>
                   <TablePagination
                     rowsPerPageOptions={[]}
-                    colSpan={5}
+                    colSpan={columns.length}
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     SelectProps={{
-                      native: true
+                      native: true,
                     }}
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
@@ -217,7 +218,7 @@ class CustomPaginationActionsTable extends React.Component {
 }
 
 CustomPaginationActionsTable.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(CustomPaginationActionsTable);
