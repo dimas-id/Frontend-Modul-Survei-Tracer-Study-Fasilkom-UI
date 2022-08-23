@@ -26,14 +26,18 @@ const styles = theme => ({
 function SelectGender(props) {
   return (
     <FormControl variant="outlined" margin="normal" fullWidth>
-      <InputLabel id="gender-label">Jenis Kelamin</InputLabel>
-      <Select
+      {/* <InputLabel shrink id="gender-label">
+        Jenis Kelamin
+      </InputLabel> */}
+      <TextField
+        select
         name="gender"
         labelid="gender-label"
+        label="Jenis Kelamin"
         value={props.value}
         onChange={props.onChange}
         variant="outlined"
-        input={<OutlinedInput />}
+        InputLabelProps={{ shrink: true }}
       >
         <MenuItem value="" selected={props.value === ""} />
         <MenuItem value={"M"} selected={props.value === "M"}>
@@ -42,7 +46,7 @@ function SelectGender(props) {
         <MenuItem value={"F"} selected={props.value === "F"}>
           Perempuan
         </MenuItem>
-      </Select>
+      </TextField>
     </FormControl>
   );
 }
@@ -50,14 +54,16 @@ function SelectGender(props) {
 function SelectProgram(props) {
   return (
     <FormControl variant="outlined" margin="normal" fullWidth>
-      <InputLabel id="gelar-label">Gelar dan Program Studi</InputLabel>
-      <Select
+      {/* <InputLabel id="gelar-label">Gelar dan Program Studi</InputLabel> */}
+      <TextField
+        select
         name="gelar"
         labelid="gelar-label"
+        label="Gelar dan Program Studi"
         value={props.value}
         onChange={props.onChange}
         variant="outlined"
-        input={<OutlinedInput />}
+        InputLabelProps={{ shrink: true }}
       >
         <MenuItem value="" selected={props.value === ""} />
         {PROGRAMS.map(item => (
@@ -69,7 +75,7 @@ function SelectProgram(props) {
             {item.label}
           </MenuItem>
         ))}
-      </Select>
+      </TextField>
     </FormControl>
   );
 }
@@ -84,14 +90,16 @@ function SelectIndustri(props) {
 
   return (
     <FormControl variant="outlined" margin="normal" fullWidth>
-      <InputLabel id="industri-label">Industri Pekerjaan</InputLabel>
-      <Select
+      {/* <InputLabel id="industri-label">Industri Pekerjaan</InputLabel> */}
+      <TextField
+        select
         name="industri"
         labelid="industri-label"
+        label="Industri Pekerjaan"
         variant="outlined"
         value={props.value}
         onChange={props.onChange}
-        input={<OutlinedInput />}
+        InputLabelProps={{ shrink: true }}
       >
         <MenuItem value="" selected={props.value === ""} />
         {industries.map(item => (
@@ -99,7 +107,7 @@ function SelectIndustri(props) {
             {item}
           </MenuItem>
         ))}
-      </Select>
+      </TextField>
     </FormControl>
   );
 }
@@ -112,14 +120,16 @@ function TahunLulus(props) {
         <Grid container justify="space-between">
           <Grid item xs>
             <FormControl variant="outlined" margin="normal" fullWidth>
-              <InputLabel id="from-semester-label">Semester</InputLabel>
-              <Select
+              {/* <InputLabel id="from-semester-label">Semester</InputLabel> */}
+              <TextField
+                select
                 name="from-semester"
                 labelid="from-semester-label"
+                label="Semester"
                 value={props.fromSemester}
                 onChange={props.onChange}
                 variant="outlined"
-                input={<OutlinedInput />}
+                InputLabelProps={{ shrink: true }}
               >
                 <MenuItem value="" selected={props.fromSemester === ""} />
                 <MenuItem value={"2"} selected={props.fromSemester === "2"}>
@@ -128,7 +138,7 @@ function TahunLulus(props) {
                 <MenuItem value={"1"} selected={props.fromSemester === "1"}>
                   Genap
                 </MenuItem>
-              </Select>
+              </TextField>
             </FormControl>
           </Grid>
           <Grid item xs>
@@ -140,6 +150,8 @@ function TahunLulus(props) {
               margin="normal"
               variant="outlined"
               inputProps={{ minLength: 4, maxLength: 4, pattern: "[0-9]" }}
+              InputLabelProps={{ shrink: true }}
+              placeholder="Contoh: 2021"
               required={props.fromSemester !== ""}
               error={
                 (props.fromTahun === "" && props.fromSemester !== "") ||
@@ -171,11 +183,13 @@ function TahunLulus(props) {
               required={props.fromSemester !== ""}
               error={props.toSemester === "" && props.fromSemester !== ""}
             >
-              <InputLabel id="to-semester-label">Semester</InputLabel>
-              <Select
+              {/* <InputLabel id="to-semester-label">Semester</InputLabel> */}
+              <TextField
+                select
                 disabled={props.fromSemester === ""}
                 name="to-semester"
                 labelid="to-semester-label"
+                label="Semester"
                 helperText={
                   props.toSemester === "" && props.fromSemester !== ""
                     ? "Required"
@@ -184,7 +198,7 @@ function TahunLulus(props) {
                 value={props.toSemester}
                 onChange={props.onChange}
                 variant="outlined"
-                input={<OutlinedInput />}
+                InputLabelProps={{ shrink: true }}
               >
                 <MenuItem value="" selected={props.toSemester === ""} />
                 <MenuItem value={"2"} selected={props.toSemester === "2"}>
@@ -193,7 +207,7 @@ function TahunLulus(props) {
                 <MenuItem value={"1"} selected={props.toSemester === "1"}>
                   Genap
                 </MenuItem>
-              </Select>
+              </TextField>
               {props.toSemester === "" && props.fromSemester !== "" ? (
                 <FormHelperText>Required</FormHelperText>
               ) : (
@@ -210,6 +224,8 @@ function TahunLulus(props) {
               margin="normal"
               variant="outlined"
               inputProps={{ minLength: 4, maxLength: 4, pattern: "[0-9]" }}
+              InputLabelProps={{ shrink: true }}
+              placeholder="Contoh: 2022"
               required={props.fromSemester !== ""}
               error={
                 (props.toTahun === "" && props.fromSemester !== "") ||
@@ -270,6 +286,8 @@ class FilterAlumniMenu extends React.PureComponent {
           variant="outlined"
           value={nama}
           onChange={handleChange}
+          InputLabelProps={{ shrink: true }}
+          placeholder="Contoh: Annisya"
         />
         {(user.isStaff || user.isSuperUser) && (
           <div>
@@ -282,6 +300,8 @@ class FilterAlumniMenu extends React.PureComponent {
               variant="outlined"
               value={lokasi}
               onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              placeholder="Contoh: Jakarta"
             />
           </div>
         )}
@@ -292,6 +312,8 @@ class FilterAlumniMenu extends React.PureComponent {
           margin="normal"
           variant="outlined"
           inputProps={{ minLength: 4, maxLength: 4, pattern: "[0-9]" }}
+          InputLabelProps={{ shrink: true }}
+          placeholder="Contoh: 2018"
           error={angkatan !== "" && angkatan.length < 4}
           helperText={
             angkatan !== "" && angkatan.length < 4
@@ -319,6 +341,8 @@ class FilterAlumniMenu extends React.PureComponent {
           variant="outlined"
           value={posisi}
           onChange={handleChange}
+          InputLabelProps={{ shrink: true }}
+          placeholder="Contoh: Product Manager"
         />
         <SelectIndustri value={industri} onChange={handleChange} />
         <TextField
@@ -329,6 +353,8 @@ class FilterAlumniMenu extends React.PureComponent {
           variant="outlined"
           value={perusahaan}
           onChange={handleChange}
+          InputLabelProps={{ shrink: true }}
+          placeholder="Contoh: Tokopedia"
         />
 
         <br />

@@ -1,5 +1,5 @@
 import React from "react";
-import {withRouter} from "react-router-dom"
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -10,6 +10,7 @@ import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
 import FilterAlumniMenu from "./FilterAlumniMenu";
 import AlumniList from "./AlumniList";
+import atlasV2 from "../../modules/api/atlas/v2";
 
 const styles = theme => ({
   container: {
@@ -157,13 +158,35 @@ class Screen extends React.Component {
       perusahaan: "",
     });
 
-    this.handleSearch()
+    this.handleSearch();
+  };
+
+  handleExport = () => {
+    const query = this.state;
+    const params = [];
+
+    if (query) {
+      params.push(query.nama);
+      params.push(query.gender);
+      params.push(query.lokasi);
+      params.push(query.angkatan);
+      params.push(query.fromSemester);
+      params.push(query.fromTahun);
+      params.push(query.toSemester);
+      params.push(query.toTahun);
+      params.push(query.gelar);
+      params.push(query.posisi);
+      params.push(query.industri);
+      params.push(query.perusahaan);
+    }
+
+    atlasV2.alumni.exportAlumni(...params);
   };
 
   componentDidMount() {
     if (this.props.location.state && this.props.location.state.value) {
       this.setState({ nama: this.props.location.state.value });
-      this.handleSearch()
+      this.handleSearch();
     }
   }
 

@@ -7,6 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import { Guidelines } from "../../../styles";
 import { makeStyles, withStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import { getDateFormatted } from "../../../libs/datetime";
 import { MAP_PROGRAM_CODE } from "../../../libs/studyProgram";
@@ -92,13 +93,19 @@ function Value(props) {
   return (
     <Grid container className={classes.gridField}>
       <Grid item>
-        <Typography
-          className={classes.value}
-          component="p"
-          style={{ paddingBottom: props.pb }}
-        >
-          {props.value || "-"}
-        </Typography>
+        {props.isLink && props.value !== '-' ? (
+          <Link href={props.value} target="_blank">
+            {props.value}
+          </Link>
+        ) : (
+          <Typography
+            className={classes.value}
+            component="p"
+            style={{ paddingBottom: props.pb }}
+          >
+            {props.value || "-"}
+          </Typography>
+        )}
       </Grid>
     </Grid>
   );
@@ -110,7 +117,7 @@ function Field(props) {
     <Grid container className={classes.gridField}>
       <Grid item>
         <Label label={props.label} />
-        <Value value={props.value || "-"} pb="12px" />
+        <Value isLink={props.isLink} value={props.value || "-"} pb="12px" />
       </Grid>
     </Grid>
   );
@@ -121,7 +128,7 @@ function DataDiri(props) {
   return (
     <div className={classes.container}>
       <Grid container>
-        <Grid item xs>
+        <Grid item sm={4}>
           <center>
             <img
               src={props.foto}
@@ -131,22 +138,36 @@ function DataDiri(props) {
           </center>
         </Grid>
         <Grid item xs>
-          <Field label="Nama Lengkap" value={props.nama} />
-          {(props.user.isStaff || props.user.isSuperUser) && (
-            <Field label="Jenis Kelamin" value={props.gender} />
-          )}
-          <Field label="Profil LinkedIn" value={props.linkedin} />
-        </Grid>
-        <Grid item xs>
-          {(props.user.isStaff || props.user.isSuperUser) && (
-            <>
+          <Grid container>
+            <Grid item xs={6}>
+              <Field label="Nama Lengkap" value={props.nama} />
+              {(props.user.isStaff || props.user.isSuperUser) && (
+                <>
+                  <Field label="Jenis Kelamin" value={props.gender} />
+                  <Field label="Email" value={props.email} />
+                </>
+              )}
+            </Grid>
+            <Grid item xs={6}>
+              {(props.user.isStaff || props.user.isSuperUser) && (
+                <>
+                  <Field
+                    label="Tanggal Lahir"
+                    value={getDateFormatted(props.lahir, "DD MMMM YYYY")}
+                  />
+                  <Field label="Lokasi" value={props.lokasi} />
+                  <Field label="Telepon" value={props.telepon} />
+                </>
+              )}
+            </Grid>
+            <Grid item xs={12}>
               <Field
-                label="Tanggal Lahir"
-                value={getDateFormatted(props.lahir, "DD MMMM YYYY")}
+                label="Profil LinkedIn"
+                isLink="true"
+                value={props.linkedin}
               />
-              <Field label="Lokasi" value={props.lokasi} />
-            </>
-          )}
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </div>
@@ -394,6 +415,8 @@ class AlumniCard extends React.PureComponent {
           lahir={alumni.profile.birthdate}
           gender={alumni.profile.gender}
           lokasi={alumni.profile.residenceCountry}
+          email={alumni.email}
+          telepon={alumni.profile.phoneNumber}
           linkedin={alumni.profile.linkedinUrl}
         />
         <Divider variant="middle" />
