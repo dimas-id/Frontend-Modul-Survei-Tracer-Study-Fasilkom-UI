@@ -363,7 +363,7 @@ class FilterAlumniMenu extends React.PureComponent {
           <Grid item xs={5}>
             <Button
               variant="contained"
-              color="danger"
+              color="primary"
               fullWidth
               onClick={handleSearch}
               disabled={
