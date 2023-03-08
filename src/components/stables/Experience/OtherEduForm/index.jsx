@@ -83,11 +83,13 @@ function OtherEduForm({
     const payload = { ...omit(values) };
     payload[FIELDS.classYear] = getYearFormatted(values[FIELDS.classYear]);
     if (values[FIELDS.isGraduated]) {
-      payload[FIELDS.graduationYear] = getYearFormatted(values[FIELDS.graduationYear]);
+      payload[FIELDS.graduationYear] = getYearFormatted(
+        values[FIELDS.graduationYear]
+      );
     } else {
       payload[FIELDS.graduationYear] = null;
     }
-    
+
     const submitAction = update ? updateOtherEdu : createOtherEdu;
     const params = update ? [otherEduId, payload] : [payload];
     submitAction(...params)
@@ -126,18 +128,17 @@ function OtherEduForm({
     setIsLoading(true);
     let univDataFiltered = univData.filter(item => item.country === country);
 
-    let univList = []
+    let univList = [];
     for (let i in univDataFiltered) {
-      univList.push(univDataFiltered[i].name)
+      univList.push(univDataFiltered[i].name);
     }
     setUniversities([...new Set(univList)].sort());
     setIsLoading(false);
   }
 
   React.useEffect(() => {
-    if (otherEduId)
-      getUnivListByCountry(currentOtherEdu.country);
-  }, [otherEduId])
+    if (otherEduId) getUnivListByCountry(currentOtherEdu.country);
+  }, [otherEduId, currentOtherEdu.country]);
 
   return (
     <Formik

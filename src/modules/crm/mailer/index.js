@@ -120,7 +120,9 @@ export const mailerAction = Object.freeze({
   }),
 });
 
-export default {
+const mailer = {
   mailerAction,
   mailerReducer,
 };
+
+export default mailer;

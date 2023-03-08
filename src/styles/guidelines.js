@@ -8,7 +8,7 @@ const axies = [
   { key: "l", detail: "Left" },
   { key: "r", detail: "Right" },
   { key: "t", detail: "Top" },
-  { key: "b", detail: "Bottom" }
+  { key: "b", detail: "Bottom" },
 ];
 
 function generatePadding() {
@@ -22,7 +22,7 @@ function generatePadding() {
       const a = axies[j];
       const key = `${PREFIX}${a.key}${size}`;
       result[key] = {
-        [`${NAME}${a.detail}`]: size
+        [`${NAME}${a.detail}`]: size,
       };
     }
   }
@@ -41,7 +41,7 @@ function generateMargin() {
       const a = axies[j];
       const key = `${PREFIX}${a.key}${size}`;
       result[key] = {
-        [`${NAME}${a.detail}`]: size
+        [`${NAME}${a.detail}`]: size,
       };
     }
   }
@@ -54,11 +54,11 @@ function generateHeightWidth() {
   const heightPrefix = "h";
   const result = {
     [`${widthPrefix}100`]: {
-      width: "100%"
+      width: "100%",
     },
     [`${heightPrefix}100`]: {
-      height: "100%"
-    }
+      height: "100%",
+    },
   };
 
   intervalSize.forEach(size => {
@@ -81,7 +81,7 @@ const colorHexes = [
   { color: "red", hex: "E24C4C" },
   { color: "blue", hex: "2D4EF5" },
   { color: "lightBlue", hex: "00C7E5" },
-  { color: "darkBlue", hex: "022047" }
+  { color: "darkBlue", hex: "022047" },
 ];
 
 const transparency = {
@@ -89,7 +89,7 @@ const transparency = {
   90: "e6",
   60: "99",
   40: "66",
-  10: "1a"
+  10: "1a",
 };
 
 function generateColors() {
@@ -110,109 +110,111 @@ export const layouts = {
   ...generateMargin(),
   ...generateHeightWidth(),
   flex1: {
-    flex: 1
+    flex: 1,
   },
   flex2: {
-    flex: 2
+    flex: 2,
   },
   flex3: {
-    flex: 3
+    flex: 3,
   },
   windowWidth: {
-    width: "100vw"
+    width: "100vw",
   },
   windowHeight: {
-    height: "100vh"
+    height: "100vh",
   },
   marginAuto: {
-    margin: "auto"
+    margin: "auto",
   },
   flexDirRow: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   flexDirCol: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   flexMiddle: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   flexMiddleSpaceBetween: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   flexSpaceBetweenMiddle: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "space-between"
+    alignItems: "space-between",
   },
   flexWrap: {
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   flexNowrap: {
-    flexWrap: "nowrap"
+    flexWrap: "nowrap",
   },
   posAbs: {
-    position: "absolute"
+    position: "absolute",
   },
   posAbsHorizontalCenter: {
     position: "absolute",
     left: "50%",
-    transform: "translateX(-50%)"
+    transform: "translateX(-50%)",
   },
   posAbsCenter: {
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: "translate(-50%, -50%)"
+    transform: "translate(-50%, -50%)",
   },
   posAbsBottom: {
     position: "absolute",
-    bottom: 0
+    bottom: 0,
   },
   sendToBack: {
-    zIndex: -1
+    zIndex: -1,
   },
   backgroundTransparent: {
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   borderBox: {
-    boxSizing: "border-box"
-  }
+    boxSizing: "border-box",
+  },
 };
 
 export const fonts = {
   bold: {
-    fontWeight: "700"
+    fontWeight: "700",
   },
   medium: {
-    fontWeight: "600"
+    fontWeight: "600",
   },
   normal: {
-    fontWeight: "500"
+    fontWeight: "500",
   },
   heading1: {
     fontWeight: "700",
-    marginBottom: 24
-  }
+    marginBottom: 24,
+  },
 };
 
 export const colors = {
   transparent: "transparent",
-  ...generateColors()
+  ...generateColors(),
 };
 
 export function StyleSheet(styleCreator) {
   return styleCreator({ layouts, colors, fonts });
 }
 
-export default {
+const styles = {
   StyleSheet,
   layouts,
   colors,
-  fonts
+  fonts,
 };
+
+export default styles;

@@ -5,8 +5,6 @@ import { withStyles } from "@material-ui/core/styles";
 import HomeOutlined from "@material-ui/icons/HomeOutlined";
 import ContactMail from "@material-ui/icons/ContactMailOutlined";
 import ToggleOff from "@material-ui/icons/ToggleOffOutlined";
-import HowToVoteIcon from '@material-ui/icons/HowToVote';
-import ShowChart from '@material-ui/icons/ShowChart';
 
 import { authorize } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
@@ -20,18 +18,16 @@ import paths from "../paths";
 import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
 import PreferencePage from "./PreferencePage";
-import IframePage from "./IframePage";
-import VotingResultPage from "./VotingResultPage"
 
 const styles = theme => ({
   container: {
-    ...Guidelines.layouts.mt32
+    ...Guidelines.layouts.mt32,
   },
   particle: {
     display: "flex",
     alignItems: "flex-end",
-    justifyContent: "flex-end"
-  }
+    justifyContent: "flex-end",
+  },
 });
 
 const ROUTES = [
@@ -39,13 +35,13 @@ const ROUTES = [
     title: "Beranda",
     menu: {
       Icon: HomeOutlined,
-      path: paths.HOME
+      path: paths.HOME,
     },
     route: {
       exact: true,
       path: paths.LANDING,
-      component: HomePage
-    }
+      component: HomePage,
+    },
   },
   // {
   //   title: "Usulan Voting Alumni",
@@ -75,26 +71,26 @@ const ROUTES = [
     title: "Info Pribadi",
     menu: {
       Icon: ContactMail,
-      path: paths.USER_PROFILE
+      path: paths.USER_PROFILE,
     },
     route: {
       exact: true,
       path: paths.PROFILE,
-      component: ProfilePage
-    }
+      component: ProfilePage,
+    },
   },
   {
     title: "Preferensi",
     menu: {
       Icon: ToggleOff,
-      path: paths.USER_PREFERENCE
+      path: paths.USER_PREFERENCE,
     },
     route: {
       exact: true,
       path: paths.PREFERENCE,
-      component: PreferencePage
-    }
-  }
+      component: PreferencePage,
+    },
+  },
 ];
 
 function HomeMobile({ classes }) {
@@ -110,9 +106,9 @@ function HomeMobile({ classes }) {
 }
 
 HomeMobile.propTypes = {
-  classes: PropTypes.shape().isRequired
+  classes: PropTypes.shape().isRequired,
 };
 
 export default authorize({
-  mustVerified: false
+  mustVerified: false,
 })(withStyles(styles)(HomeMobile));

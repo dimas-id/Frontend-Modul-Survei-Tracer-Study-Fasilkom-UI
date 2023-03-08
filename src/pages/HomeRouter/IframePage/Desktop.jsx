@@ -1,7 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
 import { Guidelines } from "../../../styles";
-import JotformEmbed from 'react-jotform-embed';
+import JotformEmbed from "react-jotform-embed";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
@@ -9,7 +8,7 @@ import { loadEducations } from "../../../modules/experience/thunks";
 import { getEducations } from "../../../modules/experience/selectors";
 import {
   getUser,
-  getUserAccessToken
+  getUserAccessToken,
 } from "../../../modules/session/selectors";
 import amber from "@material-ui/core/colors/amber";
 import paths from "../../paths";
@@ -23,17 +22,17 @@ const styles = () => ({
     ...Guidelines.layouts.pt32,
     ...Guidelines.layouts.pr32,
     ...Guidelines.layouts.pl32,
-    ...Guidelines.layouts.pb32
+    ...Guidelines.layouts.pb32,
   },
   title: {
     ...Guidelines.layouts.flexMiddle,
     ...Guidelines.fonts.medium,
-    fontSize: 32
+    fontSize: 32,
   },
   subtitle: {
     ...Guidelines.layouts.flexMiddle,
     ...Guidelines.layouts.mb48,
-    fontSize: 20
+    fontSize: 20,
   },
   verifyContainer: {
     backgroundColor: amber[100],
@@ -48,9 +47,8 @@ const styles = () => ({
 });
 
 class IframePage extends React.Component {
-
   componentDidMount() {
-      this.props.load(this.props.user)
+    this.props.load(this.props.user);
   }
 
   openVerificationDialog = isUserDataComplete => {
@@ -68,56 +66,55 @@ class IframePage extends React.Component {
     );
   };
 
-  
-render() {
-  const { classes, user, userAccessToken, educations } = this.props;
-  if (educations && user && user.isVerified) {
-    const URL = `${JOTFORM_ID_CANDIDATES_VOTING_FORM}?email=${user.email}&name=${user.name}&npm=${educations[0].uiSsoNpm}&token=${userAccessToken}`
-    return (
-      <React.Fragment>
+  render() {
+    const { classes, user, userAccessToken, educations } = this.props;
+    if (educations && user && user.isVerified) {
+      const URL = `${JOTFORM_ID_CANDIDATES_VOTING_FORM}?email=${user.email}&name=${user.name}&npm=${educations[0].uiSsoNpm}&token=${userAccessToken}`;
+      return (
+        <React.Fragment>
           <Typography className={classes.title} variant="h5" component="h3">
             Voting Bakal Calon Ketua Iluni12
-          </Typography>      
+          </Typography>
 
-      <JotformEmbed src={URL} /> 
-      </React.Fragment> 
-  );
-  }
-  return (
-      <React.Fragment>
-            {!user.isVerified && (
-              <Grid item xs={12}>
-                <div className={classes.verifyContainer}>
-                  <Typography
-                    variant="body1"
-                    style={{ flexGrow: 1, marginBottom: 12 }}
-                  >
-                    Anda belum terverifikasi. Pastikan data diri anda lengkap di halaman {" "}
-                    <Link to={paths.USER_PROFILE}>Info Pribadi</Link>. Lakukan verifikasi
-                    ulang jika sistem gagal melakukan verifikasi setelah jangka
-                    waktu tertentu status Anda tidak berubah. Klik "Verifikasi
-                    Sekarang" untuk memulai verifikasi ulang.
-                  </Typography>
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.openVerificationDialog}
-                  >
-                    Verifikasi Sekarang
-                  </Button>
-                </div>
-              </Grid>
-            )}
+          <JotformEmbed src={URL} />
         </React.Fragment>
-  );
-}
+      );
+    }
+    return (
+      <React.Fragment>
+        {!user.isVerified && (
+          <Grid item xs={12}>
+            <div className={classes.verifyContainer}>
+              <Typography
+                variant="body1"
+                style={{ flexGrow: 1, marginBottom: 12 }}
+              >
+                Anda belum terverifikasi. Pastikan data diri anda lengkap di
+                halaman <Link to={paths.USER_PROFILE}>Info Pribadi</Link>.
+                Lakukan verifikasi ulang jika sistem gagal melakukan verifikasi
+                setelah jangka waktu tertentu status Anda tidak berubah. Klik
+                "Verifikasi Sekarang" untuk memulai verifikasi ulang.
+              </Typography>
+              <Button
+                color="primary"
+                className={classes.button}
+                onClick={this.openVerificationDialog}
+              >
+                Verifikasi Sekarang
+              </Button>
+            </div>
+          </Grid>
+        )}
+      </React.Fragment>
+    );
+  }
 }
 
 function createContainer() {
   const mapStateToProps = state => ({
     educations: getEducations(state),
     user: getUser(state),
-    userAccessToken: getUserAccessToken(state)
+    userAccessToken: getUserAccessToken(state),
   });
 
   const mapDispatchToProps = dispatch => ({
@@ -127,10 +124,7 @@ function createContainer() {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-    )(withStyles(styles)(IframePage));
+  )(withStyles(styles)(IframePage));
 }
 
 export default createContainer();
-
-
-

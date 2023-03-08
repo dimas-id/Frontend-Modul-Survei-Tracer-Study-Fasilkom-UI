@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from 'react';
-import { LoadingScreen } from '../Loading';
+import React, { lazy, Suspense } from "react";
+import { LoadingScreen } from "../Loading";
 
 export function withLoadable(loader) {
   const Loadable = lazy(loader);
@@ -10,6 +10,8 @@ export function withLoadable(loader) {
   );
 }
 
-export default {
+const loadable = {
   withLoadable,
 };
+
+export default loadable;

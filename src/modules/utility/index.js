@@ -9,7 +9,7 @@ const REMOVE_SNACKBAR = "utility/REMOVE_SNACKBAR"; // because any item in queue 
 const INITIAL_STATE = {
   showAlert: false,
   alert: null,
-  notifications: []
+  notifications: [],
 };
 
 export function utilityReducer(state, action) {
@@ -18,13 +18,13 @@ export function utilityReducer(state, action) {
       return {
         ...state,
         showAlert: true,
-        alert: action.payload
+        alert: action.payload,
       };
     case HIDE_ALERT:
       return {
         ...state,
         showAlert: false,
-        alert: null
+        alert: null,
       };
     case ENQUEUE_SNACKBAR:
       return {
@@ -32,16 +32,16 @@ export function utilityReducer(state, action) {
         notifications: [
           ...state.notifications,
           {
-            ...action.notification
-          }
-        ]
+            ...action.notification,
+          },
+        ],
       };
     case REMOVE_SNACKBAR:
       return {
         ...state,
         notifications: state.notifications.filter(
           notification => notification.key !== action.key
-        )
+        ),
       };
     default:
       return state || INITIAL_STATE;
@@ -51,10 +51,10 @@ export function utilityReducer(state, action) {
 export const utilityActions = Object.freeze({
   showAlert: (title, message, onPositive, onNegative) => ({
     type: SHOW_ALERT,
-    payload: { title, message, onPositive, onNegative }
+    payload: { title, message, onPositive, onNegative },
   }),
   hideAlert: () => ({
-    type: HIDE_ALERT
+    type: HIDE_ALERT,
   }),
   enqueueSnackbar: (message, options) => {
     /**
@@ -82,14 +82,14 @@ export const utilityActions = Object.freeze({
       notification: {
         key: new Date().getTime() + Math.random(),
         message,
-        options
-      }
+        options,
+      },
     };
   },
   removeSnackbar: key => ({
     type: REMOVE_SNACKBAR,
-    key
-  })
+    key,
+  }),
 });
 
 export function createGlobalDialog(store) {
@@ -106,9 +106,11 @@ export function createGlobalSnackbar(store) {
   };
 }
 
-export default {
+const utility = {
   utilityActions,
   utilityReducer,
   createGlobalDialog,
-  createGlobalSnackbar
+  createGlobalSnackbar,
 };
+
+export default utility;

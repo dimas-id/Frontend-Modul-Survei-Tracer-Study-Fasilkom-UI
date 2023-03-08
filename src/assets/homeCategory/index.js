@@ -8,7 +8,7 @@ import cloudHelios from "./cloud-helios.svg";
 import cloudSearch from "./cloud-search.svg";
 import cloudGenerate from "./cloud-generate.svg";
 
-export default {
+const cloudAssets = {
   cloudChannel,
   cloudContact,
   cloudDashboard,
@@ -19,3 +19,5 @@ export default {
   cloudSearch,
   cloudGenerate,
 };
+
+export default cloudAssets;

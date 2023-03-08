@@ -84,9 +84,11 @@ export function isClientError(response) {
   return status >= 400 && status < 500;
 }
 
-export default {
+const response = {
   humanizeError,
   isStatusOK,
   isClientError,
   getStatus,
 };
+
+export default response;

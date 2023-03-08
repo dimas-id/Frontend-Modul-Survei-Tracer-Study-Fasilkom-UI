@@ -48,7 +48,9 @@ export const experienceActions = Object.freeze({
   }),
 });
 
-export default {
+const experience = {
   experienceActions,
   experienceReducer,
 };
+
+export default experience;

@@ -5,11 +5,13 @@ import coupleTalk from "./couple-talk.svg";
 import bgLanding from "./bg-landing.svg";
 import cloudChannel from "./cloud-channel.svg";
 
-export default {
+const particles = {
   cloud1,
   cloud2,
   cloud3,
   coupleTalk,
   bgLanding,
-  cloudChannel
+  cloudChannel,
 };
+
+export default particles;

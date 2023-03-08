@@ -6,12 +6,12 @@ const propTypes = {
   className: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element)
-  ]).isRequired
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
 };
 
 const defaultProps = {
-  className: ""
+  className: "",
 };
 
 const containerStyles = theme => ({
@@ -24,31 +24,31 @@ const containerStyles = theme => ({
     padding: "0px 32px",
     [theme.breakpoints.down("sm")]: {
       padding: "0px 16px",
-      overflowX: "hidden"
+      overflowX: "hidden",
     },
-  }
+  },
 });
 
-export const Container = withStyles(containerStyles)(
-  ({ classes, children, className }) => (
-    <div className={`${classes.root} ${className}`}>{children}</div>
-  )
-);
+export const Container = withStyles(
+  containerStyles
+)(({ classes, children, className }) => (
+  <div className={`${classes.root} ${className}`}>{children}</div>
+));
 
 Container.propTypes = propTypes;
 Container.defaultProps = defaultProps;
 
 const containerFluidStyles = theme => ({
   root: {
-    overflowX: "hidden"
+    overflowX: "hidden",
   },
   containerFluid: {
     flex: 1,
     flexGrow: 1,
     width: "100vw",
     position: "relative",
-    boxSizing: "border-box"
-  }
+    boxSizing: "border-box",
+  },
 });
 
 export const ContainerFluid = withStyles(containerFluidStyles)(
@@ -67,14 +67,16 @@ export const contentStyles = theme => ({
     boxSizing: "border-box",
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px`,
     width: "100%",
-    position: "relative"
-  }
+    position: "relative",
+  },
 });
 export const Content = withStyles(contentStyles)(({ classes, children }) => (
   <div className={classes.root}>{children}</div>
 ));
 
-export default {
+const container = {
   Container,
-  ContainerFluid
+  ContainerFluid,
 };
+
+export default container;

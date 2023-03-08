@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import Fade from "@material-ui/core/Fade";
 
 import { ROLES } from "../../modules/session";
@@ -9,21 +9,21 @@ import {
   isLoggedIn as _isLoggedIn,
   getUser,
 } from "../../modules/session/selectors";
-import {loadUser} from "../../modules/session/thunks";
+import { loadUser } from "../../modules/session/thunks";
 import paths from "../../pages/paths";
 
 // backward compability
 /**
  * @deprecated since version 1.0 (Iterasi 1)
  */
-export { ROLES }
+export { ROLES };
 
 class Authenticated extends React.PureComponent {
   static propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     render: PropTypes.func.isRequired,
-    location: PropTypes.shape({pathname: PropTypes.string}).isRequired,
-    history: PropTypes.shape({push: PropTypes.func}).isRequired,
+    location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+    history: PropTypes.shape({ push: PropTypes.func }).isRequired,
     roles: PropTypes.arrayOf(PropTypes.string),
     mustVerified: PropTypes.bool,
     user: PropTypes.shape({
@@ -35,7 +35,7 @@ class Authenticated extends React.PureComponent {
   };
 
   componentDidMount() {
-    const {isLoggedIn, user} = this.props;
+    const { isLoggedIn, user } = this.props;
     if (!isLoggedIn) {
       this.redirectToLogin();
     } else {
@@ -54,14 +54,14 @@ class Authenticated extends React.PureComponent {
   }
 
   checkVerified() {
-    const {user, mustVerified} = this.props;
+    const { user, mustVerified } = this.props;
     if (!user.isSuperuser && mustVerified && !user.isVerified) {
       this.redirectTo404();
     }
   }
 
   checkUserRole() {
-    const {roles, user} = this.props;
+    const { roles, user } = this.props;
     if (roles && Array.isArray(roles)) {
       if (roles.length === 0 || roles.includes(ROLES.PUBLIC)) {
         return;
@@ -77,17 +77,17 @@ class Authenticated extends React.PureComponent {
   }
 
   redirectTo404 = () => {
-    const {history} = this.props;
+    const { history } = this.props;
     history.push(paths.ERROR_404);
   };
 
   redirectToLogin = () => {
-    const {history, location} = this.props;
+    const { history, location } = this.props;
     history.push(`${paths.LOGIN}?redirect=${location.pathname}`);
   };
 
   render() {
-    const {render} = this.props;
+    const { render } = this.props;
     return <Fade>{render()}</Fade>;
   }
 }
@@ -103,10 +103,7 @@ function createContainer() {
   });
 
   return withRouter(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps,
-    )(Authenticated),
+    connect(mapStateToProps, mapDispatchToProps)(Authenticated)
   );
 }
 
@@ -124,7 +121,7 @@ export const authorize = options => Component => {
 
   const Wrapper = createContainer();
   return props => (
-    <Wrapper {...defaults} render={() => <Component {...props} />}/>
+    <Wrapper {...defaults} render={() => <Component {...props} />} />
   );
 };
 
@@ -140,12 +137,14 @@ export const withAuth = (Component, options) => {
     ...options,
   };
   window.deprecationWarning(
-    "withAuth is deprecated. Use authorize instead. (src/components/hocs/auth.jsx)",
+    "withAuth is deprecated. Use authorize instead. (src/components/hocs/auth.jsx)"
   );
   return authorize(defaults)(Component);
 };
 
-export default {
+const hocsAuth = {
   withAuth,
   authorize,
 };
+
+export default hocsAuth;

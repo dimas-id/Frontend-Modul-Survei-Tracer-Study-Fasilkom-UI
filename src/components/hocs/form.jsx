@@ -1,15 +1,15 @@
 import React from "react";
-import {withFormik, Formik} from "formik";
+import { withFormik, Formik } from "formik";
 
 export const Validation = require("yup");
 
 export const Form = Formik;
 
-export function enhanceForm({validator, validate, ...otherConfig}) {
+export function enhanceForm({ validator, validate, ...otherConfig }) {
   const enhancer = withFormik({
     ...otherConfig,
     isInitialValid: props => {
-      const {isInitialValid, ...property} = props;
+      const { isInitialValid, ...property } = props;
       if (isInitialValid && typeof isInitialValid === "function") {
         isInitialValid(property);
       } else {
@@ -50,9 +50,9 @@ export function enhanceForm({validator, validate, ...otherConfig}) {
       Validation.object().shape(
         typeof validator === "function" ? validator(props) : validator
       ),
-    handleSubmit: (values, {props, ...actions}) => {
+    handleSubmit: (values, { props, ...actions }) => {
       // prevent infinite recursive by take out onSubmit and give others
-      const {onSubmit, ...property} = props;
+      const { onSubmit, ...property } = props;
       if (onSubmit && typeof onSubmit === "function") {
         onSubmit(values, actions, property);
       }
@@ -66,7 +66,7 @@ export function enhanceForm({validator, validate, ...otherConfig}) {
   };
 }
 
-export function getFieldProps(name, {values, errors, handleChange, touched}) {
+export function getFieldProps(name, { values, errors, handleChange, touched }) {
   const error = Boolean(touched[name] && errors[name]);
   const result = {
     error,
@@ -84,8 +84,10 @@ export function getFieldProps(name, {values, errors, handleChange, touched}) {
   return result;
 }
 
-export default {
+const formHocs = {
   enhanceForm,
   Form,
   Validation,
 };
+
+export default formHocs;

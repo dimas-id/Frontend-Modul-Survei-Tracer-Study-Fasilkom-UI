@@ -3,7 +3,7 @@ import { getNonFieldError, unauthorized } from "../../libs/response";
 import { utilityActions } from "../utility";
 import { logout } from "../session/thunks";
 
-export default store => next => async action => {
+const error = store => next => async action => {
   try {
     return await next(action);
   } catch (e) {
@@ -44,3 +44,5 @@ export default store => next => async action => {
     throw e;
   }
 };
+
+export default error;
