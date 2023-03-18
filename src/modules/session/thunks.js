@@ -6,7 +6,7 @@ import { push } from "connected-react-router";
 import { sessionActions } from "./index";
 import { getUserRefreshToken, getUserId } from "./selectors";
 import { setAuthToken } from "../../libs/http";
-import GoogleSheetsClient from "../sheets/sheetConfig"
+import GoogleSheetsClient from "../sheets/sheetConfig";
 
 export const loadUser = (userId, silent = false) => {
   return async (dispatch, _, { API: { atlasV1 } }) => {
@@ -26,14 +26,14 @@ export const loadVotingResult = () => {
   return async (dispatch, _) => {
     try {
       const client = new GoogleSheetsClient();
-      let data = await client.get(0)
-      await dispatch(sessionActions.setVotingResult(data))
-      return data
-    } catch(err) {
-      console.log("Error: ", err)
+      let data = await client.get(0);
+      await dispatch(sessionActions.setVotingResult(data));
+      return data;
+    } catch (err) {
+      console.log("Error: ", err);
     }
-  }
-}
+  };
+};
 
 export const register = payload => {
   return async (dispatch, _, { API: { atlasV2 }, utility }) => {
@@ -48,6 +48,27 @@ export const register = payload => {
         sessionActions.setToken(response.data.access, response.data.refresh)
       );
       await dispatch(sessionActions.setUser(get(response, "data.user")));
+      await dispatch(
+        utility.enqueueSnackbar(
+          "Registrasi Sukses! Verifikasi sedang berjalan",
+          { variant: "success" }
+        )
+      );
+      return response;
+    } catch (error) {
+      await dispatch(
+        utility.enqueueSnackbar("Gagal registrasi", { variant: "error" })
+      );
+      throw error;
+    }
+  };
+};
+
+export const postSurvei = (nama, deskripsi) => {
+  return async (dispatch, _, { API: { atlasV3 }, utility }) => {
+    try {
+      const response = await atlasV3.session.postSurvei(nama, deskripsi);
+  
       await dispatch(
         utility.enqueueSnackbar(
           "Registrasi Sukses! Verifikasi sedang berjalan",
@@ -168,6 +189,27 @@ export const logout = (force = false) => {
       await dispatch(
         utility.enqueueSnackbar("Berhasil keluar", { variant: "success" })
       );
+    }
+  };
+};
+
+export const createSurvei = (nama, deskripsi) => {
+  return async (dispatch, { API: { atlasV3 }, utility }) => {
+    try {
+      await atlasV3.session.postSurvei(nama, deskripsi);
+      await dispatch(push("/survei"));
+      await dispatch(
+        utility.enqueueSnackbar("Berhasil membuat survei", {
+          variant: "success",
+        })
+      );
+    } catch (err) {
+      await dispatch(
+        utility.enqueueSnackbar("Gagal memperbarui data verifikasi", {
+          variant: "error",
+        })
+      );
+      throw err;
     }
   };
 };

@@ -30,8 +30,10 @@ import UserVerifyPage from "./UserVerifyPage";
 import CariAlumniPage from "./CariAlumniPage";
 import DetailAlumniPage from "./DetailAlumniPage/Desktop";
 import GenerateUserPage from "./GenerateUserPage";
+import CreateSurvei from "./CreateSurvei";
+import LihatSurvei from "./LihatSurvei";
 
-import { history } from '../modules';
+import { history } from "../modules";
 
 import paths from "./paths";
 
@@ -55,15 +57,15 @@ export default function Pages() {
           />
         ))}
         <Route
-            render={() => (
-              <React.Fragment>
-                <Helmet>
-                  <title>404</title>
-                </Helmet>
-                <Error404Page/>
-              </React.Fragment>
-            )}
-          />
+          render={() => (
+            <React.Fragment>
+              <Helmet>
+                <title>404</title>
+              </Helmet>
+              <Error404Page />
+            </React.Fragment>
+          )}
+        />
       </Switch>
     </Router>
   );
@@ -278,6 +280,22 @@ const ROUTES = [
       path: paths.GENERATE_USER,
       component: GenerateUserPage,
       exact: true,
+    },
+  },
+  {
+    title: "Lihat Survei",
+    route: {
+      exact: true,
+      path: paths.LIHAT_SURVEI,
+      component: LihatSurvei,
+    },
+  },
+  {
+    title: "Buat Survei",
+    route: {
+      exact: true,
+      path: paths.BUAT_SURVEI,
+      component: CreateSurvei,
     },
   },
   {
