@@ -1,0 +1,36 @@
+.title-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.title-wrapper a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.title-wrapper button {
+  padding: 10px 20px;
+}
+
+.btn-group {
+  display: flex;
+  margin: auto;
+  width: 60%;
+  justify-content: center;
+}
+
+.btn-group div {
+  display: flex;
+  width: 33%;
+}
+
+.btn-group button {
+  border: none;
+  flex: 1;
+  padding: 10px 20px;
+}
+
+button:hover {
+  cursor: pointer;
+}

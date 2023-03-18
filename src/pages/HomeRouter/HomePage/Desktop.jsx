@@ -176,6 +176,8 @@ class HomePage extends React.Component {
       return null;
     }
 
+    console.log(user.id)
+
     const { profile } = user;
 
     return (
@@ -273,6 +275,15 @@ class HomePage extends React.Component {
                 <AlumniSearchBar path={paths.ALUMNI_SEARCH} />
               </Grid>
             )}
+
+            <Grid item xs={12} md={6}>
+              <CategoryPaper
+                title="Survei"
+                description="Sarana untuk melihat survei yang ditujukan untuk Alumni Fasilkom UI"
+                imageName="cloudChannel"
+                path={paths.LIHAT_SURVEI}
+              />
+            </Grid>
 
             <Grid item xs={12} md={6}>
               <CategoryPaper
