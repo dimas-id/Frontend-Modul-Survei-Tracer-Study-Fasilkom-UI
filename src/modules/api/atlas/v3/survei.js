@@ -15,4 +15,5 @@ export default Object.freeze({
         return { status: "error", data: err.message };
       });
   },
+  getSurvei: http.get(`${API_V3_URL}/survei/list`)
 });
