@@ -2,9 +2,9 @@ import http from "../../../../libs/http";
 import { API_V3_URL } from "../config";
 
 export default Object.freeze({
-  postSurvei: async (nama, deskripsi) => {
+  postSurvei: async json => {
     return await http
-      .post(`${API_V3_URL}/survei/create`, { nama, deskripsi })
+      .post(`${API_V3_URL}/survei/create`, json)
       .then(response => {
         return {
           status: "success",
@@ -15,5 +15,4 @@ export default Object.freeze({
         return { status: "error", data: err.message };
       });
   },
-  getSurvei: http.get(`${API_V3_URL}/survei/list`)
 });

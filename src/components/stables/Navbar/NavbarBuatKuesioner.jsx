@@ -9,6 +9,8 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import TextInput from "../../Input/TextInput";
 
+import classes from "./styles.module.css"
+
 const styles = theme => ({
   appbar: {
     top: 0,
@@ -25,84 +27,75 @@ const styles = theme => ({
 
 function NavbarBuatKuesioner({ classes, history, onSubmit }) {
   const [nama, setNama] = useState("");
-  const [deskripsi, setDeskripsi] = useState("");
 
   function namaChangeHandler(val) {
     setNama(val);
   }
 
-  function deskripsiChangeHandler(val) {
-    setDeskripsi(val);
-  }
-
   function onSubmitHandler() {
-    onSubmit(nama, deskripsi);
+    onSubmit(nama);
   }
 
   return (
-    <AppBar position="static" className={classes.appbar}>
-      <Toolbar>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <IconButton
-              className={classes.menuButton}
-              aria-label="Menu"
-              onClick={history.goBack}
-              color="primary"
-              variant="contained"
-            >
-              <ArrowBack />
-            </IconButton>
-          </div>
-          <form
-            action=""
-            method="POST"
+    <div className={classes.navbar} style={{position:"fixed",  width: "100%", }}>
+      <AppBar position="static" className={classes.appbar}>
+        <Toolbar>
+          <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "5px",
-              marginBottom: "5px",
-              width: "60%",
+              justifyContent: "space-between",
+              width: "100%",
             }}
           >
-            <TextInput
-              value={nama}
-              valHandler={namaChangeHandler}
-              id="title"
-              placeholder="Nama survei"
-            />
-            <TextInput
-              value={deskripsi}
-              valHandler={deskripsiChangeHandler}
-              id="deskripsi"
-              placeholder="tambahkan deskripsi"
-            />
-          </form>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <button
-              onClick={onSubmitHandler}
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <IconButton
+                className={classes.menuButton}
+                aria-label="Menu"
+                onClick={history.goBack}
+                color="primary"
+                variant="contained"
+              >
+                <ArrowBack />
+              </IconButton>
+            </div>
+            <form
+              action=""
+              method="POST"
               style={{
-                padding: "10px 20px",
-                border: "none",
-                backgroundColor: "#00C7E5",
-                color: "white",
-                borderRadius: "0.6em",
-                fontWeight: "bolder",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "5px",
+                marginBottom: "5px",
+                width: "60%",
               }}
             >
-              Simpan
-            </button>
+              <TextInput
+                value={nama}
+                valHandler={namaChangeHandler}
+                id="title"
+                placeholder="Nama survei"
+              />
+            </form>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <button
+                onClick={onSubmitHandler}
+                style={{
+                  padding: "10px 20px",
+                  border: "none",
+                  backgroundColor: "#00C7E5",
+                  color: "white",
+                  borderRadius: "0.6em",
+                  fontWeight: "bolder",
+                }}
+              >
+                Simpan
+              </button>
+            </div>
           </div>
-        </div>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+    </div>
   );
 }
 

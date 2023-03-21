@@ -26,45 +26,11 @@
 }
 
 .btn-group button {
-  border: 1px solid rgba(0, 0, 0, 0.8);
+  border: none;
   flex: 1;
   padding: 10px 20px;
 }
 
 button:hover {
   cursor: pointer;
-  background-color: #4CAF50;
-  color: white;
-}
-
-.grid-container {
-  margin: auto;
-  width: 60%;
-  display: grid;
-  padding: 10px;
-  padding-right: 45px;
-}
-
-.survei-card {
-  display: flex;
-  justify-content: space-between;
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  font-size: 30px;
-}
-
-.survei-card button {
-  padding: 10px 20px;
-  margin-left: 5px;
-}
-
-
-.little-text{
-  font-size: 15px;
-}
-
-
-ul {
-  list-style-type: none;
 }
