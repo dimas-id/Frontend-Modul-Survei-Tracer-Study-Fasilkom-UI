@@ -30,37 +30,6 @@ class Screen extends React.Component {
     location: PropTypes.object.isRequired,
   };
 
-  state = {
-    survei_list: null,
-    survei_list_sent: null,
-    survei_list_not_sent: null,
-    new_state: "button1",
-    loading: true,
-  };
-
-  componentDidMount() {
-    this.handleLoad();
-  }
-
-  handleLoad() {
-    this.setState({ loading: true }, () => {
-      atlasV3.survei.getSurvei
-        .then(result => {
-          this.setState({ survei_list: result.data.survei });
-          this.setState({ survei_list_sent: result.data.surveiDikirim });
-          this.setState({
-            survei_list_not_sent: result.data.surveiBelumDikirim,
-          });
-        })
-        .finally(() => {
-          this.setState({ loading: false });
-        });
-    });
-  }
-
-  changeState = a => {
-    this.setState({ new_state: a.target.id });
-  };
   render() {
     const { classes } = this.props;
 
@@ -77,105 +46,16 @@ class Screen extends React.Component {
           </div>
           <div className="btn-group">
             <div>
-              <button id="button1" onClick={this.changeState}>
-                Semua Survei
-              </button>
+              <button>Semua Survei</button>
             </div>
             <div>
-              <button id="button2" onClick={this.changeState}>
-                Belum Dikirim
-              </button>
+              <button>Belum Dikirim</button>
             </div>
             <div>
-              <button id="button3" onClick={this.changeState}>
-                Sudah Dikirim
-              </button>
+              <button>Sudah Dikirim</button>
             </div>
           </div>
-          <div className="grid-container">
-            {this.state.new_state === "button1" && (
-              <ul id="ul1">
-                {this.state.survei_list?.map(l => {
-                  return (
-                    <div key={`div${l.id}`}>
-                      <li key={l.id} className="survei-card">
-                        <div>
-                          <b>{l.nama}</b>
-                          {l.sudahDikirim && (
-                            <div className="little-text">
-                              Dikirim pada {formatDate(l.tanggalDikirim)}
-                            </div>
-                          )}
-                          {!l.sudahDikirim && (
-                            <div className="little-text">
-                              Terakhir diubah pada {formatDate(l.tanggalDiedit)}
-                            </div>
-                          )}
-                        </div>
-                        {l.sudahDikirim && (
-                          <div>
-                            <button>Statistik</button>
-                          </div>
-                        )}
-                        {!l.sudahDikirim && (
-                          <div>
-                            <button>Ubah</button>
-                            <button>Kirim</button>
-                          </div>
-                        )}
-                      </li>
-                      <br></br>
-                    </div>
-                  );
-                })}
-              </ul>
-            )}
-            {this.state.new_state === "button2" && (
-              <ul id="ul1">
-                {this.state.survei_list_not_sent?.map(l => {
-                  return (
-                    <div key={`div${l.id}`}>
-                      <li key={l.id} className="survei-card">
-                        <div>
-                          <b>{l.nama}</b>
-                          <div className="little-text">
-                            Terakhir diubah pada {formatDate(l.tanggalDiedit)}
-                          </div>
-                        </div>
-                        <div>
-                          <button>Ubah</button>
-                          <button>Kirim</button>
-                        </div>
-                      </li>
-                      <br></br>
-                    </div>
-                  );
-                })}
-              </ul>
-            )}
-            {this.state.new_state === "button3" && (
-              <ul id="ul1">
-                {this.state.survei_list_sent?.map(l => {
-                  return (
-                    <div key={`div${l.id}`}>
-                      <li key={l.id} className="survei-card">
-                        <div>
-                          <b>{l.nama}</b>
-                          <div className="little-text">
-                            Dikirim pada {formatDate(l.tanggalDikirim)}
-                          </div>
-                        </div>
-                        <div>
-                          <button>Statistik</button>
-                        </div>
-                      </li>
-                      <br></br>
-                    </div>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
+          <div>{/* Akan berisikan list dari survei */}</div>
         </Container>
       </React.Fragment>
     );
@@ -185,34 +65,8 @@ class Screen extends React.Component {
 function createContainer() {
   return authorize({
     mustVerified: true,
-    roles: [ROLES.STAFF],
+    roles: [ROLES.STAFF, ROLES.PUBLIC],
   })(withRouter(withStyles(styles)(Screen)));
-}
-
-function formatDate(newDate) {
-  const months = {
-    0: "Januari",
-    1: "Februari",
-    2: "Maret",
-    3: "April",
-    4: "Mei",
-    5: "Juni",
-    6: "Juli",
-    7: "Agustus",
-    8: "September",
-    9: "Oktober",
-    10: "November",
-    11: "Desember",
-  };
-  const d = newDate;
-  const year = d.slice(0, 4);
-  const date = d.slice(8, 10);
-  const monthIndexStr = d.slice(5, 7);
-  const monthIndex = parseInt(monthIndexStr);
-  const monthName = months[monthIndex];
-  const timeChanged = d.slice(11, 16);
-  const formatted = `${date} ${monthName} ${year} pukul ${timeChanged}`;
-  return formatted.toString();
 }
 
 export default createContainer();
