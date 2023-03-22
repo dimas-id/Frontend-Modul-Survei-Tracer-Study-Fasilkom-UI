@@ -1,9 +1,0 @@
-.navbar {
-  top: "75px";
-}
-
-@media screen and (min-width: 750px) {
-  .navbar {
-    top: 64px;
-  }
-}
