@@ -5,15 +5,12 @@ import { withStyles } from "@material-ui/core/styles";
 import { authorize, ROLES } from "../../components/hocs/auth";
 import {
   NavbarAuth,
-  NavbarBuatKuesioner,
 } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
 import atlasV3 from "../../modules/api/atlas/v3";
-import paths from "../paths";
 
-import { isStatusOK } from "../../libs/response";
 import "./styles.css";
 
 const styles = theme => ({

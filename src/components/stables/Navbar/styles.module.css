@@ -1,0 +1,10 @@
+.navbar {
+  position: sticky;
+  top: 76px;
+}
+
+@media screen and (max-width: 960px) {
+  .navbar {
+    top: 56px;
+  }
+}
