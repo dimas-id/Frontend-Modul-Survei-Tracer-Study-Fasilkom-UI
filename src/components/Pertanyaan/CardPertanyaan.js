@@ -4,6 +4,8 @@ import classes from "./styles.module.css";
 
 const CardPertanyaan = ({
   pertanyaan,
+  status,
+  setStatus,
   tipe,
   index,
   required,
@@ -39,7 +41,19 @@ const CardPertanyaan = ({
   };
 
   return (
-    <div className={classes.card}>
+    <div
+      className={`${classes.card} ${status ? "" : classes.red}`}
+      onClick={() => {
+        setStatus(index);
+      }}
+    >
+      {status === false && (
+        <div>
+          <span style={{ paddingLeft: "12px", color: "red", fontSize:"12px" }}>
+            *wajib diisi
+          </span>
+        </div>
+      )}
       <div className={classes.header}>
         <div className={classes["isian-pertanyaan"]}>
           <input
@@ -47,6 +61,7 @@ const CardPertanyaan = ({
             onChange={pertanyaanChangeHandler}
             placeholder="Masukkan pertanyaan anda"
             value={pertanyaan}
+            className={classes.input}
           />
         </div>
         <div className={classes["drop-down"]}>
@@ -55,6 +70,7 @@ const CardPertanyaan = ({
             id="tipe_pertanyaan"
             value={tipe}
             onChange={tipeChangeHandler}
+            className={classes.select}
           >
             <option value="Jawaban Singkat">Jawaban Singkat</option>
             <option value="Pilihan Ganda">Pilihan Ganda</option>

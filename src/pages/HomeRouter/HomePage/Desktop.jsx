@@ -176,7 +176,7 @@ class HomePage extends React.Component {
       return null;
     }
 
-    console.log(user.id)
+    console.log(user.id);
 
     const { profile } = user;
 
@@ -278,15 +278,6 @@ class HomePage extends React.Component {
 
             <Grid item xs={12} md={6}>
               <CategoryPaper
-                title="Survei"
-                description="Sarana untuk melihat survei yang ditujukan untuk Alumni Fasilkom UI"
-                imageName="cloudChannel"
-                path={paths.LIHAT_SURVEI}
-              />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <CategoryPaper
                 title="Channel"
                 description="Sarana bertukar informasi antar pengguna yang disajikan dengan berbagai kategori"
                 imageName="cloudChannel"
@@ -307,6 +298,14 @@ class HomePage extends React.Component {
 
             {(user.isStaff || user.isSuperUser) && (
               <React.Fragment>
+                <Grid item xs={12} md={6}>
+                  <CategoryPaper
+                    title="Survei"
+                    description="Sarana untuk melihat survei yang ditujukan untuk Alumni Fasilkom UI"
+                    imageName="cloudChannel"
+                    path={paths.LIHAT_SURVEI}
+                  />
+                </Grid>
                 <Grid item xs={12} md={6}>
                   <CategoryPaper
                     title="Dashboard"
