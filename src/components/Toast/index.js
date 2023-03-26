@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 
-function Toast(message, type = "default", theme = "dark") {
+function Toast(message, type = "default", position="bottom-right", theme = "colored") {
   const options = {
-    position: "bottom-right",
+    position: position,
     autoClose: 3000,
     hideProgressBar: false,
     closeOnClick: true,

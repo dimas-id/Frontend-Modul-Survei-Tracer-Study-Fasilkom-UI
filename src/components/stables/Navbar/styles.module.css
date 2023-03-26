@@ -3,6 +3,10 @@
   top: 76px;
 }
 
+.red {
+  border-bottom: 3px solid rgba(255, 125, 125, 0.549) !important;
+}
+
 @media screen and (max-width: 960px) {
   .navbar {
     top: 56px;

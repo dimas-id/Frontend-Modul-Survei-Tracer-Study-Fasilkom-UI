@@ -24,11 +24,19 @@ const styles = theme => ({
   },
 });
 
-function NavbarBuatKuesioner({ classes, history, onSubmit, isLoading }) {
+function NavbarBuatKuesioner({
+  classes,
+  history,
+  onSubmit,
+  isLoading,
+  namaStatus,
+  setNamaStatus,
+}) {
   const [nama, setNama] = useState("");
 
   function namaChangeHandler(val) {
     setNama(val);
+    setNamaStatus(true);
   }
 
   function onSubmitHandler() {
@@ -69,12 +77,15 @@ function NavbarBuatKuesioner({ classes, history, onSubmit, isLoading }) {
                 width: "60%",
               }}
             >
-              <TextInput
-                value={nama}
-                valHandler={namaChangeHandler}
-                id="title"
-                placeholder="Nama survei"
-              />
+              <div className={`${namaStatus ? "" : classe.red}`}>
+                <TextInput
+                  value={nama}
+                  valHandler={namaChangeHandler}
+                  id="title"
+                  placeholder="Nama survei"
+                  status={namaStatus}
+                />
+              </div>
             </form>
             <div style={{ display: "flex", alignItems: "center" }}>
               {!isLoading ? (
@@ -123,6 +134,8 @@ NavbarBuatKuesioner.propTypes = {
   classes: PropTypes.shape().isRequired,
   onSubmit: PropTypes.func,
   isLoading: PropTypes.bool,
+  namaStatus: PropTypes.bool,
+  setNamaStatus: PropTypes.func,
 };
 
 export default withRouter(withStyles(styles)(NavbarBuatKuesioner));

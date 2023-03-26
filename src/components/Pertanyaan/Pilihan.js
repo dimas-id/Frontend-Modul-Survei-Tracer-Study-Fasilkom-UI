@@ -13,19 +13,30 @@ const Pilihan = ({ type, option, changeOptionHandler }) => {
       {option.data.map((el, idx) => {
         return (
           <div key={idx} className={classes.pilgan}>
-            {type === "radio" && <div className={classes.circle}></div>}
-            {type === "checkbox" && <div className={classes.square}></div>}
-            {type === "drop-down" && <div className="">{idx + 1}. </div>}
-            <input
-              type="text"
-              value={el}
-              placeholder="Masukkan opsi jawaban"
-              onChange={e => {
-                const newOpsi = option.data.slice();
-                newOpsi[idx] = e.target.value;
-                changeOptionHandler(newOpsi);
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                gap: "10px",
               }}
-            />
+            >
+              {type === "radio" && <div className={classes.circle}></div>}
+              {type === "checkbox" && <div className={classes.square}></div>}
+              {type === "drop-down" && <div className="">{idx + 1}. </div>}
+              <input
+                type="text"
+                value={el}
+                placeholder="Masukkan opsi jawaban"
+                className={classes.input}
+                style={{ fontSize: "15px" }}
+                onChange={e => {
+                  const newOpsi = option.data.slice();
+                  newOpsi[idx] = e.target.value;
+                  changeOptionHandler(newOpsi);
+                }}
+              />
+            </div>
             <button
               onClick={() => {
                 const newOpsi = option.data.slice();
@@ -43,14 +54,23 @@ const Pilihan = ({ type, option, changeOptionHandler }) => {
         );
       })}
       <div className={classes.pilgan}>
-        {type === "radio" && <div className={classes.circle}></div>}
-        {type === "checkbox" && <div className={classes.square}></div>}
-        {type === "drop-down" && (
-          <div className="">{option.data.length + 1}. </div>
-        )}
-        <button className={classes["btn-pilgan"]} onClick={addPilganHandler}>
-          Tambahkan Lainnya
-        </button>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            gap: "10px",
+          }}
+        >
+          {type === "radio" && <div className={classes.circle}></div>}
+          {type === "checkbox" && <div className={classes.square}></div>}
+          {type === "drop-down" && (
+            <div className="">{option.data.length + 1}. </div>
+          )}
+          <button className={classes["btn-pilgan"]} onClick={addPilganHandler}>
+            Tambahkan Lainnya
+          </button>
+        </div>
       </div>
     </div>
   );
