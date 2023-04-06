@@ -74,17 +74,17 @@ class Screen extends React.Component {
           </div>
           <div className="btn-group">
             <div>
-              <button id="button1" onClick={this.changeState}>
+              <button id="button1" onClick={this.changeState} className={this.state.new_state === "button1" && 'active'}>
                 Semua Survei
               </button>
             </div>
             <div>
-              <button id="button2" onClick={this.changeState}>
+              <button id="button2" onClick={this.changeState} className={this.state.new_state === "button2" && 'active'}>
                 Belum Dikirim
               </button>
             </div>
             <div>
-              <button id="button3" onClick={this.changeState}>
+              <button id="button3" onClick={this.changeState} className={this.state.new_state === "button3" && 'active'}>
                 Sudah Dikirim
               </button>
             </div>
@@ -110,12 +110,12 @@ class Screen extends React.Component {
                           )}
                         </div>
                         {l.sudahDikirim && (
-                          <div>
+                          <div className="card-button-div">
                             <button>Statistik</button>
                           </div>
                         )}
                         {!l.sudahDikirim && (
-                          <div>
+                          <div className="card-button-div">
                             <button>Ubah</button>
                             <button>Kirim</button>
                           </div>
@@ -139,7 +139,7 @@ class Screen extends React.Component {
                             Terakhir diubah pada {formatDate(l.tanggalDiedit)}
                           </div>
                         </div>
-                        <div>
+                        <div className="card-button-div">
                           <button>Ubah</button>
                           <button>Kirim</button>
                         </div>
@@ -162,7 +162,7 @@ class Screen extends React.Component {
                             Dikirim pada {formatDate(l.tanggalDikirim)}
                           </div>
                         </div>
-                        <div>
+                        <div className="card-button-div">
                           <button>Statistik</button>
                         </div>
                       </li>
@@ -188,18 +188,18 @@ function createContainer() {
 
 function formatDate(newDate) {
   const months = {
-    0: "Januari",
-    1: "Februari",
-    2: "Maret",
-    3: "April",
-    4: "Mei",
-    5: "Juni",
-    6: "Juli",
-    7: "Agustus",
-    8: "September",
-    9: "Oktober",
-    10: "November",
-    11: "Desember",
+    1: "Januari",
+    2: "Februari",
+    3: "Maret",
+    4: "April",
+    5: "Mei",
+    6: "Juni",
+    7: "Juli",
+    8: "Agustus",
+    9: "September",
+    10: "Oktober",
+    11: "November",
+    12: "Desember",
   };
   const d = newDate;
   const year = d.slice(0, 4);

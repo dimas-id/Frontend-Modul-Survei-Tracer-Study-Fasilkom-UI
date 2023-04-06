@@ -11,6 +11,7 @@
 
 .title-wrapper button {
   padding: 10px 20px;
+  border-radius: 10px;
 }
 
 .btn-group {
@@ -33,8 +34,8 @@
 
 button:hover {
   cursor: pointer;
-  background-color: #4CAF50;
-  color: white;
+  background-color: #b2f5ff;
+  color: black;
 }
 
 .grid-container {
@@ -50,8 +51,14 @@ button:hover {
   justify-content: space-between;
   background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  box-shadow: 5px 5px lightgrey;
   padding: 20px;
-  font-size: 30px;
+  font-size: 20px;
+}
+
+.survei-card:hover {
+  box-shadow: 10px 10px lightgrey;
 }
 
 .survei-card button {
@@ -67,4 +74,20 @@ button:hover {
 
 ul {
   list-style-type: none;
+}
+
+.active{
+  background-color:#b2f5ff;
+}
+
+#button1 {
+  border-radius: 10px 0px 0px 10px
+}
+
+#button3 {
+  border-radius: 0px 10px 10px 0px
+}
+
+.card-button-div{
+  flex-shrink: 0;
 }
