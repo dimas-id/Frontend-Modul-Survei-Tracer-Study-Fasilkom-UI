@@ -32,6 +32,7 @@ import DetailAlumniPage from "./DetailAlumniPage/Desktop";
 import GenerateUserPage from "./GenerateUserPage";
 import CreateSurvei from "./CreateSurvei";
 import LihatSurvei from "./LihatSurvei";
+import EmailTemplateCRUDPage from "./EmailTemplateCRUDPage";
 import IsiSurvei from "./IsiSurvei";
 
 import { history } from "../modules";
@@ -307,6 +308,15 @@ const ROUTES = [
       component: CreateSurvei,
     },
   },
+  {
+    title: "Email Template Selection",
+    route: {
+      exact: true,
+      path: paths.EMAIL_TEMPLATE_SELECTION,
+      component: EmailTemplateCRUDPage,
+    },
+  },
+
   {
     title: "Err...",
     route: {
