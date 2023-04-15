@@ -32,6 +32,7 @@ import DetailAlumniPage from "./DetailAlumniPage/Desktop";
 import GenerateUserPage from "./GenerateUserPage";
 import CreateSurvei from "./CreateSurvei";
 import LihatSurvei from "./LihatSurvei";
+import IsiSurvei from "./IsiSurvei";
 
 import { history } from "../modules";
 
@@ -288,6 +289,14 @@ const ROUTES = [
       exact: true,
       path: paths.LIHAT_SURVEI,
       component: LihatSurvei,
+    },
+  },
+  {
+    title: "Isi Survei",
+    route: {
+      exact: true,
+      path: paths.SURVEI_BY_ID,
+      component: IsiSurvei,
     },
   },
   {
