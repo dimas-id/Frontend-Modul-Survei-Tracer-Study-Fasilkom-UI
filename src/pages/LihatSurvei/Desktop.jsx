@@ -3,9 +3,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { authorize, ROLES } from "../../components/hocs/auth";
-import {
-  NavbarAuth,
-} from "../../components/stables/Navbar";
+import { NavbarAuth } from "../../components/stables/Navbar";
 import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
@@ -74,17 +72,29 @@ class Screen extends React.Component {
           </div>
           <div className="btn-group">
             <div>
-              <button id="button1" onClick={this.changeState} className={this.state.new_state === "button1" && 'active'}>
+              <button
+                id="button1"
+                onClick={this.changeState}
+                className={this.state.new_state === "button1" && "active"}
+              >
                 Semua Survei
               </button>
             </div>
             <div>
-              <button id="button2" onClick={this.changeState} className={this.state.new_state === "button2" && 'active'}>
+              <button
+                id="button2"
+                onClick={this.changeState}
+                className={this.state.new_state === "button2" && "active"}
+              >
                 Belum Dikirim
               </button>
             </div>
             <div>
-              <button id="button3" onClick={this.changeState} className={this.state.new_state === "button3" && 'active'}>
+              <button
+                id="button3"
+                onClick={this.changeState}
+                className={this.state.new_state === "button3" && "active"}
+              >
                 Sudah Dikirim
               </button>
             </div>
@@ -111,7 +121,13 @@ class Screen extends React.Component {
                         </div>
                         {l.sudahDikirim && (
                           <div className="card-button-div">
-                            <button>Statistik</button>
+                            <button
+                              onClick={() => {
+                                window.location.href = `/survei/visualisasi/${l.id}`;
+                              }}
+                            >
+                              Statistik
+                            </button>
                           </div>
                         )}
                         {!l.sudahDikirim && (
@@ -163,7 +179,13 @@ class Screen extends React.Component {
                           </div>
                         </div>
                         <div className="card-button-div">
-                          <button>Statistik</button>
+                          <button
+                            onClick={() => {
+                              window.location.href = `/survei/visualisasi/${l.id}`;
+                            }}
+                          >
+                            Statistik
+                          </button>
                         </div>
                       </li>
                       <br></br>

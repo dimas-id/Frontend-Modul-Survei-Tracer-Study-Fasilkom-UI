@@ -23,6 +23,7 @@ exports.REGISTER_PREFERENSI = `${exports.REGISTER}${exports.PREFERENCE}`;
 exports.BUAT_SURVEI = "/buat-survei";
 exports.LIHAT_SURVEI = "/survei";
 exports.SURVEI_BY_ID = "/survei/:survei_id";
+exports.VISUALISASI_SURVEI = "/survei/visualisasi/:id";
 exports.DONASI = "/donasi";
 exports.DONATION_FORM = `${exports.DONASI}/:idProgram`;
 exports.DONATION_REQUEST = `${exports.DONASI}/ajukan-program`;
