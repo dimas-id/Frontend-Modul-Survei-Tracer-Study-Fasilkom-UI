@@ -34,6 +34,7 @@ import CreateSurvei from "./CreateSurvei";
 import LihatSurvei from "./LihatSurvei";
 import EmailTemplateCRUDPage from "./EmailTemplateCRUDPage";
 import IsiSurvei from "./IsiSurvei";
+import VisualisasiSurvei from "./VisualisasiSurvei"
 
 import { history } from "../modules";
 
@@ -307,6 +308,14 @@ const ROUTES = [
       path: paths.BUAT_SURVEI,
       component: CreateSurvei,
     },
+  },
+  {
+    title: "Visualisasi Survei",
+    route: {
+      exact: true,
+      path: paths.VISUALISASI_SURVEI,
+      component: VisualisasiSurvei,
+    }
   },
   {
     title: "Email Template Selection",
