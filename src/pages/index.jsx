@@ -33,6 +33,7 @@ import GenerateUserPage from "./GenerateUserPage";
 import CreateSurvei from "./CreateSurvei";
 import LihatSurvei from "./LihatSurvei";
 import EmailTemplateCRUDPage from "./EmailTemplateCRUDPage";
+import EmailRecipientPage from "./EmailRecipientPage";
 import IsiSurvei from "./IsiSurvei";
 import VisualisasiSurvei from "./VisualisasiSurvei"
 
@@ -325,7 +326,14 @@ const ROUTES = [
       component: EmailTemplateCRUDPage,
     },
   },
-
+  {
+    title: "Email Recipient",
+    route: {
+      exact: true,
+      path: paths.EMAIL_RECIPIENT,
+      component: EmailRecipientPage,
+    },
+  },
   {
     title: "Err...",
     route: {
