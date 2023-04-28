@@ -327,7 +327,7 @@ class HomePage extends React.Component {
                     title="Email Blaster"
                     description="Sarana untuk mengirimkan email secara personal ke pengguna"
                     imageName="cloudEmail"
-                    path={paths.CRM_MAILER}
+                    path={paths.EMAIL_BLASTER_EMAIL_TEMPLATE}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>

@@ -14,6 +14,7 @@ import { sessionReducer } from "./session";
 import { experienceReducer } from "./experience";
 import { utilityReducer, utilityActions } from "./utility";
 import { crmReducer } from "./crm";
+import emailBlasterReducer from "./email-blaster";
 
 // middleware
 import loggerMiddleware from "./middlewares/logger";
@@ -42,6 +43,7 @@ const rootReducer = combineReducers({
   session: persistReducer({ key: "session", storage }, sessionReducer),
   experience: persistReducer({ key: "experience", storage }, experienceReducer),
   crm: persistReducer({ key: "crm", storage }, crmReducer),
+  emailBlaster: emailBlasterReducer,
   utility: utilityReducer,
   router: connectRouter(history),
 });

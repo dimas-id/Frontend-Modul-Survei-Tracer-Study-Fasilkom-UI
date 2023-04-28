@@ -1,20 +1,24 @@
 import React, { useEffect, useReducer } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import { useHistory, withRouter } from "react-router";
 
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-import { authorize } from "../../components/hocs/auth";
-import { NavbarAuth, NavbarBack } from "../../components/stables/Navbar";
-import { Container } from "../../components/Container";
-import { Guidelines } from "../../styles";
-import EmailTemplateForm from "../../components/stables/EmailTemplateV2/EmailTemplateForm";
-import EmailTemplateList from "../../components/stables/EmailTemplateV2/EmailTemplateList";
-import Toast from "../../components/Toast";
-import templateAPI from "../../modules/api/atlas/v3/email-template";
+import { authorize } from "../../../components/hocs/auth";
+import { NavbarAuth, NavbarBack } from "../../../components/stables/Navbar";
+import { Container } from "../../../components/Container";
+import { Guidelines } from "../../../styles";
+import EmailTemplateForm from "../../../components/stables/EmailTemplateV2/EmailTemplateForm";
+import EmailTemplateList from "../../../components/stables/EmailTemplateV2/EmailTemplateList";
+import Toast from "../../../components/Toast";
+import templateAPI from "../../../modules/api/atlas/v3/email-template";
+import { emailBlasterActions } from "../../../modules/email-blaster";
+import { EMAIL_BLASTER_SEND } from "../../paths";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Button } from "@material-ui/core";
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.flexDirRow,
@@ -24,14 +28,29 @@ const styles = theme => ({
   listContainer: {
     marginTop: 0,
     marginBottom: 0,
+    paddingTop: theme.spacing.unit * 2,
     overflowY: "auto",
     maxHeight: "100%",
+    scrollbarWidth: "thin",
+    scrollbarColor: "#ccc #f5f5f5",
+    "::-webkit-scrollbar": {
+      height: 0,
+    },
+  },
+  nextButtonContainer: {
+    textAlign: "right",
+    marginTop: 0,
+    marginBottom: 0,
+  },
+  nextButton: {
+    marginLeft: "auto",
+    fontSize: "large",
   },
 });
 
-function Screen({ classes }) {
+function Screen({ classes, changeTemplateId, templateId }) {
   const [templatesState, dispatch] = useReducer(templateReducer, {});
-
+  const history = useHistory();
   useEffect(() => {
     fetchTemplates();
   }, []);
@@ -66,48 +85,47 @@ function Screen({ classes }) {
   const handleTitle = (e, key) => {
     dispatch({
       type: "HANDLE_TITLE",
-      key: key,
-      payload: e.target.value,
+      payload: { title: e.target.value, key: key },
     });
   };
 
   const handleBody = (e, key) => {
     dispatch({
       type: "HANDLE_BODY",
-      key: key,
-      payload: e.target.value,
+      payload: { body: e.target.value, key: key },
     });
   };
 
   const handleSubject = (e, key) => {
     dispatch({
       type: "HANDLE_SUBJECT",
-      key: key,
-      payload: e.target.value,
+      payload: { subject: e.target.value, key: key },
     });
   };
 
   const updateCursorPosition = (e, key) => {
     dispatch({
       type: "CLICK_BODY",
-      key: key,
-      payload: e.target.selectionStart,
+      payload: { position: e.target.selectionStart, key: key },
     });
   };
 
   const insertVar = (e, key) => {
     dispatch({
       type: "INSERT_VARIABLE",
-      key: key,
-      cursorPosition: templatesState[key].lastCursorPosition,
-      payload: templatesState[key].body,
+      payload: {
+        body: templatesState[key].body,
+        position: templatesState[key].lastCursorPosition,
+        key: key,
+      },
     });
   };
 
-  const handleShow = (e, key) => {
+  const handleClickList = (e, key) => {
+    changeTemplateId(key);
     dispatch({
       type: "SHOW",
-      key: key,
+      payload: key,
     });
   };
 
@@ -123,8 +141,8 @@ function Screen({ classes }) {
         Toast("Template berhasil disimpan!", "success");
         dispatch({
           type: "SAVE_SUCCESS",
-          key: res.data.id,
           payload: {
+            key: res.data.id,
             title: res.data.title,
             subject: res.data.emailSubject,
             body: res.data.emailBody,
@@ -135,12 +153,14 @@ function Screen({ classes }) {
         Toast("Template gagal disimpan", "error");
         dispatch({
           type: "SAVE_FAILED",
-          key: key,
-          payload: [
-            err.response.data.title,
-            err.response.data.emailSubject,
-            err.response.data.emailBody,
-          ],
+          payload: {
+            key: key,
+            errors: [
+              err.response.data.title,
+              err.response.data.emailSubject,
+              err.response.data.emailBody,
+            ],
+          },
         });
       });
   };
@@ -150,9 +170,10 @@ function Screen({ classes }) {
       .deleteTemplate(key)
       .then(() => {
         Toast("Template berhasil dihapus!", "success");
+        changeTemplateId(null);
         dispatch({
           type: "DELETE_SUCCESS",
-          key: key,
+          payload: key,
         });
       })
       .catch(err => {
@@ -170,8 +191,8 @@ function Screen({ classes }) {
         Toast("Template baru berhasil dibuat!", "success");
         dispatch({
           type: "NEW_SUCCESS",
-          key: res.data.id,
           payload: {
+            key: res.data.id,
             title: res.data.title,
             subject: res.data.emailSubject,
             body: res.data.emailBody,
@@ -190,15 +211,15 @@ function Screen({ classes }) {
     templateAPI
       .newTemplateFromBase(
         templatesState[key].title,
-        templatesState[key].subject,
-        templatesState[key].body
+        templatesState[key].body,
+        templatesState[key].subject
       )
       .then(res => {
         Toast("Template berhasil diduplikat!", "success");
         dispatch({
           type: "COPY_SUCCESS",
-          key: res.data.id,
           payload: {
+            key: res.data.id,
             title: res.data.title,
             subject: res.data.emailSubject,
             body: res.data.emailBody,
@@ -209,14 +230,25 @@ function Screen({ classes }) {
         Toast("Template gagal diduplikat", "error");
         dispatch({
           type: "COPY_FAILED",
-          key: key,
-          payload: [
-            err.response.data.title,
-            err.response.data.emailSubject,
-            err.response.data.emailBody,
-          ],
+
+          payload: {
+            key: key,
+            errors: [
+              err.response.data.title,
+              err.response.data.emailSubject,
+              err.response.data.emailBody,
+            ],
+          },
         });
       });
+  };
+
+  const onNext = () => {
+    if (templateId == null) {
+      Toast("Pilih template terlebih dahulu!", "error");
+      return;
+    }
+    history.push(EMAIL_BLASTER_SEND);
   };
 
   return (
@@ -226,10 +258,20 @@ function Screen({ classes }) {
       <Container className={classes.container}>
         {templatesState != null && (
           <Grid container spacing={24}>
+            <Grid item xs={12} className={classes.nextButtonContainer}>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.nextButton}
+                onClick={onNext}
+              >
+                Next
+              </Button>
+            </Grid>
             <Grid item xs={3} className={classes.listContainer}>
               <EmailTemplateList
                 templates={templatesState}
-                onClickTemplate={handleShow}
+                onClickTemplate={handleClickList}
                 handleNew={() => handleNew()}
               />
             </Grid>
@@ -269,27 +311,27 @@ const templateReducer = (state, action) => {
     case "HANDLE_TITLE":
       return {
         ...state,
-        [action.key]: {
-          ...state[action.key],
-          title: action.payload,
+        [action.payload.key]: {
+          ...state[action.payload.key],
+          title: action.payload.title,
           isSaved: false,
         },
       };
     case "HANDLE_BODY":
       return {
         ...state,
-        [action.key]: {
-          ...state[action.key],
-          body: action.payload,
+        [action.payload.key]: {
+          ...state[action.payload.key],
+          body: action.payload.body,
           isSaved: false,
         },
       };
     case "HANDLE_SUBJECT":
       return {
         ...state,
-        [action.key]: {
-          ...state[action.key],
-          subject: action.payload,
+        [action.payload.key]: {
+          ...state[action.payload.key],
+          subject: action.payload.subject,
           isSaved: false,
         },
       };
@@ -298,24 +340,23 @@ const templateReducer = (state, action) => {
       Object.keys(newState).forEach(key => {
         newState[key].isShow = false;
       });
-      newState[action.key].isShow = true;
+      newState[action.payload].isShow = true;
       return newState;
-
     case "CLICK_BODY":
       return {
         ...state,
-        [action.key]: {
-          ...state[action.key],
-          lastCursorPosition: action.payload,
+        [action.payload.key]: {
+          ...state[action.payload.key],
+          lastCursorPosition: action.payload.position,
         },
       };
     case "INSERT_VARIABLE":
-      let cursorPosition = action.cursorPosition;
-      let textBeforeCursorPosition = action.payload.substring(
+      let cursorPosition = action.payload.position;
+      let textBeforeCursorPosition = action.payload.body.substring(
         0,
         cursorPosition
       );
-      let textAfterCursorPosition = action.payload.substring(
+      let textAfterCursorPosition = action.payload.body.substring(
         cursorPosition,
         action.payload.length
       );
@@ -323,13 +364,20 @@ const templateReducer = (state, action) => {
         textBeforeCursorPosition + "{{URL_SURVEI}}" + textAfterCursorPosition;
       return {
         ...state,
-        [action.key]: { ...state[action.key], body: newText, isSaved: false },
+        [action.payload.key]: {
+          ...state[action.payload.key],
+          body: newText,
+          isSaved: false,
+        },
       };
     case "SAVE_SUCCESS":
       return {
         ...state,
-        [action.key]: {
-          ...state[action.key],
+        [action.payload.key]: {
+          ...state[action.payload.key],
+          body: action.payload.body,
+          subject: action.payload.subject,
+          title: action.payload.title,
           isSaved: true,
           errors: ["", "", ""],
         },
@@ -337,15 +385,15 @@ const templateReducer = (state, action) => {
     case "SAVE_FAILED":
       return {
         ...state,
-        [action.key]: {
-          ...state[action.key],
+        [action.payload.key]: {
+          ...state[action.payload.key],
           isSaved: false,
-          errors: action.payload,
+          errors: action.payload.errors,
         },
       };
     case "DELETE_SUCCESS":
       const omitted = Object.keys(state)
-        .filter(key => key !== action.key)
+        .filter(key => key !== action.payload)
         .reduce((obj, key) => {
           obj[key] = state[key];
           return obj;
@@ -355,8 +403,11 @@ const templateReducer = (state, action) => {
     case "COPY_SUCCESS":
       return {
         ...state,
-        [action.key]: {
-          ...action.payload,
+        [action.payload.key]: {
+          ...state[action.payload.key],
+          body: action.payload.body,
+          subject: action.payload.subject,
+          title: action.payload.title,
           isShow: false,
           isSaved: true,
           errors: ["", "", ""],
@@ -365,9 +416,9 @@ const templateReducer = (state, action) => {
     case "COPY_FAILED":
       return {
         ...state,
-        [action.key]: {
-          ...state[action.key],
-          errors: action.payload,
+        [action.payload.key]: {
+          ...state[action.payload.key],
+          errors: action.payload.errors,
         },
       };
     case "DELETE_FAILED":
@@ -380,9 +431,13 @@ const templateReducer = (state, action) => {
 };
 
 function createContainer() {
-  const mapStateToProps = null;
+  const mapStateToProps = state => ({
+    templateId: state.emailBlaster.templateId,
+  });
 
-  const mapDispatchToProps = dispatch => ({});
+  const mapDispatchToProps = dispatch => ({
+    changeTemplateId: id => dispatch(emailBlasterActions.changeTemplateId(id)),
+  });
 
   return authorize({
     mustVerified: false,
