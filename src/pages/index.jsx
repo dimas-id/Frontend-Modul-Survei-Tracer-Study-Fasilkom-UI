@@ -32,9 +32,10 @@ import DetailAlumniPage from "./DetailAlumniPage/Desktop";
 import GenerateUserPage from "./GenerateUserPage";
 import CreateSurvei from "./CreateSurvei";
 import LihatSurvei from "./LihatSurvei";
-import EmailTemplateCRUDPage from "./EmailTemplateCRUDPage";
 import IsiSurvei from "./IsiSurvei";
-import VisualisasiSurvei from "./VisualisasiSurvei"
+import VisualisasiSurvei from "./VisualisasiSurvei";
+import EmailSendSubmitPage from "./EmailBlasterMultiStepFormPage/EmailSendSubmitPage";
+import EmailTemplateCRUDPage from "./EmailBlasterMultiStepFormPage/EmailTemplateCRUDPage";
 
 import { history } from "../modules";
 
@@ -315,17 +316,24 @@ const ROUTES = [
       exact: true,
       path: paths.VISUALISASI_SURVEI,
       component: VisualisasiSurvei,
-    }
+    },
   },
   {
-    title: "Email Template Selection",
+    title: "Pilih Email Template",
     route: {
       exact: true,
-      path: paths.EMAIL_TEMPLATE_SELECTION,
+      path: paths.EMAIL_BLASTER_EMAIL_TEMPLATE,
       component: EmailTemplateCRUDPage,
     },
   },
-
+  {
+    title: "Kirim Email",
+    route: {
+      exact: true,
+      path: paths.EMAIL_BLASTER_SEND,
+      component: EmailSendSubmitPage,
+    },
+  },
   {
     title: "Err...",
     route: {
