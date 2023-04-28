@@ -59,4 +59,13 @@ export default Object.freeze({
         return {status: err.response.status };
       });
   },
+  deleteSurveiById: async surveiId => {
+    return await http
+      .delete(`${API_V3_URL}/survei/delete/?survei_id=${surveiId}`)
+      .then(response => {
+        return response;
+      }).catch(err => {
+        return err.response;
+      })
+  }
 });
