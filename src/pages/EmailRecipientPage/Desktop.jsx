@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
-// import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { authorize, ROLES } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
-// import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
-// import Particle from "../../components/Particle";
-// import atlasV3 from "../../modules/api/atlas/v3";
+import atlasV3 from "../../modules/api/atlas/v3";
 
 import "./styles.css";
 
@@ -208,8 +205,7 @@ class Screen extends React.Component {
 function createContainer() {
     return authorize({
       mustVerified: false,
-      // roles: [ROLES.STAFF],
-      // roles: [authorize.STAFF, authorize.SUPERUSER],
+      roles: [authorize.STAFF, authorize.SUPERUSER],
     })(withRouter(withStyles(styles)(Screen)));
   }
   
