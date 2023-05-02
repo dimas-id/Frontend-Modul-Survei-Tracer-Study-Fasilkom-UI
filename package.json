@@ -87,6 +87,7 @@
     "redux-thunk": "^2.3.0",
     "rich-markdown-editor": "^9.1.2",
     "slick-carousel": "^1.8.1",
+    "yarn": "^1.22.19",
     "yup": "^0.27.0"
   },
   "devDependencies": {
