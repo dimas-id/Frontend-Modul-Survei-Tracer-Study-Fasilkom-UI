@@ -8,8 +8,14 @@ import { Container } from "../../components/Container";
 import { Guidelines } from "../../styles";
 import Particle from "../../components/Particle";
 import atlasV3 from "../../modules/api/atlas/v3";
+import Toast from "../../components/Toast/index";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import DeleteIcon from "@material-ui/icons/Delete";
+import classNames from "classnames";
 
 import "./styles.css";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, DialogContentText } from "@material-ui/core";
 
 const styles = theme => ({
   container: {
@@ -31,10 +37,34 @@ class Screen extends React.Component {
     survei_list_not_sent: null,
     new_state: "button1",
     loading: true,
+    delete_dialog:0
   };
 
   componentDidMount() {
     this.handleLoad();
+  }
+
+  handleDeleteClickOpen = surveiId => {
+    this.setState({ delete_dialog:surveiId });
+  }
+
+  handleDeleteClose = () => {
+    this.setState({ delete_dialog:0 });
+  }
+
+  handleDeleteClickYa = surveiId => {
+    this.setState({ loading:true })
+    atlasV3.survei.deleteSurveiById(surveiId).then(response => {
+      Toast("Survei berhasil dihapus", "success");
+      setTimeout(() => {
+        window.location.reload();
+      }, 4000);
+    }).catch(err => {
+      Toast("Survei Gagal dihapus karena error " + err.status, "error");
+      setTimeout(() => {
+        window.location.reload();
+      }, 4000);
+    });
   }
 
   handleLoad() {
@@ -75,7 +105,7 @@ class Screen extends React.Component {
               <button
                 id="button1"
                 onClick={this.changeState}
-                className={this.state.new_state === "button1" && "active"}
+                className={`${this.state.new_state === "button1" && "active"}`}
               >
                 Semua Survei
               </button>
@@ -84,7 +114,7 @@ class Screen extends React.Component {
               <button
                 id="button2"
                 onClick={this.changeState}
-                className={this.state.new_state === "button2" && "active"}
+                className={`${this.state.new_state === "button2" && "active"}`}
               >
                 Belum Dikirim
               </button>
@@ -93,7 +123,7 @@ class Screen extends React.Component {
               <button
                 id="button3"
                 onClick={this.changeState}
-                className={this.state.new_state === "button3" && "active"}
+                className={`${this.state.new_state === "button3" && "active"}`}
               >
                 Sudah Dikirim
               </button>
@@ -132,6 +162,43 @@ class Screen extends React.Component {
                         )}
                         {!l.sudahDikirim && (
                           <div className="card-button-div">
+                            <button 
+                            variant="contained"
+                            color="secondary"
+                            className={classes.button}
+                            onClick={() => this.handleDeleteClickOpen(l.id)}
+                            >
+                              Hapus
+                            </button>
+                            <Dialog
+                              open={this.state.delete_dialog === l.id}
+                              onClose={this.handleDeleteClose}
+                              aria-labelledby="alert-dialog-title"
+                              aria-describedby="alert-dialog-description"
+                            >
+                              <DialogTitle id="alert-dialog-title">
+                                Yakin ingin menghapus survei "{l.nama}"?
+                              </DialogTitle>
+                              <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                  Survei yang sudah dihapus tidak akan bisa dikembalikan
+                                </DialogContentText>
+                              </DialogContent>
+                              <DialogActions>
+                                <Button onClick={this.handleDeleteClose} disabled={this.state.loading} >
+                                  Tidak
+                                </Button>
+                                <Button 
+                                variant="contained"
+                                color="primary"
+                                className={classes.button}
+                                onClick={() => this.handleDeleteClickYa(l.id)} 
+                                disabled={this.state.loading} 
+                                autoFocus>
+                                  Ya, hapus saja
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
                             <button>Ubah</button>
                             <button>Kirim</button>
                           </div>
@@ -156,6 +223,43 @@ class Screen extends React.Component {
                           </div>
                         </div>
                         <div className="card-button-div">
+                            <button 
+                            variant="contained"
+                            color="secondary"
+                            className={classes.button}
+                            onClick={() => this.handleDeleteClickOpen(l.id)}
+                            >
+                              Hapus
+                            </button>
+                            <Dialog
+                              open={this.state.delete_dialog === l.id}
+                              onClose={this.handleDeleteClose}
+                              aria-labelledby="alert-dialog-title"
+                              aria-describedby="alert-dialog-description"
+                            >
+                              <DialogTitle id="alert-dialog-title">
+                                Yakin ingin menghapus survei "{l.nama}"?
+                              </DialogTitle>
+                              <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                  Survei yang sudah dihapus tidak akan bisa dikembalikan
+                                </DialogContentText>
+                              </DialogContent>
+                              <DialogActions>
+                                <Button onClick={this.handleDeleteClose} disabled={this.state.loading} >
+                                  Tidak
+                                </Button>
+                                <Button 
+                                variant="contained"
+                                color="primary"
+                                className={classes.button}
+                                onClick={() => this.handleDeleteClickYa(l.id)} 
+                                disabled={this.state.loading} 
+                                autoFocus>
+                                  Ya, hapus saja
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
                           <button>Ubah</button>
                           <button>Kirim</button>
                         </div>
@@ -195,6 +299,7 @@ class Screen extends React.Component {
               </ul>
             )}
           </div>
+        <ToastContainer />
         </Container>
       </React.Fragment>
     );

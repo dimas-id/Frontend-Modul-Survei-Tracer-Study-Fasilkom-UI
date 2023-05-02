@@ -39,7 +39,8 @@ function NavbarBuatKuesioner({
     setNamaStatus(true);
   }
 
-  function onSubmitHandler() {
+  function onSubmitHandler(e) {
+    e.preventDefault();
     onSubmit(nama);
   }
 
@@ -66,8 +67,7 @@ function NavbarBuatKuesioner({
               </IconButton>
             </div>
             <form
-              action=""
-              method="POST"
+              onSubmit={onSubmitHandler}
               style={{
                 display: "flex",
                 flexDirection: "column",

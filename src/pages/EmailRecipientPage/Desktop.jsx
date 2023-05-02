@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { authorize, ROLES } from "../../components/hocs/auth";
@@ -126,7 +126,7 @@ class Screen extends React.Component {
                 value={this.state.year_value} 
                 onChange={ event => this.setState({year_value: event.target.value}) }></input>
                 
-                <label for="terms">Term-</label>
+                <label for="terms">Term</label>
                 <select name="terms" id="terms" 
                 value={this.state.term_value}
                 onChange={ event => this.setState({term_value: event.target.value}) }>
@@ -205,7 +205,7 @@ class Screen extends React.Component {
 function createContainer() {
     return authorize({
       mustVerified: false,
-      roles: [authorize.STAFF, authorize.SUPERUSER],
+      // roles: [authorize.STAFF, authorize.SUPERUSER],
     })(withRouter(withStyles(styles)(Screen)));
   }
   
