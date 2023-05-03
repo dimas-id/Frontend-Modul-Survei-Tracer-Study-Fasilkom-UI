@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { authorize, ROLES } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
 import { Guidelines } from "../../styles";
-import atlasV3 from "../../modules/api/atlas/v3";
+import emailBlasterAPI from "../../modules/api/atlas/v3/email-blaster";
 
 import "./styles.css";
 
@@ -32,13 +32,14 @@ class Screen extends React.Component {
 
   }
 
-  handleGroupSubmit = (event) => {
+  handleSubmitGroup = (event) => {
 
     event.preventDefault();
     var available = false;
 
     for (let i = 0; i < this.state.group_recipient_years.length; i++) {
-      if ( (this.state.group_recipient_years[i] === this.state.year_value)&&(this.state.group_recipient_terms[i] === this.state.term_value) ) {
+      if ( (this.state.group_recipient_years[i] === parseInt(this.state.year_value))
+      &&(this.state.group_recipient_terms[i] === parseInt(this.state.term_value)) ) {
           available = true;
           break;
         }
@@ -47,8 +48,8 @@ class Screen extends React.Component {
     
     if (!(available)) {
       this.setState(prevState => ({
-        group_recipient_years: [...prevState.group_recipient_years, this.state.year_value],
-        group_recipient_terms: [...prevState.group_recipient_terms, this.state.term_value],
+        group_recipient_years: [...prevState.group_recipient_years, parseInt(this.state.year_value)],
+        group_recipient_terms: [...prevState.group_recipient_terms, parseInt(this.state.term_value)],
         year_value : new Date().getFullYear(),
         term_value : 1,
       }));
@@ -58,7 +59,7 @@ class Screen extends React.Component {
     
   }
 
-  handleIndividualSubmit = (event) => {
+  handleSubmitIndividual = (event) => {
     
     event.preventDefault();
 
@@ -119,7 +120,7 @@ class Screen extends React.Component {
             </div>
             
             <div>
-              <form class="form-box" onSubmit={this.handleGroupSubmit}>
+              <form class="form-box" onSubmit={this.handleSubmitGroup}>
                 
                 <label for="years">Tahun Kelulusan </label>
                 <input type="number" id="years" name="years" defaultValue={this.currentYear}
@@ -167,7 +168,7 @@ class Screen extends React.Component {
             </div>
             
             <div>
-              <form class="form-box" onSubmit={this.handleIndividualSubmit}>
+              <form class="form-box" onSubmit={this.handleSubmitIndividual}>
                 <label for="individuals">Email: </label>
                 <input type="email" id="individual" name="individuals" 
                 value={this.state.individual_email_value} 
@@ -205,7 +206,7 @@ class Screen extends React.Component {
 function createContainer() {
     return authorize({
       mustVerified: false,
-      // roles: [authorize.STAFF, authorize.SUPERUSER],
+      roles: [authorize.STAFF, authorize.SUPERUSER],
     })(withRouter(withStyles(styles)(Screen)));
   }
   
