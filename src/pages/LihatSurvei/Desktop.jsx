@@ -67,6 +67,10 @@ class Screen extends React.Component {
     });
   }
 
+  handleEditClickOpen = surveiId => {
+    this.props.history.push("/edit-survei/" + surveiId);
+  }
+
   handleLoad() {
     this.setState({ loading: true }, () => {
       atlasV3.survei.getSurvei
@@ -199,7 +203,14 @@ class Screen extends React.Component {
                                 </Button>
                               </DialogActions>
                             </Dialog>
-                            <button>Ubah</button>
+                            <button 
+                            variant="contained"
+                            color="secondary"
+                            className={classes.button}
+                            onClick={() => this.handleEditClickOpen(l.id)}
+                            >
+                              Ubah
+                            </button>
                             <button>Kirim</button>
                           </div>
                         )}

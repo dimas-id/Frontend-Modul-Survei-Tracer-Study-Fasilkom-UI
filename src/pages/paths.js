@@ -21,6 +21,7 @@ exports.REGISTER_EDUCATION = `${exports.REGISTER}${exports.EDUCATION}`;
 exports.REGISTER_WORK_POSITION = `${exports.REGISTER}${exports.WORK_POSITION}`;
 exports.REGISTER_PREFERENSI = `${exports.REGISTER}${exports.PREFERENCE}`;
 exports.BUAT_SURVEI = "/buat-survei";
+exports.EDIT_SURVEI_BY_ID = "/edit-survei/:survei_id";
 exports.LIHAT_SURVEI = "/survei";
 exports.SURVEI_BY_ID = "/survei/:survei_id";
 exports.VISUALISASI_SURVEI = "/survei/visualisasi/:id";

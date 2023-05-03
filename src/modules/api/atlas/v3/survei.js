@@ -25,6 +25,16 @@ export default Object.freeze({
         return err.response;
       });
   },
+  editSurvei: async json => {
+    return await http
+    .put(`${API_V3_URL}/survei/edit`, json)
+    .then(response => {
+      return response;
+    })
+    .catch(err => {
+      return err.response;
+    });
+  },  
   getVisualisasiById: async surveiId => {
     return await http
       .get(`${API_V3_URL}/visualisasi/${surveiId}`)

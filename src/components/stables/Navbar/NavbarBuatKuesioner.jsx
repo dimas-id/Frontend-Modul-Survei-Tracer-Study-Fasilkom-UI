@@ -31,8 +31,9 @@ function NavbarBuatKuesioner({
   isLoading,
   namaStatus,
   setNamaStatus,
+  namaAwal = ""
 }) {
-  const [nama, setNama] = useState("");
+  const [nama, setNama] = useState(namaAwal);
 
   function namaChangeHandler(val) {
     setNama(val);
@@ -82,7 +83,7 @@ function NavbarBuatKuesioner({
                   value={nama}
                   valHandler={namaChangeHandler}
                   id="title"
-                  placeholder="Nama survei"
+                  placeholder={namaAwal ? namaAwal : "Nama Survei" }
                   status={namaStatus}
                 />
               </div>
