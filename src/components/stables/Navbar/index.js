@@ -11,4 +11,5 @@ export { default as NavbarBackEmailTemplate } from "./NavbarBackEmailTemplate";
 export { default as NavbarBackWithChannelRequest } from "./NavbarBackWithChannelRequest";
 export { default as NavbarBackForChannelRequest } from "./NavbarBackForChannelRequest";
 export { default as NavbarBuatKuesioner } from "./NavbarBuatKuesioner";
+export { default as NavbarCreateSurvei } from "./NavbarCreateSurvei";
 export { default as NavbarIsiSurvei } from "./NavbarIsiSurvei";

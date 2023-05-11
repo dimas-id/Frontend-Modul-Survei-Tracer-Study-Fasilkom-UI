@@ -77,7 +77,7 @@ const Jawaban = props => {
 
   return (
     <div>
-      <NavbarAuth title="Isi Kuesioner" />
+      <NavbarAuth title="Isi Survei" />
       <NavbarIsiSurvei isLoading={isLoading} namaSurvei={props.survei.nama} />
       <div className={`${classes.pertanyaan} ${classes.center} `}>
         <div className={classes["pertanyaan-wrapper"]}>
@@ -127,13 +127,14 @@ const Jawaban = props => {
             <button
               style={{
                 fontSize: "24px",
-                backgroundColor: "#00c7e5",
+                backgroundColor: isLoading ? "#ccc" : "#00c7e5",
                 color: "#fff",
                 padding: "16px 32px",
                 borderRadius: "4px",
                 border: "none",
               }}
               onClick={onSubmit}
+              disabled={isLoading}
             >
               Submit
             </button>
