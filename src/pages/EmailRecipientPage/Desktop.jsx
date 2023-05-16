@@ -1,12 +1,18 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { authorize, ROLES } from "../../components/hocs/auth";
 import { NavbarAuth } from "../../components/stables/Navbar";
 import { Guidelines } from "../../styles";
+import Toast from "../../components/Toast/index";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import emailBlasterAPI from "../../modules/api/atlas/v3/email-blaster";
 
 import "./styles.css";
+import { EMAIL_BLASTER_EMAIL_TEMPLATE } from '../paths';
+import { emailBlasterActions } from "../../modules/email-blaster";
 
 const styles = theme => ({
   container: {
@@ -54,7 +60,7 @@ class Screen extends React.Component {
         term_value : 1,
       }));
     } else {
-      alert("Kelompok tahun lulusan sudah ditulis")
+      Toast("Kelompok tahun lulusan sudah ditulis", "error");
     }
     
   }
@@ -64,14 +70,14 @@ class Screen extends React.Component {
     event.preventDefault();
 
     if (this.state.individual_email_value.trim() === '') {
-      alert("Isi email terlebih dahulu!")
+      Toast("Isi email terlebih dahulu", "error");
     } else if ((!(this.state.individual_emails.includes(this.state.individual_email_value)))) {
       this.setState(prevState => ({
         individual_emails: [...prevState.individual_emails, this.state.individual_email_value],
         individual_email_value: '',
       }));
     } else {
-      alert('Email sudah ditulis')
+      Toast("Email sudah ditulis", "error");
     }
 
   }
@@ -89,6 +95,16 @@ class Screen extends React.Component {
     }));
   }
 
+  onNext = (event) => {
+    console.log("CLICKED2")
+
+    if (!(this.state.individual_emails.length === 0)) {
+    
+      window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
+    }
+    
+  }
+
   render() {
 
     return (
@@ -97,41 +113,42 @@ class Screen extends React.Component {
         <NavbarAuth title="Email Blaster" />
 
 
-        <div class="header">
-          <button class="button-icon-text button-kiri"><i class="back"></i>Kembali</button>
-          <h1 class="main-title">Kirim Survei</h1>
-          <button class="button-icon-text button-kanan">Berikutnya<i class="next"></i></button>
+        <div className="header">
+          <button className="button-icon-text button-kiri"><i className="back"></i>Kembali</button>
+          <h1 className="main-title">Kirim Survei</h1>
+          <button className="button-icon-text button-kanan"
+          onClick={this.onNext}>Berikutnya<i className="next"></i></button>
         </div>
 
 
-        <div class="section">
-          <h2 class="title">Tujuan Penerima Email</h2>
+        <div className="section">
+          <h2 className="title">Tujuan Penerima Email</h2>
           <p>Pilih tujuan pengiriman survei!</p>
         </div>
         
-        <div class="card-recipient-box">
+        <div className="card-recipient-box">
           
-          <div class="card-recipient">
+          <div className="card-recipient">
             
-            <div class="card-title">
-              <h2 class="title">Batch</h2>
-              <p class="card-subtitle">Kirim secara bersamaan untuk kelompok alumni lulusan tahun tertentu</p>
+            <div className="card-title">
+              <h2 className="title">Batch</h2>
+              <p className="card-subtitle">Kirim secara bersamaan untuk kelompok alumni lulusan tahun tertentu</p>
               <br></br>
             </div>
             
             <div>
-              <form class="form-box" onSubmit={this.handleSubmitGroup}>
+              <form className="form-box" onSubmit={this.handleSubmitGroup}>
                 
-                <label for="years">Tahun Kelulusan </label>
+                <label htmlFor="years">Tahun Kelulusan </label>
                 <input type="number" id="years" name="years" defaultValue={this.currentYear}
                 value={this.state.year_value} 
                 onChange={ event => this.setState({year_value: event.target.value}) }></input>
                 
-                <label for="terms">Term</label>
-                <select name="terms" id="terms" 
+                <label htmlFor="terms">Term</label>
+                <select name="terms" id="terms"
                 value={this.state.term_value}
                 onChange={ event => this.setState({term_value: event.target.value}) }>
-                  <option value="1" selected>1</option>
+                  <option value="1">1</option>
                   <option value="2">2</option>
                 </select>
 
@@ -141,14 +158,14 @@ class Screen extends React.Component {
             </div>
 
             {this.state.group_recipient_years.length === 0 ? (
-              <p class="keterangan-kosong">Tambahkan kelompok pengguna</p>
+              <p className="keterangan-kosong">Tambahkan kelompok pengguna</p>
             ) : (
             <table>
               <tbody>
                 {this.state.group_recipient_years.map((year, index) => (
                 <tr key={index}>
                   <td>
-                    <button class="button-icon cancel"
+                    <button className="button-icon cancel"
                     onClick={() => this.handleDeleteGroup(index)}></button>
                   </td>
                   <td>Lulusan {year} term-{this.state.group_recipient_terms[index]}</td>
@@ -159,17 +176,17 @@ class Screen extends React.Component {
             
           </div>
 
-          <div class="card-recipient">
+          <div className="card-recipient">
             
-            <div class="card-title">
-              <h2 class="title">Individually</h2>
-              <p class="card-subtitle">Kirim untuk perseorangan</p>
+            <div className="card-title">
+              <h2 className="title">Individually</h2>
+              <p className="card-subtitle">Kirim untuk perseorangan</p>
               <br></br>
             </div>
             
             <div>
-              <form class="form-box" onSubmit={this.handleSubmitIndividual}>
-                <label for="individuals">Email: </label>
+              <form className="form-box" onSubmit={this.handleSubmitIndividual}>
+                <label htmlFor="individuals">Email: </label>
                 <input type="email" id="individual" name="individuals" 
                 value={this.state.individual_email_value} 
                 onChange={ event => this.setState({individual_email_value: event.target.value}) }></input>
@@ -178,14 +195,14 @@ class Screen extends React.Component {
             </div>
 
             {this.state.individual_emails.length === 0 ? (
-              <p class="keterangan-kosong">Tambahkan email pengguna</p>
+              <p className="keterangan-kosong">Tambahkan email pengguna</p>
             ) : (
             <table>
               <tbody>
                 {this.state.individual_emails.map((email, index) => (
                 <tr key={index}>
                   <td>
-                    <button class="button-icon cancel"
+                    <button className="button-icon cancel"
                     onClick={() => this.handleDeleteIndividuals(index)}></button>
                   </td>
                   <td>{email}</td>
@@ -198,16 +215,29 @@ class Screen extends React.Component {
 
         </div>
       
+        <ToastContainer />
       </React.Fragment>
     );
   }
 }
 
 function createContainer() {
-    return authorize({
-      mustVerified: false,
-      roles: [authorize.STAFF, authorize.SUPERUSER],
-    })(withRouter(withStyles(styles)(Screen)));
-  }
+  const mapStateToProps = state => ({
+    surveiId: state.emailBlaster.surveiId,
+  });
+
+  const mapDispatchToProps = dispatch => ({
+    changeRecipients: recipients => dispatch(emailBlasterActions.changeRecipients(recipients)),
+  });
+
+  return authorize({
+    mustVerified: false,
+    roles: [authorize.STAFF, authorize.SUPERUSER],
+  })(
+    withRouter(
+      connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Screen))
+    )
+  );
+}
   
 export default createContainer();
