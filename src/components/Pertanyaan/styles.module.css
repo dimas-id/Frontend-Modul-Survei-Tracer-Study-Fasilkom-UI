@@ -19,6 +19,12 @@
   -moz-box-shadow: 0px 0px 5px 5px rgba(255, 125, 125, 0.549) !important;
 }
 
+.green {
+  border-left: 8px solid #4285f4;
+  padding-left: 22px !important;
+  transition: all 1000 ease-in-out;
+}
+
 textarea {
   font-family: inherit;
   font-size: inherit;
@@ -41,8 +47,9 @@ textarea {
   max-width: 500px;
 }
 
-.input:active, .input:focus {
-    border-bottom: 1.5px solid #ced4da;
+.input:active,
+.input:focus {
+  border-bottom: 1.5px solid #ced4da;
 }
 
 /* PERTANYAAN */
@@ -50,34 +57,54 @@ textarea {
 .pertanyaan {
   width: 100%;
   display: flex;
-  padding: 20px 5em;
-  margin-top: 50px;
+  justify-content: center;
+  height: calc(100vh - 76px - 64px);
+  overflow-y: hidden;
+  overflow-x: visible;
 }
 
 @media only screen and (max-width: 1024px) {
   .pertanyaan {
-    flex-direction: column-reverse;
-    align-items: center;
   }
 }
 
 /* NO PERTANYAAN */
 
 .no-pertanyaan {
-  width: 500px;
+  width: 350px;
+  display: flex;
+  gap: 1em;
+  padding: 30px 10px;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-.no-pertanyaan-div {
+.no-pertanyaan::-webkit-scrollbar {
+  display: none;
+}
+
+.no-pertanyaan-wrapper {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 1em;
-  padding: 10px;
+  height: min-content;
+  gap: 15px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .pertanyaan {
+    height: calc(100vh - 56px - 56px);
+  }
+  .no-pertanyaan {
+    display: none;
+  }
 }
 
 .no {
   width: 50px;
   height: 50px;
+  flex-basis: 50px;
   background-color: white;
   border-radius: 0.3em;
   display: flex;
@@ -88,13 +115,26 @@ textarea {
   -moz-box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
 }
 
+.no:hover {
+  cursor: pointer;
+}
+
 /* PERTANYAAN */
 
 .pertanyaan-wrapper {
   width: 100%;
+  max-width: 870px;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 30px 10px;
+  overflow-y: scroll;
+  overflow-x: visible;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.pertanyaan-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .add-pertannyaan {
@@ -109,11 +149,13 @@ textarea {
   border-radius: 0.5em;
   width: 100%;
   padding: 10px;
-  border: 1px solid rgb(194, 234, 240);
   background-color: white;
-  box-shadow: 0px 0px 5px 5px rgb(194, 234, 240);
-  -webkit-box-shadow: 0px 0px 5px 5px rgb(194, 234, 240);
-  -moz-box-shadow: 0px 0px 5px 5px rgb(194, 234, 240);
+  border: none;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 button:hover {
@@ -130,7 +172,6 @@ button:hover {
 }
 
 .description h3 {
-  margin: auto;
   margin-bottom: 10px;
 }
 
@@ -140,12 +181,15 @@ button:hover {
   padding: 10px;
   border-radius: 0.5em;
   height: 100%;
+  font-size: 1.2em;
+  color: #495057;
 }
 
 /* Card Pertanyaan */
 
 .card {
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   padding: 20px 30px;
   background-color: white;
@@ -157,12 +201,35 @@ button:hover {
   max-width: 800px;
 }
 
+.card:hover {
+  cursor: pointer;
+}
+
 .header {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+}
+
+.nomor-pertanyaan-card {
+  padding: 6px 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+@media only screen and (max-width: 1143px) {
+  .header {
+    flex-direction: column-reverse;
+    align-items: start;
+    gap: 10px;
+  }
+
+  .nomor-pertanyaan-card {
+    padding-left: 0 !important;
+  }
 }
 
 .required {
@@ -264,4 +331,51 @@ button:hover {
   width: 20px;
 }
 
+.new-add-question-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  background-color: #4285f4;
+  color: white;
+  position: fixed;
+  display: flex;
+  bottom: 20px;
+  right: 20px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.activeNow {
+  background-color: #4285f4;
+  color: white;
+  font-weight: 800;
+}
+
+.actionbtn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
+  border: none;
+  border-radius: 0.5em;
+  margin-bottom: 15px;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
+}
+
+.actionbtn button {
+  background-color: transparent;
+  border: none;
+  height: 30px;
+  width: 30px;
+}
