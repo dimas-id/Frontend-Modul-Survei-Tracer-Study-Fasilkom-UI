@@ -23,10 +23,21 @@ const styles = theme => ({
   },
 });
 
-function NavbarCreateSurvei({ classes, history, onSubmit, isLoading }) {
+function NavbarCreateSurvei({
+  classes,
+  history,
+  onSubmit,
+  onSubmitAndFinalize,
+  isLoading,
+}) {
   function onSubmitHandler(e) {
     e.preventDefault();
     onSubmit();
+  }
+
+  function onSubmitAndFinalizeHandler(e) {
+    e.preventDefault();
+    onSubmitAndFinalize();
   }
 
   return (
@@ -53,35 +64,69 @@ function NavbarCreateSurvei({ classes, history, onSubmit, isLoading }) {
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               {!isLoading ? (
-                <button
-                  onClick={onSubmitHandler}
-                  style={{
-                    padding: "10px 20px",
-                    border: "none",
-                    backgroundColor: "#4285f4",
-                    color: "white",
-                    borderRadius: "0.6em",
-                    fontWeight: "bolder",
-                  }}
-                  disabled={isLoading}
-                >
-                  Simpan
-                </button>
+                <>
+                  <button
+                    onClick={onSubmitAndFinalizeHandler}
+                    style={{
+                      padding: "10px 20px",
+                      border: "2px solid #4285f4",
+                      color: "#4285F4",
+                      borderRadius: "0.6em",
+                      fontWeight: "bolder",
+                      marginRight: "10px",
+                      backgroundColor: "white",
+                    }}
+                    disabled={isLoading}
+                  >
+                    Simpan & Finalize
+                  </button>
+                  <button
+                    onClick={onSubmitHandler}
+                    style={{
+                      padding: "10px 20px",
+                      border: "none",
+                      backgroundColor: "#4285f4",
+                      color: "white",
+                      borderRadius: "0.6em",
+                      fontWeight: "bolder",
+                    }}
+                    disabled={isLoading}
+                  >
+                    Simpan
+                  </button>
+                </>
               ) : (
-                <button
-                  onClick={onSubmitHandler}
-                  style={{
-                    padding: "10px 20px",
-                    border: "none",
-                    backgroundColor: "grey",
-                    color: "white",
-                    borderRadius: "0.6em",
-                    fontWeight: "bolder",
-                  }}
-                  disabled
-                >
-                  Simpan
-                </button>
+                <>
+                  <button
+                    onClick={onSubmitAndFinalizeHandler}
+                    style={{
+                      padding: "10px 20px",
+                      border: "none",
+                      backgroundColor: "grey",
+                      color: "white",
+                      borderRadius: "0.6em",
+                      fontWeight: "bolder",
+                      marginRight: "10px",
+                    }}
+                    disabled={isLoading}
+                  >
+                    Simpan & Finalize
+                  </button>
+                  <button
+                    onClick={onSubmitHandler}
+                    style={{
+                      padding: "10px 20px",
+                      border: "none",
+                      backgroundColor: "grey",
+                      color: "white",
+                      borderRadius: "0.6em",
+                      fontWeight: "bolder",
+                    }}
+                    disabled
+                  >
+                    Simpan
+                  </button>
+                </>
               )}
             </div>
           </div>
