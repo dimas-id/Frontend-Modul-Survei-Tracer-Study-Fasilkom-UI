@@ -5,7 +5,12 @@ import DoughnutChart from "./DoughnutChart";
 import ListChart from "./ListChart";
 import HorizontalBarChart from "./HorizontalBar";
 
-const PertanyaanCard = ({ pertanyaan, data, type }) => {
+const PertanyaanCard = ({ pertanyaan, data, type, option }) => {
+  if (type === "Skala Linear") {
+    for (let i = 0; i < data.labels.length; i++) {
+      data.labels[i] = Number(data.labels[i]) + 1;
+    }
+  }
   return (
     <div className={classes["pertanyaan-card"]}>
       <div className={classes["header-card"]}>
@@ -20,8 +25,10 @@ const PertanyaanCard = ({ pertanyaan, data, type }) => {
         </p>
       </div>
       {type === "Pilihan Ganda" && <PieChart data={data} />}
-      {type === "Kotak Centang" && <BarChart data={data} />}
-      {type === "Skala Linear" && <HorizontalBarChart data={data} />}
+      {type === "Kotak Centang" && <BarChart data={data} option={option} />}
+      {type === "Skala Linear" && (
+        <HorizontalBarChart data={data} option={option} />
+      )}
       {type === "Drop-Down" && <DoughnutChart data={data} />}
       {type === "Jawaban Singkat" && <ListChart data={data} />}
     </div>

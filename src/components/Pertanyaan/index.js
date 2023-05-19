@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { NavbarAuth, NavbarCreateSurvei } from "../stables/Navbar";
 import atlasV3 from "../../modules/api/atlas/v3";
 import Toast from "../Toast/index";
+import { API_V3_URL } from "../../modules/api/atlas/config";
+import http from "../../libs/http";
 
 const Pertanyaan = () => {
   const [deskripsi, setDeskripsi] = useState("");
@@ -132,6 +134,15 @@ const Pertanyaan = () => {
     listPertanyaan[index].status = true;
   };
 
+  const onSubmitAndFinalize = async () => {
+    try {
+      const id = (await onSubmit()).data.survei.id;
+      const url = API_V3_URL + "/survei/finalize/" + id;
+
+      await http.get(url);
+    } catch (error) {}
+  };
+
   const onSubmit = async () => {
     setIsLoading(true);
     setActiveNow();
@@ -170,6 +181,8 @@ const Pertanyaan = () => {
       Toast("Server error. Survei Gagal dibuat!", "error");
       setIsLoading(false);
     }
+
+    return response;
   };
 
   const hanldeUp = () => {
@@ -215,7 +228,11 @@ const Pertanyaan = () => {
   return (
     <div style={{ height: "100vh", overflow: "hidden" }}>
       <NavbarAuth title="Buat Kuesioner" />
-      <NavbarCreateSurvei onSubmit={onSubmit} isLoading={isLoading} />
+      <NavbarCreateSurvei
+        onSubmit={onSubmit}
+        onSubmitAndFinalize={onSubmitAndFinalize}
+        isLoading={isLoading}
+      />
       <div className={classes.pertanyaan}>
         <div className={classes["no-pertanyaan"]}>
           <div className={classes["no-pertanyaan-wrapper"]}>
