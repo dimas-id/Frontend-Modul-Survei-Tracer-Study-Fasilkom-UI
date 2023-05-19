@@ -31,9 +31,12 @@ class Screen extends React.Component {
       year_value : new Date().getFullYear(),
       term_value : 1,
       individual_email_value : '',
+      csv_file: null,
+
       group_recipient_years : [],
       group_recipient_terms : [], 
       individual_emails : [],
+      csv_emails : [],
     };
 
   }
@@ -82,6 +85,21 @@ class Screen extends React.Component {
 
   }
 
+  handleSubmitFileBrowse = (event) => {
+    event.preventDefault();
+    // this.setState({
+    //   file: event.target.files[0]
+    // });
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const fileContents = event.target.result;
+      // Save the file contents or perform additional operations
+      this.setState({ csv_file: { name: file.name, contents: fileContents } });
+    };
+
+  };
+
   handleDeleteGroup = (index) => {
     this.setState(prevState => ({
       group_recipient_years: prevState.group_recipient_years.filter((term, i) => i !== index),
@@ -95,13 +113,19 @@ class Screen extends React.Component {
     }));
   }
 
+  handleDeleteFile = () => {
+    this.setState({
+      csv_file: null
+    });
+  }
+
   onNext = (event) => {
     console.log("CLICKED2")
+    window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
 
-    if (!(this.state.individual_emails.length === 0)) {
-    
-      window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
-    }
+    // if (!(this.state.individual_emails.length === 0)) {
+    //   window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
+    // }
     
   }
 
@@ -125,8 +149,176 @@ class Screen extends React.Component {
           <h2 className="title">Tujuan Penerima Email</h2>
           <p>Pilih tujuan pengiriman survei!</p>
         </div>
+
+        <div className='form-container'>
+          
+          <div className='form-section'>
+
+            <div className="form-title">
+              <h2 className="title">Batch</h2>
+              <p className="card-subtitle">Kirim secara bersamaan untuk kelompok alumni lulusan tahun tertentu</p>
+              <br></br>
+            </div>
+
+            {/* <div>
+              <form className="form-box" onSubmit={this.handleSubmitGroup}>
+                
+                <label htmlFor="years">Tahun Kelulusan </label>
+                <input type="number" id="years" name="years" defaultValue={this.currentYear}
+                  value={this.state.year_value} 
+                  onChange={ event => this.setState({year_value: event.target.value}) }></input>
+            
+                <label htmlFor="terms">Term</label>
+                <select name="terms" id="terms"
+                  value={this.state.term_value}
+                  onChange={ event => this.setState({term_value: event.target.value}) }>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+
+                <input type="submit" id="add-group" value="tambahkan"></input>
+
+              </form>
+            </div> */}
+            
+            <form className="form-box" onSubmit={this.handleSubmitGroup}>
+              
+            <label htmlFor="years">Tahun <br></br> Kelulusan </label>
+              <input type="number" id="years" name="years" defaultValue={this.currentYear}
+                value={this.state.year_value} 
+                onChange={ event => this.setState({year_value: event.target.value}) }></input>
+
+            <label htmlFor="terms">Term</label>
+              <select name="terms" id="terms"
+                value={this.state.term_value}
+                onChange={ event => this.setState({term_value: event.target.value}) }>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+              </select>
+          
+              {/* <div className='input-and-label'>
+                <label htmlFor="years">Tahun <br></br> Kelulusan </label>
+                <input type="number" id="years" name="years" defaultValue={this.currentYear}
+                  value={this.state.year_value} 
+                  onChange={ event => this.setState({year_value: event.target.value}) }></input>
+              </div> */}
+
+              {/* <div className='input-and-label'>
+                <label htmlFor="terms">Term</label>
+                <select name="terms" id="terms"
+                  value={this.state.term_value}
+                  onChange={ event => this.setState({term_value: event.target.value}) }>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+              </div> */}
+              
+              <button type="submit" id="add-group" className='button-icon-text'><i className='add'></i> tambah</button>
+
+            </form>
+
+            {this.state.group_recipient_years.length === 0 ? (
+                <p className="keterangan-kosong">Tambahkan kelompok pengguna</p>
+              ) : (
+            <table>
+              <tbody>
+                {this.state.group_recipient_years.map((year, index) => (
+                <tr key={index}>
+                  <td>
+                    <button className="button-icon cancel"
+                    onClick={() => this.handleDeleteGroup(index)}></button>
+                  </td>
+                  <td>Lulusan {year} term-{this.state.group_recipient_terms[index]}</td>
+                </tr>
+                ))}
+              </tbody>
+            </table> )}
+
+          </div>
+
+
+          <div className='form-section'>
+            
+            <div className="form-title">
+              <h2 className="title">Individually</h2>
+              <p className="card-subtitle">Kirim untuk perseorangan</p>
+              <br></br>
+            </div>
+
+            <form className="form-box" onSubmit={this.handleSubmitIndividual}>
+                {/* <div className='input-and-label'>
+                  <label htmlFor="individuals">Email: </label>
+                  <input type="email" id="individual" name="individuals" 
+                    value={this.state.individual_email_value} 
+                    onChange={ event => this.setState({individual_email_value: event.target.value}) }></input>
+                </div> */}
+                <label htmlFor="individuals">Email: </label>
+                  <input type="email" id="individual" name="individuals" 
+                    value={this.state.individual_email_value} 
+                    onChange={ event => this.setState({individual_email_value: event.target.value}) }></input>
+                <button type="submit" id="add-individual" className='button-icon-text'><i className='add'></i> tambah</button>
+              </form>
+
+            {this.state.individual_emails.length === 0 ? (
+              <p className="keterangan-kosong">Tambahkan email pengguna</p>
+            ) : (
+            <table>
+              <tbody>
+                {this.state.individual_emails.map((email, index) => (
+                <tr key={index}>
+                  <td>
+                    <button className="button-icon cancel"
+                    onClick={() => this.handleDeleteIndividuals(index)}></button>
+                  </td>
+                  <td>{email}</td>
+                </tr>
+                ))}
+              </tbody>
+            </table> )}
+
+          </div>
+
+          <div className='form-section'>
+
+            <div className="form-title">
+              <h2 className="title">Upload CSV File</h2>
+              <p className="card-subtitle">Upload file CSV yang berisi daftar email</p>
+              <br></br>
+            </div>
+                
+            {/* <input type='file' className='input-file'></input> */}
+
+            {this.state.csv_file ? (
+              <div>
+                <p>File: {this.state.csv_file.name}</p>
+                <button onClick={() => this.setState({csv_file: null})}>Delete</button>
+              </div>
+            ) : (
+              <p>Belum ada file yang di-upload</p>
+            )}
+            
+            <input type="file" onChange={this.handleSubmitFileBrowse} />
+            
+              
+              {/* { this.state.file === null ? (
+                <div className='input-file'>
+                  <label htmlFor='input-csv'>
+                  <i className='upload'></i>Upload file .csv
+                    <input id='input-csv' type='file'></input>
+                  </label>
+                </div>
+              ) : (
+                <div className='input-file'> 
+                  <p><i className='delete'></i> {this.state.file.name}</p> 
+                </div>
+              )} */}
+
+          </div>
+
+
+        </div>
         
-        <div className="card-recipient-box">
+        {/* <div className="card-recipient-box">
           
           <div className="card-recipient">
             
@@ -213,7 +405,7 @@ class Screen extends React.Component {
 
           </div>
 
-        </div>
+        </div> */}
       
         <ToastContainer />
       </React.Fragment>
