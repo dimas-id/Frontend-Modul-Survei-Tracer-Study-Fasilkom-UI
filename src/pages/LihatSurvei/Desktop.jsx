@@ -10,6 +10,7 @@ import Particle from "../../components/Particle";
 import atlasV3 from "../../modules/api/atlas/v3";
 import Toast from "../../components/Toast/index";
 import { ToastContainer } from "react-toastify";
+import SearchInput from "../../components/SearchSurvei";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./styles.css";
@@ -40,6 +41,10 @@ class Screen extends React.Component {
     survei_list_draft: null,
     survei_list_sent: null,
     survei_list_finalized: null,
+    survei_list_draft_filtered: null,
+    survei_list_sent_filtered: null,
+    survei_list_finalized_filtered: null,
+    searchQuery: null,
     new_state: "button1",
     loading: true,
     delete_dialog: 0,
@@ -83,15 +88,36 @@ class Screen extends React.Component {
     this.setState({ loading: true }, () => {
       atlasV3.survei.getSurvei
         .then(result => {
-          this.setState({ survei_list_draft: result.data.surveiDraft });
-          this.setState({ survei_list_sent: result.data.surveiDikirim });
-          this.setState({
+          this.setState({ 
+            survei_list_draft: result.data.surveiDraft,
+            survei_list_sent: result.data.surveiDikirim,
             survei_list_finalized: result.data.surveiFinalized,
+            survei_list_draft_filtered: result.data.surveiDraft,
+            survei_list_sent_filtered: result.data.surveiDikirim,
+            survei_list_finalized_filtered: result.data.surveiFinalized,
           });
         })
         .finally(() => {
           this.setState({ loading: false });
         });
+    });
+  }
+
+  handleFilterSearch = searchQuery => {
+    const filteredSurveiDraft = this.state.survei_list_draft.filter(
+      survei => survei.nama.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
+    );
+    const filteredSurveiSent = this.state.survei_list_sent.filter(
+      survei => survei.nama.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
+    );
+    const filteredSurveiFinalized = this.state.survei_list_finalized.filter(
+      survei => survei.nama.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
+    );
+    this.setState({
+      searchQuery: searchQuery,
+      survei_list_draft_filtered: filteredSurveiDraft,
+      survei_list_sent_filtered: filteredSurveiSent,
+      survei_list_finalized_filtered: filteredSurveiFinalized,
     });
   }
 
@@ -111,6 +137,11 @@ class Screen extends React.Component {
             <a href="/buat-survei">
               <button>(+) Buat Survei Baru</button>
             </a>
+          </div>
+          <div className="search-wrapper">
+            <SearchInput 
+              valHandler={this.handleFilterSearch}
+            />
           </div>
           <div className="btn-group">
             <div>
@@ -142,9 +173,10 @@ class Screen extends React.Component {
             </div>
           </div>
           <div className="grid-container">
+            {this.state.searchQuery && <center>Hasil pencarian untuk <b>{this.state.searchQuery}</b></center>}
             {this.state.new_state === "button1" && (
               <ul id="ul1">
-                {this.state.survei_list_draft?.map(l => {
+                {this.state.survei_list_draft_filtered?.map(l => {
                   return (
                     <div key={`div${l.id}`}>
                       <li key={l.id} className="survei-card">
@@ -216,7 +248,7 @@ class Screen extends React.Component {
             )}
             {this.state.new_state === "button2" && (
               <ul id="ul1">
-                {this.state.survei_list_finalized?.map(l => {
+                {this.state.survei_list_finalized_filtered?.map(l => {
                   return (
                     <div key={`div${l.id}`}>
                       <li key={l.id} className="survei-card">
@@ -281,7 +313,7 @@ class Screen extends React.Component {
             )}
             {this.state.new_state === "button3" && (
               <ul id="ul1">
-                {this.state.survei_list_sent?.map(l => {
+                {this.state.survei_list_sent_filtered?.map(l => {
                   return (
                     <div key={`div${l.id}`}>
                       <li key={l.id} className="survei-card">
