@@ -156,7 +156,7 @@ class Screen extends React.Component {
 
             <div className="form-title">
               <h2 className="title">Batch</h2>
-              <p className="card-subtitle">Kirim secara bersamaan untuk kelompok alumni lulusan tahun tertentu</p>
+              <p>Kirim secara bersamaan untuk kelompok alumni lulusan tahun tertentu</p>
               <br></br>
             </div>
 
@@ -241,7 +241,7 @@ class Screen extends React.Component {
             
             <div className="form-title">
               <h2 className="title">Individually</h2>
-              <p className="card-subtitle">Kirim untuk perseorangan</p>
+              <p>Kirim untuk perseorangan</p>
               <br></br>
             </div>
 
@@ -282,7 +282,7 @@ class Screen extends React.Component {
 
             <div className="form-title">
               <h2 className="title">Upload CSV File</h2>
-              <p className="card-subtitle">Upload file CSV yang berisi daftar email</p>
+              <p>Upload file CSV yang berisi daftar email</p>
               <br></br>
             </div>
                 
@@ -317,95 +317,6 @@ class Screen extends React.Component {
 
 
         </div>
-        
-        {/* <div className="card-recipient-box">
-          
-          <div className="card-recipient">
-            
-            <div className="card-title">
-              <h2 className="title">Batch</h2>
-              <p className="card-subtitle">Kirim secara bersamaan untuk kelompok alumni lulusan tahun tertentu</p>
-              <br></br>
-            </div>
-            
-            <div>
-              <form className="form-box" onSubmit={this.handleSubmitGroup}>
-                
-                <label htmlFor="years">Tahun Kelulusan </label>
-                <input type="number" id="years" name="years" defaultValue={this.currentYear}
-                value={this.state.year_value} 
-                onChange={ event => this.setState({year_value: event.target.value}) }></input>
-                
-                <label htmlFor="terms">Term</label>
-                <select name="terms" id="terms"
-                value={this.state.term_value}
-                onChange={ event => this.setState({term_value: event.target.value}) }>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                </select>
-
-                <input type="submit" id="add-group" value="tambahkan"></input>
-
-              </form>
-            </div>
-
-            {this.state.group_recipient_years.length === 0 ? (
-              <p className="keterangan-kosong">Tambahkan kelompok pengguna</p>
-            ) : (
-            <table>
-              <tbody>
-                {this.state.group_recipient_years.map((year, index) => (
-                <tr key={index}>
-                  <td>
-                    <button className="button-icon cancel"
-                    onClick={() => this.handleDeleteGroup(index)}></button>
-                  </td>
-                  <td>Lulusan {year} term-{this.state.group_recipient_terms[index]}</td>
-                </tr>
-                ))}
-              </tbody>
-            </table> )}
-            
-          </div>
-
-          <div className="card-recipient">
-            
-            <div className="card-title">
-              <h2 className="title">Individually</h2>
-              <p className="card-subtitle">Kirim untuk perseorangan</p>
-              <br></br>
-            </div>
-            
-            <div>
-              <form className="form-box" onSubmit={this.handleSubmitIndividual}>
-                <label htmlFor="individuals">Email: </label>
-                <input type="email" id="individual" name="individuals" 
-                value={this.state.individual_email_value} 
-                onChange={ event => this.setState({individual_email_value: event.target.value}) }></input>
-                <input type="submit" id="add-individual" value="tambahkan"></input>
-              </form>
-            </div>
-
-            {this.state.individual_emails.length === 0 ? (
-              <p className="keterangan-kosong">Tambahkan email pengguna</p>
-            ) : (
-            <table>
-              <tbody>
-                {this.state.individual_emails.map((email, index) => (
-                <tr key={index}>
-                  <td>
-                    <button className="button-icon cancel"
-                    onClick={() => this.handleDeleteIndividuals(index)}></button>
-                  </td>
-                  <td>{email}</td>
-                </tr>
-                ))}
-              </tbody>
-            </table> )}
-
-          </div>
-
-        </div> */}
       
         <ToastContainer />
       </React.Fragment>

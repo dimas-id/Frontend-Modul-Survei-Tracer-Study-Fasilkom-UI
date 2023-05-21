@@ -48,35 +48,6 @@
     border-radius: 20px;
 }
 
-.card-recipient-box {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 10px 100px;
-}
-
-.card-recipient {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    
-    margin: 20px;
-    padding: 20px;
-    row-gap: 10px;
-
-    width: 630px;
-    height: 400px;
-
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
-}
-
-.card-title {
-    text-align: center;
-}
-
 .form-title {
     text-align: center;
     height: 130px;
