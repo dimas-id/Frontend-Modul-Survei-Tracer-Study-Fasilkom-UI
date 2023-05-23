@@ -185,7 +185,7 @@ const Pertanyaan = () => {
     return response;
   };
 
-  const hanldeUp = () => {
+  const handleUp = () => {
     if (activeNow !== 0) {
       const newListPertanyaan = listPertanyaan.slice();
       [newListPertanyaan[activeNow], newListPertanyaan[activeNow - 1]] = [
@@ -197,7 +197,7 @@ const Pertanyaan = () => {
     }
   };
 
-  const hanldeDown = () => {
+  const handleDown = () => {
     if (activeNow !== listPertanyaan.length - 1) {
       const newListPertanyaan = listPertanyaan.slice();
       [newListPertanyaan[activeNow], newListPertanyaan[activeNow + 1]] = [
@@ -347,14 +347,14 @@ const Pertanyaan = () => {
                         style={{ width: "30px" }}
                       />
                     </button>
-                    <button onClick={hanldeUp}>
+                    <button onClick={handleUp}>
                       <img
                         src="https://i.ibb.co/sHMgb2w/icons8-down-67-copy.png"
                         alt="up img"
                         style={{ width: "30px" }}
                       />
                     </button>
-                    <button onClick={hanldeDown}>
+                    <button onClick={handleDown}>
                       <img
                         src="https://i.ibb.co/j5dPjJT/icons8-down-67.png"
                         alt="down img"
