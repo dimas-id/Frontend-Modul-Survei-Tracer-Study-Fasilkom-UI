@@ -13,3 +13,4 @@ export { default as NavbarBackForChannelRequest } from "./NavbarBackForChannelRe
 export { default as NavbarBuatKuesioner } from "./NavbarBuatKuesioner";
 export { default as NavbarCreateSurvei } from "./NavbarCreateSurvei";
 export { default as NavbarIsiSurvei } from "./NavbarIsiSurvei";
+export { default as NavbarEditSurvei } from "./NavbarEditSurvei";
