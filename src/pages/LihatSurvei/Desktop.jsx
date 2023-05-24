@@ -22,6 +22,8 @@ import {
   Button,
   DialogContentText,
 } from "@material-ui/core";
+import { emailBlasterActions } from "../../modules/email-blaster";
+import { connect } from "react-redux";
 
 const styles = theme => ({
   container: {
@@ -124,6 +126,12 @@ class Screen extends React.Component {
   changeState = a => {
     this.setState({ new_state: a.target.id });
   };
+
+  handleSend = surveiId => {
+    this.props.changeSurveiId(surveiId);
+    this.props.history.push("/email-blaster/recipients");
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -302,7 +310,9 @@ class Screen extends React.Component {
                             </DialogActions>
                           </Dialog>
                           <button>Ubah</button>
-                          <button>Kirim</button>
+                          <button onClick={() => this.handleSend(l.id)}>
+                            Kirim
+                          </button>
                         </div>
                       </li>
                       <br></br>
@@ -331,6 +341,9 @@ class Screen extends React.Component {
                           >
                             Statistik
                           </button>
+                          <button onClick={() => this.handleSend(l.id)}>
+                            Kirim
+                          </button>
                         </div>
                       </li>
                       <br></br>
@@ -348,10 +361,20 @@ class Screen extends React.Component {
 }
 
 function createContainer() {
+  const mapStateToProps = state => ({});
+
+  const mapDispatchToProps = dispatch => ({
+    changeSurveiId: id => dispatch(emailBlasterActions.changeSurveiId(id)),
+  });
+
   return authorize({
     mustVerified: true,
     roles: [ROLES.STAFF],
-  })(withRouter(withStyles(styles)(Screen)));
+  })(
+    withRouter(
+      connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Screen))
+    )
+  );
 }
 
 function formatDate(newDate) {

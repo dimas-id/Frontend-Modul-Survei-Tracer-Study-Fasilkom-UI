@@ -58,3 +58,4 @@ exports.ALUMNI_DETAIL = `${exports.ALUMNI}/detail/:idAlumni`;
 exports.GENERATE_USER = `/generate-user`;
 exports.EMAIL_BLASTER_EMAIL_TEMPLATE = `/email-blaster/email-template`;
 exports.EMAIL_BLASTER_SEND = `/email-blaster/send`;
+exports.EMAIL_BLASTER_RECIPIENT = `/email-blaster/recipients`;

@@ -66,7 +66,7 @@ function EmailTemplateForm({
                 margin="normal"
                 variant="outlined"
                 required
-                autofocus
+                autoFocus
                 value={title}
                 helperText={errors[0]}
                 error={errors[0] ? true : false}
@@ -81,7 +81,6 @@ function EmailTemplateForm({
                 margin="normal"
                 variant="outlined"
                 required
-                autofocus
                 value={subject}
                 helperText={errors[1]}
                 error={errors[1] ? true : false}
@@ -99,7 +98,6 @@ function EmailTemplateForm({
                 margin="normal"
                 variant="outlined"
                 required
-                autofocus
                 value={body}
                 helperText={errors[2]}
                 error={errors[2] ? true : false}
