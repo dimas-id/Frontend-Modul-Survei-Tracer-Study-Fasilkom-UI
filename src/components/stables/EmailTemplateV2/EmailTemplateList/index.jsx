@@ -27,6 +27,11 @@ const styles = theme => ({
     "-webkit-user-select": "none",
     "-ms-user-select": "none",
     "user-select": "none",
+    scrollbarWidth: "thin",
+    scrollbarColor: "#ccc #f5f5f5",
+    "::-webkit-scrollbar": {
+      height: 0,
+    },
   },
   smallText: {
     margin: 0,
