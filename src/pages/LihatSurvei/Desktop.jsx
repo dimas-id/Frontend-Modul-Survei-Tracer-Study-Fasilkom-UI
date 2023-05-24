@@ -302,7 +302,11 @@ class Screen extends React.Component {
                             </DialogActions>
                           </Dialog>
                           <button>Ubah</button>
-                          <button>Kirim</button>
+                          <button
+                          onClick={()=> {
+                            this.setState({ loading:true });
+                            window.location.href = `/email-blaster/recipients?surveiId=${encodeURIComponent(l.id)}`;}}
+                          >Kirim</button>
                         </div>
                       </li>
                       <br></br>

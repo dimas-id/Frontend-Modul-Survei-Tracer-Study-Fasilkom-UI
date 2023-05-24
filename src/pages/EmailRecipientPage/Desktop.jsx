@@ -26,6 +26,8 @@ class Screen extends React.Component {
 
   constructor(props) {
     super(props);
+
+    const searchParams = new URLSearchParams(window.location.search);
     
     this.state = {
       year_value : new Date().getFullYear(),
@@ -40,11 +42,15 @@ class Screen extends React.Component {
 
       group_total_recipients : [],
       group_total_nonresponse : [],
+
+      survei_id : parseInt(searchParams.get('surveiId')),
+      total_response : 0,
+      total_nonresponse : 0,
+
+      all_recipients: [],
     };
 
-    const searchParams = new URLSearchParams(window.location.search);
-    const data = searchParams.get('data');
-    console.log('Received Data:', data);
+    console.log('ID Survei:', this.state.survei_id);
 
   }
 
@@ -64,22 +70,32 @@ class Screen extends React.Component {
     
     if (!(available)) {
       emailBlasterAPI
-        .getGroupTotal(1, this.state.year_value, this.state.term_value)
+        .getGroupTotal(this.state.survei_id, this.state.year_value, this.state.term_value)
         .then((response) => {
-          // Handle the API response
-          console.log(response);
+          console.log(response.data);
+          
+          this.setState({ 
+            total_response: response.data["totalResponse"],
+            total_nonresponse: response.data["totalNonResponse"],
+          });
+
+          this.setState(prevState => ({
+            group_recipient_years: [...prevState.group_recipient_years, parseInt(this.state.year_value)],
+            group_recipient_terms: [...prevState.group_recipient_terms, parseInt(this.state.term_value)],
+            group_total_recipients: [...prevState.group_total_recipients, parseInt(this.state.total_response)],
+            group_total_nonresponse: [...prevState.group_total_nonresponse, parseInt(this.state.total_nonresponse)],
+    
+            year_value : new Date().getFullYear(),
+            term_value : 1,
+            total_response : 0,
+            total_nonresponse : 0,
+          }));
+
         })
         .catch((error) => {
-          // Handle errors, e.g., show an error message
           console.error(error);
         });
-
-      this.setState(prevState => ({
-        group_recipient_years: [...prevState.group_recipient_years, parseInt(this.state.year_value)],
-        group_recipient_terms: [...prevState.group_recipient_terms, parseInt(this.state.term_value)],
-        year_value : new Date().getFullYear(),
-        term_value : 1,
-      }));
+        
     } else {
       Toast("Kelompok tahun lulusan sudah ditulis", "error");
     }
@@ -130,8 +146,10 @@ class Screen extends React.Component {
 
   handleDeleteGroup = (index) => {
     this.setState(prevState => ({
-      group_recipient_years: prevState.group_recipient_years.filter((term, i) => i !== index),
-      group_recipient_terms: prevState.group_recipient_terms.filter((term, i) => i !== index)
+      group_recipient_years: prevState.group_recipient_years.filter((year, i) => i !== index),
+      group_recipient_terms: prevState.group_recipient_terms.filter((term, i) => i !== index),
+      group_total_nonresponse: prevState.group_total_nonresponse.filter((number, i) => i !== index),
+      group_total_recipients: prevState.group_total_recipients.filter((number, i) => i !== index),
     }));
   }
 
@@ -148,35 +166,30 @@ class Screen extends React.Component {
   }
 
   onNext = (event) => {
-    console.log("CLICKED2");
-    // window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
+ 
+    if (((this.state.individual_emails).length === 0)&&((this.state.csv_emails).length === 0)
+    &&((this.state.group_recipient_years).length === 0)&&((this.state.group_recipient_terms).length === 0)) {
+      Toast("Pilih kelompok alumni, tuliskan email, atau masukkan file CSV!", "error")
+    } else {
+      emailBlasterAPI
+      .getEmailRecipients(
+        this.state.survei_id,
+        this.state.group_recipient_years,
+        this.state.group_recipient_terms,
+        this.state.individual_emails)
+      .then((response) => {
+        console.log(response.data);
 
-    // if (!(this.state.individual_emails.length === 0)) {
-    //   window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
-    // }
-
-    const { group_recipient_years, group_recipient_terms, individual_emails } = this.state;
-
-    const requestObject = {
-      survei_id : 1,
-      group_recipient_years,
-      group_recipient_terms,
-      individual_emails,
-    };
-
-    console.log(requestObject)
-
-    emailBlasterAPI
-    .getEmailRecipients(
-      requestObject)
-    .then((response) => {
-      // Handle the API response
-      console.log(response);
-    })
-    .catch((error) => {
-      // Handle errors, e.g., show an error message
-      console.error(error);
-    });
+        this.setState({ 
+          recipients: response.data["recipients"],
+        });
+        
+        // window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }
     
   }
 
@@ -189,7 +202,10 @@ class Screen extends React.Component {
 
 
         <div className="header">
-          <button className="button-icon-text button-kiri"><i className="back"></i>Kembali</button>
+          <button className="button-icon-text button-kiri"
+          onClick={()=>{
+            window.location.href = `/survei`
+          }}><i className="back"></i>Kembali</button>
           <h1 className="main-title">Kirim Survei</h1>
           <button className="button-icon-text button-kanan"
           onClick={this.onNext}>Berikutnya<i className="next"></i></button>
@@ -210,27 +226,6 @@ class Screen extends React.Component {
               <p>Kirim secara bersamaan untuk kelompok alumni lulusan tahun tertentu</p>
               <br></br>
             </div>
-
-            {/* <div>
-              <form className="form-box" onSubmit={this.handleSubmitGroup}>
-                
-                <label htmlFor="years">Tahun Kelulusan </label>
-                <input type="number" id="years" name="years" defaultValue={this.currentYear}
-                  value={this.state.year_value} 
-                  onChange={ event => this.setState({year_value: event.target.value}) }></input>
-            
-                <label htmlFor="terms">Term</label>
-                <select name="terms" id="terms"
-                  value={this.state.term_value}
-                  onChange={ event => this.setState({term_value: event.target.value}) }>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                </select>
-
-                <input type="submit" id="add-group" value="tambahkan"></input>
-
-              </form>
-            </div> */}
             
             <form className="form-box" onSubmit={this.handleSubmitGroup}>
               
@@ -246,23 +241,6 @@ class Screen extends React.Component {
                   <option value="1">1</option>
                   <option value="2">2</option>
               </select>
-          
-              {/* <div className='input-and-label'>
-                <label htmlFor="years">Tahun <br></br> Kelulusan </label>
-                <input type="number" id="years" name="years" defaultValue={this.currentYear}
-                  value={this.state.year_value} 
-                  onChange={ event => this.setState({year_value: event.target.value}) }></input>
-              </div> */}
-
-              {/* <div className='input-and-label'>
-                <label htmlFor="terms">Term</label>
-                <select name="terms" id="terms"
-                  value={this.state.term_value}
-                  onChange={ event => this.setState({term_value: event.target.value}) }>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                </select>
-              </div> */}
               
               <button type="submit" id="add-group" className='button-icon-text'><i className='add'></i> tambah</button>
 
@@ -288,8 +266,8 @@ class Screen extends React.Component {
                     onClick={() => this.handleDeleteGroup(index)}></button>
                   </td>
                   <td>Lulusan {year} term-{this.state.group_recipient_terms[index]}</td>
-                  <td></td>
-                  <td></td>
+                  <td>{(this.state.group_total_nonresponse[index]).toString()}</td>
+                  <td>{(this.state.group_total_recipients[index]).toString()}</td>
                 </tr>
                 ))}
               </tbody>
@@ -307,12 +285,7 @@ class Screen extends React.Component {
             </div>
 
             <form className="form-box" onSubmit={this.handleSubmitIndividual}>
-                {/* <div className='input-and-label'>
-                  <label htmlFor="individuals">Email: </label>
-                  <input type="email" id="individual" name="individuals" 
-                    value={this.state.individual_email_value} 
-                    onChange={ event => this.setState({individual_email_value: event.target.value}) }></input>
-                </div> */}
+
                 <label htmlFor="individuals">Email: </label>
                   <input type="email" id="individual" name="individuals" 
                     value={this.state.individual_email_value} 

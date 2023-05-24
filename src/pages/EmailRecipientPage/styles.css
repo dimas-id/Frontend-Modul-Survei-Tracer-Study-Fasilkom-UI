@@ -222,8 +222,13 @@ table {
     border-collapse: collapse;
     background-color: #F5F5F5;
 
-    width: 400px;
+    width: 380px;
 }
+
+/* table tbody {
+    flex: 1;
+    overflow: auto;
+} */
 
 table th {
     padding: 4px;
@@ -244,5 +249,5 @@ table td {
     color: #aaa;
     background-color: #F5F5F5;
     border-bottom: 1px solid #DDDDDD;
-    width: 360px;
+    width: 380px;
 }
