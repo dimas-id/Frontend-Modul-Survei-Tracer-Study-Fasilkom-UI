@@ -3,6 +3,7 @@ import Skala from "./Skala";
 import classes from "./styles.module.css";
 
 const CardPertanyaan = ({
+  activeNow,
   pertanyaan,
   status,
   setStatus,
@@ -42,14 +43,21 @@ const CardPertanyaan = ({
 
   return (
     <div
-      className={`${classes.card} ${status ? "" : classes.red}`}
+      id={index}
+      className={`${classes.card} ${status ? "" : classes.red} ${activeNow ===
+        index && classes.green}`}
       onClick={() => {
         setStatus(index);
       }}
     >
+      <div
+        className={classes["nomor-pertanyaan-card"]}
+      >
+        Pertanyaan {index + 1}
+      </div>
       {status === false && (
         <div>
-          <span style={{ paddingLeft: "12px", color: "red", fontSize:"12px" }}>
+          <span style={{ paddingLeft: "12px", color: "red", fontSize: "12px" }}>
             *wajib diisi
           </span>
         </div>
@@ -109,28 +117,30 @@ const CardPertanyaan = ({
           <Skala option={option} changeHandler={optionChangeHandler} />
         )}
       </div>
-      <div className={classes.footer}>
-        <div className={classes.required}>
-          <input
-            id={index}
-            type="checkbox"
-            onChange={requiredChangeHandler}
-            checked={required}
-          />
-          <label htmlFor={index}>required?</label>
+      {activeNow === index && (
+        <div className={classes.footer}>
+          <div className={classes.required}>
+            <input
+              id={index}
+              type="checkbox"
+              onChange={requiredChangeHandler}
+              checked={required}
+            />
+            <label htmlFor={index}>required?</label>
+          </div>
+          <button
+            className={classes["delete-question"]}
+            onClick={deleteQuestionHandler}
+          >
+            <img
+              id={index}
+              src="https://i.ibb.co/ss3Z2yH/bin-1.png"
+              alt="bin-1"
+              border="0"
+            />
+          </button>
         </div>
-        <button
-          className={classes["delete-question"]}
-          onClick={deleteQuestionHandler}
-        >
-          <img
-            id={index}
-            src="https://i.ibb.co/ss3Z2yH/bin-1.png"
-            alt="bin-1"
-            border="0"
-          />
-        </button>
-      </div>
+      )}
     </div>
   );
 };

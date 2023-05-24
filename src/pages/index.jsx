@@ -31,6 +31,7 @@ import CariAlumniPage from "./CariAlumniPage";
 import DetailAlumniPage from "./DetailAlumniPage/Desktop";
 import GenerateUserPage from "./GenerateUserPage";
 import CreateSurvei from "./CreateSurvei";
+import EditSurvei from "./EditSurvei";
 import LihatSurvei from "./LihatSurvei";
 import EmailRecipientPage from "./EmailRecipientPage";
 import IsiSurvei from "./IsiSurvei";
@@ -309,6 +310,14 @@ const ROUTES = [
       exact: true,
       path: paths.BUAT_SURVEI,
       component: CreateSurvei,
+    },
+  },
+  {
+    title: "Edit Survei",
+    route: {
+      exact: true,
+      path: paths.EDIT_SURVEI_BY_ID,
+      component: EditSurvei,
     },
   },
   {

@@ -43,7 +43,28 @@ const Visualisasi = () => {
               responden={data.responden}
             />
             {data.pertanyaan.map(el => {
-              const data = {
+              const chartOptions = {
+                scales: {
+                  xAxes: [
+                    {
+                      ticks: {
+                        beginAtZero: true,
+                        min: 0,
+                      },
+                    },
+                  ],
+                  yAxes: [
+                    {
+                      ticks: {
+                        beginAtZero: true,
+                        min: 0,
+                      },
+                    },
+                  ],
+                },
+              };
+
+              const chartData = {
                 labels: el.label,
                 datasets: [
                   {
@@ -52,23 +73,13 @@ const Visualisasi = () => {
                     borderWidth: 1,
                   },
                 ],
-                options: {
-                  scales: {
-                    yAxes: [
-                      {
-                        ticks: {
-                          beginAtZero: true,
-                        },
-                      },
-                    ],
-                  },
-                },
               };
               return (
                 <PertanyaanCard
                   pertanyaan={el.pertanyaan}
                   key={el.pertanyaan}
-                  data={data}
+                  data={chartData}
+                  option={chartOptions}
                   type={el.jenisJawaban}
                 />
               );

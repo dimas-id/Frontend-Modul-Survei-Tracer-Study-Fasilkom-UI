@@ -10,12 +10,18 @@ import Particle from "../../components/Particle";
 import atlasV3 from "../../modules/api/atlas/v3";
 import Toast from "../../components/Toast/index";
 import { ToastContainer } from "react-toastify";
+import SearchInput from "../../components/SearchSurvei";
 import "react-toastify/dist/ReactToastify.css";
-import DeleteIcon from "@material-ui/icons/Delete";
-import classNames from "classnames";
 
 import "./styles.css";
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, DialogContentText } from "@material-ui/core";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  DialogContentText,
+} from "@material-ui/core";
 
 const styles = theme => ({
   container: {
@@ -32,12 +38,16 @@ class Screen extends React.Component {
   };
 
   state = {
-    survei_list: null,
+    survei_list_draft: null,
     survei_list_sent: null,
-    survei_list_not_sent: null,
+    survei_list_finalized: null,
+    survei_list_draft_filtered: null,
+    survei_list_sent_filtered: null,
+    survei_list_finalized_filtered: null,
+    searchQuery: null,
     new_state: "button1",
     loading: true,
-    delete_dialog:0
+    delete_dialog: 0,
   };
 
   componentDidMount() {
@@ -45,41 +55,69 @@ class Screen extends React.Component {
   }
 
   handleDeleteClickOpen = surveiId => {
-    this.setState({ delete_dialog:surveiId });
-  }
+    this.setState({ delete_dialog: surveiId });
+  };
 
   handleDeleteClose = () => {
-    this.setState({ delete_dialog:0 });
-  }
+    this.setState({ delete_dialog: 0 });
+  };
 
   handleDeleteClickYa = surveiId => {
-    this.setState({ loading:true })
-    atlasV3.survei.deleteSurveiById(surveiId).then(response => {
-      Toast("Survei berhasil dihapus", "success");
-      setTimeout(() => {
-        window.location.reload();
-      }, 4000);
-    }).catch(err => {
-      Toast("Survei Gagal dihapus karena error " + err.status, "error");
-      setTimeout(() => {
-        window.location.reload();
-      }, 4000);
-    });
-  }
+    this.setState({ loading: true });
+    atlasV3.survei
+      .deleteSurveiById(surveiId)
+      .then(response => {
+        Toast("Survei berhasil dihapus", "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 4000);
+      })
+      .catch(err => {
+        Toast("Survei Gagal dihapus karena error " + err.status, "error");
+        setTimeout(() => {
+          window.location.reload();
+        }, 4000);
+      });
+  };
+
+  handleEditClickOpen = surveiId => {
+    this.props.history.push("/edit-survei/" + surveiId);
+  };
 
   handleLoad() {
     this.setState({ loading: true }, () => {
       atlasV3.survei.getSurvei
         .then(result => {
-          this.setState({ survei_list: result.data.survei });
-          this.setState({ survei_list_sent: result.data.surveiDikirim });
-          this.setState({
-            survei_list_not_sent: result.data.surveiBelumDikirim,
+          this.setState({ 
+            survei_list_draft: result.data.surveiDraft,
+            survei_list_sent: result.data.surveiDikirim,
+            survei_list_finalized: result.data.surveiFinalized,
+            survei_list_draft_filtered: result.data.surveiDraft,
+            survei_list_sent_filtered: result.data.surveiDikirim,
+            survei_list_finalized_filtered: result.data.surveiFinalized,
           });
         })
         .finally(() => {
           this.setState({ loading: false });
         });
+    });
+  }
+
+  handleFilterSearch = searchQuery => {
+    const filteredSurveiDraft = this.state.survei_list_draft.filter(
+      survei => survei.nama.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
+    );
+    const filteredSurveiSent = this.state.survei_list_sent.filter(
+      survei => survei.nama.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
+    );
+    const filteredSurveiFinalized = this.state.survei_list_finalized.filter(
+      survei => survei.nama.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
+    );
+    this.setState({
+      searchQuery: searchQuery,
+      survei_list_draft_filtered: filteredSurveiDraft,
+      survei_list_sent_filtered: filteredSurveiSent,
+      survei_list_finalized_filtered: filteredSurveiFinalized,
     });
   }
 
@@ -97,8 +135,13 @@ class Screen extends React.Component {
           <div className="title-wrapper">
             <h1>Daftar Survei</h1>
             <a href="/buat-survei">
-              <button>Buat Survei Baru</button>
+              <button>(+) Buat Survei Baru</button>
             </a>
+          </div>
+          <div className="search-wrapper">
+            <SearchInput 
+              valHandler={this.handleFilterSearch}
+            />
           </div>
           <div className="btn-group">
             <div>
@@ -107,7 +150,7 @@ class Screen extends React.Component {
                 onClick={this.changeState}
                 className={`${this.state.new_state === "button1" && "active"}`}
               >
-                Semua Survei
+                Draft
               </button>
             </div>
             <div>
@@ -116,7 +159,7 @@ class Screen extends React.Component {
                 onClick={this.changeState}
                 className={`${this.state.new_state === "button2" && "active"}`}
               >
-                Belum Dikirim
+                Finalized
               </button>
             </div>
             <div>
@@ -125,84 +168,77 @@ class Screen extends React.Component {
                 onClick={this.changeState}
                 className={`${this.state.new_state === "button3" && "active"}`}
               >
-                Sudah Dikirim
+                Sent
               </button>
             </div>
           </div>
           <div className="grid-container">
+            {this.state.searchQuery && <center>Hasil pencarian untuk <b>{this.state.searchQuery}</b></center>}
             {this.state.new_state === "button1" && (
               <ul id="ul1">
-                {this.state.survei_list?.map(l => {
+                {this.state.survei_list_draft_filtered?.map(l => {
                   return (
                     <div key={`div${l.id}`}>
                       <li key={l.id} className="survei-card">
                         <div>
                           <b>{l.nama}</b>
-                          {l.sudahDikirim && (
-                            <div className="little-text">
-                              Dikirim pada {formatDate(l.tanggalDikirim)}
-                            </div>
-                          )}
-                          {!l.sudahDikirim && (
-                            <div className="little-text">
-                              Terakhir diubah pada {formatDate(l.tanggalDiedit)}
-                            </div>
-                          )}
-                        </div>
-                        {l.sudahDikirim && (
-                          <div className="card-button-div">
-                            <button
-                              onClick={() => {
-                                window.location.href = `/survei/visualisasi/${l.id}`;
-                              }}
-                            >
-                              Statistik
-                            </button>
+                          <div className="little-text">
+                            Terakhir diubah pada {formatDate(l.tanggalDiedit)}
                           </div>
-                        )}
-                        {!l.sudahDikirim && (
-                          <div className="card-button-div">
-                            <button 
+                        </div>
+
+                        <div className="card-button-div">
+                          <button
                             variant="contained"
                             color="secondary"
                             className={classes.button}
                             onClick={() => this.handleDeleteClickOpen(l.id)}
-                            >
-                              Hapus
-                            </button>
-                            <Dialog
-                              open={this.state.delete_dialog === l.id}
-                              onClose={this.handleDeleteClose}
-                              aria-labelledby="alert-dialog-title"
-                              aria-describedby="alert-dialog-description"
-                            >
-                              <DialogTitle id="alert-dialog-title">
-                                Yakin ingin menghapus survei "{l.nama}"?
-                              </DialogTitle>
-                              <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                  Survei yang sudah dihapus tidak akan bisa dikembalikan
-                                </DialogContentText>
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={this.handleDeleteClose} disabled={this.state.loading} >
-                                  Tidak
-                                </Button>
-                                <Button 
+                          >
+                            Hapus
+                          </button>
+                          <Dialog
+                            open={this.state.delete_dialog === l.id}
+                            onClose={this.handleDeleteClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                          >
+                            <DialogTitle id="alert-dialog-title">
+                              Yakin ingin menghapus survei "{l.nama}"?
+                            </DialogTitle>
+                            <DialogContent>
+                              <DialogContentText id="alert-dialog-description">
+                                Survei yang sudah dihapus tidak akan bisa
+                                dikembalikan
+                              </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                              <Button
+                                onClick={this.handleDeleteClose}
+                                disabled={this.state.loading}
+                              >
+                                Tidak
+                              </Button>
+                              <Button
                                 variant="contained"
                                 color="primary"
                                 className={classes.button}
-                                onClick={() => this.handleDeleteClickYa(l.id)} 
-                                disabled={this.state.loading} 
-                                autoFocus>
-                                  Ya, hapus saja
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                            <button>Ubah</button>
-                            <button>Kirim</button>
-                          </div>
-                        )}
+                                onClick={() => this.handleDeleteClickYa(l.id)}
+                                disabled={this.state.loading}
+                                autoFocus
+                              >
+                                Ya, hapus saja
+                              </Button>
+                            </DialogActions>
+                          </Dialog>
+                          <button
+                            variant="contained"
+                            color="secondary"
+                            className={classes.button}
+                            onClick={() => this.handleEditClickOpen(l.id)}
+                          >
+                            Ubah
+                          </button>
+                        </div>
                       </li>
                       <br></br>
                     </div>
@@ -212,7 +248,7 @@ class Screen extends React.Component {
             )}
             {this.state.new_state === "button2" && (
               <ul id="ul1">
-                {this.state.survei_list_not_sent?.map(l => {
+                {this.state.survei_list_finalized_filtered?.map(l => {
                   return (
                     <div key={`div${l.id}`}>
                       <li key={l.id} className="survei-card">
@@ -223,43 +259,48 @@ class Screen extends React.Component {
                           </div>
                         </div>
                         <div className="card-button-div">
-                            <button 
+                          <button
                             variant="contained"
                             color="secondary"
                             className={classes.button}
                             onClick={() => this.handleDeleteClickOpen(l.id)}
-                            >
-                              Hapus
-                            </button>
-                            <Dialog
-                              open={this.state.delete_dialog === l.id}
-                              onClose={this.handleDeleteClose}
-                              aria-labelledby="alert-dialog-title"
-                              aria-describedby="alert-dialog-description"
-                            >
-                              <DialogTitle id="alert-dialog-title">
-                                Yakin ingin menghapus survei "{l.nama}"?
-                              </DialogTitle>
-                              <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                  Survei yang sudah dihapus tidak akan bisa dikembalikan
-                                </DialogContentText>
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={this.handleDeleteClose} disabled={this.state.loading} >
-                                  Tidak
-                                </Button>
-                                <Button 
+                          >
+                            Hapus
+                          </button>
+                          <Dialog
+                            open={this.state.delete_dialog === l.id}
+                            onClose={this.handleDeleteClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                          >
+                            <DialogTitle id="alert-dialog-title">
+                              Yakin ingin menghapus survei "{l.nama}"?
+                            </DialogTitle>
+                            <DialogContent>
+                              <DialogContentText id="alert-dialog-description">
+                                Survei yang sudah dihapus tidak akan bisa
+                                dikembalikan
+                              </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                              <Button
+                                onClick={this.handleDeleteClose}
+                                disabled={this.state.loading}
+                              >
+                                Tidak
+                              </Button>
+                              <Button
                                 variant="contained"
                                 color="primary"
                                 className={classes.button}
-                                onClick={() => this.handleDeleteClickYa(l.id)} 
-                                disabled={this.state.loading} 
-                                autoFocus>
-                                  Ya, hapus saja
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
+                                onClick={() => this.handleDeleteClickYa(l.id)}
+                                disabled={this.state.loading}
+                                autoFocus
+                              >
+                                Ya, hapus saja
+                              </Button>
+                            </DialogActions>
+                          </Dialog>
                           <button>Ubah</button>
                           <button>Kirim</button>
                         </div>
@@ -272,7 +313,7 @@ class Screen extends React.Component {
             )}
             {this.state.new_state === "button3" && (
               <ul id="ul1">
-                {this.state.survei_list_sent?.map(l => {
+                {this.state.survei_list_sent_filtered?.map(l => {
                   return (
                     <div key={`div${l.id}`}>
                       <li key={l.id} className="survei-card">
@@ -299,7 +340,7 @@ class Screen extends React.Component {
               </ul>
             )}
           </div>
-        <ToastContainer />
+          <ToastContainer />
         </Container>
       </React.Fragment>
     );

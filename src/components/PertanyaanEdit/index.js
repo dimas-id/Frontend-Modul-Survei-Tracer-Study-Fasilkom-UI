@@ -1,30 +1,48 @@
-import classes from "./styles.module.css";
-import CardPertanyaan from "./CardPertanyaan";
+import classes from "../Pertanyaan/styles.module.css";
+import CardPertanyaan from "../Pertanyaan/CardPertanyaan";
 import { useEffect, useState } from "react";
-import { NavbarAuth, NavbarCreateSurvei } from "../stables/Navbar";
+import { NavbarAuth, NavbarEditSurvei } from "../stables/Navbar";
 import atlasV3 from "../../modules/api/atlas/v3";
 import Toast from "../Toast/index";
 import { API_V3_URL } from "../../modules/api/atlas/config";
 import http from "../../libs/http";
 
-const Pertanyaan = () => {
-  const [deskripsi, setDeskripsi] = useState("");
-  const [nama, setNama] = useState("");
-  const [listPertanyaan, setListPertanyaan] = useState([
-    {
-      pertanyaan: "",
-      tipe: "Jawaban Singkat",
-      required: true,
-      status: true,
-      option: {},
-    },
-  ]);
+const PertanyaanEdit = props => {
+  const [deskripsi, setDeskripsi] = useState(props.survei["deskripsi"]);
   const [isLoading, setIsLoading] = useState(false);
   const [namaStatus, setNamaStatus] = useState(true);
   const [deskripsiStatus, setDeskripsiStatus] = useState(true);
   const [activeNow, setActiveNow] = useState(0);
   const [newQuestion, setNewQuestion] = useState();
   const [removeQuestion, setRemoveQuestion] = useState();
+
+  const filterOpsiJawabanFromProps = (pertanyaanId, jenisJawaban, option) => {
+    if (jenisJawaban === "Jawaban Singkat"){
+       return {}
+    }
+    return {data: option
+            .filter(item => item.pertanyaanId === pertanyaanId)
+            .map(el => el.opsiJawaban)}
+  }
+  const convertListPertanyaanToValidFormat = listPertanyaan => {
+    const newListPertanyaan = listPertanyaan.slice();
+    for(let i = 0; i < newListPertanyaan.length; i++){
+      const pertanyaan = newListPertanyaan[i];
+      if("id" in pertanyaan){
+        const convertedPertanyaan = {
+          "id" : pertanyaan["id"],
+          "pertanyaan" : pertanyaan["pertanyaan"],
+          "tipe" : pertanyaan["jenisJawaban"],
+          "required" : pertanyaan["wajibDiisi"],
+          "status" : "status" in pertanyaan ? pertanyaan["status"] : true,
+          "option" : filterOpsiJawabanFromProps(pertanyaan["id"], pertanyaan["jenisJawaban"], props.list_opsi_jawaban)
+        }
+        newListPertanyaan[i] = convertedPertanyaan;
+      }
+    }
+    return newListPertanyaan;
+  };
+  const [listPertanyaan, setListPertanyaan] = useState(convertListPertanyaanToValidFormat(props.list_pertanyaan));
 
   const changePertanyaanHandler = (index, pertanyaan) => {
     const newListPertanyaan = listPertanyaan.slice();
@@ -33,6 +51,7 @@ const Pertanyaan = () => {
   };
 
   const changeTipeHandler = (index, tipe) => {
+
     const newListPertanyaan = listPertanyaan.slice();
     newListPertanyaan[index].tipe = tipe;
     if (tipe === "Skala Linear") {
@@ -80,7 +99,6 @@ const Pertanyaan = () => {
     const newListPertanyaan = listPertanyaan.slice();
     newListPertanyaan.splice(index, 1);
     setListPertanyaan(newListPertanyaan);
-    setRemoveQuestion(true);
   };
 
   useEffect(() => {
@@ -143,19 +161,19 @@ const Pertanyaan = () => {
     } catch (error) {}
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async nama => {
     setIsLoading(true);
-    setActiveNow();
     const json = {
+      id: props.survei["id"],
       nama: nama,
       deskripsi: deskripsi,
       pertanyaan: listPertanyaan,
     };
 
     // kirim pertanyaan dari sini
-    const response = await atlasV3.survei.postSurvei(json);
-    if (response.status === 201) {
-      Toast("Survei berhasil dibuat", "success");
+    const response = await atlasV3.survei.editSurvei(json);
+    if (response.status === 200) {
+      Toast("Survei berhasil diedit", "success");
 
       setTimeout(() => {
         window.location.replace("/survei");
@@ -178,11 +196,9 @@ const Pertanyaan = () => {
       }
       setListPertanyaan(newListPertanyaan);
     } else {
-      Toast("Server error. Survei Gagal dibuat!", "error");
+      Toast("Server error. Survei Gagal diedit!", "error");
       setIsLoading(false);
     }
-
-    return response;
   };
 
   const handleUp = () => {
@@ -226,17 +242,20 @@ const Pertanyaan = () => {
   }, []);
 
   return (
-    <div style={{ height: "100vh", overflow: "hidden" }}>
+    <div>
       <NavbarAuth title="Buat Kuesioner" />
-      <NavbarCreateSurvei
+        <NavbarEditSurvei
         onSubmit={onSubmit}
         onSubmitAndFinalize={onSubmitAndFinalize}
         isLoading={isLoading}
-      />
-      <div className={classes.pertanyaan}>
+        namaStatus={namaStatus}
+        setNamaStatus={setNamaStatus}
+        namaAwal={props.survei["nama"]}
+        />
+      <div className={classes["pertanyaan"]}>
         <div className={classes["no-pertanyaan"]}>
-          <div className={classes["no-pertanyaan-wrapper"]}>
-            {listPertanyaan.map((el, idx) => {
+          <div className={classes["no-pertanyaan-div"]}>
+           {listPertanyaan.map((el, idx) => {
               return (
                 <div
                   key={idx}
@@ -255,60 +274,45 @@ const Pertanyaan = () => {
           </div>
         </div>
         <div className={classes["pertanyaan-wrapper"]}>
-          <div style={{ position: "relative" }}>
-            <div
-              id="deskripsi"
-              onClick={() => {
-                setActiveNow("deskripsi");
+        <div style={{ position: "relative" }}>
+          <div
+            id="deskripsi"
+            onClick={() => {
+              setActiveNow("deskripsi");
+              setDeskripsiStatus(true);
+              setNamaStatus(true);
+            }}
+            className={`${classes.card} ${classes.description} ${
+              deskripsiStatus ? "" : classes.red
+            }`}
+          >
+            {deskripsiStatus === false && (
+              <div>
+                <span
+                  style={{
+                    paddingLeft: "12px",
+                    color: "red",
+                    fontSize: "12px",
+                  }}
+                >
+                  *wajib diisi
+                </span>
+              </div>
+            )}
+            <h3>Deskripsi</h3>
+            <textarea
+              rows={5}
+              className={classes.textarea}
+              placeholder="Masukkan deskripsi disini"
+              value={deskripsi}
+              style={{ fontSize: "16px" }}
+              onChange={e => {
+                setDeskripsi(e.target.value);
                 setDeskripsiStatus(true);
-                setNamaStatus(true);
               }}
-              className={`${classes.card} ${classes.description} ${activeNow ===
-                "deskripsi" && classes.green} ${
-                deskripsiStatus ? "" : classes.red
-              }`}
-            >
-              {(deskripsiStatus === false || namaStatus === false) && (
-                <div>
-                  <span
-                    style={{
-                      paddingLeft: "12px",
-                      color: "red",
-                      fontSize: "12px",
-                    }}
-                  >
-                    *wajib diisi
-                  </span>
-                </div>
-              )}
-              <h3>Nama Survei</h3>
-              <input
-                placeholder="Masukkan nama survei disini"
-                className={classes.input}
-                type="text"
-                style={{
-                  marginBottom: "20px",
-                  width: "100%",
-                  maxWidth: "100%",
-                }}
-                onChange={e => {
-                  setNama(e.target.value);
-                  setNamaStatus(true);
-                }}
-              />
-              <h3>Deskripsi</h3>
-              <textarea
-                rows={5}
-                className={classes.textarea}
-                placeholder="Masukkan deskripsi disini"
-                value={deskripsi}
-                onChange={e => {
-                  setDeskripsi(e.target.value);
-                  setDeskripsiStatus(true);
-                }}
-              />
-            </div>
-            {activeNow === "deskripsi" && (
+            />
+          </div>
+          {activeNow === "deskripsi" && (
               <div className={classes.actionbtn}>
                 <button onClick={tambahPertanyaanHandler}>
                   <img
@@ -323,22 +327,22 @@ const Pertanyaan = () => {
           {listPertanyaan.map((el, idx) => {
             return (
               <div style={{ width: "100%", position: "relative" }} key={idx}>
-                <CardPertanyaan
-                  activeNow={activeNow}
-                  index={idx}
-                  pertanyaan={el.pertanyaan}
-                  status={el.status}
-                  tipe={el.tipe}
-                  required={el.required}
-                  option={el.option}
-                  changeRequiredHandler={changeRequiredHandler}
-                  changePertanyaanHandler={changePertanyaanHandler}
-                  changeTipeHandler={changeTipeHandler}
-                  changeOptionHandler={changeOptionHandler}
-                  deleteQuestionHandler={deleteQuestionHandler}
-                  setStatus={setStatus}
-                />
-                {activeNow === idx && (
+                  <CardPertanyaan
+                    activeNow={activeNow}
+                    index={idx}
+                    pertanyaan={el.pertanyaan}
+                    status={el.status}
+                    tipe={el.tipe}
+                    required={el.required}
+                    option={el.option}
+                    changeRequiredHandler={changeRequiredHandler}
+                    changePertanyaanHandler={changePertanyaanHandler}
+                    changeTipeHandler={changeTipeHandler}
+                    changeOptionHandler={changeOptionHandler}
+                    deleteQuestionHandler={deleteQuestionHandler}
+                    setStatus={setStatus}
+                  />  
+                  {activeNow === idx && (
                   <div className={classes.actionbtn}>
                     <button onClick={tambahPertanyaanHandler}>
                       <img
@@ -363,13 +367,23 @@ const Pertanyaan = () => {
                     </button>
                   </div>
                 )}
-              </div>
-            );
-          })}
+                </div>
+              );
+            }
+          )};
+          <div className={classes["add-pertannyaan"]}>
+            <button onClick={tambahPertanyaanHandler}>  
+              <img
+                src="https://i.ibb.co/HFpDT9z/icons8-add-67.png"
+                alt="add icon"
+                style={{ width: "30px"}}
+              />
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Pertanyaan;
+export default PertanyaanEdit;

@@ -24,25 +24,31 @@ const styles = theme => ({
   },
 });
 
-function NavbarBuatKuesioner({
+function NavbarEditSurvei({
   classes,
   history,
   onSubmit,
+  onSubmitAndFinalize,
   isLoading,
   namaStatus,
   setNamaStatus,
   namaAwal = ""
 }) {
-  const [nama, setNama] = useState(namaAwal);
+    const [nama, setNama] = useState(namaAwal);
 
-  function namaChangeHandler(val) {
-    setNama(val);
-    setNamaStatus(true);
-  }
-
+    function namaChangeHandler(val) {
+        setNama(val);
+        setNamaStatus(true);
+    }
+    
   function onSubmitHandler(e) {
     e.preventDefault();
-    onSubmit(nama);
+    onSubmit();
+  }
+
+  function onSubmitAndFinalizeHandler(e) {
+    e.preventDefault();
+    onSubmitAndFinalize();
   }
 
   return (
@@ -90,35 +96,69 @@ function NavbarBuatKuesioner({
             </form>
             <div style={{ display: "flex", alignItems: "center" }}>
               {!isLoading ? (
-                <button
-                  onClick={onSubmitHandler}
-                  style={{
-                    padding: "10px 20px",
-                    border: "none",
-                    backgroundColor: "#00C7E5",
-                    color: "white",
-                    borderRadius: "0.6em",
-                    fontWeight: "bolder",
-                  }}
-                  disabled={isLoading}
-                >
-                  Simpan
-                </button>
+                <>
+                  <button
+                    onClick={onSubmitAndFinalizeHandler}
+                    style={{
+                      padding: "10px 20px",
+                      border: "2px solid #4285f4",
+                      color: "#4285F4",
+                      borderRadius: "0.6em",
+                      fontWeight: "bolder",
+                      marginRight: "10px",
+                      backgroundColor: "white",
+                    }}
+                    disabled={isLoading}
+                  >
+                    Simpan & Finalize
+                  </button>
+                  <button
+                    onClick={onSubmitHandler}
+                    style={{
+                      padding: "10px 20px",
+                      border: "none",
+                      backgroundColor: "#4285f4",
+                      color: "white",
+                      borderRadius: "0.6em",
+                      fontWeight: "bolder",
+                    }}
+                    disabled={isLoading}
+                  >
+                    Simpan
+                  </button>
+                </>
               ) : (
-                <button
-                  onClick={onSubmitHandler}
-                  style={{
-                    padding: "10px 20px",
-                    border: "none",
-                    backgroundColor: "grey",
-                    color: "white",
-                    borderRadius: "0.6em",
-                    fontWeight: "bolder",
-                  }}
-                  disabled
-                >
-                  Simpan
-                </button>
+                <>
+                  <button
+                    onClick={onSubmitAndFinalizeHandler}
+                    style={{
+                      padding: "10px 20px",
+                      border: "none",
+                      backgroundColor: "grey",
+                      color: "white",
+                      borderRadius: "0.6em",
+                      fontWeight: "bolder",
+                      marginRight: "10px",
+                    }}
+                    disabled={isLoading}
+                  >
+                    Simpan & Finalize
+                  </button>
+                  <button
+                    onClick={onSubmitHandler}
+                    style={{
+                      padding: "10px 20px",
+                      border: "none",
+                      backgroundColor: "grey",
+                      color: "white",
+                      borderRadius: "0.6em",
+                      fontWeight: "bolder",
+                    }}
+                    disabled
+                  >
+                    Simpan
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -128,7 +168,7 @@ function NavbarBuatKuesioner({
   );
 }
 
-NavbarBuatKuesioner.propTypes = {
+NavbarEditSurvei.propTypes = {
   history: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
   }).isRequired,
@@ -139,4 +179,4 @@ NavbarBuatKuesioner.propTypes = {
   setNamaStatus: PropTypes.func,
 };
 
-export default withRouter(withStyles(styles)(NavbarBuatKuesioner));
+export default withRouter(withStyles(styles)(NavbarEditSurvei));
