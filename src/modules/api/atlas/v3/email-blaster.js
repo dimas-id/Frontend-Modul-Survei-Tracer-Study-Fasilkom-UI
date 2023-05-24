@@ -14,4 +14,17 @@ export default Object.freeze({
       surveiId,
       recipients,
     }),
+  getEmailRecipients: (surveiId, groupRecipientYears, groupRecipientTerms, individualEmails) =>
+    http.post(`${API_V3_URL}/email-blaster/recipients`, {
+      surveiId,
+      groupRecipientYears, 
+      groupRecipientTerms, 
+      individualEmails,
+    }),
+  getGroupTotal: (surveiId, year, term) =>
+    http.get(`${API_V3_URL}/email-blaster/group-total`, {
+      surveiId,
+      year,
+      term
+    })
 });

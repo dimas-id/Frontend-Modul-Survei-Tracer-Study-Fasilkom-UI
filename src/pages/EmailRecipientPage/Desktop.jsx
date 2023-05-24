@@ -37,7 +37,14 @@ class Screen extends React.Component {
       group_recipient_terms : [], 
       individual_emails : [],
       csv_emails : [],
+
+      group_total_recipients : [],
+      group_total_nonresponse : [],
     };
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const data = searchParams.get('data');
+    console.log('Received Data:', data);
 
   }
 
@@ -56,6 +63,17 @@ class Screen extends React.Component {
     }
     
     if (!(available)) {
+      emailBlasterAPI
+        .getGroupTotal(1, this.state.year_value, this.state.term_value)
+        .then((response) => {
+          // Handle the API response
+          console.log(response);
+        })
+        .catch((error) => {
+          // Handle errors, e.g., show an error message
+          console.error(error);
+        });
+
       this.setState(prevState => ({
         group_recipient_years: [...prevState.group_recipient_years, parseInt(this.state.year_value)],
         group_recipient_terms: [...prevState.group_recipient_terms, parseInt(this.state.term_value)],
@@ -91,12 +109,22 @@ class Screen extends React.Component {
     //   file: event.target.files[0]
     // });
     const file = event.target.files[0];
+
+    const allowedExtensions = ['csv'];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+
+    if (!allowedExtensions.includes(fileExtension)) {
+      Toast('Format file tidak valid. Silahkan upload file CSV.', "error");
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (event) => {
       const fileContents = event.target.result;
       // Save the file contents or perform additional operations
       this.setState({ csv_file: { name: file.name, contents: fileContents } });
     };
+    reader.readAsText(file);
 
   };
 
@@ -120,12 +148,35 @@ class Screen extends React.Component {
   }
 
   onNext = (event) => {
-    console.log("CLICKED2")
-    window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
+    console.log("CLICKED2");
+    // window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
 
     // if (!(this.state.individual_emails.length === 0)) {
     //   window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
     // }
+
+    const { group_recipient_years, group_recipient_terms, individual_emails } = this.state;
+
+    const requestObject = {
+      survei_id : 1,
+      group_recipient_years,
+      group_recipient_terms,
+      individual_emails,
+    };
+
+    console.log(requestObject)
+
+    emailBlasterAPI
+    .getEmailRecipients(
+      requestObject)
+    .then((response) => {
+      // Handle the API response
+      console.log(response);
+    })
+    .catch((error) => {
+      // Handle errors, e.g., show an error message
+      console.error(error);
+    });
     
   }
 
@@ -221,6 +272,14 @@ class Screen extends React.Component {
                 <p className="keterangan-kosong">Tambahkan kelompok pengguna</p>
               ) : (
             <table>
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th>Kelompok Lulusan</th>
+                  <th>Belum<br></br>Mengisi</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
               <tbody>
                 {this.state.group_recipient_years.map((year, index) => (
                 <tr key={index}>
@@ -229,6 +288,8 @@ class Screen extends React.Component {
                     onClick={() => this.handleDeleteGroup(index)}></button>
                   </td>
                   <td>Lulusan {year} term-{this.state.group_recipient_terms[index]}</td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 ))}
               </tbody>
@@ -263,6 +324,12 @@ class Screen extends React.Component {
               <p className="keterangan-kosong">Tambahkan email pengguna</p>
             ) : (
             <table>
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
               <tbody>
                 {this.state.individual_emails.map((email, index) => (
                 <tr key={index}>
@@ -283,15 +350,14 @@ class Screen extends React.Component {
             <div className="form-title">
               <h2 className="title">Upload CSV File</h2>
               <p>Upload file CSV yang berisi daftar email</p>
-              <br></br>
             </div>
                 
             {/* <input type='file' className='input-file'></input> */}
 
             {this.state.csv_file ? (
               <div>
-                <p>File: {this.state.csv_file.name}</p>
-                <button onClick={() => this.setState({csv_file: null})}>Delete</button>
+                <h3>{this.state.csv_file.name}</h3>
+                {/* <button onClick={() => this.setState({csv_file: null})}>Delete</button> */}
               </div>
             ) : (
               <p>Belum ada file yang di-upload</p>

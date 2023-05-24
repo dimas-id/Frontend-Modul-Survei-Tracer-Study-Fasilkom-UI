@@ -29,6 +29,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
+    flex-grow: 1;
 }
 
 .form-section {
@@ -47,6 +48,16 @@
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     border-radius: 20px;
 }
+
+/* Responsive layout */
+@media (max-width: 1200px) {
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+  }
 
 .form-title {
     text-align: center;
@@ -211,7 +222,14 @@ table {
     border-collapse: collapse;
     background-color: #F5F5F5;
 
-    width: 360px;
+    width: 400px;
+}
+
+table th {
+    padding: 4px;
+    background-color: #B2F5FF;
+    border-bottom: 1px solid #DDDDDD;
+    border-top: 1px solid #DDDDDD;
 }
 
 table td {
