@@ -319,7 +319,10 @@ class Screen extends React.Component {
                           >
                             Ubah
                           </button>
-                          <button onClick={() => this.handleSend(l.id)}>
+                          <button 
+                          onClick={() => {
+                            this.handleSend(l.id);
+                            this.setState({ loading:true });}}>
                             Kirim
                           </button>
                         </div>
