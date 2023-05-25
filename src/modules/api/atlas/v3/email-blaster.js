@@ -26,5 +26,9 @@ export default Object.freeze({
       survei_id,
       year,
       term
-    })
+    }),
+  uploadEmailCsv: (csv_files) =>
+    http.post(`${API_V3_URL}/recipients/csv/upload`, {
+      csv_files: csv_files,
+    }),
 });

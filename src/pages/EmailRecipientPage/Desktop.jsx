@@ -34,6 +34,9 @@ class Screen extends React.Component {
       term_value : 1,
       individual_email_value : '',
       csv_file: null,
+      csv_files: [],
+
+      data_files : new FormData(),
 
       group_recipient_years : [],
       group_recipient_terms : [], 
@@ -121,28 +124,54 @@ class Screen extends React.Component {
 
   handleSubmitFileBrowse = (event) => {
     event.preventDefault();
-    // this.setState({
-    //   file: event.target.files[0]
-    // });
-    const file = event.target.files[0];
+    const submittedFile = event.target.files[0];
 
     const allowedExtensions = ['csv'];
-    const fileExtension = file.name.split('.').pop().toLowerCase();
+    const fileExtension = submittedFile.name.split('.').pop().toLowerCase();
 
     if (!allowedExtensions.includes(fileExtension)) {
-      Toast('Format file tidak valid. Silahkan upload file CSV.', "error");
+      Toast('Format file \'' + submittedFile.name + '\' tidak valid. Silahkan upload file CSV.', "error");
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const fileContents = event.target.result;
-      // Save the file contents or perform additional operations
-      this.setState({ csv_file: { name: file.name, contents: fileContents } });
-    };
-    reader.readAsText(file);
+    this.setState(prevState => ({
+      csv_files: [...prevState.csv_files, submittedFile],
+    }));
 
   };
+
+  handleFetchCSVEmails = () => {
+
+    if ((this.state.csv_files).length === 0) {
+      Toast("Belum ada file yang dipilih.", "error")
+    } else {
+      // implements
+      // console.log(this.state.csv_files)
+
+      const data = new FormData();
+
+      // for (const file of this.state.csv_files) {
+      //   console.log(file);
+      //   data.append(file.name, file);
+      // }
+      console.log(this.state.csv_files);
+      data.append('csv_files', this.state.csv_files);
+
+      console.log(data);
+
+      emailBlasterAPI
+      .uploadEmailCsv(data)
+      .then( (response) => {
+        console.log(response.data);
+        // this.setState(prevState => ({
+        //   csv_emails: [...prevState.csv_emails, request.data]
+        // }))
+        })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+  }
 
   handleDeleteGroup = (index) => {
     this.setState(prevState => ({
@@ -159,10 +188,10 @@ class Screen extends React.Component {
     }));
   }
 
-  handleDeleteFile = () => {
-    this.setState({
-      csv_file: null
-    });
+  handleDeleteFile = (index) => {
+    this.setState(prevState => ({
+      csv_files: prevState.csv_files.filter((file, i) => i !== index)
+    }));
   }
 
   onNext = (event) => {
@@ -327,16 +356,50 @@ class Screen extends React.Component {
                 
             {/* <input type='file' className='input-file'></input> */}
 
-            {this.state.csv_file ? (
-              <div>
-                <h3>{this.state.csv_file.name}</h3>
-                {/* <button onClick={() => this.setState({csv_file: null})}>Delete</button> */}
-              </div>
+            <div className='csv-buttons'>
+
+              <label htmlFor='input-csv' className='input-file'>
+                <i className='upload'></i>Upload file
+              <input id="input-csv" type="file" className='input-file' onChange={this.handleSubmitFileBrowse}></input>
+              </label>
+
+              <button className='button-icon-text fetch' onClick={this.handleFetchCSVEmails}>
+                <i className='fetch'></i>Fetch emails
+              </button>
+
+            </div>
+
+            {this.state.csv_files.length === 0 ? (
+              // <div>
+              //   {/* <h3>{this.state.csv_files}</h3> */}
+              //   {/* <button onClick={() => this.setState({csv_file: null})}>Delete</button> */}
+              // </div>
+
+              // <p>Belum ada file yang di-upload</p>
+              <p className="keterangan-kosong">Tambahkan file CSV</p>
+                
             ) : (
-              <p>Belum ada file yang di-upload</p>
+              
+              <table>
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>File</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.csv_files.map((file, index) => (
+                  <tr key={index}>
+                    <td>
+                      <button className="button-icon cancel"
+                      onClick={() => this.handleDeleteFile(index)}></button>
+                    </td>
+                    <td>{file.name}</td>
+                  </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
-            
-            <input type="file" onChange={this.handleSubmitFileBrowse} />
             
               
               {/* { this.state.file === null ? (

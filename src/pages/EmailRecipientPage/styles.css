@@ -74,6 +74,14 @@
     column-gap: 10px;
 }
 
+.csv-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    column-gap: 10px;
+}
+
 .input-and-label {
     display: flex;
     flex-direction: column;
@@ -125,31 +133,41 @@ select {
     padding: 10px 4px;
 }
 
-/* input[type=file] {
+input[type=file] {
     display: none;
-} */
+}
 
 .input-file {
-    width: 200px;
+    /* width: 200px; */
     border: 2px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
-    padding: 10px 4px;
+    padding: 6px 10px;
     cursor: pointer;
     text-align: center;
 }
 
 .upload {
-    content: url('https://api.iconify.design/material-symbols/upload-file.svg?color=%23ccc&width=32&height=32');
+    content: url('https://api.iconify.design/material-symbols/upload-file.svg?color=%23ccc&width=28&height=28');
     vertical-align: middle;
 }
 
+.fetch {
+    content: url('https://api.iconify.design/mingcute/download-3-fill.svg?color=%23ccc&width=20&height=20');
+    vertical-align: middle;
+    padding: 0px 4px;
+}
+
 .input-file label {
-    /* cursor: pointer;
+    cursor: pointer;
     align-self: center;
-    text-align: center; */
+    text-align: center;
     cursor: pointer;
     vertical-align: middle;
+}
+
+.input-file:hover {
+    background-color: #B2F5FF;
 }
 
 .button-icon-text {
