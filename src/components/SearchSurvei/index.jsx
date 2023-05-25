@@ -19,13 +19,6 @@ const SearchInput = ({ valHandler }) => {
         event.preventDefault();
     };
 
-    const handleEnterPress = (event) => {
-        if (event.key === "Enter") {
-          event.preventDefault(); // Prevent the form from being submitted
-          handleSubmitQuery();
-        }
-      };
-
     return (
         <div className={classes["input-wrapper"]}>
             <form>
@@ -35,7 +28,6 @@ const SearchInput = ({ valHandler }) => {
                 onInput={(e) => {
                    handleTextChange(e.target.value);
                 }}
-                onKeyDown={handleEnterPress}
                 label="Search"
                 variant="outlined"
                 placeholder="Cari Survei ..."

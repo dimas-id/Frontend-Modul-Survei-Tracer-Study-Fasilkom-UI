@@ -309,7 +309,14 @@ class Screen extends React.Component {
                               </Button>
                             </DialogActions>
                           </Dialog>
-                          <button>Ubah</button>
+                          <button
+                            variant="contained"
+                            color="secondary"
+                            className={classes.button}
+                            onClick={() => this.handleEditClickOpen(l.id)}
+                          >
+                            Ubah
+                          </button>
                           <button onClick={() => this.handleSend(l.id)}>
                             Kirim
                           </button>
