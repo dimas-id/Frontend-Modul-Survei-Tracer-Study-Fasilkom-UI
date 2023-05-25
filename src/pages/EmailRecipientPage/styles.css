@@ -109,15 +109,6 @@ input[type=email] {
     padding: 10px 4px;
 }
 
-/* input[type=submit] {
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    background-color: white;
-    padding: 10px;
-} */
-
 input[type=submit]:hover {
     background-color: #B2F5FF;
 }
@@ -138,7 +129,6 @@ input[type=file] {
 }
 
 .input-file {
-    /* width: 200px; */
     border: 2px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
@@ -207,9 +197,7 @@ input[type=file] {
     border: 2px solid #ccc;
     border-radius: 4px;
     background-color: white;
-    /* font-size: 54px; */
     vertical-align: middle;
-    /* padding: 20px; */
 }
 
 .cancel {
@@ -223,7 +211,6 @@ input[type=file] {
 }
 
 .add {
-    /* padding: 4px; */
     content: url('https://api.iconify.design/material-symbols/add.svg?color=%23555&width=24&height=24');
     vertical-align: middle;
 }
@@ -242,11 +229,6 @@ table {
 
     width: 380px;
 }
-
-/* table tbody {
-    flex: 1;
-    overflow: auto;
-} */
 
 table th {
     padding: 4px;
@@ -268,4 +250,8 @@ table td {
     background-color: #F5F5F5;
     border-bottom: 1px solid #DDDDDD;
     width: 380px;
+}
+
+.loading {
+    content: url('https://api.iconify.design/line-md/loading-loop.svg');
 }
