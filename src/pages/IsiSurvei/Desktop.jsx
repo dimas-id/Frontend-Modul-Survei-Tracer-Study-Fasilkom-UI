@@ -10,6 +10,14 @@ import "react-toastify/dist/ReactToastify.css";
 import Jawaban from "../../components/Jawaban";
 import atlasV3 from "../../modules/api/atlas/v3";
 
+import Typing from "react-typing-animation";
+import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import { NavbarAuth } from "../../components/stables/Navbar";
+import { Container } from "../../components/Container";
+import paths from "../../pages/paths";
+
 import {
   getUser,
   selectCurrentUserGroups,
@@ -35,6 +43,7 @@ class Screen extends React.Component {
     list_opsi_jawaban: null,
     loading: true,
     notFound: false,
+    filled: false
   };
 
   componentDidMount() {
@@ -57,6 +66,8 @@ class Screen extends React.Component {
           if (error.response && error.response.status === 404) {
             // Set notFound state variable to true if the server returns a 404 error
             this.setState({ notFound: true });
+          } else if (error.response && error.response.status === 403) {
+            this.setState({ filled: true });
           }
         })
         .finally(() => {
@@ -66,11 +77,55 @@ class Screen extends React.Component {
   }
 
   render() {
-    const { notFound } = this.state; // Destructure notFound state variable
+    const { notFound, filled } = this.state; // Destructure notFound state variable
     if (notFound) {
       // Render a Redirect component to the custom error page if notFound is true
       return <Redirect to="/404" />;
+    } else if (filled) {
+      return (
+        <React.Fragment>
+        <NavbarAuth />
+        <Container style={{ textAlign: 'center' }}>
+          <Typing>
+            <div>
+              <Typing.Speed ms={30}/>
+              <Typography variant="h3" style={{ textAlign: 'center' }}>
+                <b>
+                  Anda sudah mengisi survei ini! 
+                </b>{" "}
+                <span role="img" aria-label="sad">
+                  😭
+                </span>
+              </Typography>
+              <Typing.Delay ms={1000} />
+            </div>
+            <div>
+            <Typography variant="h5" style={{ textAlign: 'center' }}>
+              Jika ada kesalahan pengisian, silakan kontak admin untuk mereset jawaban anda.
+              </Typography>
+              <Typing.Delay ms={1000} />
+            </div>
+            <div>
+
+              <Typography variant="h5" style={{ textAlign: 'center' }}>
+                Yuk, balik ke {"   "}
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  to={paths.HOME}
+                  component={Link}
+                >
+                  beranda
+                </Button>
+              </Typography>
+              <Typing.Delay ms={1500} />
+            </div>
+          </Typing>
+        </Container>
+      </React.Fragment>
+      );
     }
+    
     return (
       <React.Fragment>
         <div
