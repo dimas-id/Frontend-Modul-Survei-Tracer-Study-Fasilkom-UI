@@ -6,7 +6,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import { authorize } from "../../../components/hocs/auth";
-import { NavbarAuth, NavbarBack } from "../../../components/stables/Navbar";
+import { NavbarAuth } from "../../../components/stables/Navbar";
+import NavbarBackEmailBlasterForm from "../../../components/stables/Navbar/NavbarBackEmailBlasterForm";
 import { Container } from "../../../components/Container";
 import { Guidelines } from "../../../styles";
 import EmailTemplateForm from "../../../components/stables/EmailTemplateV2/EmailTemplateForm";
@@ -14,11 +15,10 @@ import EmailTemplateList from "../../../components/stables/EmailTemplateV2/Email
 import Toast from "../../../components/Toast";
 import templateAPI from "../../../modules/api/atlas/v3/email-template";
 import { emailBlasterActions } from "../../../modules/email-blaster";
-import { EMAIL_BLASTER_SEND } from "../../paths";
+import { EMAIL_BLASTER_SEND, LIHAT_SURVEI } from "../../paths";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Button } from "@material-ui/core";
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.flexDirRow,
@@ -48,12 +48,17 @@ const styles = theme => ({
   },
 });
 
-function Screen({ classes, changeTemplateId, templateId }) {
+function Screen({ classes, changeTemplateId, templateId, surveiId }) {
   const [templatesState, dispatch] = useReducer(templateReducer, {});
   const history = useHistory();
   useEffect(() => {
+    if (surveiId == null) {
+      history.push(LIHAT_SURVEI);
+      Toast("Pilih survei terlebih dahulu!", "error");
+    }
+
     fetchTemplates();
-  }, []);
+  }, [history, surveiId]);
 
   const fetchTemplates = () => {
     templateAPI
@@ -211,8 +216,8 @@ function Screen({ classes, changeTemplateId, templateId }) {
     templateAPI
       .newTemplateFromBase(
         templatesState[key].title,
-        templatesState[key].body,
-        templatesState[key].subject
+        templatesState[key].subject,
+        templatesState[key].body
       )
       .then(res => {
         Toast("Template berhasil diduplikat!", "success");
@@ -254,20 +259,10 @@ function Screen({ classes, changeTemplateId, templateId }) {
   return (
     <React.Fragment>
       <NavbarAuth title="Pilih Email Template" />
-      <NavbarBack />
+      <NavbarBackEmailBlasterForm onClick={onNext} title={"NEXT"} />
       <Container className={classes.container}>
         {templatesState != null && (
           <Grid container spacing={24}>
-            <Grid item xs={12} className={classes.nextButtonContainer}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.nextButton}
-                onClick={onNext}
-              >
-                Next
-              </Button>
-            </Grid>
             <Grid item xs={3} className={classes.listContainer}>
               <EmailTemplateList
                 templates={templatesState}
@@ -432,6 +427,7 @@ const templateReducer = (state, action) => {
 
 function createContainer() {
   const mapStateToProps = state => ({
+    surveiId: state.emailBlaster.surveiId,
     templateId: state.emailBlaster.templateId,
   });
 

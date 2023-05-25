@@ -46,7 +46,7 @@ class Screen extends React.Component {
       group_total_recipients : [],
       group_total_nonresponse : [],
 
-      survei_id : parseInt(searchParams.get('surveiId')),
+      survei_id : props.surveiId,
       total_response : 0,
       total_nonresponse : 0,
 
@@ -210,10 +210,12 @@ class Screen extends React.Component {
         console.log(response.data);
 
         this.setState({ 
-          recipients: response.data["recipients"],
+          all_recipients: response.data["recipients"],
         });
+
+        this.props.changeRecipients(this.state.all_recipients)
         
-        // window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
+        window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
       })
       .catch((error) => {
         console.error(error);

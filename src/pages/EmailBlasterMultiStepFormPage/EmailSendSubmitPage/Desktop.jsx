@@ -4,23 +4,22 @@ import { useHistory, withRouter } from "react-router";
 
 import { withStyles } from "@material-ui/core/styles";
 import { ToastContainer } from "react-toastify";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-
 import emailBlasterAPI from "../../../modules/api/atlas/v3/email-blaster";
-import { NavbarAuth, NavbarBack } from "../../../components/stables/Navbar";
+import { NavbarAuth } from "../../../components/stables/Navbar";
 import EmailSendPreview from "../../../components/stables/EmailSendPreview";
 import { Container } from "../../../components/Container";
 import { Guidelines } from "../../../styles";
 import { authorize } from "../../../components/hocs/auth";
-import { EMAIL_BLASTER_EMAIL_TEMPLATE } from "../../paths";
+import { EMAIL_BLASTER_EMAIL_TEMPLATE, EMAIL_BLASTER_RECIPIENT, LIHAT_SURVEI } from "../../paths";
 import Toast from "../../../components/Toast";
+import SendConfirmationModal from "../../../components/stables/Modal/SendConfimationModal";
+import NavbarBackEmailBlasterForm from "../../../components/stables/Navbar/NavbarBackEmailBlasterForm";
 
 const styles = theme => ({
   container: {
     ...Guidelines.layouts.flexDirRow,
     ...Guidelines.layouts.mt32,
-    maxHeight: "80vh",
+    ...Guidelines.layouts.mb32,
   },
   buttonContainer: {
     textAlign: "right",
@@ -36,18 +35,29 @@ function Screen({ classes, templateId, surveiId, recipients }) {
   const [subject, setSubject] = React.useState("");
   const [body, setBody] = React.useState("");
   const [recipientsState, setRecipients] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [isSending, setIsSending] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
+    if (surveiId == null) {
+      history.push(LIHAT_SURVEI);
+      Toast("Pilih survei terlebih dahulu!", "error");
+    }
     if (templateId == null) {
       history.push(EMAIL_BLASTER_EMAIL_TEMPLATE);
       Toast("Pilih template terlebih dahulu!", "error");
       return;
     }
-    // TODO: implement for surveiId and recipients
-    // if (surveiId == null) {
-    // }
-    // if (recipients.length === 0) {
-    // }
+    if (!recipients || recipients.length === 0) {
+      history.push(EMAIL_BLASTER_RECIPIENT);
+      Toast("Pilih recipient terlebih dahulu!", "error");
+    }
+    if (templateId == null) {
+      history.push(EMAIL_BLASTER_EMAIL_TEMPLATE);
+      Toast("Pilih template email terlebih dahulu!", "error");
+    }
 
     emailBlasterAPI
       .getPreviewEmail(templateId, surveiId, recipients)
@@ -62,38 +72,48 @@ function Screen({ classes, templateId, surveiId, recipients }) {
   }, [templateId, surveiId, recipients, history]);
 
   const onSubmit = () => {
-    emailBlasterAPI.sendEmail(templateId, surveiId, recipients);
+    handleOpen();
+  };
+
+  const onSend = () => {
+    if (isSending) {
+      Toast("Sedang menunggu hasil dari server", "info");
+    }
+    setIsSending(true);
+    emailBlasterAPI
+      .sendEmail(templateId, surveiId, recipients)
+      .then(res => {
+        handleClose();
+        Toast("Email dalam proses pengiriman!", "success");
+        setTimeout(() => {
+          history.push(LIHAT_SURVEI);
+        }, 2000);
+      })
+      .catch(err => {
+        Toast("Gagal mengirim email, harap coba kembali.", "error");
+      })
+      .finally(() => {
+        setIsSending(false);
+      });
   };
 
   return (
     <React.Fragment>
       <NavbarAuth title="Kirim Email" />
-      <NavbarBack />
+      <NavbarBackEmailBlasterForm onClick={onSubmit} title="KIRIM" />
       <Container className={classes.container}>
-        <Grid container spacing={32} direction="row">
-          <Grid item xs={12}>
-            <EmailSendPreview
-              recipients={recipientsState}
-              subject={subject}
-              body={body}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <div className={classes.buttonContainer}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={onSubmit}
-              >
-                Kirim
-              </Button>
-            </div>
-          </Grid>
-        </Grid>
+        <EmailSendPreview
+          recipients={recipientsState}
+          subject={subject}
+          body={body}
+        />
       </Container>
       <ToastContainer />
+      <SendConfirmationModal
+        open={open}
+        handleClose={handleClose}
+        onSend={onSend}
+      />
     </React.Fragment>
   );
 }
