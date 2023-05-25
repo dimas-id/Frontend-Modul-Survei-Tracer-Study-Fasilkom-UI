@@ -4,7 +4,7 @@ import {layouts} from "../../../styles/guidelines";
 
 export default class LoadingScreen extends React.PureComponent {
   render() {
-    const {children, className} = this.props;
+    const {children, className, customText} = this.props;
     return (
       <div
         className={className}
@@ -19,6 +19,7 @@ export default class LoadingScreen extends React.PureComponent {
       >
         {children}
         <CircularProgress />
+        <h2>{customText}</h2>
       </div>
     );
   }
