@@ -1,10 +1,10 @@
 import { toast } from "react-toastify";
 
-function Toast(message, type = "default", position="bottom-right", theme = "colored") {
+function Toast(message, type = "default", autoClose = 3000, hideProgressBar = false, position="bottom-right", theme = "colored") {
   const options = {
     position: position,
-    autoClose: 3000,
-    hideProgressBar: false,
+    autoClose: autoClose,
+    hideProgressBar: hideProgressBar,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,

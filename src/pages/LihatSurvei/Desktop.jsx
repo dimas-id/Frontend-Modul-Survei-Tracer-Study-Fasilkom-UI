@@ -65,6 +65,7 @@ class Screen extends React.Component {
   };
 
   handleDeleteClickYa = surveiId => {
+    Toast("Menghapus Survei", "info", 1000, true);
     this.setState({ loading: true });
     atlasV3.survei
       .deleteSurveiById(surveiId)
@@ -88,6 +89,7 @@ class Screen extends React.Component {
 
   handleLoad() {
     this.setState({ loading: true }, () => {
+      Toast("Loading Survei", "info", 1000, true);
       atlasV3.survei.getSurvei
         .then(result => {
           this.setState({ 
@@ -106,6 +108,7 @@ class Screen extends React.Component {
   }
 
   handleFilterSearch = searchQuery => {
+    Toast("Mencari Survei", "info", 500, true)
     const filteredSurveiDraft = this.state.survei_list_draft.filter(
       survei => survei.nama.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
     );
@@ -134,7 +137,6 @@ class Screen extends React.Component {
 
   render() {
     const { classes } = this.props;
-
     return (
       <React.Fragment>
         <Particle name="cloud2" left={0} top={160} />

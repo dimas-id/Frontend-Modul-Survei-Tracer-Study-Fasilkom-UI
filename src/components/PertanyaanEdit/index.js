@@ -242,38 +242,6 @@ const PertanyaanEdit = props => {
     setActiveNow(idx);
   };
 
-  const handleUp = () => {
-    if (activeNow !== 0) {
-      const newListPertanyaan = listPertanyaan.slice();
-      [newListPertanyaan[activeNow], newListPertanyaan[activeNow - 1]] = [
-        newListPertanyaan[activeNow - 1],
-        newListPertanyaan[activeNow],
-      ];
-      setListPertanyaan(newListPertanyaan);
-      handleClick(activeNow - 1);
-    }
-  };
-
-  const handleDown = () => {
-    if (activeNow !== listPertanyaan.length - 1) {
-      const newListPertanyaan = listPertanyaan.slice();
-      [newListPertanyaan[activeNow], newListPertanyaan[activeNow + 1]] = [
-        newListPertanyaan[activeNow + 1],
-        newListPertanyaan[activeNow],
-      ];
-      setListPertanyaan(newListPertanyaan);
-      handleClick(activeNow + 1);
-    }
-  };
-
-  const handleClick = idx => {
-    try {
-      const element = document.getElementById(idx);
-      element.scrollIntoView({ behavior: "smooth" });
-    } catch (e) {}
-    setActiveNow(idx);
-  };
-
   useEffect(() => {
     Toast(
       "Silakan mengisi survei, pastikan seluruh field terisi",
@@ -437,7 +405,6 @@ const PertanyaanEdit = props => {
             );
           })}
         </div>
-      </div>
     </div>
   );
 };
