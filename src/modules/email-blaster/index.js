@@ -7,7 +7,7 @@ const CHANGE_RECIPIENTS = "email-blaster/CHANGE_RECIPIENTS";
 
 const INITIAL_STATE = {
   templateId: null,
-  surveiId: 10,
+  surveiId: null,
   recipients: [],
 };
 
