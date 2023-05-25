@@ -20,3 +20,4 @@ export { CardLoader };
 export { BulletListLoader };
 export { ListLoader };
 export { List2Loader };
+export { default as LoadingScreenCustom } from "./LoadingScreenCustom";

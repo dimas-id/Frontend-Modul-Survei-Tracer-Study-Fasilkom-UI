@@ -3,7 +3,7 @@ import LoadingScreen from "../LoadingFill";
 
 const loadingScreen = props => (
   <div style={{ height: "100vh", width: "100vw" }}>
-    <LoadingScreen {...props} />
+    <LoadingScreen {...props} customText = {"Loading Page ..."}/>
   </div>
 );
 
