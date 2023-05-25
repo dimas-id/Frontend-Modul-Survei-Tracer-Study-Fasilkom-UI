@@ -14,12 +14,13 @@ export default Object.freeze({
       surveiId,
       recipients,
     }),
-  getEmailRecipients: (survei_id, group_recipients_years, group_recipients_terms, individual_recipients_emails) =>
+  getEmailRecipients: (survei_id, group_recipients_years, group_recipients_terms, individual_recipients_emails, csv_emails) =>
     http.post(`${API_V3_URL}/recipients/get-all`, {
       survei_id,
       group_recipients_years, 
       group_recipients_terms, 
       individual_recipients_emails,
+      csv_emails
     }),
   getGroupTotal: (survei_id, year, term) =>
     http.post(`${API_V3_URL}/recipients/group-total`, {
@@ -28,7 +29,5 @@ export default Object.freeze({
       term
     }),
   uploadEmailCsv: (csv_files) =>
-    http.post(`${API_V3_URL}/recipients/csv/upload`, {
-      csv_files: csv_files,
-    }),
+    http.post(`${API_V3_URL}/recipients/csv/upload`, csv_files ),
 });
