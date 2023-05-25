@@ -182,6 +182,16 @@ input[type=file] {
     background-color: #B2F5FF;
 }
 
+.button-icon-text-disabled {
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #EEEEEE;
+    text-align: center;
+    padding: 6px 8px 6px 6px;
+}
+
 .back {
     padding-left: 40px;
     background: url('https://api.iconify.design/material-symbols/arrow-back-ios-new-rounded.svg') no-repeat center center / contain;
@@ -250,8 +260,4 @@ table td {
     background-color: #F5F5F5;
     border-bottom: 1px solid #DDDDDD;
     width: 380px;
-}
-
-.loading {
-    content: url('https://api.iconify.design/line-md/loading-loop.svg');
 }

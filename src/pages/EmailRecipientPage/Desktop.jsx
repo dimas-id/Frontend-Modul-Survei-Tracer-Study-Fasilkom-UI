@@ -26,8 +26,6 @@ class Screen extends React.Component {
 
   constructor(props) {
     super(props);
-
-    const searchParams = new URLSearchParams(window.location.search);
     
     this.state = {
       year_value : new Date().getFullYear(),
@@ -42,6 +40,7 @@ class Screen extends React.Component {
       group_recipient_terms : [], 
       individual_emails : [],
       csv_emails : [],
+      csv_invalid_emails : [],
 
       group_total_recipients : [],
       group_total_nonresponse : [],
@@ -52,8 +51,6 @@ class Screen extends React.Component {
 
       all_recipients: [],
     };
-
-    console.log('ID Survei:', this.state.survei_id);
 
   }
 
@@ -75,10 +72,9 @@ class Screen extends React.Component {
       emailBlasterAPI
         .getGroupTotal(this.state.survei_id, this.state.year_value, this.state.term_value)
         .then((response) => {
-          console.log(response.data);
-          
+
           this.setState({ 
-            total_response: response.data["totalResponse"],
+            total_response: response.data["totalAll"],
             total_nonresponse: response.data["totalNonResponse"],
           });
 
@@ -145,30 +141,24 @@ class Screen extends React.Component {
     if ((this.state.csv_files).length === 0) {
       Toast("Belum ada file yang dipilih.", "error")
     } else {
-      // implements
-      // console.log(this.state.csv_files)
 
       const data = new FormData();
-
-      // for (const file of this.state.csv_files) {
-      //   console.log(file);
-      //   data.append(file.name, file);
-      // }
-      console.log(this.state.csv_files);
-      data.append('csv_files', this.state.csv_files);
-
-      console.log(data);
+      for (const file of this.state.csv_files) {
+        data.append("csv_files", file);
+      }
 
       emailBlasterAPI
       .uploadEmailCsv(data)
       .then( (response) => {
-        console.log(response.data);
-        // this.setState(prevState => ({
-        //   csv_emails: [...prevState.csv_emails, request.data]
-        // }))
-        })
+        const emailFromFetch = response.data["validEmails"];
+        this.setState(prevState => ({
+          csv_emails: [...prevState.csv_emails, ...(response.data["validEmails"])],
+          csv_invalid_emails: [...prevState.csv_invalid_emails, ...(response.data["invalidEmails"])],
+          csv_files: [],
+        }))
+      })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
     }
   }
@@ -194,6 +184,12 @@ class Screen extends React.Component {
     }));
   }
 
+  handleDeleteCSVEmails = (index) => {
+    this.setState(prevState => ({
+      csv_emails: prevState.csv_emails.filter((email, i) => i !== index)
+    }));
+  }
+
   onNext = (event) => {
  
     if (((this.state.individual_emails).length === 0)&&((this.state.csv_emails).length === 0)
@@ -205,16 +201,13 @@ class Screen extends React.Component {
         this.state.survei_id,
         this.state.group_recipient_years,
         this.state.group_recipient_terms,
-        this.state.individual_emails)
+        this.state.individual_emails,
+        this.state.csv_emails)
       .then((response) => {
-        console.log(response.data);
-
         this.setState({ 
           all_recipients: response.data["recipients"],
         });
-
-        this.props.changeRecipients(this.state.all_recipients)
-        
+        this.props.changeRecipients(this.state.all_recipients);
         window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
       })
       .catch((error) => {
@@ -297,8 +290,8 @@ class Screen extends React.Component {
                     onClick={() => this.handleDeleteGroup(index)}></button>
                   </td>
                   <td>Lulusan {year} term-{this.state.group_recipient_terms[index]}</td>
-                  <td>{(this.state.group_total_nonresponse[index]).toString()}</td>
-                  <td>{(this.state.group_total_recipients[index]).toString()}</td>
+                  <td> {this.state.group_total_nonresponse[index]} </td>
+                  <td> {this.state.group_total_recipients[index]} </td>
                 </tr>
                 ))}
               </tbody>
@@ -356,32 +349,24 @@ class Screen extends React.Component {
               <p>Upload file CSV yang berisi daftar email</p>
             </div>
                 
-            {/* <input type='file' className='input-file'></input> */}
-
             <div className='csv-buttons'>
 
               <label htmlFor='input-csv' className='input-file'>
                 <i className='upload'></i>Upload file
               <input id="input-csv" type="file" className='input-file' onChange={this.handleSubmitFileBrowse}></input>
               </label>
-
-              <button className='button-icon-text fetch' onClick={this.handleFetchCSVEmails}>
+              
+              <button 
+              className={this.state.csv_files.length === 0 ? 'button-icon-text-disabled fetch' : 'button-icon-text fetch'} 
+              onClick={this.handleFetchCSVEmails}>
                 <i className='fetch'></i>Fetch emails
               </button>
 
             </div>
 
             {this.state.csv_files.length === 0 ? (
-              // <div>
-              //   {/* <h3>{this.state.csv_files}</h3> */}
-              //   {/* <button onClick={() => this.setState({csv_file: null})}>Delete</button> */}
-              // </div>
-
-              // <p>Belum ada file yang di-upload</p>
               <p className="keterangan-kosong">Tambahkan file CSV</p>
-                
             ) : (
-              
               <table>
                 <thead>
                   <tr>
@@ -402,20 +387,29 @@ class Screen extends React.Component {
                 </tbody>
               </table>
             )}
-            
-              
-              {/* { this.state.file === null ? (
-                <div className='input-file'>
-                  <label htmlFor='input-csv'>
-                  <i className='upload'></i>Upload file .csv
-                    <input id='input-csv' type='file'></input>
-                  </label>
-                </div>
-              ) : (
-                <div className='input-file'> 
-                  <p><i className='delete'></i> {this.state.file.name}</p> 
-                </div>
-              )} */}
+
+            {this.state.csv_emails.length === 0 ? (
+              <p className="keterangan-kosong">Belum ada email yang ditambahkan dari file</p>
+            ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th>Email yang Valid</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.csv_emails.map((email, index) => (
+                <tr key={index}>
+                  <td>
+                    <button className="button-icon cancel"
+                    onClick={() => this.handleDeleteCSVEmails(index)}></button>
+                  </td>
+                  <td>{email}</td>
+                </tr>
+                ))}
+              </tbody>
+            </table> )}
 
           </div>
 
@@ -425,7 +419,10 @@ class Screen extends React.Component {
         <ToastContainer />
       </React.Fragment>
     );
+
   }
+
+    
 }
 
 function createContainer() {
