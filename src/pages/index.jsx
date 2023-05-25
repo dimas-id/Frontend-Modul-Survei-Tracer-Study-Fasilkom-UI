@@ -33,6 +33,7 @@ import GenerateUserPage from "./GenerateUserPage";
 import CreateSurvei from "./CreateSurvei";
 import EditSurvei from "./EditSurvei";
 import LihatSurvei from "./LihatSurvei";
+import EmailRecipientPage from "./EmailRecipientPage";
 import IsiSurvei from "./IsiSurvei";
 import VisualisasiSurvei from "./VisualisasiSurvei";
 import EmailSendSubmitPage from "./EmailBlasterMultiStepFormPage/EmailSendSubmitPage";
@@ -341,6 +342,13 @@ const ROUTES = [
       exact: true,
       path: paths.EMAIL_BLASTER_SEND,
       component: EmailSendSubmitPage,
+    },
+  },  {
+    title: "Email Blaster Recipient",
+    route: {
+      exact: true,
+      path: paths.EMAIL_BLASTER_RECIPIENT,
+      component: EmailRecipientPage,
     },
   },
   {
