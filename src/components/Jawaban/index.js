@@ -101,7 +101,7 @@ const Jawaban = props => {
           </div>
           {props.list_pertanyaan.map((el, idx) => {
             return (
-              <div key={idx}>
+              <div key={idx} style={{ width: "100%" }}>
                 <CardPertanyaan
                   index={idx}
                   pertanyaan={el.pertanyaan}
@@ -126,11 +126,11 @@ const Jawaban = props => {
           >
             <button
               style={{
-                fontSize: "24px",
-                backgroundColor: isLoading ? "#ccc" : "#00c7e5",
+                fontSize: "20px",
+                backgroundColor: isLoading ? "#ccc" : "#4285F4",
                 color: "#fff",
-                padding: "16px 32px",
-                borderRadius: "4px",
+                padding: "0.4em 0.9em",
+                borderRadius: "0.4em",
                 border: "none",
               }}
               onClick={onSubmit}
