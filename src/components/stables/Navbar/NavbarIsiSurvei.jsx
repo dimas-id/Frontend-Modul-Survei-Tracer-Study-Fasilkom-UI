@@ -45,8 +45,15 @@ function NavbarIsiSurvei({ classes, history, namaSurvei }) {
                 <ArrowBack />
               </IconButton>
             </div>
-            <div>
-              <h1>{namaSurvei}</h1>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "80%",
+              }}
+            >
+              <h1 className={classe["survei-title"]}>{namaSurvei}</h1>
             </div>
             <div style={{ display: "flex", alignItems: "center" }}></div>
           </div>

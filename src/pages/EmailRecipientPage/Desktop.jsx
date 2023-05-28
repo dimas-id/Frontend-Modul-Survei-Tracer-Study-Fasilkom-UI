@@ -208,7 +208,7 @@ class Screen extends React.Component {
           all_recipients: response.data["recipients"],
         });
         this.props.changeRecipients(this.state.all_recipients);
-        window.location.href = EMAIL_BLASTER_EMAIL_TEMPLATE;
+        this.props.history.push(EMAIL_BLASTER_EMAIL_TEMPLATE);
       })
       .catch((error) => {
         console.error(error);
