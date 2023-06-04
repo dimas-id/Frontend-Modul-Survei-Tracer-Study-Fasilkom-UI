@@ -346,18 +346,6 @@ const PertanyaanEdit = props => {
               </div>
             )}
           </div>
-          {activeNow === "deskripsi" && (
-              <div className={classes.actionbtn}>
-                <button onClick={tambahPertanyaanHandler}>
-                  <img
-                    src="https://i.ibb.co/HFpDT9z/icons8-add-67.png"
-                    alt="add icon"
-                    style={{ width: "30px" }}
-                  />
-                </button>
-              </div>
-            )}
-          </div>
           {listPertanyaan.map((el, idx) => {
             return (
               <div style={{ width: "100%", position: "relative" }} key={idx}>
@@ -405,6 +393,7 @@ const PertanyaanEdit = props => {
             );
           })}
         </div>
+      </div>
     </div>
   );
 };

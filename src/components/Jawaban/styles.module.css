@@ -41,16 +41,20 @@ textarea {
   max-width: 500px;
 }
 
-.input:active, .input:focus {
-    border-bottom: 1.5px solid #ced4da;
+.input:active,
+.input:focus {
+  border-bottom: 1.5px solid #ced4da;
 }
 
 /* PERTANYAAN */
 
 .pertanyaan {
-  width: 50%;
   display: flex;
-  padding: 20px 5em;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  padding: 20px 10px;
   margin-top: 50px;
 }
 
@@ -92,8 +96,10 @@ textarea {
 
 .pertanyaan-wrapper {
   width: 100%;
+  max-width: 800px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 10px;
 }
 
@@ -147,6 +153,7 @@ button:hover {
 .card {
   display: flex;
   flex-direction: column;
+  width: 100%;
   padding: 20px 30px;
   background-color: white;
   border-radius: 0.5em;
@@ -264,7 +271,7 @@ button:hover {
   width: 20px;
 }
 
-.center{
+.center {
   margin: 0 auto;
 }
 
@@ -285,18 +292,17 @@ button:hover {
   max-width: 500px;
 }
 
-
-input[type=radio] {
+input[type="radio"] {
   height: 20px;
   width: 20px;
   margin-left: -12px;
 }
-input[type=checkbox] {
+input[type="checkbox"] {
   height: 20px;
   width: 20px;
   margin-left: -12px;
 }
-.linearScale{
+.linearScale {
   width: 50%;
   margin: 0 auto;
 }

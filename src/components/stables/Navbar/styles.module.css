@@ -12,3 +12,16 @@
     top: 56px;
   }
 }
+
+.survei-title {
+  font-size: 1.7rem !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media only screen and (max-width: 600px) {
+  .survei-title {
+    font-size: 1.2rem !important;
+  }
+}
