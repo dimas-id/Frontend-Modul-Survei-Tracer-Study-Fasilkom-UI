@@ -49,16 +49,6 @@
     border-radius: 20px;
 }
 
-/* Responsive layout */
-@media (max-width: 1200px) {
-    .form-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-  }
-
 .form-title {
     text-align: center;
     height: 130px;
@@ -229,6 +219,10 @@ input[type=file] {
     background-color: #B2F5FF;
 }
 
+.table-container {
+    overflow-y: auto;
+}
+
 table {
     margin-top: 16px;
     vertical-align: center;
@@ -238,6 +232,9 @@ table {
     background-color: #F5F5F5;
 
     width: 380px;
+
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 table th {
@@ -245,6 +242,9 @@ table th {
     background-color: #B2F5FF;
     border-bottom: 1px solid #DDDDDD;
     border-top: 1px solid #DDDDDD;
+
+    position: sticky; 
+    top: 0;
 }
 
 table td {

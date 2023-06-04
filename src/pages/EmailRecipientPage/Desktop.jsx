@@ -92,6 +92,7 @@ class Screen extends React.Component {
 
         })
         .catch((error) => {
+          Toast(error, "error");
           console.error(error);
         });
         
@@ -150,15 +151,17 @@ class Screen extends React.Component {
       emailBlasterAPI
       .uploadEmailCsv(data)
       .then( (response) => {
-        const emailFromFetch = response.data["validEmails"];
         this.setState(prevState => ({
           csv_emails: [...prevState.csv_emails, ...(response.data["validEmails"])],
           csv_invalid_emails: [...prevState.csv_invalid_emails, ...(response.data["invalidEmails"])],
           csv_files: [],
-        }))
+        }));
+        Toast(("Sukses menerima " + response.data["validEmails"].length + 
+        " email valid, dan menghapus " + response.data["invalidEmails"].length + " email invalid."), "success");
       })
       .catch((error) => {
-        console.error(error)
+        Toast(error, "error");
+        console.error(error);
       })
     }
   }
@@ -211,6 +214,7 @@ class Screen extends React.Component {
         this.props.history.push(EMAIL_BLASTER_EMAIL_TEMPLATE);
       })
       .catch((error) => {
+        Toast(error, "error");
         console.error(error);
       });
     }
@@ -270,6 +274,7 @@ class Screen extends React.Component {
 
             </form>
 
+            <div className='table-container'>
             {this.state.group_recipient_years.length === 0 ? (
                 <p className="keterangan-kosong">Tambahkan kelompok pengguna</p>
               ) : (
@@ -296,6 +301,7 @@ class Screen extends React.Component {
                 ))}
               </tbody>
             </table> )}
+            </div>
 
           </div>
 
@@ -317,6 +323,7 @@ class Screen extends React.Component {
                 <button type="submit" id="add-individual" className='button-icon-text'><i className='add'></i> tambah</button>
               </form>
 
+            <div className='table-container'>
             {this.state.individual_emails.length === 0 ? (
               <p className="keterangan-kosong">Tambahkan email pengguna</p>
             ) : (
@@ -339,6 +346,7 @@ class Screen extends React.Component {
                 ))}
               </tbody>
             </table> )}
+            </div>
 
           </div>
 
@@ -357,7 +365,7 @@ class Screen extends React.Component {
               </label>
               
               <button 
-              className={this.state.csv_files.length === 0 ? 'button-icon-text-disabled fetch' : 'button-icon-text fetch'} 
+              className='button-icon-text fetch'
               onClick={this.handleFetchCSVEmails}>
                 <i className='fetch'></i>Fetch emails
               </button>
@@ -388,6 +396,7 @@ class Screen extends React.Component {
               </table>
             )}
 
+            <div className="table-container">
             {this.state.csv_emails.length === 0 ? (
               <p className="keterangan-kosong">Belum ada email yang ditambahkan dari file</p>
             ) : (
@@ -410,6 +419,7 @@ class Screen extends React.Component {
                 ))}
               </tbody>
             </table> )}
+            </div>
 
           </div>
 
