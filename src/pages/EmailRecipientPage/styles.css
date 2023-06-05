@@ -221,10 +221,10 @@ input[type=file] {
 
 .table-container {
     overflow-y: auto;
+    margin-top: 16px;
 }
 
 table {
-    margin-top: 16px;
     vertical-align: center;
     text-align: center;
 
