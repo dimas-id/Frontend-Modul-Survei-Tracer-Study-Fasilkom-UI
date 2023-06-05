@@ -156,8 +156,16 @@ class Screen extends React.Component {
           csv_invalid_emails: [...prevState.csv_invalid_emails, ...(response.data["invalidEmails"])],
           csv_files: [],
         }));
-        Toast(("Sukses menerima " + response.data["validEmails"].length + 
-        " email valid, dan menghapus " + response.data["invalidEmails"].length + " email invalid."), "success");
+        
+        if (response.data["validEmails"].length === 0) {
+          Toast("Seluruh email pada file invalid!", "error");
+        } else if (response.data["invalidEmails"].length === 0) {
+          Toast("Berhasil mendapatkan semua email!", "success");
+        } else {
+          Toast(("Sukses menerima " + response.data["validEmails"].length + " email yang valid!"), "success");
+          Toast(("Terdapat " + response.data["invalidEmails"].length + " email yang tidak valid."), "error");
+        }
+        
       })
       .catch((error) => {
         Toast(error, "error");
