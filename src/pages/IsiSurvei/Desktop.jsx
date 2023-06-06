@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Jawaban from "../../components/Jawaban";
 import atlasV3 from "../../modules/api/atlas/v3";
 
-import Typing from "react-typing-animation";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -86,27 +85,22 @@ class Screen extends React.Component {
         <React.Fragment>
         <NavbarAuth />
         <Container style={{ textAlign: 'center' }}>
-          <Typing>
             <div>
-              <Typing.Speed ms={30}/>
               <Typography variant="h3" style={{ textAlign: 'center' }}>
                 <b>
                   Anda sudah mengisi survei ini! 
-                </b>{" "}
+                </b>
                 <span role="img" aria-label="sad">
                   😭
                 </span>
               </Typography>
-              <Typing.Delay ms={1000} />
             </div>
             <div>
             <Typography variant="h5" style={{ textAlign: 'center' }}>
               Jika ada kesalahan pengisian, silakan kontak admin untuk mereset jawaban anda.
               </Typography>
-              <Typing.Delay ms={1000} />
             </div>
             <div>
-
               <Typography variant="h5" style={{ textAlign: 'center' }}>
                 Yuk, balik ke {"   "}
                 <Button
@@ -118,9 +112,7 @@ class Screen extends React.Component {
                   beranda
                 </Button>
               </Typography>
-              <Typing.Delay ms={1500} />
             </div>
-          </Typing>
         </Container>
       </React.Fragment>
       );
