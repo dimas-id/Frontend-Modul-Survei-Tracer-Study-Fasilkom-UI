@@ -8,19 +8,16 @@ const styles = theme => ({
     left: "50%",
     transform: "translate(-50%, -50%)",
     position: "absolute",
-    paddingLeft: theme.spacing.unit * 4,
-    paddingRight: theme.spacing.unit * 4,
-    paddingTop: theme.spacing.unit * 4,
-    paddingBottom: theme.spacing.unit * 4,
+    padding: 32,
     outline: "none",
   },
   buttonContainer: {
     display: "flex",
     justifyContent: "flex-end",
-    marginTop: theme.spacing.unit * 4,
+    marginTop: 32,
   },
   button: {
-    marginLeft: theme.spacing.unit * 2,
+    marginLeft: 16,
   },
 });
 
